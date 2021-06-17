@@ -1,15 +1,15 @@
 {
   "name": "framework-arduinogd32",
   "version": "4.20000.210603",
-  "description": "Arduino Wiring-based Framework for ST STM32 microcontrollers",
+  "description": "Arduino Wiring-based Framework for GD32 microcontrollers",
   "keywords": [
     "framework",
     "arduino",
-    "stmicroelectronics",
-    "stm32"
+    "gigadevices",
+    "gd32"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/stm32duino/Arduino_Core_STM32"
+    "url": "https://github.com/CommunityGD32Cores/GD32Core-New"
   }
 }
