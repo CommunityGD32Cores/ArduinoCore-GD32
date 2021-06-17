@@ -62,8 +62,9 @@ typedef struct dac_s dac_t;
 #define DEV_ADC_PRECISION_12TO16(val) ((val << 4) | ((val >> 8) & (uint16_t)0x000F))
 #define AND_NUMBER (0xFF)
 
+#ifndef GD_PIN_CHANNEL_GET
 #define GD_PIN_CHANNEL_GET(X) ((X >> 11) & 0x1F)
-
+#endif
 
 /* Exported functions ------------------------------------------------------- */
 void dac_write_value(PinName pin, uint32_t value, uint8_t resolution);
