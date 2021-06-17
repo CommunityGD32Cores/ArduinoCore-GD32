@@ -27,10 +27,10 @@ Example projects for this platform for the SPL framework and this Arduino core a
 
 # ToDo / thoughts
 
-* [] add general variant for GD32F303CC
-* [] check the working state of currently implemented code (GPIO, PWM, I2C, SPI, UART, USB, ...)
-    * [] note down what works and what doesn't
-    * [] prioritize implementation and implement it
+* [ ] add general variant for GD32F303CC
+* [ ] check the working state of currently implemented code (GPIO, PWM, I2C, SPI, UART, USB, ...)
+    * [ ] note down what works and what doesn't
+    * [ ] prioritize implementation and implement it
 * USB bootloader?
-* [] write good documentation on how to add new variants and how the build process works
-* [] release Arduino-IDE compatible package
+* [ ] write good documentation on how to add new variants and how the build process works
+* [ ] release Arduino-IDE compatible package
