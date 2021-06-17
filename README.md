@@ -18,6 +18,29 @@ Using PlatformIO is already possible to very easily edit code in the IDE and eve
 
 Example projects for this platform for the SPL framework and this Arduino core are currently hosted at https://github.com/maxgerhardt/gd32-pio-projects, but are subject to be moved soon.
 
+# Current state
+
+The [gd32-arduino-blinky](https://github.com/maxgerhardt/gd32-pio-projects/tree/main/gd32-arduino-blinky) project compiles for the `gd32f307_mbed` board. 
+
+```
+CONFIGURATION: https://docs.platformio.org/page/boards/gd32/gd32f307_mbed.html
+PLATFORM: GD GD32 (1.0.0) > GD32F307VG-mbed (48k RAM. 256k Flash)
+HARDWARE: GD32F307VGT6 120MHz, 96KB RAM, 1MB Flash
+DEBUG: Current (stlink) External (blackmagic, cmsis-dap, jlink, stlink)
+PACKAGES:
+ - framework-arduinogd32 4.20000.210603 (2.0.0)
+ - toolchain-gccarmnoneeabi 1.90201.191206 (9.2.1)
+[...]
+Checking size .pio\build\gd32f307_mbed\firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [          ]   0.2% (used 164 bytes from 98304 bytes)
+Flash: [          ]   0.6% (used 6128 bytes from 1048576 bytes)
+Building .pio\build\gd32f307_mbed\firmware.bin
+============= [SUCCESS] Took 7.38 seconds =============
+```
+
+Not yet testable since I do not have a GD32F307VG-mbed board, will be developing on a GD32F303CC instead.
+
 # Development log
 
 *18.06.2021:*
