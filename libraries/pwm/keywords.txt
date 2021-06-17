@@ -1,0 +1,39 @@
+#######################################
+# Syntax Coloring Map HardwareTimer
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+PWM		KEYWORD1	
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+setPeriodCycle	KEYWORD2
+attachInterrupt	KEYWORD2
+start		KEYWORD2
+digitalToggle	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+PWM0		LITERAL1
+PWM1		LITERAL1
+PWM2		LITERAL1
+PWM3		LITERAL1
+PWM4		LITERAL1
+PWM5		LITERAL1
+PWM6		LITERAL1
+PWM7		LITERAL1
+PWM8		LITERAL1
+PWM9		LITERAL1
+PWM10		LITERAL1
+PWM11		LITERAL1
+
+FORMAT_TICK	LITERAL1
+FORMAT_US	LITERAL1
+FORMAT_MS	LITERAL1
+FORMAT_S	LITERAL1
+FORMAT_HZ	LITERAL1
+#######################################

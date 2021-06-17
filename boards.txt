@@ -1,0 +1,160 @@
+# See: https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification
+
+menu.pnum=Board part number
+menu.upload_method=Upload method
+menu.opt=Optimize
+
+################################################################################################
+# GD F30X series
+gd_mbed_f30x.name=GD32F30x MBED series
+
+gd_mbed_f30x.build.core=arduino
+gd_mbed_f30x.build.board=gd_mbed_f30x
+gd_mbed_f30x.build.mcu=cortex-m4
+gd_mbed_f30x.build.series=GD32F30x
+
+gd_mbed_f30x.menu.pnum.GD32F307VG_MBED=GD32F307VG MBED
+gd_mbed_f30x.menu.pnum.GD32F307VG_MBED.upload.maximum_size=262144
+gd_mbed_f30x.menu.pnum.GD32F307VG_MBED.upload.maximum_data_size=98304
+gd_mbed_f30x.menu.pnum.GD32F307VG_MBED.build.board=GD32F307VG_MBED
+gd_mbed_f30x.menu.pnum.GD32F307VG_MBED.build.series=GD32F30x
+gd_mbed_f30x.menu.pnum.GD32F307VG_MBED.build.product_line=GD32F30X_CL
+gd_mbed_f30x.menu.pnum.GD32F307VG_MBED.build.variant=GD32F307VG_MBED
+
+#Upload menu
+gd_mbed_f30x.menu.upload_method.serialMethod=gd32flash (Serial)
+gd_mbed_f30x.menu.upload_method.serialMethod.upload.protocol= maple_serial
+gd_mbed_f30x.menu.upload_method.serialMethod.upload.options=
+gd_mbed_f30x.menu.upload_method.serialMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1
+gd_mbed_f30x.menu.upload_method.serialMethod.upload.tool=serial_upload
+
+gd_mbed_f30x.menu.upload_method.gdlinkMethod=GDlink (SWD)
+gd_mbed_f30x.menu.upload_method.gdlinkMethod.upload.protocol=gdlink
+gd_mbed_f30x.menu.upload_method.gdlinkMethod.upload.options=
+gd_mbed_f30x.menu.upload_method.gdlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_mbed_f30x.menu.upload_method.gdlinkMethod.upload.tool=gdlink_upload
+
+gd_mbed_f30x.menu.upload_method.jlinkMethod=Jlink (SWD)
+gd_mbed_f30x.menu.upload_method.jlinkMethod.upload.protocol=jlink
+gd_mbed_f30x.menu.upload_method.jlinkMethod.upload.options=
+gd_mbed_f30x.menu.upload_method.jlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_mbed_f30x.menu.upload_method.jlinkMethod.upload.tool=jlink_upload
+
+# Optimizations
+gd_mbed_f30x.menu.opt.osstd=Smallest (default)
+gd_mbed_f30x.menu.opt.o1std=Fast (-O1)
+gd_mbed_f30x.menu.opt.o1std.build.flags.optimize=-O1
+gd_mbed_f30x.menu.opt.o1std.build.flags.ldspecs=
+gd_mbed_f30x.menu.opt.o2std=Faster (-O2)
+gd_mbed_f30x.menu.opt.o2std.build.flags.optimize=-O2
+gd_mbed_f30x.menu.opt.o2std.build.flags.ldspecs=
+gd_mbed_f30x.menu.opt.o3std=Fastest (-O3)
+gd_mbed_f30x.menu.opt.o3std.build.flags.optimize=-O3
+gd_mbed_f30x.menu.opt.o3std.build.flags.ldspecs=
+gd_mbed_f30x.menu.opt.ogstd=Debug (-g)
+gd_mbed_f30x.menu.opt.ogstd.build.flags.optimize=-Og
+gd_mbed_f30x.menu.opt.ogstd.build.flags.ldspecs=
+
+################################################################################################
+# GD F30X series
+gd_eval_f303.name=GD32F303 EVAL series
+
+gd_eval_f303.build.core=arduino
+gd_eval_f303.build.board=gd_eval_f303
+gd_eval_f303.build.mcu=cortex-m4
+gd_eval_f303.build.series=GD32F30x
+
+gd_eval_f303.menu.pnum.GD32F303ZE_EVAL=GD32F303ZE EVAL
+gd_eval_f303.menu.pnum.GD32F303ZE_EVAL.upload.maximum_size=524288
+gd_eval_f303.menu.pnum.GD32F303ZE_EVAL.upload.maximum_data_size=65536
+gd_eval_f303.menu.pnum.GD32F303ZE_EVAL.build.board=GD32F303ZE_EVAL
+gd_eval_f303.menu.pnum.GD32F303ZE_EVAL.build.series=GD32F30x
+gd_eval_f303.menu.pnum.GD32F303ZE_EVAL.build.product_line=GD32F30X_HD
+gd_eval_f303.menu.pnum.GD32F303ZE_EVAL.build.variant=GD32F303ZE_EVAL
+
+#Upload menu
+gd_eval_f303.menu.upload_method.serialMethod=gd32flash (Serial)
+gd_eval_f303.menu.upload_method.serialMethod.upload.protocol= maple_serial
+gd_eval_f303.menu.upload_method.serialMethod.upload.options=
+gd_eval_f303.menu.upload_method.serialMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1
+gd_eval_f303.menu.upload_method.serialMethod.upload.tool=serial_upload
+
+gd_eval_f303.menu.upload_method.gdlinkMethod=GDlink (SWD)
+gd_eval_f303.menu.upload_method.gdlinkMethod.upload.protocol=gdlink
+gd_eval_f303.menu.upload_method.gdlinkMethod.upload.options=
+gd_eval_f303.menu.upload_method.gdlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_eval_f303.menu.upload_method.gdlinkMethod.upload.tool=gdlink_upload
+
+gd_eval_f303.menu.upload_method.jlinkMethod=Jlink (SWD)
+gd_eval_f303.menu.upload_method.jlinkMethod.upload.protocol=jlink
+gd_eval_f303.menu.upload_method.jlinkMethod.upload.options=
+gd_eval_f303.menu.upload_method.jlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_eval_f303.menu.upload_method.jlinkMethod.upload.tool=jlink_upload
+
+# Optimizations
+gd_eval_f303.menu.opt.osstd=Smallest (default)
+gd_eval_f303.menu.opt.o1std=Fast (-O1)
+gd_eval_f303.menu.opt.o1std.build.flags.optimize=-O1
+gd_eval_f303.menu.opt.o1std.build.flags.ldspecs=
+gd_eval_f303.menu.opt.o2std=Faster (-O2)
+gd_eval_f303.menu.opt.o2std.build.flags.optimize=-O2
+gd_eval_f303.menu.opt.o2std.build.flags.ldspecs=
+gd_eval_f303.menu.opt.o3std=Fastest (-O3)
+gd_eval_f303.menu.opt.o3std.build.flags.optimize=-O3
+gd_eval_f303.menu.opt.o3std.build.flags.ldspecs=
+gd_eval_f303.menu.opt.ogstd=Debug (-g)
+gd_eval_f303.menu.opt.ogstd.build.flags.optimize=-Og
+gd_eval_f303.menu.opt.ogstd.build.flags.ldspecs=
+
+################################################################################################
+# GD F4XX series
+gd_mbed_f4xx.name=GD32F4xx MBED series
+
+gd_mbed_f4xx.build.core=arduino
+gd_mbed_f4xx.build.board=gd_mbed_f4xx
+gd_mbed_f4xx.build.mcu=cortex-m4
+gd_mbed_f4xx.build.series=GD32F4xx
+
+gd_mbed_f4xx.menu.pnum.GD32F450ZI_MBED=GD32F450ZI MBED
+gd_mbed_f4xx.menu.pnum.GD32F450ZI_MBED.upload.maximum_size=262144
+gd_mbed_f4xx.menu.pnum.GD32F450ZI_MBED.upload.maximum_data_size=98304
+gd_mbed_f4xx.menu.pnum.GD32F450ZI_MBED.build.board=GD32F450ZI_MBED
+gd_mbed_f4xx.menu.pnum.GD32F450ZI_MBED.build.series=GD32F4xx
+gd_mbed_f4xx.menu.pnum.GD32F450ZI_MBED.build.product_line=GD32F450
+gd_mbed_f4xx.menu.pnum.GD32F450ZI_MBED.build.variant=GD32F450ZI_MBED
+
+#Upload menu
+gd_mbed_f4xx.menu.upload_method.serialMethod=gd32flash (Serial)
+gd_mbed_f4xx.menu.upload_method.serialMethod.upload.protocol= maple_serial
+gd_mbed_f4xx.menu.upload_method.serialMethod.upload.options=
+gd_mbed_f4xx.menu.upload_method.serialMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1
+gd_mbed_f4xx.menu.upload_method.serialMethod.upload.tool=serial_upload
+
+gd_mbed_f4xx.menu.upload_method.gdlinkMethod=GDlink (SWD)
+gd_mbed_f4xx.menu.upload_method.gdlinkMethod.upload.protocol=gdlink
+gd_mbed_f4xx.menu.upload_method.gdlinkMethod.upload.options=
+gd_mbed_f4xx.menu.upload_method.gdlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_mbed_f4xx.menu.upload_method.gdlinkMethod.upload.tool=gdlink_upload
+
+gd_mbed_f4xx.menu.upload_method.jlinkMethod=Jlink (SWD)
+gd_mbed_f4xx.menu.upload_method.jlinkMethod.upload.protocol=jlink
+gd_mbed_f4xx.menu.upload_method.jlinkMethod.upload.options=
+gd_mbed_f4xx.menu.upload_method.jlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_mbed_f4xx.menu.upload_method.jlinkMethod.upload.tool=jlink_upload
+
+# Optimizations
+gd_mbed_f4xx.menu.opt.osstd=Smallest (default)
+gd_mbed_f4xx.menu.opt.o1std=Fast (-O1)
+gd_mbed_f4xx.menu.opt.o1std.build.flags.optimize=-O1
+gd_mbed_f4xx.menu.opt.o1std.build.flags.ldspecs=
+gd_mbed_f4xx.menu.opt.o2std=Faster (-O2)
+gd_mbed_f4xx.menu.opt.o2std.build.flags.optimize=-O2
+gd_mbed_f4xx.menu.opt.o2std.build.flags.ldspecs=
+gd_mbed_f4xx.menu.opt.o3std=Fastest (-O3)
+gd_mbed_f4xx.menu.opt.o3std.build.flags.optimize=-O3
+gd_mbed_f4xx.menu.opt.o3std.build.flags.ldspecs=
+gd_mbed_f4xx.menu.opt.ogstd=Debug (-g)
+gd_mbed_f4xx.menu.opt.ogstd.build.flags.optimize=-Og
+gd_mbed_f4xx.menu.opt.ogstd.build.flags.ldspecs=
+
+################################################################################################
