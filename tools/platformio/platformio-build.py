@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Extended and rewritten by Maximilian Gerhardt <maximilian.gerhardt@rub.de>
+# for GD32 core. 
+
 """
 Arduino
 
@@ -19,7 +22,7 @@ Arduino Wiring-based Framework allows writing cross-platform software to
 control devices attached to a wide range of Arduino boards to create all
 kinds of creative coding, interactive objects, spaces or physical experiences.
 
-https://github.com/stm32duino/Arduino_Core_STM32
+https://github.com/CommunityGD32Cores/GD32Core-New
 """
 
 import json
@@ -221,7 +224,6 @@ env.Append(
         join(FRAMEWORK_DIR, "cores", "arduino", "avr"),
         join(FRAMEWORK_DIR, "cores", "arduino", "gd32"),
         join(FRAMEWORK_DIR, "cores", "arduino", "gd32", "Source"),
-        join(FRAMEWORK_DIR, "cores", "arduino", "stm32", "usb"),
         join(FRAMEWORK_DIR, "system", "CMSIS"),
         join(FRAMEWORK_DIR, "system", "CMSIS", "GD", spl_series, "Include"),
         join(FRAMEWORK_DIR, "system", "CMSIS", "GD", spl_series, "Source"),
