@@ -154,7 +154,7 @@ PinName analog_pin_to_PinName(uint32_t pin);
 #define DIGITAL_PIN_TO_BIT_MASK(p)   ((uint16_t)(1 << GD_PIN_GET(DIGITAL_TO_PINNAME(p))))
 
 #define ANALOG_PINS_TO_BIT(p)        ((uint16_t)(1 << GD_PIN_GET(DIGITAL_TO_PINNAME(p))))
-#define PORT_OUTPUT_REG(p)           (GPIO_OCTL(p)
+#define PORT_OUTPUT_REG(p)           (GPIO_OCTL(p))
 #define PORT_INPUT_REG(p)            (GPIO_ISTAT(p))
 #define PORT_SET_REG(p)              (GPIO_BOP(p))
 #if defined(GD32F4xx)
@@ -184,11 +184,11 @@ bool pin_in_analog_pins(uint32_t pin);
 uint32_t digital_pin_to_analog(uint32_t pin);
 
 /* macros for Arduino compatibility */
-#define digitalPinToPort(P) DIGITAL_PIN_TO_PORT(P)
-#define digitalPinToBitMask(P) DIGITAL_PIN_TO_BIT_MASK(P)
-#define portInputRegister(PORT) ((volatile uint32_t*)&(PORT_INPUT_REG(PORT)))
-#define portOutputRegister(PORT) ((volatile uint32_t*)&(PORT_OUTPUT_REG(PORT))
-#define portModeRegister(PORT) ((volatile uint32_t*)(&PORT_CTL_REG(PORT)))
+#define digitalPinToPort(P) (DIGITAL_PIN_TO_PORT(P))
+#define digitalPinToBitMask(P) (DIGITAL_PIN_TO_BIT_MASK(P))
+#define portInputRegister(PORT) (&PORT_INPUT_REG(PORT))
+#define portOutputRegister(PORT) (&PORT_OUTPUT_REG(PORT))
+#define portModeRegister(PORT) (&PORT_CTL_REG(PORT))
 
 #ifdef __cplusplus
 }
