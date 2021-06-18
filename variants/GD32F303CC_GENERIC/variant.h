@@ -98,12 +98,11 @@ extern "C" {
 #define TIMER_TONE              TIMER5
 #define TIMER_SERVO             TIMER6
 
-/* ToDo: Fixup double PWM definitions later, but the LQFP48 does not have the old pins (PORTE etc.) */
-#define PWM0                    PC7
-#define PWM1                    PC7
-#define PWM2                    PB0
-#define PWM3                    PA8
-#define PWM4                    PA8
+#define PWM0                    PA8
+#define PWM1                    PA9
+#define PWM2                    PA10
+#define PWM3                    PB11
+#define PWM4                    PA15
 #define PWM5                    PB15
 
 /* USART definitions */

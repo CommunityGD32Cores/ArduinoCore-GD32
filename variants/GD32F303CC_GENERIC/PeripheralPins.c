@@ -196,10 +196,10 @@ const PinMap PinMap_PWM[] = {
     {PORTA_9,  TIMER0, 7 | (1 << 18)},                      /* TIMER0_CH1 - Default */
     {PORTA_10, TIMER0, 7 | (2 << 18)},                      /* TIMER0_CH2 - Default */
     {PORTA_11, TIMER0, 7 | (3 << 18)},                      /* TIMER0_CH3 - Default */
-    {PORTE_9,  TIMER0, 7 | (8 << 3) | (0 << 18)},           /* TIMER0_CH0 - GPIO_TIMER0_FULL_REMAP */
-    {PORTE_11, TIMER0, 7 | (8 << 3) | (1 << 18)},           /* TIMER0_CH1 - GPIO_TIMER0_FULL_REMAP */
-    {PORTE_13, TIMER0, 7 | (8 << 3) | (2 << 18)},           /* TIMER0_CH2 - GPIO_TIMER0_FULL_REMAP */
-    {PORTE_14, TIMER0, 7 | (8 << 3) | (3 << 18)},           /* TIMER0_CH3 - GPIO_TIMER0_FULL_REMAP */
+    //{PORTE_9,  TIMER0, 7 | (8 << 3) | (0 << 18)},           /* TIMER0_CH0 - GPIO_TIMER0_FULL_REMAP */
+    //{PORTE_11, TIMER0, 7 | (8 << 3) | (1 << 18)},           /* TIMER0_CH1 - GPIO_TIMER0_FULL_REMAP */
+    //{PORTE_13, TIMER0, 7 | (8 << 3) | (2 << 18)},           /* TIMER0_CH2 - GPIO_TIMER0_FULL_REMAP */
+    //{PORTE_14, TIMER0, 7 | (8 << 3) | (3 << 18)},           /* TIMER0_CH3 - GPIO_TIMER0_FULL_REMAP */
 
     {PORTA_0,  TIMER1, 7 | (0 << 18)},                      /* TIMER1_CH0_ETI - Default */
     {PORTA_1,  TIMER1, 7 | (1 << 18)},                      /* TIMER1_CH1_ETI - Default */
@@ -252,7 +252,7 @@ const PinMap PinMap_UART_TX[] = {
     {PORTA_9,  USART0, 7},
     {PORTB_6,  USART0, 7 | (3 << 3)},   /* GPIO_USART0_TX_REMAP */
     {PORTA_2,  USART1, 7},
-    {PORTD_5,  USART1, 7 | (4 << 3)},   /* GPIO_USART1_TX_REMAP */
+    //{PORTD_5,  USART1, 7 | (4 << 3)},   /* GPIO_USART1_TX_REMAP */
     // {PORTB_10, UART_2, 7},
     // {PORTC_10, UART_2, 7 | (5 << 3)},   /* GPIO_USART2_TX_PARTIAL_REMAP */
     // {PORTD_8,  UART_2, 7 | (6 << 3)},   /* GPIO_USART2_TX_FULL_REMAP */
