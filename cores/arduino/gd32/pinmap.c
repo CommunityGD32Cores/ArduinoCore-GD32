@@ -19,6 +19,7 @@
  */
 #include "pinmap.h"
 #include "PortNames.h"
+#include <stdio.h> /* for some debug printfs() below */
 #define GD32F30x_CL
 
 extern const int GD_GPIO_MODE[];

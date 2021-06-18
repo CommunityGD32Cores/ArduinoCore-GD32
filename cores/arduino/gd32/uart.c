@@ -51,7 +51,7 @@ typedef enum {
     UART4_INDEX,
 #endif
     UART_NUM
-};
+} int_uart_indexes_t;
 
 static struct serial_s *obj_s_buf[UART_NUM] = {NULL};
 static rcu_periph_enum usart_clk[UART_NUM]  = {RCU_USART0, RCU_USART1, RCU_USART2, RCU_UART3, RCU_UART4};
