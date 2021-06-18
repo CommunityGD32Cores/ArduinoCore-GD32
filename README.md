@@ -1,4 +1,3 @@
-![dht11_oled_preview](https://user-images.githubusercontent.com/26485477/122623124-37d2c400-d09b-11eb-96fc-694513aec1aa.jpg)
 # GD32 Arduino Core (New) 
 
 This is a Arduino core is based off of the original GigaDevice core that was provided by the company in early June 2021 (see https://github.com/CommunityGD32Cores/GD32Core/)
