@@ -109,3 +109,9 @@ Planned support:
 *GD32F303CC based boards*
 
 ![bluepill_f303cc](docs/gd32f303cc_board.jpg)
+
+*custom GD32F190 board seen above* 
+
+*the boards previously supported by this core, so GD32F303ZE-EVAL and GD32F307VG-MBED*
+
+.. more?
