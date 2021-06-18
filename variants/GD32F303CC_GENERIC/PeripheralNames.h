@@ -37,9 +37,7 @@ typedef enum {
 typedef enum {
     UART_0 = (int)USART0,
     UART_1 = (int)USART1,
-    UART_2 = (int)USART2,
-    UART_3 = (int)UART3,
-    UART_4 = (int)UART4
+    UART_2 = (int)USART2
 } UARTName;
 
 typedef enum {
@@ -58,9 +56,8 @@ typedef enum {
     PWM_1 = (int)TIMER1,
     PWM_2 = (int)TIMER2,
     PWM_3 = (int)TIMER3,
-    PWM_4 = (int)TIMER4,
-    PWM_5 = (int)TIMER7
-    /* but we also have TIMER6.. */
+    PWM_4 = (int)TIMER4
+    /* Timer 5 and 6 are there in hardware but cannot be used to generate PWM. We do not have Timer7. */
 } PWMName;
 
 

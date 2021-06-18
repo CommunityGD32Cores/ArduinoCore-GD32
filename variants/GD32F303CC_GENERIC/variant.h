@@ -32,55 +32,57 @@ OF SUCH DAMAGE.
 extern "C" {
 #endif // __cplusplus
 /* GPIO pins definitions */
-#define PA3  0
-#define PA2  1
-#define PE4  2
-#define PD12 3
-#define PB3  4
-#define PC7  5
-#define PB0  6
-#define PB4  7
-#define PD11 8
-#define PE5  9
-#define PA8  10
-#define PB15 11
-#define PB14 12
-#define PB13 13
-#define PB9  14
-#define PB8  15
-#define PE0  16
-#define PE1  17
-#define PE6  18
-#define PC0  19
-#define PC1  20
-#define PC2  21
-#define PC3  22
-#define PA0  23
-#define PB1  24
-#define PE2  25
-#define PE7  26
-#define PA7  27
-#define PC13 28
-#define PB11 29
-#define PB10 30
+#define PC13 0
+#define PC14 1
+#define PC15 2
+#define PD0 3
+#define PD1 4
+#define PA0 5
+#define PA1 6
+#define PA2 7
+#define PA3 8
+#define PA4 9
+#define PA5 10
+#define PA6 11
+#define PA7 12
+#define PB0 13
+#define PB1 14
+#define PB2 15
+#define PB10 16
+#define PB11 17
+#define PB12 18
+#define PB13 19
+#define PB14 20
+#define PB15 21
+#define PA8 22
+#define PA9 23
+#define PA10 24
+#define PA11 25
+#define PA12 26
+#define PA13 27
+#define PA14 28
+#define PA15 29
+#define PB3 30
+#define PB4 31
+#define PB5 32
+#define PB6 33
+#define PB7 34
+#define PB8 35
+#define PB9 36
 
 /* digital pins and analog pins number definitions */
-#define DIGITAL_PINS_NUM        31
-#define ANALOG_PINS_NUM         9
-#define ANALOG_PINS_START       19
-#define ANALOG_PINS_LAST        27
+#define DIGITAL_PINS_NUM        37
+#define ANALOG_PINS_NUM         10
+#define ANALOG_PINS_START       PA0
+#define ANALOG_PINS_LAST        PB2
 
 /* LED definitions */
-#define LED1                    PE0
-#define LED2                    PE1
-#define LED3                    PE6
-
 #define LED_BUILTIN             PC13
 #define LED_GREEN               PC13
 
 /* user keys definitions */
-#define KEY0                    PE2
-#define KEY1                    PE7
+#define KEY0                    PB10
+#define KEY1                    PB11
 
 /* SPI definitions */
 #define PIN_SPI_SS              PA8
@@ -96,10 +98,11 @@ extern "C" {
 #define TIMER_TONE              TIMER5
 #define TIMER_SERVO             TIMER6
 
-#define PWM0                    PD12
+/* ToDo: Fixup double PWM definitions later, but the LQFP48 does not have the old pins (PORTE etc.) */
+#define PWM0                    PC7
 #define PWM1                    PC7
 #define PWM2                    PB0
-#define PWM3                    PE5
+#define PWM3                    PA8
 #define PWM4                    PA8
 #define PWM5                    PB15
 

@@ -229,20 +229,20 @@ const PinMap PinMap_PWM[] = {
     {PORTB_7,  TIMER3, 7 | (1 << 18)},                      /* TIMER3_CH1 - Default */
     {PORTB_8,  TIMER3, 7 | (2 << 18)},                      /* TIMER3_CH2 - Default */
     {PORTB_9,  TIMER3, 7 | (3 << 18)},                      /* TIMER3_CH3 - Default */
-    {PORTD_12, TIMER3, 7 | (14 << 3) | (0 << 18)},          /* TIMER3_CH0 - GPIO_TIMER3_REMAP */
-    {PORTD_13, TIMER3, 7 | (14 << 3) | (1 << 18)},          /* TIMER3_CH1 - GPIO_TIMER3_REMAP */
-    {PORTD_14, TIMER3, 7 | (14 << 3) | (2 << 18)},          /* TIMER3_CH2 - GPIO_TIMER3_REMAP */
-    {PORTD_15, TIMER3, 7 | (14 << 3) | (3 << 18)},          /* TIMER3_CH3 - GPIO_TIMER3_REMAP */
+    //{PORTD_12, TIMER3, 7 | (14 << 3) | (0 << 18)},          /* TIMER3_CH0 - GPIO_TIMER3_REMAP */
+    //{PORTD_13, TIMER3, 7 | (14 << 3) | (1 << 18)},          /* TIMER3_CH1 - GPIO_TIMER3_REMAP */
+    //{PORTD_14, TIMER3, 7 | (14 << 3) | (2 << 18)},          /* TIMER3_CH2 - GPIO_TIMER3_REMAP */
+    //{PORTD_15, TIMER3, 7 | (14 << 3) | (3 << 18)},          /* TIMER3_CH3 - GPIO_TIMER3_REMAP */
 
     {PORTA_0,  TIMER4, 7 | (0 << 18)},                      /* TIMER4_CH0 - Default */
     {PORTA_1,  TIMER4, 7 | (1 << 18)},                      /* TIMER4_CH1 - Default */
     {PORTA_2,  TIMER4, 7 | (2 << 18)},                      /* TIMER4_CH2 - Default */
     {PORTA_3,  TIMER4, 7 | (3 << 18)},                      /* TIMER4_CH3 - Default */
 
-    {PORTC_6,  TIMER7, 7 | (0 << 18)},                      /* TIMER7_CH0 - Default */
-    {PORTC_7,  TIMER7, 7 | (1 << 18)},                      /* TIMER7_CH1 - Default */
-    {PORTC_8,  TIMER7, 7 | (2 << 18)},                      /* TIMER7_CH2 - Default */
-    {PORTC_9,  TIMER7, 7 | (3 << 18)},                      /* TIMER7_CH3 - Default */
+    //{PORTC_6,  TIMER7, 7 | (0 << 18)},                      /* TIMER7_CH0 - Default */
+    //{PORTC_7,  TIMER7, 7 | (1 << 18)},                      /* TIMER7_CH1 - Default */
+    //{PORTC_8,  TIMER7, 7 | (2 << 18)},                      /* TIMER7_CH2 - Default */
+    //{PORTC_9,  TIMER7, 7 | (3 << 18)},                      /* TIMER7_CH3 - Default */
 
     {NC,    NC,    0}
 };
@@ -344,9 +344,6 @@ const uint32_t gpio_port[] = {
     GPIOB,
     GPIOC,
     GPIOD,
-    GPIOE,
-    GPIOF,
-    GPIOG
 };
 const uint32_t gpio_pin[] = {
     GPIO_PIN_0,
