@@ -50,9 +50,36 @@ Building .pio\build\genericGD32F303CC\firmware.bin
 === [SUCCESS] Took 5.38 seconds ===
 ```
 
-# Development log
+# Updates / History
+
+_31.05.2021:_
+
+Initial contact and thoughts about an Arduino core implementation with @kemotz via Email.
+
+_02.06.2021:_
+
+Creation of the Github project https://github.com/maxgerhardt/gd32-arduino-core/ and a discord channel.
+
+_10.06.2021:_
+
+A custom dev board has been designed and is in production. The repo with the files for it is at https://github.com/kemotz/GD32F1x0-dev-brd. 
+
+insert pic here
+
+[@obra](https://github.com/obra) and [@algernon](https://github.com/algernon) join the project. 
+
+GigaDevices is contact with a request for information on a potentially existing in-house developed Arduino core and code licensing questions.
+
+*16.06.2021*
+
+GigaDeviecs confirms that there is a internally developed Arduino core, sends it over to use and approves of publishing it. The code is also BSD 3-clause licensed. 
+
+The original files for this are found at https://github.com/CommunityGD32Cores/GD32Core.
+
+The focus shifts from creating a new Arduino core from scratch to getting the retrieved one working and expanding upon it.
 
 *18.06.2021:*
+Arduino core:
 * Add `package.json` for PlatformIO compatibility
 * Add `tools\platformio\platformio-build.py` PlatformIO builder script
 * gives a successful build for the gd32f307_mbed board
