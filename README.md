@@ -99,3 +99,13 @@ Arduino core:
 * [ ] USB bootloader?
 * [ ] write good documentation on how to add new variants and how the build process works
 * [ ] release Arduino-IDE compatible package
+
+# Supported boards
+
+*Everything is WIP now and no full support can be expected yet*.
+
+Planned support:
+
+*GD32F303CC based boards*
+
+![bluepill_f303cc](docs/gd32f303cc_board.jpg)
