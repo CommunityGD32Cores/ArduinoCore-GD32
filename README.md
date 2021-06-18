@@ -6,6 +6,10 @@ It is currently a work in progress, but believed to be functional on GigaDevice'
 
 The intention is to further develop that original core in an open-source, community-driven manner.
 
+## Collaborating
+
+Interested in collaborating? Join our dedicated Discord channel for this at https://discord.gg/59kf4JxsRM.
+
 # Media
 
 A GD32F303CC chip (placed on a bluepill PCB) runs its first blinky code with the new Arduino core!
