@@ -43,6 +43,9 @@
 #endif // __cplusplus
 
 /* Official Arduino */
+
+void yield(void);
+
 #define INPUT         0x0
 #define OUTPUT              0x1
 #define INPUT_PULLUP        0x2
