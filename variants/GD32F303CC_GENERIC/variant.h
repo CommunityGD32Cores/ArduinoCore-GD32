@@ -59,13 +59,15 @@ extern "C" {
 #define PB1  24
 #define PE2  25
 #define PE7  26
-#define PC13 27
+#define PA7  27
+#define PC13 28
+#define PB11 20
 
 /* digital pins and analog pins number definitions */
-#define DIGITAL_PINS_NUM        28
-#define ANALOG_PINS_NUM         8
+#define DIGITAL_PINS_NUM        30
+#define ANALOG_PINS_NUM         9
 #define ANALOG_PINS_START       19
-#define ANALOG_PINS_LAST        26
+#define ANALOG_PINS_LAST        27
 
 /* LED definitions */
 #define LED1                    PE0

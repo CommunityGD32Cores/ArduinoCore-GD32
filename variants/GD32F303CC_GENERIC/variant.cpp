@@ -58,9 +58,11 @@ const PinName digital_pins[] = {
     PORTC_3,    //ADC012_IN13                       //Ardunio A3
     PORTA_0,    //ADC01_IN0                         //Ardunio A4
     PORTB_1,    //ADC01_IN9                         //Ardunio A5
-    PORTE_2,    //KEY0
-    PORTE_7,     //KEY1
+    PORTE_2,    //KEY0                              //A6
+    PORTE_7,    //KEY1                              //A7
+    PORTA_7,    //PA8                               //A8
     PORTC_13,   //(27), LED_BUILTIN
+    PORTB_11,   //(28)
 };
 
 /* analog pins for pinmap list */
@@ -73,6 +75,7 @@ const uint32_t analog_pins[] = {
     24, //A5  //Ardunio A5
     25, //A6
     26, //A7
+    27, //A8
 };
 #ifdef __cplusplus
 }
