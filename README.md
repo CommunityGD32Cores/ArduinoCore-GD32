@@ -79,6 +79,7 @@ The original files for this are found at https://github.com/CommunityGD32Cores/G
 The focus shifts from creating a new Arduino core from scratch to getting the retrieved one working and expanding upon it.
 
 *18.06.2021:*
+
 Arduino core:
 * Add `package.json` for PlatformIO compatibility
 * Add `tools\platformio\platformio-build.py` PlatformIO builder script
