@@ -42,7 +42,13 @@ Building .pio\build\gd32f307_mbed\firmware.bin
 ============= [SUCCESS] Took 7.38 seconds =============
 ```
 
-Not yet testable since I do not have a GD32F307VG-mbed board, will be developing on a GD32F303CC instead.
+Compilation now also works for the `genericGD32F303CC` board **and** works, as seen above
+```
+RAM:   [          ]   0.3% (used 164 bytes from 49152 bytes)
+Flash: [          ]   2.3% (used 6104 bytes from 262144 bytes)
+Building .pio\build\genericGD32F303CC\firmware.bin
+=== [SUCCESS] Took 5.38 seconds ===
+```
 
 # Development log
 
@@ -50,6 +56,7 @@ Not yet testable since I do not have a GD32F307VG-mbed board, will be developing
 * Add `package.json` for PlatformIO compatibility
 * Add `tools\platformio\platformio-build.py` PlatformIO builder script
 * gives a successful build for the gd32f307_mbed board
+* gives a successful build for the genericGD32F303CC board (and gives a working blinky!)
 
 # ToDo / thoughts
 
