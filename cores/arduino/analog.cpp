@@ -52,7 +52,7 @@ void dac_write_value(PinName pin, uint32_t value, uint8_t resolution)
     uint32_t function;
 
     dac_obj.dac = (DACName)pinmap_peripheral(pin, PinMap_DAC);
-    if(NC == dac_obj.dac) {
+    if((uint32_t)NC == dac_obj.dac) {
         return;
     }
 
@@ -96,7 +96,7 @@ void dac_stop(PinName pin)
     dac_t dac_obj;
 
     dac_obj.dac = (DACName)pinmap_peripheral(pin, PinMap_DAC);
-    if(NC == dac_obj.dac) {
+    if((uint32_t)NC == dac_obj.dac) {
         return;
     }
 
@@ -130,7 +130,7 @@ uint16_t analogin_init(analogin_t *obj, PinName pin, uint32_t resolution)
 
     obj->adc = (ADCName)pinmap_peripheral(pin, PinMap_ADC);
 
-    if(obj->adc == NC) {
+    if(obj->adc == (uint32_t)NC) {
         return 0;
     }
 
