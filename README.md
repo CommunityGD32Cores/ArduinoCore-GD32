@@ -44,7 +44,7 @@ Legend:
 | Adafruit SSD1306 | ✔️     | Tested on SSD1306 I2C 128x64 OLED, entire extensive demo works |
 
 
-# Updates / History
+## Updates / History
 
 _31.05.2021:_
 
@@ -85,11 +85,11 @@ Arduino core:
 * Addded a lot more demos to https://github.com/maxgerhardt/gd32-pio-projects
 * Added catalog of issues for future work
 
-# ToDo / thoughts
+## ToDo / thoughts
 
 ToDos are now all moved to issues.
 
-# Supported boards
+## Supported boards
 
 *Everything is WIP now and no full support can be expected yet*.
 
