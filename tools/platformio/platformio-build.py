@@ -216,6 +216,7 @@ env.Append(
     CPPDEFINES=[
         series,
         ("ARDUINO", 10808),
+        ("F_CPU", "$BOARD_F_CPU"), # for compatiblity
         "ARDUINO_ARCH_GD32",
         "ARDUINO_%s" % board_id,
         ("BOARD_NAME", '\\"%s\\"' % board_id),
