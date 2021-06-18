@@ -595,6 +595,11 @@ void I2C1_ER_IRQHandler(void)
     }
 }
 
+void i2c_set_clock(i2c_t *obj, uint32_t clock_hz) 
+{
+    i2c_clock_config(obj->i2c, clock_hz, I2C_DTCY_2);
+}
+
 #endif
 #ifdef __cplusplus
 }

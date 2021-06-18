@@ -84,6 +84,8 @@ void i2c_attach_slave_rx_callback(i2c_t *obj, void (*function)(uint8_t *, int));
 void i2c_attach_slave_tx_callback(i2c_t *obj, void (*function)(void));
 /* Write bytes to master */
 i2c_status_e i2c_slave_write_buffer(i2c_t *obj, uint8_t *data, uint16_t size);
+/* set I2C clock speed */
+void i2c_set_clock(i2c_t *obj, uint32_t clock_hz);
 
 #ifdef __cplusplus
 }

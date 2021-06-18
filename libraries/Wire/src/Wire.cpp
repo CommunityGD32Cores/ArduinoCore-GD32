@@ -481,6 +481,11 @@ inline void TwoWire::resetTxBuffer(void)
     }
 }
 
+void TwoWire::setClock(uint32_t clock_hz)
+{
+    i2c_set_clock(&_i2c, clock_hz);
+}
+
 // Preinstantiate Objects //////////////////////////////////////////////////////
 
 TwoWire Wire = TwoWire();
