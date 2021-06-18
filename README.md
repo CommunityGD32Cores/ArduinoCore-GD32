@@ -1,3 +1,4 @@
+![dht11_oled_preview](https://user-images.githubusercontent.com/26485477/122623124-37d2c400-d09b-11eb-96fc-694513aec1aa.jpg)
 # GD32 Arduino Core (New) 
 
 This is a Arduino core is based off of the original GigaDevice core that was provided by the company in early June 2021 (see https://github.com/CommunityGD32Cores/GD32Core/)
@@ -15,6 +16,19 @@ Interested in collaborating? Join our dedicated Discord channel for this at http
 A GD32F303CC chip (placed on a bluepill PCB) runs its first blinky code with the new Arduino core!
 
 https://user-images.githubusercontent.com/26485477/122487271-2924d800-cfdb-11eb-8a1e-9d1ea9843e54.mp4
+
+The same board reading out a DHT11 temperature & humidity sensor and displaying it on an SSD1306 OLED via the Adafruit GFX libraries
+
+![dht11_oled_preview](https://user-images.githubusercontent.com/26485477/122623132-3c977800-d09b-11eb-9ef5-0d19f7f997ea.jpg)
+
+The board runs the Adafruit SSD1306 test sketch
+
+https://user-images.githubusercontent.com/26485477/122623252-b0398500-d09b-11eb-9e1c-3a9f3323e403.mp4
+
+And here it is using `analogRead()` to read the voltage over a potentiomeneter as a 12-bit value.
+
+![ADC_OLED_preview](https://user-images.githubusercontent.com/26485477/122623205-81bbaa00-d09b-11eb-8195-fa5fce0c9dd3.jpg)
+
 
 ## Using this core
 
