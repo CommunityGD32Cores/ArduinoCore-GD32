@@ -71,7 +71,7 @@ A custom dev board has been designed and is in production. The repo with the fil
 
 GigaDevices is contact with a request for information on a potentially existing in-house developed Arduino core and code licensing questions.
 
-*16.06.2021*
+*16.06.2021:*
 
 GigaDeviecs confirms that there is a internally developed Arduino core, sends it over to use and approves of publishing it. The code is also BSD 3-clause licensed. 
 
