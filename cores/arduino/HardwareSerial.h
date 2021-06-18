@@ -62,14 +62,14 @@
 
 typedef struct {
     unsigned char buffer[SERIAL_RX_BUFFER_SIZE];
-    int head;
-    int tail;
+    volatile int head;
+    volatile int tail;
 } ring_buffer_r;
 
 typedef struct {
     unsigned char buffer[SERIAL_TX_BUFFER_SIZE];
-    int head;
-    int tail;
+    volatile int head;
+    volatile int tail;
 } ring_buffer_t;
 
 #define SERIAL_8N1 0x06
@@ -86,7 +86,7 @@ typedef struct {
 class HardwareSerial : public Stream {
 protected:
     // Has any byte been written to the UART since begin()
-    bool _written;
+    volatile bool _written;
     serial_t _serial;
 
 public:
