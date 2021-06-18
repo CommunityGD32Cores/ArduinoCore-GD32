@@ -10,7 +10,7 @@ The intention is to further develop that original core in an open-source, commun
 
 A GD32F303CC chip (placed on a bluepill PCB) runs its first blinky code with the new Arduino core!
 
-![first blinky](https://github.com/CommunityGD32Cores/GD32Core-New/raw/main/docs/first_blinky_gd32f303cc.mp4)
+https://github.com/CommunityGD32Cores/GD32Core-New/raw/main/docs/first_blinky_gd32f303cc.mp4
 
 # Using this core
 
