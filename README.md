@@ -10,13 +10,13 @@ The intention is to further develop that original core in an open-source, commun
 
 Interested in collaborating? Join our dedicated Discord channel for this at https://discord.gg/59kf4JxsRM.
 
-# Media
+## Media
 
 A GD32F303CC chip (placed on a bluepill PCB) runs its first blinky code with the new Arduino core!
 
 https://user-images.githubusercontent.com/26485477/122487271-2924d800-cfdb-11eb-8a1e-9d1ea9843e54.mp4
 
-# Using this core
+## Using this core
 
 Currently, development of this core is being done using PlatformIO. It uses the custom PlatformIO platform https://github.com/maxgerhardt/platform-gd32. 
 
@@ -24,34 +24,25 @@ Using PlatformIO is already possible to very easily edit code in the IDE and eve
 
 Example projects for this platform for the SPL framework and this Arduino core are currently hosted at https://github.com/maxgerhardt/gd32-pio-projects, but are subject to be moved soon.
 
-# Current state
+## Current state
 
-The [gd32-arduino-blinky](https://github.com/maxgerhardt/gd32-pio-projects/tree/main/gd32-arduino-blinky) project compiles for the `gd32f307_mbed` board. 
+The [gd32-arduino-blinky](https://github.com/maxgerhardt/gd32-pio-projects/tree/main/gd32-arduino-blinky) project compiles for the `gd32f307_mbed` board and the `genericGD32F303CC` board and works (see video above). 
 
-```
-CONFIGURATION: https://docs.platformio.org/page/boards/gd32/gd32f307_mbed.html
-PLATFORM: GD GD32 (1.0.0) > GD32F307VG-mbed (48k RAM. 256k Flash)
-HARDWARE: GD32F307VGT6 120MHz, 96KB RAM, 1MB Flash
-DEBUG: Current (stlink) External (blackmagic, cmsis-dap, jlink, stlink)
-PACKAGES:
- - framework-arduinogd32 4.20000.210603 (2.0.0)
- - toolchain-gccarmnoneeabi 1.90201.191206 (9.2.1)
-[...]
-Checking size .pio\build\gd32f307_mbed\firmware.elf
-Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
-RAM:   [          ]   0.2% (used 164 bytes from 98304 bytes)
-Flash: [          ]   0.6% (used 6128 bytes from 1048576 bytes)
-Building .pio\build\gd32f307_mbed\firmware.bin
-============= [SUCCESS] Took 7.38 seconds =============
-```
+Multiple more complicated demos work, like an SSD1306 OLED, analog input, `Serial`, etc. See issue https://github.com/CommunityGD32Cores/GD32Core-New/issues/8 for the latest state of tested components.
 
-Compilation now also works for the `genericGD32F303CC` board **and** works, as seen above
-```
-RAM:   [          ]   0.3% (used 164 bytes from 49152 bytes)
-Flash: [          ]   2.3% (used 6104 bytes from 262144 bytes)
-Building .pio\build\genericGD32F303CC\firmware.bin
-=== [SUCCESS] Took 5.38 seconds ===
-```
+## Library compatibility list 
+
+Legend: 
+* :heavy_check_mark:  = working
+* :x:  = not working at all
+* :warning:  = some features not working
+* :interrobang: = untested
+
+| Name             | Works? | Notes                          |
+| ---------------- |:------:| :-----------------------------:|
+| Adafruit GFX     | ✔️     | Tested in conjunction with SSD1306 OLED,  CP437 symbols works |
+| Adafruit SSD1306 | ✔️     | Tested on SSD1306 I2C 128x64 OLED, entire extensive demo works |
+
 
 # Updates / History
 
@@ -90,15 +81,13 @@ Arduino core:
 * gives a successful build for the gd32f307_mbed board
 * gives a successful build for the genericGD32F303CC board (and gives a working blinky!)
 
+*19.06.2021:
+* Addded a lot more demos to https://github.com/maxgerhardt/gd32-pio-projects
+* Added catalog of issues for future work
+
 # ToDo / thoughts
 
-* [ ] add general variant for GD32F303CC
-* [ ] check the working state of currently implemented code (GPIO, PWM, I2C, SPI, UART, USB, ...)
-    * [ ] note down what works and what doesn't
-    * [ ] prioritize implementation and implement it
-* [ ] USB bootloader?
-* [ ] write good documentation on how to add new variants and how the build process works
-* [ ] release Arduino-IDE compatible package
+ToDos are now all moved to issues.
 
 # Supported boards
 
