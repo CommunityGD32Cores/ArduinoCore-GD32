@@ -61,10 +61,11 @@ extern "C" {
 #define PE7  26
 #define PA7  27
 #define PC13 28
-#define PB11 20
+#define PB11 29
+#define PB10 30
 
 /* digital pins and analog pins number definitions */
-#define DIGITAL_PINS_NUM        30
+#define DIGITAL_PINS_NUM        31
 #define ANALOG_PINS_NUM         9
 #define ANALOG_PINS_START       19
 #define ANALOG_PINS_LAST        27

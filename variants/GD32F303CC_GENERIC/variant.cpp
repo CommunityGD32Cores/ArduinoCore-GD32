@@ -61,8 +61,9 @@ const PinName digital_pins[] = {
     PORTE_2,    //KEY0                              //A6
     PORTE_7,    //KEY1                              //A7
     PORTA_7,    //PA8                               //A8
-    PORTC_13,   //(27), LED_BUILTIN
-    PORTB_11,   //(28)
+    PORTC_13,   //(28), LED_BUILTIN
+    PORTB_11,   //(29)
+    PORTB_10    //(30)
 };
 
 /* analog pins for pinmap list */
