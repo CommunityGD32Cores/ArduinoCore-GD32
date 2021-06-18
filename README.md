@@ -54,7 +54,7 @@ Building .pio\build\genericGD32F303CC\firmware.bin
 
 _31.05.2021:_
 
-Initial contact and thoughts about an Arduino core implementation with @kemotz via Email.
+Initial contact and thoughts about an Arduino core implementation from scratch for GD32 devices with @kemotz via Email.
 
 _02.06.2021:_
 
@@ -64,7 +64,8 @@ _10.06.2021:_
 
 A custom dev board has been designed and is in production. The repo with the files for it is at https://github.com/kemotz/GD32F1x0-dev-brd. 
 
-insert pic here
+![board_preview](https://user-images.githubusercontent.com/26485477/122487075-a69c1880-cfda-11eb-9675-d4d582f6e6e4.png)
+
 
 [@obra](https://github.com/obra) and [@algernon](https://github.com/algernon) join the project. 
 
