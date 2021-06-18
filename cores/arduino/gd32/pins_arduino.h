@@ -183,6 +183,13 @@ PinName analog_pin_to_PinName(uint32_t pin);
 bool pin_in_analog_pins(uint32_t pin);
 uint32_t digital_pin_to_analog(uint32_t pin);
 
+/* macros for Arduino compatibility */
+#define digitalPinToPort(P) DIGITAL_PIN_TO_PORT(P)
+#define digitalPinToBitMask(P) DIGITAL_PIN_TO_BIT_MASK(P)
+#define portInputRegister(PORT) ((volatile uint32_t*)&(PORT_INPUT_REG(PORT)))
+#define portOutputRegister(PORT) ((volatile uint32_t*)&(PORT_OUTPUT_REG(PORT))
+#define portModeRegister(PORT) ((volatile uint32_t*)(&PORT_CTL_REG(PORT)))
+
 #ifdef __cplusplus
 }
 #endif
