@@ -107,7 +107,7 @@ Arduino core:
 * gives a successful build for the gd32f307_mbed board
 * gives a successful build for the genericGD32F303CC board (and gives a working blinky!)
 
-*19.06.2021:
+*19.06.2021:*
 * Addded a lot more demos to https://github.com/maxgerhardt/gd32-pio-projects
 * Added catalog of issues for future work
 * Added Arduino IDE build support, upload not yet working
