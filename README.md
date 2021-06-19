@@ -1,6 +1,6 @@
 # GD32 Arduino Core (New) 
 
-[![Lint Code Base](https://github.com/CommunityGD32Cores/GD32Core-New/actions/workflows/linter.yml/badge.svg)](https://github.com/CommunityGD32Cores/GD32Core-New/actions/workflows/linter.yml)
+[![Lint Code Base](https://github.com/CommunityGD32Cores/GD32Core-New/actions/workflows/linter.yml/badge.svg)](https://github.com/CommunityGD32Cores/GD32Core-New/actions/workflows/linter.yml) [![GitHub pull-requests](https://img.shields.io/github/issues-pr/CommunityGD32Cores/GD32Core-New)](https://GitHub.com/CommunityGD32Cores/GD32Core-New/pull/)
 
 This is a Arduino core is based off of the original GigaDevice core that was provided by the company in early June 2021 (see https://github.com/CommunityGD32Cores/GD32Core/)
 
