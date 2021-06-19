@@ -1,0 +1,39 @@
+{
+   "packages" : [
+      {
+         "email" : "",
+         "help" : {
+            "online" : "https://github.com/CommunityGD32Cores/GD32Core-New"
+         },
+         "maintainer" : "Some random folks",
+         "name" : "GD32-New",
+         "platforms" : [
+            {
+               "architecture" : "arm",
+               "archiveFileName" : "GD32Core-New-main.zip",
+               "boards" : [
+                  {
+                     "name" : "GD32F303 EVAL series"
+                  }
+               ],
+               "category" : "Contributed",
+               "help" : {
+                  "online" : ""
+               },
+               "name" : "GigaDevices GD32",
+               "toolsDependencies" : [
+                  {
+                     "name" : "gcc",
+                     "packager" : "arduino",
+                     "version" : "7.3.0-atmel3.6.1-arduino7"
+                  }
+               ],
+               "url" : "https://github.com/CommunityGD32Cores/GD32Core-New/archive/refs/heads/main.zip",
+               "version" : "0.0.1"
+            }
+         ],
+         "tools" : [],
+         "websiteURL" : "https://github.com/CommunityGD32Cores/GD32Core-New/"
+      }
+   ]
+}
