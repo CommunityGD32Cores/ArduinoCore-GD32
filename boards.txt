@@ -5,7 +5,7 @@ menu.upload_method=Upload method
 menu.opt=Optimize
 
 ################################################################################################
-# GD F30X series
+# GD F30X MBED series
 gd_mbed_f30x.name=GD32F30x MBED series
 
 gd_mbed_f30x.build.core=arduino
@@ -56,7 +56,63 @@ gd_mbed_f30x.menu.opt.ogstd.build.flags.optimize=-Og
 gd_mbed_f30x.menu.opt.ogstd.build.flags.ldspecs=
 
 ################################################################################################
-# GD F30X series
+
+################################################################################################
+# GD F30X generic boards
+# for our boards..
+gd_generic_f30x.name=GD32F30x generic
+
+gd_generic_f30x.build.core=arduino
+gd_generic_f30x.build.board=gd_generic_f30x
+gd_generic_f30x.build.mcu=cortex-m4
+gd_generic_f30x.build.series=GD32F30x
+
+# create a new entry for a new generic GD32F30x board here
+gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC=GD32F303CC (Generic)
+gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.upload.maximum_size=262144
+gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.upload.maximum_data_size=98304
+gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.board=GD32F303CC_GENERIC
+gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.series=GD32F30x
+gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.product_line=GD32F30X_HD
+gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.variant=GD32F303CC_GERNERIC
+
+#Upload menu
+gd_generic_f30x.menu.upload_method.serialMethod=gd32flash (Serial)
+gd_generic_f30x.menu.upload_method.serialMethod.upload.protocol= maple_serial
+gd_generic_f30x.menu.upload_method.serialMethod.upload.options=
+gd_generic_f30x.menu.upload_method.serialMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1
+gd_generic_f30x.menu.upload_method.serialMethod.upload.tool=serial_upload
+
+gd_generic_f30x.menu.upload_method.gdlinkMethod=GDlink (SWD)
+gd_generic_f30x.menu.upload_method.gdlinkMethod.upload.protocol=gdlink
+gd_generic_f30x.menu.upload_method.gdlinkMethod.upload.options=
+gd_generic_f30x.menu.upload_method.gdlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_generic_f30x.menu.upload_method.gdlinkMethod.upload.tool=gdlink_upload
+
+gd_generic_f30x.menu.upload_method.jlinkMethod=Jlink (SWD)
+gd_generic_f30x.menu.upload_method.jlinkMethod.upload.protocol=jlink
+gd_generic_f30x.menu.upload_method.jlinkMethod.upload.options=
+gd_generic_f30x.menu.upload_method.jlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_generic_f30x.menu.upload_method.jlinkMethod.upload.tool=jlink_upload
+
+# Optimizations
+gd_generic_f30x.menu.opt.osstd=Smallest (default)
+gd_generic_f30x.menu.opt.o1std=Fast (-O1)
+gd_generic_f30x.menu.opt.o1std.build.flags.optimize=-O1
+gd_generic_f30x.menu.opt.o1std.build.flags.ldspecs=
+gd_generic_f30x.menu.opt.o2std=Faster (-O2)
+gd_generic_f30x.menu.opt.o2std.build.flags.optimize=-O2
+gd_generic_f30x.menu.opt.o2std.build.flags.ldspecs=
+gd_generic_f30x.menu.opt.o3std=Fastest (-O3)
+gd_generic_f30x.menu.opt.o3std.build.flags.optimize=-O3
+gd_generic_f30x.menu.opt.o3std.build.flags.ldspecs=
+gd_generic_f30x.menu.opt.ogstd=Debug (-g)
+gd_generic_f30x.menu.opt.ogstd.build.flags.optimize=-Og
+gd_generic_f30x.menu.opt.ogstd.build.flags.ldspecs=
+
+################################################################################################
+
+# GD F30X EVAL series (GD32 released boards)
 gd_eval_f303.name=GD32F303 EVAL series
 
 gd_eval_f303.build.core=arduino
