@@ -10,7 +10,7 @@
       "platforms": [
         {
           "architecture": "arm",
-          "archiveFileName": "GD32Core-New-main.zip",
+          "archiveFileName": "GD32Core-New-jesse-boardmgr.zip",
           "boards": [
             {
               "name": "GD32F303 EVAL series"
@@ -28,7 +28,7 @@
               "version": "9.3.1-1.3"
             }
           ],
-          "url": "https://github.com/CommunityGD32Cores/GD32Core-New/archive/refs/heads/main.zip",
+          "url": "https://github.com/CommunityGD32Cores/GD32Core-New/archive/refs/heads/jesse/boardmgr.zip",
           "version": "0.0.1"
         }
       ],
