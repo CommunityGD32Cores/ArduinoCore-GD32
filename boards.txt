@@ -70,7 +70,7 @@ gd_generic_f30x.build.series=GD32F30x
 # create a new entry for a new generic GD32F30x board here
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC=GD32F303CC (Generic)
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.upload.maximum_size=262144
-gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.upload.maximum_data_size=98304
+gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.upload.maximum_data_size=49152
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.board=GD32F303CC_GENERIC
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.series=GD32F30x
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.product_line=GD32F30X_HD
