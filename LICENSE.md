@@ -3,9 +3,9 @@ This core includes code with multiple different licenses:
 * GigaDevice Firmware Library files: BSD 3-Clause, see e.g. [system/GD32F30x_firmware](https://github.com/CommunityGD32Cores/GD32Core-New/tree/main/system/GD32F30x_firmware)
 * CMSIS code written by ARM: BSD 3-Clause, see e.g. [system/CMSIS](https://github.com/CommunityGD32Cores/GD32Core-New/blob/a428425096863a87f94b9677fd059acb8fbbc876/system/CMSIS/core_cm4.h#L10-L35)
 * Minor code / headers derived from mbed-os files: Apache 2.0, see files [here](https://github.com/CommunityGD32Cores/GD32Core-New/search?q=Microcontroller+Library)
-* Code written by the contributors of this repository startin from now: BSD 3-Clause
+* Code written by the contributors of this repository starting from now: BSD 3-Clause
 
-BSD 3-Clause license for all code written by the contributors of this repository:
+BSD 3-Clause license for all new code written by the contributors of this repository:
 
 ```
 BSD 3-Clause License
