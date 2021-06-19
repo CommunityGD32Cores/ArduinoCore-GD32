@@ -9,7 +9,7 @@
       "name": "GD32Community",
       "platforms": [
         {
-          "architecture": "arm",
+          "architecture": "gd32",
           "archiveFileName": "GD32Core-New-main.zip",
           "boards": [
             {
