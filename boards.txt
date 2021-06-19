@@ -74,7 +74,7 @@ gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.upload.maximum_data_size=98304
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.board=GD32F303CC_GENERIC
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.series=GD32F30x
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.product_line=GD32F30X_HD
-gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.variant=GD32F303CC_GERNERIC
+gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.variant=GD32F303CC_GENERIC
 
 #Upload menu
 gd_generic_f30x.menu.upload_method.serialMethod=gd32flash (Serial)
