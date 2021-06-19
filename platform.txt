@@ -13,7 +13,7 @@ compiler.warning_flags.default=
 compiler.warning_flags.more=-Wall
 compiler.warning_flags.all=-Wall -Wextra
 ## compile path/command
-compiler.path={runtime.tools.xpack-arm-none-eabi-gcc-9.2.1-1.1.path}/bin/
+compiler.path={runtime.tools.xpack-arm-none-eabi-gcc-9.3.1-1.3.path}/bin/
 compiler.S.cmd=arm-none-eabi-gcc
 compiler.c.cmd=arm-none-eabi-gcc
 compiler.cpp.cmd=arm-none-eabi-g++
