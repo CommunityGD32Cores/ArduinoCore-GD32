@@ -3,6 +3,7 @@ This core includes code with multiple different licenses:
 * GigaDevice Firmware Library files: BSD 3-Clause, see e.g. [system/GD32F30x_firmware](https://github.com/CommunityGD32Cores/GD32Core-New/tree/main/system/GD32F30x_firmware)
 * CMSIS code written by ARM: BSD 3-Clause, see e.g. [system/CMSIS](https://github.com/CommunityGD32Cores/GD32Core-New/blob/a428425096863a87f94b9677fd059acb8fbbc876/system/CMSIS/core_cm4.h#L10-L35)
 * Code written by the contributors of this repository: BSD 3-Clause
+* Minor code / headers derived from mbed-os files: Apache 2.0, see files [here](https://github.com/CommunityGD32Cores/GD32Core-New/search?q=Microcontroller+Library)
 
 BSD 3-Clause license for all code written by the contributors of this repository:
 
@@ -114,3 +115,25 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ```
+
+Apache 2.0 license for some headers based on mbed-os:
+
+```cpp
+/* mbed Microcontroller Library
+ * Copyright (c) 2018 GigaDevice Semiconductor Inc.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ ```
