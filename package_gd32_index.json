@@ -1,33 +1,88 @@
 {
-   "packages" : [
-      {
-         "email" : "",
-         "help" : {
-            "online" : "https://github.com/CommunityGD32Cores/GD32Core-New"
-         },
-         "maintainer" : "Some random folks",
-         "name" : "GD32-New",
-         "platforms" : [
+  "packages": [
+    {
+      "email": "",
+      "help": {
+        "online": "https://github.com/CommunityGD32Cores/GD32Core-New"
+      },
+      "maintainer": "Some random folks",
+      "name": "GD32-New",
+      "platforms": [
+        {
+          "architecture": "arm",
+          "archiveFileName": "GD32Core-New-main.zip",
+          "boards": [
             {
-               "architecture" : "arm",
-               "archiveFileName" : "GD32Core-New-main.zip",
-               "boards" : [
-                  {
-                     "name" : "GD32F303 EVAL series"
-                  }
-               ],
-               "category" : "Contributed",
-               "help" : {
-                  "online" : ""
-               },
-               "name" : "GigaDevice GD32",
-               "toolsDependencies" : [ ],
-               "url" : "https://github.com/CommunityGD32Cores/GD32Core-New/archive/refs/heads/main.zip",
-               "version" : "0.0.1"
+              "name": "GD32F303 EVAL series"
             }
-         ],
-         "tools" : [],
-         "websiteURL" : "https://github.com/CommunityGD32Cores/GD32Core-New/"
-      }
-   ]
+          ],
+          "category": "Contributed",
+          "help": {
+            "online": ""
+          },
+          "name": "GigaDevice GD32",
+          "toolsDependencies": [
+            {
+              "name": "arm-none-eabi-gcc",
+              "packager": "arduino",
+              "version": "9-2019q4"
+            }
+          ],
+          "url": "https://github.com/CommunityGD32Cores/GD32Core-New/archive/refs/heads/main.zip",
+          "version": "0.0.1"
+        }
+      ],
+      "tools": [
+        {
+          "name": "arm-none-eabi-gcc",
+          "version": "9-2019q4",
+          "systems": [
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "http://downloads.arduino.cc/tools/gcc-arm-none-eabi-7-2019-q4-major-linuxarm.tar.bz2",
+              "archiveFileName": "gcc-arm-none-eabi-7-2019-q4-major-linuxarm.tar.bz2",
+              "checksum": "SHA-256:34180943d95f759c66444a40b032f7dd9159a562670fc334f049567de140c51b",
+              "size": "96613739"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2019q4/gcc-arm-none-eabi-9-2019-q4-major-aarch64-linux.tar.bz2",
+              "archiveFileName": "gcc-arm-none-eabi-9-2019-q4-major-aarch64-linux.tar.bz2",
+              "checksum": "MD5:0dfa059aae18fcf7d842e30c525076a4",
+              "size": "128670769"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "https://github.com/adafruit/arduino-board-index/releases/download/build-tools/gcc-arm-none-eabi-9-2019-q4-major-win32.zip",
+              "archiveFileName": "gcc-arm-none-eabi-9-2019-q4-major-win32.zip",
+              "checksum": "MD5:9d60cbb0e358ab6a9d3c9e5dc3624dd2",
+              "size": "153520070"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2019q4/gcc-arm-none-eabi-9-2019-q4-major-mac.tar.bz2",
+              "archiveFileName": "gcc-arm-none-eabi-9-2019-q4-major-mac.tar.bz2",
+              "checksum": "MD5:241b64f0578db2cf146034fc5bcee3d4",
+              "size": "116770520"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2019q4/gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2",
+              "archiveFileName": "gcc-arm-none-eabi-9-2019-q4-major-x86_64-linux.tar.bz2",
+              "checksum": "MD5:fe0029de4f4ec43cf7008944e34ff8cc",
+              "size": "116802378"
+            },
+            {
+              "host": "i686-pc-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/gcc-arm-none-eabi-7-2018-q2-update-linux32.tar.bz2",
+              "archiveFileName": "gcc-arm-none-eabi-7-2018-q2-update-linux32.tar.bz2",
+              "checksum": "SHA-256:090a0bc2b1956bc49392dff924a6c30fa57c88130097b1972204d67a45ce3cf3",
+              "size": "97427309"
+            }
+          ]
+        }
+      ],
+      "websiteURL": "https://github.com/CommunityGD32Cores/GD32Core-New/"
+    }
+  ]
 }
