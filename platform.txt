@@ -114,28 +114,19 @@ tools.stlink_upload.cmd=openocd
 tools.stlink_upload.path={runtime.tools.xpack-openocd-0.11.0-1.path}/bin
 tools.stlink_upload.upload.params.verbose=-d2
 tools.stlink_upload.upload.params.quiet=n
-tools.stlink_upload.upload.pattern="{path}/{cmd}" -s "{path}/scripts" -f interface/stlink.cfg -c "transport select hla_swd" -c "set CPUTAPID 0"  -f {upload.openocd_script} -c "program {{build.path}/{build.project_name}.elf} verify reset; shutdown"
+tools.stlink_upload.upload.pattern="{path}/{cmd}" -s "{path}/scripts" -f interface/stlink.cfg -c "transport select hla_swd" -c "set CPUTAPID 0" -f {upload.openocd_script} -c "program {{build.path}/{build.project_name}.elf} verify reset; shutdown"
 
 
 ##gdlink upload
-tools.gdlink_upload.cmd=gdlink_upload
-tools.gdlink_upload.cmd.windows=gdlink_upload.bat
-tools.gdlink_upload.path.windows={runtime.tools.gd32tools-1.0.0.path}/win
-#tools.gdlink_upload.path.macosx={runtime.tools.gd32tools-1.0.0.path}/macosx
-#tools.gdlink_upload.path.linux={runtime.tools.gd32tools-1.0.0.path}/linux
-#tools.gdlink_upload.path.linux64={runtime.tools.gd32tools-1.0.0.path}/linux
-tools.gdlink_upload.upload.params.verbose=-d
+tools.gdlink_upload.cmd=openocd
+tools.gdlink_upload.path={runtime.tools.xpack-openocd-0.11.0-1.path}/bin
+tools.gdlink_upload.upload.params.verbose=-d2
 tools.gdlink_upload.upload.params.quiet=n
-tools.gdlink_upload.upload.pattern="{path}/{cmd}"  "{build.path}/{build.project_name}.bin"
+tools.gdlink_upload.upload.pattern="{path}/{cmd}" -s "{path}/scripts" -f interface/cmsis-dap.cfg -c "transport select swd" -c "set CPUTAPID 0" -f {upload.openocd_script} -c "program {{build.path}/{build.project_name}.elf} verify reset; shutdown"
 
 ##jlink_upload
-tools.jlink_upload.cmd=jlink_upload
-tools.jlink_upload.cmd.windows=jlink_upload.bat
-#tools.jlink_upload.cmd.macosx=jlink_upload
-tools.jlink_upload.path={runtime.tools.gd32tools-1.0.0.path}/win
-#tools.jlink_upload.path.macosx={runtime.tools.gd32tools-1.0.0.path}/macosx
-#tools.jlink_upload.path.linux={runtime.tools.gd32tools-1.0.0.path}/linux
-#tools.jlink_upload.path.linux64={runtime.tools.gd32tools-1.0.0.path}/linux
-tools.jlink_upload.upload.params.verbose=-d
+tools.jlink_upload.cmd=openocd
+tools.jlink_upload.path={runtime.tools.xpack-openocd-0.11.0-1.path}/bin
+tools.jlink_upload.upload.params.verbose=-d2
 tools.jlink_upload.upload.params.quiet=n
-tools.jlink_upload.upload.pattern="{path}/{cmd}" "{build.path}/{build.project_name}.bin"
+tools.jlink_upload.upload.pattern="{path}/{cmd}" -s "{path}/scripts" -f interface/jlink.cfg -c "transport select swd" -c "set CPUTAPID 0" -f {upload.openocd_script} -c "program {{build.path}/{build.project_name}.elf} verify reset; shutdown"
