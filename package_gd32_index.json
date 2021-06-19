@@ -21,13 +21,7 @@
                   "online" : ""
                },
                "name" : "GigaDevices GD32",
-               "toolsDependencies" : [
-                  {
-                     "name" : "gcc",
-                     "packager" : "arduino",
-                     "version" : "7.3.0-atmel3.6.1-arduino7"
-                  }
-               ],
+               "toolsDependencies" : [ ],
                "url" : "https://github.com/CommunityGD32Cores/GD32Core-New/archive/refs/heads/main.zip",
                "version" : "0.0.1"
             }
