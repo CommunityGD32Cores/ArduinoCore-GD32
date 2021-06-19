@@ -110,7 +110,7 @@ Arduino core:
 *19.06.2021:*
 * Addded a lot more demos to https://github.com/maxgerhardt/gd32-pio-projects
 * Added catalog of issues for future work
-* Added Arduino IDE build support, upload not yet working
+* Added Arduino IDE build support, ~~upload not yet working~~ upload working fine :)
 
 
 ## ToDo / thoughts
