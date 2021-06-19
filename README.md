@@ -47,6 +47,9 @@ To compile for this core with the Arduino IDE, add the following URL to the boar
 
 This will install the core and compiler toolchain against the 'main' git branch.
 
+![grafik](https://user-images.githubusercontent.com/26485477/122646653-8b3b2580-d120-11eb-8261-735e0caf00bb.png)
+
+
 ## Current state
 
 The [gd32-arduino-blinky](https://github.com/maxgerhardt/gd32-pio-projects/tree/main/gd32-arduino-blinky) project compiles for the `gd32f307_mbed` board and the `genericGD32F303CC` board and works (see video above). 
@@ -107,6 +110,8 @@ Arduino core:
 *19.06.2021:
 * Addded a lot more demos to https://github.com/maxgerhardt/gd32-pio-projects
 * Added catalog of issues for future work
+* Added Arduino IDE build support, upload not yet working
+
 
 ## ToDo / thoughts
 
