@@ -109,6 +109,14 @@ tools.serial_upload.upload.params.verbose=-d
 tools.serial_upload.upload.params.quiet=n
 tools.serial_upload.upload.pattern="{path}/{cmd}" {serial.port.file} {upload.altID} {upload.usbID} "{build.path}/{build.project_name}.bin"
 
+##stlink upload
+tools.stlink_upload.cmd=openocd
+tools.stlink_upload.path={runtime.tools.xpack-openocd-0.11.0-1.path}/bin
+tools.stlink_upload.upload.params.verbose=-d2
+tools.stlink_upload.upload.params.quiet=n
+tools.stlink_upload.upload.pattern="{path}/{cmd}" -s "{path}/scripts" -f interface/stlink.cfg -c "transport select hla_swd" -c "set CPUTAPID 0"  -f {upload.openocd_script} -c "program {{build.path}/{build.project_name}.elf} verify reset; shutdown"
+
+
 ##gdlink upload
 tools.gdlink_upload.cmd=gdlink_upload
 tools.gdlink_upload.cmd.windows=gdlink_upload.bat

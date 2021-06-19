@@ -20,6 +20,7 @@ gd_mbed_f30x.menu.pnum.GD32F307VG_MBED.build.board=GD32F307VG_MBED
 gd_mbed_f30x.menu.pnum.GD32F307VG_MBED.build.series=GD32F30x
 gd_mbed_f30x.menu.pnum.GD32F307VG_MBED.build.product_line=GD32F30X_CL
 gd_mbed_f30x.menu.pnum.GD32F307VG_MBED.build.variant=GD32F307VG_MBED
+gd_mbed_f30x.menu.pnum.GD32F307VG_MBED.upload.openocd_script=target/stm32f1x.cfg
 
 #Upload menu
 gd_mbed_f30x.menu.upload_method.serialMethod=gd32flash (Serial)
@@ -33,6 +34,12 @@ gd_mbed_f30x.menu.upload_method.gdlinkMethod.upload.protocol=gdlink
 gd_mbed_f30x.menu.upload_method.gdlinkMethod.upload.options=
 gd_mbed_f30x.menu.upload_method.gdlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
 gd_mbed_f30x.menu.upload_method.gdlinkMethod.upload.tool=gdlink_upload
+
+gd_mbed_f30x.menu.upload_method.stlinkMethod=STLink (SWD)
+gd_mbed_f30x.menu.upload_method.stlinkMethod.upload.protocol=stlink
+gd_mbed_f30x.menu.upload_method.stlinkMethod.upload.options=
+gd_mbed_f30x.menu.upload_method.stlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_mbed_f30x.menu.upload_method.stlinkMethod.upload.tool=stlink_upload
 
 gd_mbed_f30x.menu.upload_method.jlinkMethod=Jlink (SWD)
 gd_mbed_f30x.menu.upload_method.jlinkMethod.upload.protocol=jlink
@@ -75,6 +82,7 @@ gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.board=GD32F303CC_GENERIC
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.series=GD32F30x
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.product_line=GD32F30X_HD
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.variant=GD32F303CC_GENERIC
+gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.upload.openocd_script=target/stm32f1x.cfg
 
 #Upload menu
 gd_generic_f30x.menu.upload_method.serialMethod=gd32flash (Serial)
@@ -88,6 +96,13 @@ gd_generic_f30x.menu.upload_method.gdlinkMethod.upload.protocol=gdlink
 gd_generic_f30x.menu.upload_method.gdlinkMethod.upload.options=
 gd_generic_f30x.menu.upload_method.gdlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
 gd_generic_f30x.menu.upload_method.gdlinkMethod.upload.tool=gdlink_upload
+
+gd_generic_f30x.menu.upload_method.stlinkMethod=STLink (SWD)
+gd_generic_f30x.menu.upload_method.stlinkMethod.upload.protocol=stlink
+gd_generic_f30x.menu.upload_method.stlinkMethod.upload.options=
+gd_generic_f30x.menu.upload_method.stlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_generic_f30x.menu.upload_method.stlinkMethod.upload.tool=stlink_upload
+
 
 gd_generic_f30x.menu.upload_method.jlinkMethod=Jlink (SWD)
 gd_generic_f30x.menu.upload_method.jlinkMethod.upload.protocol=jlink
@@ -127,6 +142,7 @@ gd_eval_f303.menu.pnum.GD32F303ZE_EVAL.build.board=GD32F303ZE_EVAL
 gd_eval_f303.menu.pnum.GD32F303ZE_EVAL.build.series=GD32F30x
 gd_eval_f303.menu.pnum.GD32F303ZE_EVAL.build.product_line=GD32F30X_HD
 gd_eval_f303.menu.pnum.GD32F303ZE_EVAL.build.variant=GD32F303ZE_EVAL
+gd_eval_f303.menu.pnum.GD32F303ZE_EVAL.upload.openocd_script=target/stm32f1x.cfg
 
 #Upload menu
 gd_eval_f303.menu.upload_method.serialMethod=gd32flash (Serial)
@@ -140,6 +156,12 @@ gd_eval_f303.menu.upload_method.gdlinkMethod.upload.protocol=gdlink
 gd_eval_f303.menu.upload_method.gdlinkMethod.upload.options=
 gd_eval_f303.menu.upload_method.gdlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
 gd_eval_f303.menu.upload_method.gdlinkMethod.upload.tool=gdlink_upload
+
+gd_eval_f303.menu.upload_method.stlinkMethod=STLink (SWD)
+gd_eval_f303.menu.upload_method.stlinkMethod.upload.protocol=stlink
+gd_eval_f303.menu.upload_method.stlinkMethod.upload.options=
+gd_eval_f303.menu.upload_method.stlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_eval_f303.menu.upload_method.stlinkMethod.upload.tool=stlink_upload
 
 gd_eval_f303.menu.upload_method.jlinkMethod=Jlink (SWD)
 gd_eval_f303.menu.upload_method.jlinkMethod.upload.protocol=jlink
@@ -178,6 +200,7 @@ gd_mbed_f4xx.menu.pnum.GD32F450ZI_MBED.build.board=GD32F450ZI_MBED
 gd_mbed_f4xx.menu.pnum.GD32F450ZI_MBED.build.series=GD32F4xx
 gd_mbed_f4xx.menu.pnum.GD32F450ZI_MBED.build.product_line=GD32F450
 gd_mbed_f4xx.menu.pnum.GD32F450ZI_MBED.build.variant=GD32F450ZI_MBED
+gd_mbed_f30x.menu.pnum.GD32F307VG_MBED.upload.openocd_script=target/stm32f4x.cfg
 
 #Upload menu
 gd_mbed_f4xx.menu.upload_method.serialMethod=gd32flash (Serial)
@@ -191,6 +214,12 @@ gd_mbed_f4xx.menu.upload_method.gdlinkMethod.upload.protocol=gdlink
 gd_mbed_f4xx.menu.upload_method.gdlinkMethod.upload.options=
 gd_mbed_f4xx.menu.upload_method.gdlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
 gd_mbed_f4xx.menu.upload_method.gdlinkMethod.upload.tool=gdlink_upload
+
+gd_mbed_f4xx.menu.upload_method.stlinkMethod=STLink (SWD)
+gd_mbed_f4xx.menu.upload_method.stlinkMethod.upload.protocol=stlink
+gd_mbed_f4xx.menu.upload_method.stlinkMethod.upload.options=
+gd_mbed_f4xx.menu.upload_method.stlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_mbed_f4xx.menu.upload_method.stlinkMethod.upload.tool=stlink_upload
 
 gd_mbed_f4xx.menu.upload_method.jlinkMethod=Jlink (SWD)
 gd_mbed_f4xx.menu.upload_method.jlinkMethod.upload.protocol=jlink
