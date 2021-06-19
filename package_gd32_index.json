@@ -6,7 +6,7 @@
         "online": "https://github.com/CommunityGD32Cores/GD32Core-New"
       },
       "maintainer": "Some random folks",
-      "name": "GD32-New",
+      "name": "GD32Community",
       "platforms": [
         {
           "architecture": "arm",
@@ -23,7 +23,7 @@
           "name": "GigaDevice GD32",
           "toolsDependencies": [
             {
-	      "packager": "xpack",
+	      "packager": "GD32Community",
               "name": "xpack-arm-none-eabi-gcc",
               "version": "9.3.1-1.3"
             }
