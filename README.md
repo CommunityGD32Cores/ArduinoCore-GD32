@@ -41,7 +41,7 @@ Example projects for this platform for the SPL framework and this Arduino core a
 
 To compile for this core with the Arduino IDE, add the following URL to the boards manager.
 
-`https://raw.githubusercontent.com/CommunityGD32Cores/GD32Core-New/jesse/boardmgr/package_gd32_index.json`
+`https://raw.githubusercontent.com/CommunityGD32Cores/GD32Core-New/main/package_gd32_index.json`
 
 This will install the core and compiler toolchain against the 'main' git branch.
 
