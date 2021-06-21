@@ -269,6 +269,9 @@ int TwoWire::read(void)
 
         _rx_buffer.tail = (_rx_buffer.tail + 1) % WIRE_BUFFER_LENGTH;
         return c;
+    } else {
+        /* TODO: there are no elements in the ringbuffer... think about better error handling here! */
+        return -1;
     }
 }
 
@@ -278,9 +281,6 @@ int TwoWire::peek(void)
         return -1;
     } else {
         return _rx_buffer.buffer[_rx_buffer.tail];
-    } else {
-        /* TODO: there are no elements in the ringbuffer... think about better error handling here! */
-        return -1;
     }
 }
 
