@@ -64,11 +64,11 @@ Legend:
 * :warning:  = some features not working
 * :interrobang: = untested
 
-| Name             | Works? | Notes                          | Link  |
-| ---------------- |:------:| :-----------------------------:| :----:|
-| Adafruit GFX     | ✔️     | Tested in conjunction with SSD1306 OLED,  CP437 symbols works | https://github.com/adafruit/Adafruit-GFX-Library
-| Adafruit SSD1306 | ✔️     | Tested on SSD1306 I2C 128x64 OLED, entire extensive demo works | https://github.com/adafruit/Adafruit_SSD1306
-| SimpleDHT        | ✔️     | Works with DHT11 (Temp & Humidity) and OLED, demo above | https://github.com/winlinvip/SimpleDHT/
+| Name                                                                 | Works? | Notes                          | 
+| -------------------------------------------------------------------- |:------:| :-----------------------------:| 
+| [Adafruit GFX](https://github.com/adafruit/Adafruit-GFX-Library)     | ✔️     | Tested in conjunction with SSD1306 OLED,  CP437 symbols works | 
+| [Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)     | ✔️     | Tested on SSD1306 I2C 128x64 OLED, entire extensive demo works | 
+| [SimpleDHT](https://github.com/winlinvip/SimpleDHT/)                 | ✔️     | Works with DHT11 (Temp & Humidity) and OLED, demo above | 
 
 
 ## Updates / History
