@@ -12,6 +12,7 @@ extern "C" {
 #include "analog.h"
 #include "gpio_interrupt.h"
 #include "timer.h"
+#include "rtc.h"
 void init(void) ;
 #ifdef __cplusplus
 }

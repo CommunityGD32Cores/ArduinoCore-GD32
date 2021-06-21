@@ -53,7 +53,7 @@ static void dev_spi_struct_init(spi_t *obj)
 /** Get the frequency of SPI clock source
  *
  * Configures the pins used by SPI, sets a default format and frequency, and enables the peripheral
- * @param[out] spi_freq  The SPI clock source freguency
+ * @param[out] spi_freq  The SPI clock source frequency
  * @param[in] obj  The SPI object
  */
 uint32_t dev_spi_clock_source_frequency_get(spi_t *obj)
@@ -118,7 +118,7 @@ void spi_begin(spi_t *obj, uint32_t speed, uint8_t mode, uint8_t endian)
         rcu_periph_clock_enable(RCU_SPI2);
     }
 
-    /* config GPIO mode of SPI pins */
+    /* configure GPIO mode of SPI pins */
     pinmap_pinout(spiobj->pin_mosi, PinMap_SPI_MOSI);
     pinmap_pinout(spiobj->pin_miso, PinMap_SPI_MISO);
     pinmap_pinout(spiobj->pin_sclk, PinMap_SPI_SCLK);
@@ -218,9 +218,7 @@ void spi_free(spi_t *obj)
 /**
   * @brief This function is implemented by user to send data over SPI interface
   * @param  obj : pointer to spi_t structure
-  * @param  Data : data to be sent
-  * @param  len : length in bytes of the data to be sent
-  * @param  Timeout: Timeout duration in tick
+  * @param  value : data to be sent
   * @retval status of the send operation (0) in case of error
   */
 uint32_t spi_master_write(spi_t *obj, uint8_t value)
@@ -253,8 +251,6 @@ uint32_t spi_master_write(spi_t *obj, uint8_t value)
   * @param  tx_buffer : tx data to send before reception
   * @param  rx_buffer : data to receive
   * @param  len : length in byte of the data to send and receive
-  * @param  Timeout: Timeout duration in tick
-  * @param  skipReceive: skip receiving data after transmit or not
   * @retval status of the send operation (0) in case of error
   */
 void spi_master_block_write(spi_t *obj, uint8_t *tx_buffer, uint8_t *rx_buffer, uint16_t len)

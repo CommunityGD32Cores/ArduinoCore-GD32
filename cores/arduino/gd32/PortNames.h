@@ -58,9 +58,6 @@ typedef enum {
 #if defined GPIOI
     PORTI,
 #endif
-#if defined GPIOI
-    PORTI,
-#endif
     PORTEND,
     LastPort = PORTEND - 1
 } PortName;

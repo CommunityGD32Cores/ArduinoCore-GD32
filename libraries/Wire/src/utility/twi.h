@@ -53,8 +53,14 @@ struct i2c_s {
     uint8_t index;
     PinName sda;
     PinName scl;
-    uint8_t general_call;
-    uint8_t i2c_master;
+    /* operating parameters */
+    uint8_t    *tx_buffer_ptr;
+    uint8_t    *rx_buffer_ptr;
+    uint16_t   tx_count;
+    uint16_t   rx_count;
+
+    void (*slave_transmit_callback)(void);
+    void (*slave_receive_callback)(uint8_t *, int);
 };
 
 typedef enum {
@@ -66,26 +72,30 @@ typedef enum {
     I2C_ERROR         = 4,
     I2C_TIMEOUT       = 5,
     I2C_BUSY          = 6
-} i2c_status_e;
+} i2c_status_enum;
 
 /* Initialize the I2C peripheral */
-void i2c_init(i2c_t *obj, PinName sda, PinName scl, uint8_t address, uint8_t is_master);
+void i2c_init(i2c_t *obj, PinName sda, PinName scl, uint8_t address);
+/* Enable the I2C interrupt */
+void i2c_slaves_interrupt_enable(i2c_t *obj);
 /* Write one byte */
-i2c_status_e i2c_master_transmit(i2c_t *obj, uint8_t dev_address, uint8_t *data, uint16_t size,
-                                 uint8_t stop);
+i2c_status_enum i2c_master_transmit(i2c_t *obj, uint8_t dev_address, uint8_t *data, uint16_t size,
+                                    uint8_t stop);
 /* Write bytes at a given address */
-i2c_status_e i2c_master_receive(i2c_t *obj, uint8_t address, uint8_t *data, uint16_t length,
-                                int stop);
+i2c_status_enum i2c_master_receive(i2c_t *obj, uint8_t address, uint8_t *data, uint16_t length,
+                                   int stop);
 /* read bytes in master mode at a given address */
-i2c_status_e i2c_wait_standby_state(i2c_t *obj, uint8_t address);
+i2c_status_enum i2c_wait_standby_state(i2c_t *obj, uint8_t address);
 /* sets function called before a slave read operation */
 void i2c_attach_slave_rx_callback(i2c_t *obj, void (*function)(uint8_t *, int));
 /* sets function called before a slave write operation */
 void i2c_attach_slave_tx_callback(i2c_t *obj, void (*function)(void));
 /* Write bytes to master */
-i2c_status_e i2c_slave_write_buffer(i2c_t *obj, uint8_t *data, uint16_t size);
+i2c_status_enum i2c_slave_write_buffer(i2c_t *obj, uint8_t *data, uint16_t size);
 /* set I2C clock speed */
 void i2c_set_clock(i2c_t *obj, uint32_t clock_hz);
+
+
 
 #ifdef __cplusplus
 }

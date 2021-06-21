@@ -36,6 +36,19 @@ extern const int GD_GPIO_SPEED[];
 static void gpio_mode_set(uint32_t gpio_periph, uint32_t mode, uint32_t pin);
 uint32_t gpio_clock_enable(uint32_t port_idx);
 
+bool pin_in_pinmap(PinName pin, const PinMap *map)
+{
+    if(pin != (PinName)NC) {
+        while(map->pin != NC) {
+            if(map->pin == pin) {
+                return true;
+            }
+            map++;
+        }
+    }
+    return false;
+}
+
 /** Configure pin (mode, speed, reamp or af function )
  *
  * @param pin gpio pin name
@@ -252,44 +265,44 @@ static void gpio_mode_set(uint32_t gpio_periph, uint32_t mode, uint32_t pin)
 #endif /* GD32F4xx */
     }
 
-    /** Enable GPIO clock
-     *
-     * @param gpio_periph gpio port name
-     */
-    uint32_t gpio_clock_enable(uint32_t port_idx) {
-        uint32_t gpio_add = 0;
-        switch(port_idx) {
-            case PORTA:
-                gpio_add = GPIOA;
-                rcu_periph_clock_enable(RCU_GPIOA);
-                break;
-            case PORTB:
-                gpio_add = GPIOB;
-                rcu_periph_clock_enable(RCU_GPIOB);
-                break;
-            case PORTC:
-                gpio_add = GPIOC;
-                rcu_periph_clock_enable(RCU_GPIOC);
-                break;
-            case PORTD:
-                gpio_add = GPIOD;
-                rcu_periph_clock_enable(RCU_GPIOD);
-                break;
-            case PORTE:
-                gpio_add = GPIOE;
-                rcu_periph_clock_enable(RCU_GPIOE);
-                break;
-            case PORTF:
-                gpio_add = GPIOF;
-                rcu_periph_clock_enable(RCU_GPIOF);
-                break;
-            case PORTG:
-                gpio_add = GPIOG;
-                rcu_periph_clock_enable(RCU_GPIOG);
-                break;
-            default:
-                printf("port number not exist");
-                break;
-        }
-        return gpio_add;
+/** Enable GPIO clock
+ *
+ * @param gpio_periph gpio port name
+ */
+uint32_t gpio_clock_enable(uint32_t port_idx) {
+    uint32_t gpio_add = 0;
+    switch(port_idx) {
+        case PORTA:
+            gpio_add = GPIOA;
+            rcu_periph_clock_enable(RCU_GPIOA);
+            break;
+        case PORTB:
+            gpio_add = GPIOB;
+            rcu_periph_clock_enable(RCU_GPIOB);
+            break;
+        case PORTC:
+            gpio_add = GPIOC;
+            rcu_periph_clock_enable(RCU_GPIOC);
+            break;
+        case PORTD:
+            gpio_add = GPIOD;
+            rcu_periph_clock_enable(RCU_GPIOD);
+            break;
+        case PORTE:
+            gpio_add = GPIOE;
+            rcu_periph_clock_enable(RCU_GPIOE);
+            break;
+        case PORTF:
+            gpio_add = GPIOF;
+            rcu_periph_clock_enable(RCU_GPIOF);
+            break;
+        case PORTG:
+            gpio_add = GPIOG;
+            rcu_periph_clock_enable(RCU_GPIOG);
+            break;
+        default:
+            printf("port number not exist");
+            break;
     }
+    return gpio_add;
+}

@@ -32,7 +32,9 @@ http://arduiniana.org.
 
 #define OVERSAMPLE 3 // in RX, Timer will generate interruption OVERSAMPLE time during a bit. Thus OVERSAMPLE ticks in a bit. (interrupt not synchonized with edge).
 
-//#define TIMER_SERIAL TIMER1
+//#define TIMER_SERIAL TIMER1    TIMER1 timer1 is occupied
+
+//Default timer13
 
 #if defined (TIMER13)
     #define TIMER_SERIAL TIMER13
@@ -62,8 +64,6 @@ http://arduiniana.org.
     #define TIMER_SERIAL TIMER1
 #endif
 
-//receive_buffer SoftwareSerial::_receive_buffer = {{0},0,0};
-
 HardwareTimer SoftwareSerial::timer(TIMER_SERIAL);
 SoftwareSerial *SoftwareSerial::active_listener = nullptr;
 SoftwareSerial *volatile SoftwareSerial::active_out = nullptr;
@@ -89,8 +89,6 @@ SoftwareSerial::SoftwareSerial(uint16_t receivePin, uint16_t transmitPin,
     _buffer_overflow = false;
     _inverse_logic = inverse_logic;
     _output_pending = 0;
-    //_receive_buffer_tail = 0;
-    //_receive_buffer_head = 0;
 }
 
 void SoftwareSerial::setSpeed(uint32_t speed)
@@ -164,7 +162,7 @@ inline void SoftwareSerial::send()
     if(--tx_tick_cnt <=
             0) {  // if tx_tick_cnt > 0 interrupt is discarded. Only when tx_tick_cnt reach 0 we set TX pin.
         if(tx_bit_cnt++ <
-                10) {  // tx_bit_cnt < 10 transmission is not fiisehed (10 = 1 start +8 bits + 1 stop)
+                10) {  // tx_bit_cnt < 10 transmission is not finished (10 = 1 start +8 bits + 1 stop)
             // send data (including start and stop bits)
             if(tx_buffer & 1) {
                 gpio_bit_set(_transmitPinPort, _transmitPinNumber);
@@ -181,51 +179,6 @@ inline void SoftwareSerial::send()
         }
     }
 }
-
-#if 0
-inline void SoftwareSerial::recv()
-{
-    if(--rx_tick_cnt <=
-            0) {  // if rx_tick_cnt > 0 interrupt is discarded. Only when rx_tick_cnt reach 0 RX pin is considered
-        bool inbit = gpio_input_bit_get(_receivePinPort, _receivePinNumber) ^ _inverse_logic;
-        if(rx_bit_cnt == -1) {   // rx_bit_cnt = -1 :  waiting for start bit
-            if(!inbit) {
-                // got start bit
-                rx_bit_cnt = 0; // rx_bit_cnt == 0 : start bit received
-                rx_tick_cnt = OVERSAMPLE +
-                              1; // Wait 1 bit (OVERSAMPLE ticks) + 1 tick in order to sample RX pin in the middle of the edge (and not too close to the edge)
-                rx_buffer = 0;
-            } else {
-                rx_tick_cnt =
-                    1; // Waiting for start bit, but we don't get right level. Wait for next Interrupt to ckech RX pin level
-            }
-        } else if(rx_bit_cnt >= 8) {  // rx_bit_cnt >= 8 : waiting for stop bit
-            if(inbit) {
-                // stop bit read complete add to buffer
-                uint8_t next = (_receive_buffer_tail + 1) % _SS_MAX_RX_BUFF;
-                if(next != _receive_buffer_head) {
-                    // save new data in buffer: tail points to where byte goes
-                    _receive_buffer[_receive_buffer_tail] = rx_buffer; // save new byte
-                    _receive_buffer_tail = next;
-                } else { // rx_bit_cnt = x  with x = [0..7] correspond to new bit x received
-                    _buffer_overflow = true;
-                }
-            }
-            // Full trame received. Resart wainting for sart bit at next interrupt
-            rx_tick_cnt = 1;
-            rx_bit_cnt = -1;
-        } else {
-            // data bits
-            rx_buffer >>= 1;
-            if(inbit) {
-                rx_buffer |= 0x80;
-            }
-            rx_bit_cnt++; // Preprare for next bit
-            rx_tick_cnt = OVERSAMPLE; // Wait OVERSAMPLE ticks before sampling next bit
-        }
-    }
-}
-#endif
 
 inline void SoftwareSerial::handleInterrupt()
 {
@@ -268,27 +221,6 @@ void SoftwareSerial::end()
     stopListening();
 }
 
-#if 0
-// Read data from buffer
-int SoftwareSerial::read()
-{
-    // Empty buffer?
-    if(_receive_buffer_head == _receive_buffer_tail) {
-        return -1;
-    }
-
-    // Read from "head"
-    uint8_t d = _receive_buffer[_receive_buffer_head]; // grab next byte
-    _receive_buffer_head = (_receive_buffer_head + 1) % _SS_MAX_RX_BUFF;
-    return d;
-}
-
-int SoftwareSerial::available()
-{
-    return (_receive_buffer_tail + _SS_MAX_RX_BUFF - _receive_buffer_head) % _SS_MAX_RX_BUFF;
-}
-#endif
-
 size_t SoftwareSerial::write(uint8_t b)
 {
     // wait for previous transmit to complete
@@ -307,27 +239,6 @@ size_t SoftwareSerial::write(uint8_t b)
     active_out = this;
     return 1;
 }
-
-#if 0
-void SoftwareSerial::flush()
-{
-    noInterrupts();
-    _receive_buffer_head = _receive_buffer_tail = 0;
-    interrupts();
-}
-
-
-int SoftwareSerial::peek()
-{
-    // Empty buffer?
-    if(_receive_buffer_head == _receive_buffer_tail) {
-        return -1;
-    }
-
-    // Read from "head"
-    return _receive_buffer[_receive_buffer_head];
-}
-#endif
 
 // Read data from buffer
 int SoftwareSerial::read()
@@ -378,7 +289,7 @@ inline void SoftwareSerial::recv()
                 rx_buffer = 0;
             } else {
                 rx_tick_cnt =
-                    1; // Waiting for start bit, but we don't get right level. Wait for next Interrupt to ckech RX pin level
+                    1; // Waiting for start bit, but we don't get right level. Wait for next Interrupt to check RX pin level
             }
         } else if(rx_bit_cnt >= 8) {  // rx_bit_cnt >= 8 : waiting for stop bit
             if(inbit) {
@@ -392,7 +303,7 @@ inline void SoftwareSerial::recv()
                     _buffer_overflow = true;
                 }
             }
-            // Full trame received. Resart wainting for sart bit at next interrupt
+            // Full frame received. Restart waiting for start bit at next interrupt
             rx_tick_cnt = 1;
             rx_bit_cnt = -1;
         } else {
@@ -401,7 +312,7 @@ inline void SoftwareSerial::recv()
             if(inbit) {
                 rx_buffer |= 0x80;
             }
-            rx_bit_cnt++; // Preprare for next bit
+            rx_bit_cnt++; // Prepare for next bit
             rx_tick_cnt = OVERSAMPLE; // Wait OVERSAMPLE ticks before sampling next bit
         }
     }

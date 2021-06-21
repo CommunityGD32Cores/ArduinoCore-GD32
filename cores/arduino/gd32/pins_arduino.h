@@ -63,7 +63,7 @@ static const uint8_t RX = PIN_SERIAL_RX;
     #define ANALOG_PINS_NUM 0
 #endif
 
-#if NUM_ANALOG_INPUTS > 0
+#if ANALOG_PINS_NUM > 0
 
     #define ANALOG_INTERNAL_START      (DIGITAL_PINS_NUM + 1)
 
@@ -74,19 +74,19 @@ static const uint8_t RX = PIN_SERIAL_RX;
         static const uint8_t A1 = ANALOG_PINS_START + 1;
     #endif
     #if ANALOG_PINS_NUM > 2
-        static const uint8_t A3 = ANALOG_PINS_START + 2;
+        static const uint8_t A2 = ANALOG_PINS_START + 2;
     #endif
     #if ANALOG_PINS_NUM > 3
-        static const uint8_t A4 = ANALOG_PINS_START + 3;
+        static const uint8_t A3 = ANALOG_PINS_START + 3;
     #endif
     #if ANALOG_PINS_NUM > 4
-        static const uint8_t A5 = ANALOG_PINS_START + 4;
+        static const uint8_t A4 = ANALOG_PINS_START + 4;
     #endif
     #if ANALOG_PINS_NUM > 5
-        static const uint8_t A6 = ANALOG_PINS_START + 5;
+        static const uint8_t A5 = ANALOG_PINS_START + 5;
     #endif
     #if ANALOG_PINS_NUM > 6
-        static const uint8_t A7 = ANALOG_PINS_START + 6;
+        static const uint8_t A6 = ANALOG_PINS_START + 6;
     #endif
 
 #endif /* ANALOG_PINS_NUM > 0 */

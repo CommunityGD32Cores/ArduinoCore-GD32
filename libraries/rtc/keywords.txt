@@ -1,0 +1,33 @@
+#######################################
+# Syntax Coloring Map HardwareTimer
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+UTCTimeStruct		KEYWORD1	
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+setUTCTime	KEYWORD2
+getUTCTime	KEYWORD2
+setSecTime		KEYWORD2
+getSecTime	KEYWORD2
+
+setAlarmTime	KEYWORD2
+attachInterrupt	KEYWORD2
+detachInterrupt		KEYWORD2
+interruptHandler	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+RTC_ALARM_S		LITERAL1
+RTC_ALARM_M		LITERAL1
+RTC_ALARM_H		LITERAL1
+
+INT_SECOND_MODE	LITERAL1
+INT_ALARM_MODE	LITERAL1
+INT_OVERFLOW_MODE	LITERAL1
+#######################################

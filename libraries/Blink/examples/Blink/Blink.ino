@@ -1,3 +1,4 @@
+// flash the LED2 500ms
 void setup()
 {
     pinMode(LED2, OUTPUT);
