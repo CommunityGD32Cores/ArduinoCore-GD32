@@ -47,6 +47,7 @@
 #ifdef __cplusplus
     #include "HardwareTimer.h"
     #include "HardwareSerial.h"
+    #include "HardwareRTC.h"
     #include "pwm.h"
     #include "Tone.h"
     #include "WCharacter.h"

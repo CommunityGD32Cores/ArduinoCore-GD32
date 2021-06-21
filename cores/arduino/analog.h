@@ -32,44 +32,33 @@ OF SUCH DAMAGE.
 #ifndef __ANALOG_H
 #define __ANALOG_H
 
-/* Includes ------------------------------------------------------------------*/
-#include "gd32_def.h"
+#ifdef GD32F30x
+    #include "gd32f30x.h"
+#endif
+
+#include "PinNames.h"
 #include "PeripheralPins.h"
-#include "PeripheralNames.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-struct dac_s {
-    DACName dac;
-    PinName pin;
-    uint32_t channel;
-};
+typedef struct {
+    // uint32_t periph;
+    // uint8_t channel;
+    // uint8_t resolution;
+    uint8_t isactive;
+    // uint32_t value;
+} analog_t;
 
-struct analogin_s {
-    ADCName adc;
-    PinName pin;
-    uint8_t channel;
-};
+uint8_t get_adc_channel(PinName pinname);
+uint8_t get_adc_index(uint32_t instance);
+uint8_t get_dac_index(uint32_t instance);
+void adc_clock_enable(uint32_t instance);
 
-typedef struct dac_s dac_t;
-
-#define DEV_DAC_ACCURACY_12BIT (0xFFF)
-#define DEV_DAC_ACCURACY_8BIT (0xFF)
-
-#define DEV_ADC_ACCURACY_12BIT 0xFFF
-#define DEV_ADC_PRECISION_12TO16(val) ((val << 4) | ((val >> 8) & (uint16_t)0x000F))
-#define AND_NUMBER (0xFF)
-
-#ifndef GD_PIN_CHANNEL_GET
-#define GD_PIN_CHANNEL_GET(X) ((X >> 11) & 0x1F)
-#endif
-
-/* Exported functions ------------------------------------------------------- */
-void dac_write_value(PinName pin, uint32_t value, uint8_t resolution);
-void dac_stop(PinName pin);
-uint16_t adc_read_value(PinName pin, uint32_t resolution);
+void set_dac_value(PinName pinname, uint16_t value);
+void set_pwm_value(uint32_t ulPin, uint32_t value);
+uint16_t get_adc_value(PinName pinname);
 
 #ifdef __cplusplus
 }

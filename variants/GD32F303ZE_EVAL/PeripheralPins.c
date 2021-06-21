@@ -172,7 +172,7 @@ const PinMap PinMap_ADC[] = {
 /* DAC PinMap */
 const PinMap PinMap_DAC[] = {
     {PORTA_4,       DAC0, 0 | (0 << 18)},    /* DAC_OUT0 */
-    {PORTA_5,       DAC0, 0 | (1 << 18)},    /* DAC_OUT1 */
+    {PORTA_5,       DAC1, 0 | (1 << 18)},    /* DAC_OUT1 */
     {NC, NC, 0}
 };
 
@@ -353,6 +353,7 @@ const PinMap PinMap_CAN_TD[] = {
     {PORTB_6,  CAN1, 7 | (29 << 3)},    /* GPIO_CAN1_REMAP */
     {NC,    NC,    0}
 };
+
 const uint32_t gpio_port[] = {
     GPIOA,
     GPIOB,
@@ -362,6 +363,7 @@ const uint32_t gpio_port[] = {
     GPIOF,
     GPIOG
 };
+
 const uint32_t gpio_pin[] = {
     GPIO_PIN_0,
     GPIO_PIN_1,

@@ -68,7 +68,6 @@ typedef enum {
     PWM_11 = (int)TIMER13
 } PWMName;
 
-
 #ifdef __cplusplus
 }
 #endif

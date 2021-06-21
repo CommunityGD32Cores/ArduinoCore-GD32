@@ -23,62 +23,14 @@
 extern "C" {
 #endif
 
-static uint32_t analogOut_resolution = DAC_ALIGN_12B_R;
+#define MAX_ANALOG_OUT_RESOLUTION 12
 
-#define MAX_ADC_RESOLUTION 12
-static uint32_t set_Resolution = ADC_RESOLUTION;
-static uint32_t analogIn_resolution =
-#if ADC_RESOLUTION > MAX_ADC_RESOLUTION
-    MAX_ADC_RESOLUTION
-#else
-#ifdef ADC_RESOLUTION_12B
-#if ADC_RESOLUTION <= 6 && defined(ADC_RESOLUTION_6B)
-    6
-#elif ADC_RESOLUTION <= 8 && defined(ADC_RESOLUTION_8B)
-    8
-#elif ADC_RESOLUTION <= 10 && defined(ADC_RESOLUTION_10B)
-    10
-#elif ADC_RESOLUTION <= 12
-    12
-#endif
-#else  /* ADC_RESOLUTION_12B */
-    12
-#endif /* ADC_RESOLUTION_12B */
-#endif /* ADC_RESOLUTION > MAX_ADC_RESOLUTION */
-    ;
+static uint32_t analogIn_resolution = 10;
+static uint32_t analogOut_resolution = 8;
 
-void analogReadResolution(int res)
+void analogReference(enum analogReferenceType ulMode)
 {
-    if((res > 0) && (res <= 32)) {
-        set_Resolution = res;
-        analogIn_resolution = set_Resolution;
-        if(set_Resolution > MAX_ADC_RESOLUTION) {
-            analogIn_resolution = MAX_ADC_RESOLUTION;
-        } else {
-#ifdef ADC_RESOLUTION_12B
-#ifdef ADC_RESOLUTION_6B
-            if(analogIn_resolution <= 6) {
-                analogIn_resolution = 6;
-            } else
-#endif
-#ifdef ADC_RESOLUTION_8B
-                if(analogIn_resolution <= 8) {
-                    analogIn_resolution = 8;
-                } else
-#endif
-#ifdef ADC_RESOLUTION_10B
-                    if(analogIn_resolution <= 10) {
-                        analogIn_resolution = 10;
-                    } else
-#endif
-                        if(analogIn_resolution <= 12) {
-                            analogIn_resolution = 12;
-                        }
-#else
-            analogIn_resolution = 12;
-#endif
-        }
-    }
+
 }
 
 static inline uint32_t mapResolution(uint32_t value, uint32_t from, uint32_t to)
@@ -93,12 +45,6 @@ static inline uint32_t mapResolution(uint32_t value, uint32_t from, uint32_t to)
         }
     }
     return value;
-}
-
-
-void analogReference(enum analogReferenceType ulMode)
-{
-
 }
 
 // Perform the read operation on the selected analog pin.
@@ -118,8 +64,8 @@ uint32_t analogRead(uint32_t ulPin)
             break;
     }
     if(p != NC) {
-        value = adc_read_value(p, analogIn_resolution);
-        value = mapResolution(value, analogIn_resolution, set_Resolution);
+        value = get_adc_value(p);
+        value = mapResolution(value, 12, analogIn_resolution);
     }
     return value;
 }
@@ -130,21 +76,43 @@ uint32_t analogRead(uint32_t ulPin)
 // to digital output.
 void analogWrite(uint32_t ulPin, uint32_t ulValue)
 {
+    uint32_t value;
     PinName pinname = DIGITAL_TO_PINNAME(ulPin);
-    dac_write_value(pinname, ulValue, analogOut_resolution);
+    if(pin_in_pinmap(pinname, PinMap_DAC)) {
+        value = mapResolution(ulValue, analogOut_resolution, MAX_ANALOG_OUT_RESOLUTION);
+        set_dac_value(pinname, value);
+    } else if(pin_in_pinmap(pinname, PinMap_PWM)) {
+        value = mapResolution(ulValue, analogOut_resolution, 16);
+        set_pwm_value(ulPin, value);
+    } else {
+        // Defaults to digital write
+        pinMode(ulPin, OUTPUT);
+        value = mapResolution(ulValue, analogOut_resolution, 8);
+        if(value < 128) {
+            digitalWrite(ulPin, LOW);
+        } else {
+            digitalWrite(ulPin, HIGH);
+        }
+    }
 }
 
+//analog input resolution
+void analogReadResolution(int res)
+{
+    if((res > 0) && (res < 16)) {
+        analogIn_resolution = res;
+    } else {
+        analogIn_resolution = 8;
+    }
+}
+
+//analog output resolution
 void analogWriteResolution(int res)
 {
-    switch(res) {
-        case 8:
-            analogOut_resolution = DAC_ALIGN_8B_R;
-            break;
-        case 12:
-            analogOut_resolution = DAC_ALIGN_12B_R;
-            break;
-        default:
-            analogOut_resolution = DAC_ALIGN_12B_R;
+    if((res > 0) && (res < 16)) {
+        analogOut_resolution = res;
+    } else {
+        analogOut_resolution = 8;
     }
 }
 

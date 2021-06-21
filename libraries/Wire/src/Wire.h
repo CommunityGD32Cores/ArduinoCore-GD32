@@ -28,24 +28,24 @@ extern "C" {
 #include "utility/twi.h"
 }
 
-#define BUFFER_LENGTH 32
+#if !defined(WIRE_BUFFER_LENGTH)
+    #define WIRE_BUFFER_LENGTH 32
+#endif
+
 #define MASTER_ADDRESS 0x33
 
-// WIRE_HAS_END means Wire has end()
-//#define WIRE_HAS_END 1
+typedef struct {
+    unsigned char buffer[WIRE_BUFFER_LENGTH];
+    int head;
+    int tail;
+} ring_buffer;
 
 class TwoWire : public Stream {
 private:
-    static uint8_t *rxBuffer;
-    static uint8_t rxBufferAllocated;
-    static uint8_t rxBufferIndex;
-    static uint8_t rxBufferLength;
-
+    static ring_buffer _rx_buffer;
+    static ring_buffer _tx_buffer;
     static uint8_t txAddress;
-    static uint8_t *txBuffer;
-    static uint8_t txBufferAllocated;
-    static uint8_t txBufferIndex;
-    static uint8_t txBufferLength;
+
 
     uint8_t transmitting;
 
@@ -57,20 +57,14 @@ private:
     static void onRequestService(void);
     static void onReceiveService(uint8_t *, int);
 
-    static void allocateRxBuffer(size_t length);
-    void allocateTxBuffer(size_t length);
 
-    void resetRxBuffer(void);
-    void resetTxBuffer(void);
 
 public:
-    TwoWire();
-    TwoWire(uint8_t sda, uint8_t scl);
+    TwoWire(uint8_t sda, uint8_t scl, int i2c_index);
 
-    void begin(bool generalCall = false);
-    // void begin(uint8_t, uint8_t);
-    void begin(uint8_t, bool generalCall = false);
-    void begin(int, bool generalCall = false);
+    void begin();
+    void begin(uint8_t address);
+    void begin(int);
     void end();
     void setClock(uint32_t);
     void beginTransmission(uint8_t);
@@ -110,6 +104,14 @@ public:
     using Print::write;
 };
 
-extern TwoWire Wire;
+#if defined(USE_I2C)
+    extern TwoWire Wire;
+    #define HAVE_I2C
+#endif
+
+#if defined(USE_I2C1)
+    extern TwoWire Wire1;
+    #define HAVE_I2C1
+#endif
 
 #endif

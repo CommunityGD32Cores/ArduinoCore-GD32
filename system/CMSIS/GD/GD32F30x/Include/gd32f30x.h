@@ -163,7 +163,7 @@ typedef enum IRQn {
     USART1_IRQn                  = 38,     /*!< USART1 interrupt                                         */
     USART2_IRQn                  = 39,     /*!< USART2 interrupt                                         */
     EXTI10_15_IRQn               = 40,     /*!< EXTI[15:10] interrupts                                   */
-    RTC_Alarm_IRQn               = 41,     /*!< RTC alarm interrupt                                      */
+    RTC_ALARM_IRQn               = 41,     /*!< RTC alarm interrupt                                      */
     USBD_WKUP_IRQn               = 42,     /*!< USBD Wakeup interrupt                                    */
     TIMER7_BRK_IRQn              = 43,     /*!< TIMER7 break interrupt                                   */
     TIMER7_UP_IRQn               = 44,     /*!< TIMER7 update interrupt                                  */
@@ -207,7 +207,7 @@ typedef enum IRQn {
     USART1_IRQn                  = 38,     /*!< USART1 interrupt                                         */
     USART2_IRQn                  = 39,     /*!< USART2 interrupt                                         */
     EXTI10_15_IRQn               = 40,     /*!< EXTI[15:10] interrupts                                   */
-    RTC_Alarm_IRQn               = 41,     /*!< RTC alarm interrupt                                      */
+    RTC_ALARM_IRQn               = 41,     /*!< RTC alarm interrupt                                      */
     USBD_WKUP_IRQn               = 42,     /*!< USBD wakeup interrupt                                    */
     TIMER7_BRK_TIMER11_IRQn      = 43,     /*!< TIMER7 break and TIMER11 interrupt                       */
     TIMER7_UP_TIMER12_IRQn       = 44,     /*!< TIMER7 update and TIMER12 interrupt                      */

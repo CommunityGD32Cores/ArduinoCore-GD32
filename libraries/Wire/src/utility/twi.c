@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2021, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -30,20 +30,23 @@ OF SUCH DAMAGE.
 #include "utility/twi.h"
 #include "pinmap.h"
 #include "twi.h"
-#include "gd32f30x.h"
 
-static uint8_t _tx_buffer[I2C_BUFFER_SIZE];
-static volatile uint8_t _tx_count;
-static volatile uint8_t _tx_length;
-static uint8_t _rx_Buffer[I2C_BUFFER_SIZE];
-static volatile uint8_t _rx_count;
-static void (*slave_transmit_callback)(void);
-static void (*slave_receive_callback)(uint8_t *, int);
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+typedef enum {
+#if defined(I2C0)
+    I2C0_INDEX,
+#endif
+#if defined(I2C1)
+    I2C1_INDEX,
+#endif
+    I2C_NUM
+};
+
+static struct i2c_s *obj_s_buf[I2C_NUM] = {NULL};
 #define BUSY_TIMEOUT  ((SystemCoreClock / obj_s->freq) * 2 * 10)
 #define FLAG_TIMEOUT  (0xF0000U)
 #define I2C_S(obj)    (struct i2c_s *) (obj)
@@ -54,9 +57,9 @@ extern "C" {
  * @param sda       The sda pin
  * @param scl       The scl pin
  * @param address   The I2C own address
- * @param is_master The I2C is master or not
+
  */
-void i2c_init(i2c_t *obj, PinName sda, PinName scl, uint8_t address, uint8_t is_master)
+void i2c_init(i2c_t *obj, PinName sda, PinName scl, uint8_t address)
 {
     struct i2c_s *obj_s = I2C_S(obj);
     uint32_t speed;
@@ -73,28 +76,18 @@ void i2c_init(i2c_t *obj, PinName sda, PinName scl, uint8_t address, uint8_t is_
             /* enable I2C0 clock and configure the pins of I2C0 */
             obj_s->index = 0;
             rcu_periph_clock_enable(RCU_I2C0);
-            if(1 != is_master) {
-                nvic_irq_enable(I2C0_EV_IRQn, 1, 3);
-                nvic_irq_enable(I2C0_ER_IRQn, 1, 2);
-            }
+
             break;
         case I2C1:
             /* enable I2C1 clock and configure the pins of I2C1 */
             obj_s->index = 1;
             rcu_periph_clock_enable(RCU_I2C1);
-            if(1 != is_master) {
-                nvic_irq_enable(I2C1_EV_IRQn, 1, 3);
-                nvic_irq_enable(I2C1_ER_IRQn, 1, 2);
-            }
+
             break;
         default:
             break;
     }
-    if(1 != is_master) {
-        i2c_interrupt_enable(obj_s->i2c, I2C_INT_ERR);
-        i2c_interrupt_enable(obj_s->i2c, I2C_INT_BUF);
-        i2c_interrupt_enable(obj_s->i2c, I2C_INT_EV);
-    }
+
     /* configure the pins of I2C */
     pinmap_pinout(sda, PinMap_I2C_SDA);
     pinmap_pinout(scl, PinMap_I2C_SCL);
@@ -104,16 +97,43 @@ void i2c_init(i2c_t *obj, PinName sda, PinName scl, uint8_t address, uint8_t is_
     /* I2C address configure */
     i2c_mode_addr_config(obj->i2c, I2C_I2CMODE_ENABLE, I2C_ADDFORMAT_7BITS, address);
 
-    if(0 != obj->general_call) {
-        i2c_slave_response_to_gcall_config(obj->i2c, I2C_GCEN_ENABLE);
-    }
+
     /* enable I2C */
     i2c_enable(obj->i2c);
     /* enable acknowledge */
     i2c_ack_config(obj->i2c, I2C_ACK_ENABLE);
+    /* get obj_s_buf */
+    obj_s_buf[obj_s->index] = obj_s;
 }
 
-/** Write one byte
+/** Enable the I2C interrupt
+ *
+ * @param obj       The I2C object
+ */
+void i2c_slaves_interrupt_enable(i2c_t *obj)
+{
+    struct i2c_s *obj_s = I2C_S(obj);
+    switch(obj_s->i2c) {
+        case I2C0:
+            /* enable I2C0 interrupt */
+            nvic_irq_enable(I2C0_EV_IRQn, 1, 3);
+            nvic_irq_enable(I2C0_ER_IRQn, 1, 2);
+            break;
+        case I2C1:
+            /* enable I2C1 interrupt */
+            nvic_irq_enable(I2C1_EV_IRQn, 1, 3);
+            nvic_irq_enable(I2C1_ER_IRQn, 1, 2);
+            break;
+        default:
+            break;
+    }
+
+    i2c_interrupt_enable(obj_s->i2c, I2C_INT_ERR);
+    i2c_interrupt_enable(obj_s->i2c, I2C_INT_BUF);
+    i2c_interrupt_enable(obj_s->i2c, I2C_INT_EV);
+}
+
+/** Write one byte (master)
  *
  * @param obj  The I2C object
  * @param data Byte to be written
@@ -163,10 +183,10 @@ static int i2c_stop(i2c_t *obj)
  * @param stop    Stop to be generated after the transfer is done
  * @return Status
  */
-i2c_status_e i2c_master_transmit(i2c_t *obj, uint8_t address, uint8_t *data, uint16_t length,
-                                 uint8_t stop)
+i2c_status_enum i2c_master_transmit(i2c_t *obj, uint8_t address, uint8_t *data, uint16_t length,
+                                    uint8_t stop)
 {
-    i2c_status_e ret = I2C_OK;
+    i2c_status_enum ret = I2C_OK;
     uint32_t timeout = 0;
     uint32_t count = 0;
 
@@ -255,12 +275,12 @@ static int i2c_byte_read(i2c_t *obj, int last)
  * @param data    The buffer for receiving
  * @param length  Number of bytes to read
  * @param stop    Stop to be generated after the transfer is done
- * @return read status
+ * @return status
  */
-i2c_status_e i2c_master_receive(i2c_t *obj, uint8_t address, uint8_t *data, uint16_t length,
-                                int stop)
+i2c_status_enum i2c_master_receive(i2c_t *obj, uint8_t address, uint8_t *data, uint16_t length,
+                                   int stop)
 {
-    i2c_status_e ret = I2C_OK;
+    i2c_status_enum ret = I2C_OK;
     uint32_t timeout = 0;
     uint32_t count = 0;
 
@@ -338,10 +358,10 @@ i2c_status_e i2c_master_receive(i2c_t *obj, uint8_t address, uint8_t *data, uint
  * @param address 7-bit address (last bit is 1)
  * @return status
  */
-i2c_status_e i2c_wait_standby_state(i2c_t *obj, uint8_t address)
+i2c_status_enum i2c_wait_standby_state(i2c_t *obj, uint8_t address)
 {
     __IO uint32_t val = 0;
-    i2c_status_e status = I2C_OK;
+    i2c_status_enum status = I2C_OK;
     uint32_t timeout;
 
     /* wait until I2C_FLAG_I2CBSY flag is reset */
@@ -409,9 +429,14 @@ i2c_status_e i2c_wait_standby_state(i2c_t *obj, uint8_t address)
  */
 void i2c_attach_slave_rx_callback(i2c_t *obj, void (*function)(uint8_t *, int))
 {
-    if((obj != NULL) && (function != NULL)) {
-        slave_receive_callback = function;
+    if(obj == NULL) {
+        return;
     }
+    /* Exit if a reception is already on-going */
+    if(function == NULL) {
+        return;
+    }
+    obj->slave_receive_callback = function;
 }
 
 /** sets function called before a slave write operation
@@ -421,9 +446,14 @@ void i2c_attach_slave_rx_callback(i2c_t *obj, void (*function)(uint8_t *, int))
  */
 void i2c_attach_slave_tx_callback(i2c_t *obj, void (*function)(void))
 {
-    if((obj != NULL) && (function != NULL)) {
-        slave_transmit_callback = function;
+    if(obj == NULL) {
+        return;
     }
+    /* Exit if a reception is already on-going */
+    if(function == NULL) {
+        return;
+    }
+    obj->slave_transmit_callback = function;
 }
 
 /** Write bytes to master
@@ -433,53 +463,67 @@ void i2c_attach_slave_tx_callback(i2c_t *obj, void (*function)(void))
  * @param length Number of bytes to read
  * @return status
  */
-i2c_status_e i2c_slave_write_buffer(i2c_t *obj, uint8_t *data, uint16_t length)
+i2c_status_enum i2c_slave_write_buffer(i2c_t *obj, uint8_t *data, uint16_t length)
 {
+    struct i2c_s *obj_s = I2C_S(obj);
     uint8_t i = 0;
-    i2c_status_e ret = I2C_OK;
+    i2c_status_enum ret = I2C_OK;
 
     if(length > I2C_BUFFER_SIZE) {
         ret = I2C_DATA_TOO_LONG;
     } else {
         /* check the communication status */
         for(i = 0; i < length; i++) {
-            _tx_buffer[i] = *(data + i);
+            *obj_s->tx_buffer_ptr++ = *(data + i);
         }
-        _tx_length = length;
-        _tx_count = 0;
+        obj_s->tx_count = length;
+        obj_s->tx_buffer_ptr = obj_s->tx_buffer_ptr - length;
     }
     return ret;
 }
 
 #ifdef I2C0
+/** This function handles I2C interrupt handler
+ *
+ * @param i2c_periph The I2C peripheral
+ */
+static void i2c_irq(struct i2c_s *obj_s)
+{
+    if(i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_ADDSEND)) {
+        /* clear the ADDSEND bit */
+        i2c_interrupt_flag_clear(I2C0, I2C_INT_FLAG_ADDSEND);
+        //memset(_rx_Buffer, _rx_count, 0);
+        obj_s->rx_count = 0;
+        if(i2c_flag_get(I2C0, I2C_FLAG_TRS)) {
+            obj_s->slave_transmit_callback();
+        }
+    } else if((i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_TBE)) &&
+              (!i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_AERR))) {
+        /* Send a data byte */
+        if(obj_s->tx_count > 0) {
+            i2c_data_transmit(I2C0, *obj_s->tx_buffer_ptr++);
+            obj_s->tx_count--;
+        }
+    } else if(i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_RBNE)) {
+        /* if reception data register is not empty ,I2C1 will read a data from I2C_DATA */
+        *obj_s->rx_buffer_ptr++ = i2c_data_receive(I2C0);
+        obj_s->rx_count++;
+    } else if(i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_STPDET)) {
+        /* clear the STPDET bit */
+        i2c_enable(I2C0);
+        if(!i2c_flag_get(I2C0, I2C_FLAG_TRS)) {
+            obj_s->rx_buffer_ptr = obj_s->rx_buffer_ptr - obj_s->rx_count ;
+            obj_s->slave_receive_callback(obj_s->rx_buffer_ptr, obj_s->rx_count);
+        }
+    }
+}
 
 /** Handle I2C0 event interrupt request
  *
  */
 void I2C0_EV_IRQHandler(void)
 {
-    if(i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_ADDSEND)) {
-        /* clear the ADDSEND bit */
-        i2c_interrupt_flag_clear(I2C0, I2C_INT_FLAG_ADDSEND);
-        memset(_rx_Buffer, _rx_count, 0);
-        _rx_count = 0;
-        if(i2c_flag_get(I2C0, I2C_FLAG_TRS)) {
-            slave_transmit_callback();
-        }
-    } else if((i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_TBE)) &&
-              (!i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_AERR))) {
-        /* Send a data byte */
-        i2c_data_transmit(I2C0, _tx_buffer[_tx_count++]);
-    } else if(i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_RBNE)) {
-        /* if reception data register is not empty ,I2C1 will read a data from I2C_DATA */
-        _rx_Buffer[_rx_count++] = i2c_data_receive(I2C0);
-    } else if(i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_STPDET)) {
-        /* clear the STPDET bit */
-        i2c_enable(I2C0);
-        if(!i2c_flag_get(I2C0, I2C_FLAG_TRS)) {
-            slave_receive_callback(_rx_Buffer, _rx_count);
-        }
-    }
+    i2c_irq(obj_s_buf[I2C0_INDEX]);
 }
 
 /** handle I2C0 error interrupt request
@@ -531,27 +575,7 @@ void I2C0_ER_IRQHandler(void)
  */
 void I2C1_EV_IRQHandler(void)
 {
-    if(i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_ADDSEND)) {
-        /* clear the ADDSEND bit */
-        i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_ADDSEND);
-        if(i2c_flag_get(I2C1, I2C_FLAG_TRS)) {
-            slave_transmit_callback();
-        }
-    } else if((i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_TBE)) &&
-              (!i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_AERR))) {
-        /* Send a data byte */
-        i2c_data_transmit(I2C1, _tx_buffer[_tx_count++]);
-    } else if(i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_RBNE)) {
-        /* if reception data register is not empty ,I2C1 will read a data from I2C_DATA */
-        _rx_Buffer[_rx_count++] = i2c_data_receive(I2C1);
-    } else if(i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_STPDET)) {
-        /* clear the STPDET bit */
-        i2c_enable(I2C1);
-
-        if(!i2c_flag_get(I2C1, I2C_FLAG_TRS)) {
-            slave_receive_callback(_rx_Buffer, _rx_count);
-        }
-    }
+    i2c_irq(obj_s_buf[I2C1_INDEX]);
 }
 
 /** handle I2C1 error interrupt request

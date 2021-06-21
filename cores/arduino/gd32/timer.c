@@ -68,46 +68,72 @@ uint32_t getTimerIndex(uint32_t instance)
 {
     uint32_t index = 0xFF;
     switch(instance) {
+#if defined(TIMER0)
         case TIMER0:
             index = 0;
             break;
+#endif
+#if defined(TIMER1)
         case TIMER1:
             index = 1;
             break;
+#endif
+#if defined(TIMER2)
         case TIMER2:
             index = 2;
             break;
+#endif
+#if defined(TIMER3)
         case TIMER3:
             index = 3;
             break;
+#endif
+#if defined(TIMER4)
         case TIMER4:
             index = 4;
             break;
+#endif
+#if defined(TIMER5)
         case TIMER5:
             index = 5;
             break;
+#endif
+#if defined(TIMER6)
         case TIMER6:
             index = 6;
             break;
+#endif
+#if defined(TIMER7)
         case TIMER7:
             index = 7;
             break;
-#if defined(GD32F30X_CL)
+#endif
+#if defined(TIMER8)
         case TIMER8:
             index = 8;
             break;
+#endif
+#if defined(TIMER9)
         case TIMER9:
             index = 9;
             break;
+#endif
+#if defined(TIMER10)
         case TIMER10:
             index = 10;
             break;
+#endif
+#if defined(TIMER11)
         case TIMER11:
             index = 11;
             break;
+#endif
+#if defined(TIMER12)
         case TIMER12:
             index = 12;
             break;
+#endif
+#if defined(TIMER13)
         case TIMER13:
             index = 13;
             break;
@@ -172,46 +198,72 @@ void timer_clock_enable(uint32_t instance)
 {
     uint32_t temp;
     switch(instance) {
+#if defined(TIMER0)
         case TIMER0:
             temp = RCU_TIMER0;
             break;
+#endif
+#if defined(TIMER1)
         case TIMER1:
             temp = RCU_TIMER1;
             break;
+#endif
+#if defined(TIMER2)
         case TIMER2:
             temp = RCU_TIMER2;
             break;
+#endif
+#if defined(TIMER3)
         case TIMER3:
             temp = RCU_TIMER3;
             break;
+#endif
+#if defined(TIMER4)
         case TIMER4:
             temp = RCU_TIMER4;
             break;
+#endif
+#if defined(TIMER5)
         case TIMER5:
             temp = RCU_TIMER5;
             break;
+#endif
+#if defined(TIMER6)
         case TIMER6:
             temp = RCU_TIMER6;
             break;
+#endif
+#if defined(TIMER7)
         case TIMER7:
             temp = RCU_TIMER7;
             break;
-#if defined(GD32F30X_CL)
+#endif
+#if defined(TIMER8)
         case TIMER8:
             temp = RCU_TIMER8;
             break;
+#endif
+#if defined(TIMER9)
         case TIMER9:
             temp = RCU_TIMER9;
             break;
+#endif
+#if defined(TIMER10)
         case TIMER10:
             temp = RCU_TIMER10;
             break;
+#endif
+#if defined(TIMER11)
         case TIMER11:
             temp = RCU_TIMER11;
             break;
+#endif
+#if defined(TIMER12)
         case TIMER12:
             temp = RCU_TIMER12;
             break;
+#endif
+#if defined(TIMER13)
         case TIMER13:
             temp = RCU_TIMER13;
             break;
@@ -232,46 +284,72 @@ void timer_clock_disable(uint32_t instance)
 {
     uint32_t temp;
     switch(instance) {
+#if defined(TIMER0)
         case TIMER0:
             temp = RCU_TIMER0;
             break;
+#endif
+#if defined(TIMER1)
         case TIMER1:
             temp = RCU_TIMER1;
             break;
+#endif
+#if defined(TIMER2)
         case TIMER2:
             temp = RCU_TIMER2;
             break;
+#endif
+#if defined(TIMER3)
         case TIMER3:
             temp = RCU_TIMER3;
             break;
+#endif
+#if defined(TIMER4)
         case TIMER4:
             temp = RCU_TIMER4;
             break;
+#endif
+#if defined(TIMER5)
         case TIMER5:
             temp = RCU_TIMER5;
             break;
+#endif
+#if defined(TIMER6)
         case TIMER6:
             temp = RCU_TIMER6;
             break;
+#endif
+#if defined(TIMER7)
         case TIMER7:
             temp = RCU_TIMER7;
             break;
-#if defined(GD32F30X_CL)
+#endif
+#if defined(TIMER8)
         case TIMER8:
             temp = RCU_TIMER8;
             break;
+#endif
+#if defined(TIMER9)
         case TIMER9:
             temp = RCU_TIMER9;
             break;
+#endif
+#if defined(TIMER10)
         case TIMER10:
             temp = RCU_TIMER10;
             break;
+#endif
+#if defined(TIMER11)
         case TIMER11:
             temp = RCU_TIMER11;
             break;
+#endif
+#if defined(TIMER12)
         case TIMER12:
             temp = RCU_TIMER12;
             break;
+#endif
+#if defined(TIMER13)
         case TIMER13:
             temp = RCU_TIMER13;
             break;

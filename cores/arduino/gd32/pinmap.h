@@ -34,6 +34,7 @@ typedef struct {
 uint32_t gpio_clock_enable(uint32_t port_idx);
 void pin_function(PinName pin, int function);
 
+bool pin_in_pinmap(PinName pin, const PinMap *map);
 uint32_t pinmap_peripheral(PinName pin, const PinMap *map);
 uint32_t pinmap_function(PinName pin, const PinMap *map);
 uint32_t pinmap_merge(uint32_t a, uint32_t b);

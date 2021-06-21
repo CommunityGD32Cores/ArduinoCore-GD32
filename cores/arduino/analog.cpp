@@ -28,244 +28,213 @@ OF SUCH DAMAGE.
     Based on mbed-os/targets/TARGET_GigaDevice/TARGET_GD32F30X/analogout_api.c
 */
 
-#include "gd32_def.h"
+#include "Arduino.h"
 #include "analog.h"
-#include "gd32f30x.h"
+#include "pwm.h"
 
-#ifdef __cplusplus
-extern "C" {
+#define DAC_NUMS  2
+#define PWM_NUMS  40
+#if (defined(GD32F30X_HD) || defined(GD32F30X_XD))
+    #define ADC_NUMS  3
+#else
+    #define ADC_NUMS  2
 #endif
 
-typedef struct analogin_s analogin_t;
-FlagStatus temperature_sample_flag = RESET;
+analog_t DAC_[DAC_NUMS] = {0};
+analog_t ADC_[ADC_NUMS] = {0};
 
-/**
-  * @brief  This function will set the DAC to the required value
-  * @param  pin : the gpio pin to use
-  * @param  value : the value to push on the dac output
-  * @param  resolution : dac resolution to configure
-  * @retval None
-  */
-void dac_write_value(PinName pin, uint32_t value, uint8_t resolution)
+// dac write value
+void  set_dac_value(PinName pinname, uint16_t value)
 {
-    dac_t dac_obj;
-    uint32_t function;
-
-    dac_obj.dac = (DACName)pinmap_peripheral(pin, PinMap_DAC);
-    if((uint32_t)NC == dac_obj.dac) {
-        return;
-    }
-
-    function = pinmap_function(pin, PinMap_DAC);
-    dac_obj.channel = GD_PIN_CHANNEL_GET(function);
-
-    pinmap_pinout(pin, PinMap_DAC);
-
-    /* save the pin for future use */
-    dac_obj.pin = pin;
-
-    dac_deinit();
-
-    /* enable DAC clock */
-    rcu_periph_clock_enable(RCU_DAC);
-
-    /* configure DAC */
-    dac_wave_mode_config(dac_obj.dac, DAC_WAVE_DISABLE);
-    dac_trigger_disable(dac_obj.dac);
-    dac_output_buffer_enable(dac_obj.dac);
-
-    switch(resolution) {
-        case DAC_ALIGN_8B_R:
-            dac_data_set(dac_obj.dac, DAC_ALIGN_8B_R, (value & DEV_DAC_ACCURACY_12BIT));
-            break;
-        case DAC_ALIGN_12B_R:
-            dac_data_set(dac_obj.dac, DAC_ALIGN_12B_R, (value & DEV_DAC_ACCURACY_8BIT));
-            break;
-    }
-
-    dac_enable(dac_obj.dac);
-}
-
-/**
-  * @brief  This function will stop the DAC
-  * @param  pin : the gpio pin to use
-  * @retval None
-  */
-void dac_stop(PinName pin)
-{
-    dac_t dac_obj;
-
-    dac_obj.dac = (DACName)pinmap_peripheral(pin, PinMap_DAC);
-    if((uint32_t)NC == dac_obj.dac) {
-        return;
-    }
-
-    dac_deinit();
-    dac_disable(dac_obj.dac);
-}
-
-/**
- * @brief  software delay
- * @param  time : The time need to delay
- * @retval none
- */
-static void _delay(uint16_t time)
-{
-    uint16_t i;
-    for(i = 0; i < time; i++) {
-    }
-}
-
-/**
- * @brief  Initialize the analogin peripheral, configures the pin used by analogin.
- * @param  obj : The analogin object to initialize
- * @param  pin : The analogin pin name
- * @param  resolution : adc resolution to configure
- * @retval intialization is succeed or not
- */
-uint16_t analogin_init(analogin_t *obj, PinName pin, uint32_t resolution)
-{
-    uint32_t periph;
-    uint32_t function = pinmap_function(pin, PinMap_ADC);
-
-    obj->adc = (ADCName)pinmap_peripheral(pin, PinMap_ADC);
-
-    if(obj->adc == (uint32_t)NC) {
-        return 0;
-    }
-
-    obj->channel = GD_PIN_CHANNEL_GET(function);
-
-    periph = obj->adc;
-    /* save the pin for future use */
-    obj->pin = pin;
-
-    /* ADC clock enable and pin number reset */
-    switch(periph) {
-        case ADC0:
-            rcu_periph_clock_enable(RCU_ADC0);
-            break;
-
-        case ADC1:
-            rcu_periph_clock_enable(RCU_ADC1);
-            /* reset pin number */
-            pin = (PinName)(pin & AND_NUMBER);
-            break;
-    }
-
-    /* ADC clock cannot be greater than 40MHz */
-    rcu_adc_clock_config(RCU_CKADC_CKAPB2_DIV4);
-
-    if((ADC_CHANNEL_16 == obj->channel)) {
-        /* ADC Vrefint enable */
-        adc_tempsensor_vrefint_enable();
-        /* set temperature sample flag */
-        temperature_sample_flag = SET;
-    }
-    if((ADC_CHANNEL_17 == obj->channel)) {
-        /* ADC Vrefint enable */
-        adc_tempsensor_vrefint_enable();
-    }
-
-    /* when pin >= ADC_TEMP, it indicates that the channel has no external pins */
-    if(pin < ADC_TEMP) {
-        pinmap_pinout(pin, PinMap_ADC);
-    }
-
-    /* ADC configuration */
-    adc_special_function_config(obj->adc, ADC_SCAN_MODE, DISABLE);
-    adc_special_function_config(obj->adc, ADC_CONTINUOUS_MODE, DISABLE);
-    /* ADC trigger config */
-    adc_external_trigger_source_config(obj->adc, ADC_REGULAR_CHANNEL, ADC0_1_2_EXTTRIG_REGULAR_NONE);
-    /* ADC mode config */
-    adc_mode_config(ADC_MODE_FREE);
-    /* ADC data alignment config */
-    adc_data_alignment_config(obj->adc, ADC_DATAALIGN_RIGHT);
-    /* ADC channel length config */
-    adc_channel_length_config(obj->adc, ADC_REGULAR_CHANNEL, 1);
-
-    if(temperature_sample_flag == SET) {
-        /* sample temperature needs more time */
-        adc_regular_channel_config(obj->adc, 0, obj->channel, ADC_SAMPLETIME_239POINT5);
-        /* clear temperature sample flag */
-        temperature_sample_flag = RESET;
+    uint32_t dac_periph = pinmap_peripheral(pinname, PinMap_DAC);
+    uint8_t index = get_dac_index(dac_periph);
+    if(!DAC_[index].isactive) {
+        pinmap_pinout(pinname, PinMap_DAC);
+        rcu_periph_clock_enable(RCU_DAC);
+        dac_deinit();
+        dac_trigger_disable(dac_periph);
+        dac_wave_mode_config(dac_periph, DAC_WAVE_DISABLE);
+        dac_output_buffer_enable(dac_periph);
+        dac_enable(dac_periph);
+        dac_data_set(dac_periph, DAC_ALIGN_12B_R, value);
+        DAC_[index].isactive = true;
     } else {
-        adc_regular_channel_config(obj->adc, 0, obj->channel, ADC_SAMPLETIME_28POINT5);
+        //set dac value
+        dac_data_set(dac_periph, DAC_ALIGN_12B_R, value);
     }
-    adc_external_trigger_config(obj->adc, ADC_REGULAR_CHANNEL, ENABLE);
+}
 
-    switch(resolution) {
+//pwm set value
+void set_pwm_value(uint32_t ulPin, uint32_t value)
+{
+    uint16_t ulvalue = 1000 * value / 65535;
+    PWM pwm(ulPin);
+    pwm.setPeriodCycle(1000, ulvalue, FORMAT_US);
+    pwm.start();
+}
+
+//get adc value
+uint16_t get_adc_value(PinName pinname)
+{
+    uint16_t value;
+    uint32_t adc_periph = pinmap_peripheral(pinname, PinMap_ADC);
+    uint8_t index = get_dac_index(adc_periph);
+    uint8_t channel = get_adc_channel(pinname);
+    if(!ADC_[index].isactive) {
+        pinmap_pinout(pinname, PinMap_ADC);
+        adc_clock_enable(adc_periph);
+        rcu_adc_clock_config(RCU_CKADC_CKAPB2_DIV6);
+        adc_mode_config(ADC_MODE_FREE);
+        adc_resolution_config(adc_periph, ADC_RESOLUTION_12B);
+        adc_data_alignment_config(adc_periph, ADC_DATAALIGN_RIGHT);
+        adc_channel_length_config(adc_periph, ADC_REGULAR_CHANNEL, 1U);
+#ifdef GD32F30x
+        adc_external_trigger_source_config(adc_periph, ADC_REGULAR_CHANNEL, ADC0_1_2_EXTTRIG_REGULAR_NONE);
+#elif defined GD32VF103
+        adc_external_trigger_source_config(adc_periph, ADC_REGULAR_CHANNEL, ADC0_1_EXTTRIG_REGULAR_NONE);
+#endif
+
+        adc_external_trigger_config(adc_periph, ADC_REGULAR_CHANNEL, ENABLE);
+        adc_enable(adc_periph);
+        delay(1U);
+        adc_calibration_enable(adc_periph);
+        ADC_[index].isactive = true;
+    }
+    adc_regular_channel_config(adc_periph, 0U, channel, ADC_SAMPLETIME_7POINT5);
+    adc_software_trigger_enable(adc_periph, ADC_REGULAR_CHANNEL);
+    while(!adc_flag_get(adc_periph, ADC_FLAG_EOC));
+    adc_flag_clear(adc_periph, ADC_FLAG_EOC);
+    value = adc_regular_data_read(adc_periph);
+    return value;
+}
+
+//get adc index value
+uint8_t get_adc_index(uint32_t instance)
+{
+    uint8_t index;
+    switch(instance) {
+        case ADC0:
+            index = 0;
+            break;
+        case ADC1:
+            index = 1;
+            break;
+#if (defined(GD32F30X_HD) || defined(GD32F30X_XD))
+        case ADC2:
+            index = 2;
+            break;
+#endif
+        default:
+            index = 0;
+            break;
+    }
+    return index;
+}
+
+// get dac index value
+uint8_t get_dac_index(uint32_t instance)
+{
+    uint8_t index;
+    switch(instance) {
+        case DAC0:
+            index = 0;
+            break;
+        case DAC1:
+            index = 1;
+            break;
+        default:
+            index = 0;
+            break;
+    }
+    return index;
+}
+
+//get adc channel
+uint8_t get_adc_channel(PinName pinname)
+{
+    uint32_t function = pinmap_function(pinname, PinMap_ADC);
+    uint32_t channel = GD_PIN_CHANNEL_GET(function);
+    uint32_t gd_channel = 0;
+    switch(channel) {
+        case 0:
+            gd_channel = ADC_CHANNEL_0;
+            break;
+        case 1:
+            gd_channel = ADC_CHANNEL_1;
+            break;
+        case 2:
+            gd_channel = ADC_CHANNEL_2;
+            break;
+        case 3:
+            gd_channel = ADC_CHANNEL_3;
+            break;
+        case 4:
+            gd_channel = ADC_CHANNEL_4;
+            break;
+        case 5:
+            gd_channel = ADC_CHANNEL_5;
+            break;
         case 6:
-            adc_resolution_config(obj->adc, ADC_RESOLUTION_6B);
+            gd_channel = ADC_CHANNEL_6;
+            break;
+        case 7:
+            gd_channel = ADC_CHANNEL_7;
             break;
         case 8:
-            adc_resolution_config(obj->adc, ADC_RESOLUTION_8B);
+            gd_channel = ADC_CHANNEL_8;
+            break;
+        case 9:
+            gd_channel = ADC_CHANNEL_9;
             break;
         case 10:
-            adc_resolution_config(obj->adc, ADC_RESOLUTION_10B);
+            gd_channel = ADC_CHANNEL_10;
+            break;
+        case 11:
+            gd_channel = ADC_CHANNEL_11;
             break;
         case 12:
-            adc_resolution_config(obj->adc, ADC_RESOLUTION_12B);
+            gd_channel = ADC_CHANNEL_12;
+            break;
+        case 13:
+            gd_channel = ADC_CHANNEL_13;
+            break;
+        case 14:
+            gd_channel = ADC_CHANNEL_14;
+            break;
+        case 15:
+            gd_channel = ADC_CHANNEL_15;
+            break;
+        case 16:
+            gd_channel = ADC_CHANNEL_16;
+            break;
+        case 17:
+            gd_channel = ADC_CHANNEL_17;
+            break;
+        default:
+            gd_channel = 0xFF;
             break;
     }
-
-    /* ADC enable */
-    adc_enable(obj->adc);
-    /* wait for ADC to stabilize */
-    _delay(500);
-    adc_calibration_enable(obj->adc);
-
-    return 1;
+    return gd_channel;
 }
 
-/**
- * @brief  Read the input voltage, represented as a hex in the range [0, 0xFFF]
- * @param  obj : The analogin object
- * @retval 16-bit value representing the current input voltage
- */
-uint16_t analogin_read(analogin_t *obj)
+//adc clock enable
+void adc_clock_enable(uint32_t instance)
 {
-    uint16_t reval;
-
-    adc_flag_clear(obj->adc, ADC_FLAG_EOC);
-    /* start Conversion */
-    adc_software_trigger_enable(obj->adc, ADC_REGULAR_CHANNEL);
-    /* wait for conversion to complete */
-    while(SET != adc_flag_get(obj->adc, ADC_FLAG_EOC)) {
-    }
-    /* ADC actual accuracy is 12 bits */
-    reval = adc_regular_data_read(obj->adc);
-
-    return reval;
-}
-
-/**
- * @brief  Read the input voltage, represented as a hex in the range [0, 0xFFF]
- * @param  pin : The analogin pin name
- * @param  resolution : adc resolution to configure
- * @retval 16-bit value representing the current input voltage
- */
-uint16_t adc_read_value(PinName pin, uint32_t resolution)
-{
-    __IO uint16_t adc_value = 0;
-    analogin_t adc_obj;
-    uint16_t ret = 0;
-
-    ret = analogin_init(&adc_obj, pin, resolution);
-    if(0 == ret) {
-        return 0;
-    }
-
-    adc_value = analogin_read(&adc_obj);
-
-    adc_disable(adc_obj.adc);
-
-    adc_deinit(adc_obj.adc);
-
-    return adc_value;
-}
-
-
-#ifdef __cplusplus
-}
+    rcu_periph_enum temp;
+    switch(instance) {
+        case ADC0:
+            temp = RCU_ADC0;
+            break;
+        case ADC1:
+            temp = RCU_ADC1;
+            break;
+#if (defined(GD32F30X_HD) || defined(GD32F30X_XD))
+        case ADC2:
+            temp = RCU_ADC2;
+            break;
 #endif
+        default:
+            break;
+    }
+    rcu_periph_clock_enable(temp);
+}

@@ -59,9 +59,11 @@ extern "C" {
 #define PB1  24
 #define PE2  25
 #define PE7  26
+#define PA4  27
+#define PA5  28
 
 /* digital pins and analog pins number definitions */
-#define DIGITAL_PINS_NUM        27
+#define DIGITAL_PINS_NUM        29
 #define ANALOG_PINS_NUM         8
 #define ANALOG_PINS_START       19
 #define ANALOG_PINS_LAST        26
@@ -107,6 +109,9 @@ extern "C" {
 /* ADC definitions */
 #define ADC_RESOLUTION          10
 #define DACC_RESOLUTION         12
+
+/* I2C definitions */
+#define USE_I2C       1
 
 #ifdef __cplusplus
 } // extern "C"
