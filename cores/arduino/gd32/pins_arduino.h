@@ -88,7 +88,15 @@ static const uint8_t RX = PIN_SERIAL_RX;
     #if ANALOG_PINS_NUM > 6
         static const uint8_t A6 = ANALOG_PINS_START + 6;
     #endif
-
+    #if ANALOG_PINS_NUM > 7
+        static const uint8_t A7 = ANALOG_PINS_START + 7;
+    #endif
+    #if ANALOG_PINS_NUM > 8
+        static const uint8_t A8 = ANALOG_PINS_START + 8;
+    #endif
+    #if ANALOG_PINS_NUM > 9
+        static const uint8_t A9 = ANALOG_PINS_START + 9;
+    #endif
 #endif /* ANALOG_PINS_NUM > 0 */
 
 
