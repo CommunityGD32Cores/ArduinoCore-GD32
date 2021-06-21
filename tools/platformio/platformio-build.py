@@ -123,7 +123,7 @@ def configure_application_offset(mcu, upload_protocol):
     elif upload_protocol == "dfu":
         # GD32F103 series doesn't have embedded DFU over USB
         # stm32duino bootloader (v1, v2) is used instead
-        if mcu.startswith("gd32f103"):
+        if mcu.startswith("gd32f103") or mcu.startswith("gd32f303"):
             if board_config.get("upload.boot_version", 2) == 1:
                 offset = 0x5000
             else:
