@@ -173,11 +173,11 @@ def get_arduino_board_id(board_config, mcu):
     if board_id.lower().startswith("generic"):
         board_id = "GENERIC_"
         mcu = mcu.upper()
-        if len(mcu) > 12:
-            board_id += mcu[5:12] + "X"
+        if len(mcu) > 11:
+            board_id += mcu[4:11] + "X"
         else:
             if len(mcu) > 10:
-                board_id += mcu[5:11] + "TX"
+                board_id += mcu[4:10] + "TX"
             else:
                 board_id += mcu
             print(
