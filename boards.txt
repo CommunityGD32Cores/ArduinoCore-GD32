@@ -110,6 +110,16 @@ gd_generic_f30x.menu.upload_method.jlinkMethod.upload.options=
 gd_generic_f30x.menu.upload_method.jlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
 gd_generic_f30x.menu.upload_method.jlinkMethod.upload.tool=jlink_upload
 
+gd_generic_f30x.menu.upload_method.dfuUtilMethod=dfu-util (DFU - STMDuino bootloader)
+gd_generic_f30x.menu.upload_method.dfuUtilMethod.upload.protocol=dfu
+gd_generic_f30x.menu.upload_method.dfuUtilMethod.upload.tool=dfu-util
+gd_generic_f30x.menu.upload_method.dfuUtilMethod.upload.options=
+gd_generic_f30x.menu.upload_method.dfuUtilMethod.build.flash_offset=0x2000
+
+gd_generic_f30x.menu.upload_method.dfuUtilMethod.upload.pid=0x0004
+gd_generic_f30x.menu.upload_method.dfuUtilMethod.upload.vid=0x1209
+
+
 # Optimizations
 gd_generic_f30x.menu.opt.osstd=Smallest (default)
 gd_generic_f30x.menu.opt.o1std=Fast (-O1)
