@@ -20,7 +20,6 @@ extern "C" {
 #include "stdlib.h"
 #include "stdint.h"
 }
-#include "WMath.h"
 
 extern void randomSeed(uint32_t dwSeed)
 {
