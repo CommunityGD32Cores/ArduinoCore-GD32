@@ -24,11 +24,14 @@
  * SOFTWARE.
  *****************************************************************************/
 
-#ifndef _WIRISH_WPROGRAM_H_
-#define _WIRISH_WPROGRAM_H_
 
-#include "wiring.h"
+#ifndef Arduino_h
+#define Arduino_h
 
+#include "api/ArduinoAPI.h"
+#include "gd32f30x.h"
+#include "gd32/pins_arduino.h"
+#include "gd32/PeripheralPins.h"
 void setup();
 void loop();
 #ifdef __cplusplus
