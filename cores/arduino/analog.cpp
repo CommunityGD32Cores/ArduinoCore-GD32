@@ -65,7 +65,7 @@ void  set_dac_value(PinName pinname, uint16_t value)
 }
 
 //pwm set value
-void set_pwm_value(uint32_t ulPin, uint32_t value)
+void set_pwm_value(pin_size_t ulPin, uint32_t value)
 {
     uint16_t ulvalue = 1000 * value / 65535;
     PWM pwm(ulPin);
