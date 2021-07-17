@@ -23,8 +23,9 @@
 extern "C" {
 #endif
 
-
-void pinMode(uint32_t ulPin, uint32_t ulMode)
+// TODO XXX Arduino API does not currently support INPUT_ANALOG  or OUTPUT_OPEN_DRAIN
+//
+void pinMode(pin_size_t ulPin, PinMode ulMode)
 {
     PinName p = DIGITAL_TO_PINNAME(ulPin);
     switch(ulMode) {
@@ -52,15 +53,15 @@ void pinMode(uint32_t ulPin, uint32_t ulMode)
     }
 }
 
-void digitalWrite(uint32_t ulPin, uint32_t ulVal)
+void digitalWrite(pin_size_t ulPin, PinStatus status)
 {
     PinName pinname = DIGITAL_TO_PINNAME(ulPin);
     uint32_t pin =  gpio_pin[GD_PIN_GET(pinname)];
     uint32_t port = gpio_port[GD_PORT_GET(pinname)];
-    gpio_bit_write(port, pin, (bit_status)ulVal);
+    gpio_bit_write(port, pin, (bit_status)status);
 }
 
-int digitalRead(uint32_t ulPin)
+PinStatus digitalRead(pin_size_t ulPin)
 {
     PinName pinname = DIGITAL_TO_PINNAME(ulPin);
     uint32_t pin =  gpio_pin[GD_PIN_GET(pinname)];
@@ -68,7 +69,7 @@ int digitalRead(uint32_t ulPin)
     return (int)gpio_input_bit_get(port, pin);
 }
 
-void digitalToggle(uint32_t ulPin)
+void digitalToggle(pin_size_t ulPin)
 {
     PinName pinname = DIGITAL_TO_PINNAME(ulPin);
     uint32_t pin =  gpio_pin[GD_PIN_GET(pinname)];
