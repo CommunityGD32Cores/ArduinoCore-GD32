@@ -16,9 +16,10 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "Arduino.h"
 #include "PinConfigured.h"
-#include "analog.h"
+#include "gd32/PinNames.h"
+#include "Arduino.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -28,7 +29,7 @@ extern "C" {
 static uint32_t analogIn_resolution = 10;
 static uint32_t analogOut_resolution = 8;
 
-void analogReference(enum analogReferenceType ulMode)
+void analogReference(uint8_t mode) 
 {
 
 }
@@ -49,7 +50,7 @@ static inline uint32_t mapResolution(uint32_t value, uint32_t from, uint32_t to)
 
 // Perform the read operation on the selected analog pin.
 // the initialization of the analog PIN is done through this function
-uint32_t analogRead(uint32_t ulPin)
+int analogRead(pin_size_t ulPin)
 {
     uint32_t value = 0;
     PinName p = DIGITAL_TO_PINNAME(ulPin);
@@ -74,7 +75,7 @@ uint32_t analogRead(uint32_t ulPin)
 // hardware support.  These are defined in the appropriate
 // variant.cpp file.  For the rest of the pins, we default
 // to digital output.
-void analogWrite(uint32_t ulPin, uint32_t ulValue)
+void analogWrite(pin_size_t ulPin, int ulValue)
 {
     uint32_t value;
     PinName pinname = DIGITAL_TO_PINNAME(ulPin);
