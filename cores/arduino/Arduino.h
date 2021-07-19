@@ -32,8 +32,15 @@
 #include "gd32f30x.h"
 #include "gd32/pins_arduino.h"
 #include "gd32/PeripheralPins.h"
+
+#if defined(__cplusplus)
+
+
+
+
 void setup();
 void loop();
+
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
@@ -44,4 +51,18 @@ extern "C" {
 
 #include "variant.h"
 
+#include "Serial.h"
+#if defined(SERIAL_CDC)
+#define Serial _UART_USB_
+#define SerialUSB _UART_USB_
+#else
+#define Serial _UART1_
+#endif
+#define Serial1 _UART1_
+#define Serial2 _UART2_
+#define Serial3 _UART3_
+#define Serial4 _UART4_
+
+
+#endif
 #endif
