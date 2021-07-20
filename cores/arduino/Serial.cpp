@@ -34,8 +34,8 @@
 using namespace arduino;
 
 UART::UART(int tx, int rx, int rts, int cts) {
-	_tx = digitalPinToPinName(tx); // PinName
-	_rx = digitalPinToPinName(rx); // PinName
+	_tx = digitalPinToPinName(tx);
+	_rx = digitalPinToPinName(rx);
 	if (rts >= 0) {
 		_rts = digitalPinToPinName(rts);
 	} else {
