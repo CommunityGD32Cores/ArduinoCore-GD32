@@ -33,9 +33,9 @@
 
 using namespace arduino;
 
-UART::UART(int tx, int rx, int rts, int cts) {
-    _tx = digitalPinToPinName(tx);
-    _rx = digitalPinToPinName(rx);
+UART::UART(int tx, int rx, int rts, int cts, int uart_index) {
+    _serial->pin_tx = digitalPinToPinName(tx);
+    _serial->pin_rx = digitalPinToPinName(rx);
     if (rts >= 0) {
         _rts = digitalPinToPinName(rts);
     } else {
@@ -46,6 +46,16 @@ UART::UART(int tx, int rx, int rts, int cts) {
     } else {
         _cts = NC;
     }
+
+    _serial->rx_buffer_ptr = rx_buffer;
+    _serial->tx_buffer_ptr = tx_buffer;
+    _serial->rx_head = 0;
+    _serial->rx_tail = 0;
+    _serial->tx_head = 0;
+    _serial->tx_tail = 0;
+    _serial->tx_count = 0;
+    _serial->index = uart_index;
+
 }
 
 void UART::begin(unsigned long baudrate, uint16_t config) {
@@ -107,7 +117,7 @@ void UART::begin(unsigned long baudrate) {
     if (_serial == NULL) {
         serial_init(_serial, _serial->pin_tx, _serial->pin_rx);
     }
-        serial_baud(_serial, baudrate);
+    serial_baud(_serial, baudrate);
     // TODO
     if (_rts != NC) {
         //	_serial->obj->set_flow_control(mbed::SerialBase::Flow::RTSCTS, _rts, _cts);
@@ -352,33 +362,33 @@ UART _UART_USB_;
 #if SERIAL_HOWMANY > 0
 
 #ifdef SERIAL1_RTS
-UART _UART1_(SERIAL1_TX, SERIAL1_RX, SERIAL1_RTS, SERIAL1_CTS);
+UART _UART1_(SERIAL1_TX, SERIAL1_RX, SERIAL1_RTS, SERIAL1_CTS,1);
 #else
-UART _UART1_(SERIAL1_TX, SERIAL1_RX, NC, NC);
+UART _UART1_(SERIAL1_TX, SERIAL1_RX, NC, NC,1);
 #endif
 
 #if SERIAL_HOWMANY > 1
 
 #ifdef SERIAL2_RTS
-UART _UART2_(SERIAL2_TX, SERIAL2_RX, SERIAL2_RTS, SERIAL2_CTS);
+UART _UART2_(SERIAL2_TX, SERIAL2_RX, SERIAL2_RTS, SERIAL2_CTS,2);
 #else
-UART _UART2_(SERIAL2_TX, SERIAL2_RX, NC, NC);
+UART _UART2_(SERIAL2_TX, SERIAL2_RX, NC, NC,2);
 #endif
 
 #if SERIAL_HOWMANY > 2
 
 #ifdef SERIAL3_RTS
-UART _UART3_(SERIAL3_TX, SERIAL3_RX, SERIAL3_RTS, SERIAL3_CTS);
+UART _UART3_(SERIAL3_TX, SERIAL3_RX, SERIAL3_RTS, SERIAL3_CTS,3);
 #else
-UART _UART3_(SERIAL3_TX, SERIAL3_RX, NC, NC);
+UART _UART3_(SERIAL3_TX, SERIAL3_RX, NC, NC,3);
 #endif
 
 #if SERIAL_HOWMANY > 3
 
 #ifdef SERIAL4_RTS
-UART _UART4_(SERIAL4_TX, SERIAL4_RX, SERIAL4_RTS, SERIAL4_CTS);
+UART _UART4_(SERIAL4_TX, SERIAL4_RX, SERIAL4_RTS, SERIAL4_CTS,4);
 #else
-UART _UART4_(SERIAL4_TX, SERIAL4_RX, NC, NC);
+UART _UART4_(SERIAL4_TX, SERIAL4_RX, NC, NC,4);
 #endif
 
 #endif

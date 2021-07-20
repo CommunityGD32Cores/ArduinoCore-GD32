@@ -43,8 +43,8 @@ namespace arduino {
 
 class UART : public HardwareSerial {
 public:
-    UART(int tx, int rx, int rts = -1, int cts = -1);
-    UART(PinName tx, PinName rx, PinName rts = NC, PinName cts = NC) : _tx(tx), _rx(rx), _rts(rts), _cts(cts) {}
+    UART(int tx, int rx, int rts = -1, int cts = -1, int index = -1);
+    UART(PinName tx, PinName rx, PinName rts = NC, PinName cts = NC, int index = -1) : _tx(tx), _rx(rx), _rts(rts), _cts(cts) {}
     UART() {
         is_usb = true;
     }
@@ -77,13 +77,14 @@ private:
     void block_tx(int);
     bool _block;
     const size_t WRITE_BUFF_SZ = SERIAL_TX_BUFFER_SIZE;
-    serial_t* _serial = NULL;
+    serial_t* _serial;
     //mbed_usb_serial* _usb_serial = NULL;
     // Has any byte been written to the UART since begin()
     volatile bool _written;
 
     PinName _tx, _rx, _rts, _cts;
-    RingBufferN<SERIAL_RX_BUFFER_SIZE> rx_buffer;
+    uint8_t rx_buffer[SERIAL_RX_BUFFER_SIZE];
+    uint8_t tx_buffer[SERIAL_TX_BUFFER_SIZE];
     uint8_t intermediate_buf[4];
     bool is_usb = false;
 
