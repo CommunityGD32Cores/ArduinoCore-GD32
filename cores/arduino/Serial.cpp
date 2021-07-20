@@ -106,10 +106,8 @@ void UART::begin(unsigned long baudrate) {
 #endif
     if (_serial == NULL) {
         serial_init(_serial, _serial->pin_tx, _serial->pin_rx);
-        serial_baud(_serial, baudrate);
-    } else {
-        serial_baud(_serial, baudrate);
     }
+        serial_baud(_serial, baudrate);
     // TODO
     if (_rts != NC) {
         //	_serial->obj->set_flow_control(mbed::SerialBase::Flow::RTSCTS, _rts, _cts);
