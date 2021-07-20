@@ -24,6 +24,7 @@
 #include "Arduino.h"
 #include "api/HardwareSerial.h"
 #include "PinNames.h"
+#include "gd32/uart.h"
 
 #ifdef __cplusplus
 
@@ -69,11 +70,11 @@ class UART : public HardwareSerial {
 #endif
 
         private:
-                void on_rx();
+                static void on_rx(serial_t *obj);
                 void block_tx(int);
                 bool _block;
                 const size_t WRITE_BUFF_SZ = SERIAL_TX_BUFFER_SIZE;
-                //mbed_serial* _serial = NULL;
+                serial_t* _serial = NULL;
                 //mbed_usb_serial* _usb_serial = NULL;
                 PinName _tx, _rx, _rts, _cts;
                 RingBufferN<SERIAL_RX_BUFFER_SIZE> rx_buffer;
