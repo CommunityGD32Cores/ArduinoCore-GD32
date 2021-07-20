@@ -57,7 +57,7 @@ void UART::begin(unsigned long baudrate, uint16_t config) {
 #endif
 	begin(baudrate);
 	int bits = 8;
-	//mbed::SerialBase::Parity parity = mbed::SerialBase::None;
+	SerialParity parity = ParityNone;
 	int stop_bits = 1;
 
 	switch (config & SERIAL_DATA_MASK) {
@@ -85,17 +85,17 @@ void UART::begin(unsigned long baudrate, uint16_t config) {
 
 	switch (config & SERIAL_PARITY_MASK) {
 		case SERIAL_PARITY_EVEN:
-			// parity = mbed::SerialBase::Even;
+			parity = ParityEven;
 			break;
 		case SERIAL_PARITY_ODD:
-			// parity = mbed::SerialBase::Odd;
+			parity = ParityOdd;
 			break;
 		case SERIAL_PARITY_NONE:
-			// parity = mbed::SerialBase::None;
+			parity = ParityNone;
 			break;
 	}
 
-	//_serial->obj->format(bits, parity, stop_bits);
+	serial_format(_serial, bits, parity, stop_bits);
 }
 
 void UART::begin(unsigned long baudrate) {
