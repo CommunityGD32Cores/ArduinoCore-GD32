@@ -105,6 +105,11 @@ struct serial_s {
     uint16_t   tx_count;
     uint16_t   rx_count;
 
+    uint16_t rx_tail;
+    uint16_t tx_head;
+    volatile uint16_t rx_head;
+    volatile uint16_t tx_tail;
+
     uint32_t   error_code;
     operation_state_enum  tx_state;
     operation_state_enum  rx_state;
