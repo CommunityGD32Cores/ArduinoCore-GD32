@@ -104,21 +104,18 @@ void UART::begin(unsigned long baudrate) {
 		return;
 	}
 #endif
-	//if (_serial == NULL) {
-		//_serial = new mbed_serial;
-		//_serial->obj = NULL;
-	//}
-	//if (_serial->obj == NULL) {
-	//	_serial->obj = new mbed::UnbufferedSerial(_tx, _rx, baudrate);
-	//} else {
-	//	_serial->obj->baud(baudrate);
-	//}
+	if (_serial == NULL) {
+    		serial_init(_serial, _serial->pin_tx, _serial->pin_rx);
+    		serial_baud(_serial, baudrate);
+	} else {
+		serial_baud(_serial, baudrate);
+	}
+	// TODO 
 	if (_rts != NC) {
 	//	_serial->obj->set_flow_control(mbed::SerialBase::Flow::RTSCTS, _rts, _cts);
 	}
-	//if (_serial->obj != NULL) {
-	//	_serial->obj->attach(mbed::callback(this, &UART::on_rx), mbed::SerialBase::RxIrq);
-	//}
+
+	uart_attach_rx_callback(_serial, on_rx);
 }
 
 void UART::on_rx() {
