@@ -56,7 +56,7 @@ class UART : public HardwareSerial {
                 int read(void);
                 void flush(void);
                 size_t write(uint8_t c);
-                size_t write(const uint8_t*, size_t);
+                size_t write(uint8_t c, size_t s);
                 using Print::write; // pull in write(str) and write(buf, size) from Print
                 operator bool();
 
@@ -70,12 +70,18 @@ class UART : public HardwareSerial {
 #endif
 
         private:
-                static void on_rx(serial_t *obj);
+		    // Interrupt handlers
+    		static void _rx_complete_irq(serial_t *obj);
+    		static void _tx_complete_irq(serial_t *obj);
+
                 void block_tx(int);
                 bool _block;
                 const size_t WRITE_BUFF_SZ = SERIAL_TX_BUFFER_SIZE;
                 serial_t* _serial = NULL;
                 //mbed_usb_serial* _usb_serial = NULL;
+    		// Has any byte been written to the UART since begin()
+    		volatile bool _written;
+
                 PinName _tx, _rx, _rts, _cts;
                 RingBufferN<SERIAL_RX_BUFFER_SIZE> rx_buffer;
                 uint8_t intermediate_buf[4];
