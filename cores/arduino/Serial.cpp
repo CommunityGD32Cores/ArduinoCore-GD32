@@ -34,108 +34,108 @@
 using namespace arduino;
 
 UART::UART(int tx, int rx, int rts, int cts) {
-	_tx = digitalPinToPinName(tx);
-	_rx = digitalPinToPinName(rx);
-	if (rts >= 0) {
-		_rts = digitalPinToPinName(rts);
-	} else {
-		_rts = NC;
-	}
-	if (cts >= 0) {
-		_cts = digitalPinToPinName(cts);
-	} else {
-		_cts = NC;
-	}
+    _tx = digitalPinToPinName(tx);
+    _rx = digitalPinToPinName(rx);
+    if (rts >= 0) {
+        _rts = digitalPinToPinName(rts);
+    } else {
+        _rts = NC;
+    }
+    if (cts >= 0) {
+        _cts = digitalPinToPinName(cts);
+    } else {
+        _cts = NC;
+    }
 }
 
 void UART::begin(unsigned long baudrate, uint16_t config) {
 
 #if defined(SERIAL_CDC)
-	if (is_usb) {
-		return;
-	}
+    if (is_usb) {
+        return;
+    }
 #endif
-	begin(baudrate);
-	int bits = 8;
-	SerialParity parity = ParityNone;
-	int stop_bits = 1;
+    begin(baudrate);
+    int bits = 8;
+    SerialParity parity = ParityNone;
+    int stop_bits = 1;
 
-	switch (config & SERIAL_DATA_MASK) {
-		case SERIAL_DATA_7:
-			bits = 7;
-			break;
-		case SERIAL_DATA_8:
-			bits = 8;
-			break;
-/*
-		case SERIAL_DATA_9:
-			bits = 9;
-			break;
-*/
-	}
+    switch (config & SERIAL_DATA_MASK) {
+    case SERIAL_DATA_7:
+        bits = 7;
+        break;
+    case SERIAL_DATA_8:
+        bits = 8;
+        break;
+        /*
+        		case SERIAL_DATA_9:
+        			bits = 9;
+        			break;
+        */
+    }
 
-	switch (config & SERIAL_STOP_BIT_MASK) {
-		case SERIAL_STOP_BIT_1:
-			stop_bits = 1;
-			break;
-		case SERIAL_STOP_BIT_2:
-			stop_bits = 2;
-			break;
-	}
+    switch (config & SERIAL_STOP_BIT_MASK) {
+    case SERIAL_STOP_BIT_1:
+        stop_bits = 1;
+        break;
+    case SERIAL_STOP_BIT_2:
+        stop_bits = 2;
+        break;
+    }
 
-	switch (config & SERIAL_PARITY_MASK) {
-		case SERIAL_PARITY_EVEN:
-			parity = ParityEven;
-			break;
-		case SERIAL_PARITY_ODD:
-			parity = ParityOdd;
-			break;
-		case SERIAL_PARITY_NONE:
-			parity = ParityNone;
-			break;
-	}
+    switch (config & SERIAL_PARITY_MASK) {
+    case SERIAL_PARITY_EVEN:
+        parity = ParityEven;
+        break;
+    case SERIAL_PARITY_ODD:
+        parity = ParityOdd;
+        break;
+    case SERIAL_PARITY_NONE:
+        parity = ParityNone;
+        break;
+    }
 
-	serial_format(_serial, bits, parity, stop_bits);
+    serial_format(_serial, bits, parity, stop_bits);
 }
 
 void UART::begin(unsigned long baudrate) {
 #if defined(SERIAL_CDC)
-	if (is_usb) {
-		return;
-	}
+    if (is_usb) {
+        return;
+    }
 #endif
-	if (_serial == NULL) {
-    		serial_init(_serial, _serial->pin_tx, _serial->pin_rx);
-    		serial_baud(_serial, baudrate);
-	} else {
-		serial_baud(_serial, baudrate);
-	}
-	// TODO 
-	if (_rts != NC) {
-	//	_serial->obj->set_flow_control(mbed::SerialBase::Flow::RTSCTS, _rts, _cts);
-	}
+    if (_serial == NULL) {
+        serial_init(_serial, _serial->pin_tx, _serial->pin_rx);
+        serial_baud(_serial, baudrate);
+    } else {
+        serial_baud(_serial, baudrate);
+    }
+    // TODO
+    if (_rts != NC) {
+        //	_serial->obj->set_flow_control(mbed::SerialBase::Flow::RTSCTS, _rts, _cts);
+    }
 
-	uart_attach_rx_callback(_serial, _rx_complete_irq);
+    uart_attach_rx_callback(_serial, _rx_complete_irq);
 }
 
 void UART::_rx_complete_irq(serial_t *obj) {
-		unsigned char c;
+    unsigned char c;
 #if defined(SERIAL_CDC)
-	if (is_usb) {
-		return;
-	}
+    if (is_usb) {
+        return;
+    }
 #endif
-		if(obj == NULL) {
-		    return;
-		}
-	    	if(serial_rx_active(obj)) {
-		    return;
-	    	}
-		if (!serial_readable(obj)) {
-		    return;
-		}
-	    	// No Parity error, read byte and store it in the buffer if there is room
-	    	c = serial_getc(obj);
+    if(obj == NULL) {
+        return;
+    }
+    if(serial_rx_active(obj)) {
+        return;
+    }
+    if (!serial_readable(obj)) {
+        return;
+    }
+    // No Parity error, read byte and store it in the buffer if there is room
+    c = serial_getc(obj);
 
     uint16_t i = (unsigned int)(obj->rx_head + 1) % SERIAL_RX_BUFFER_SIZE;
     if(i != obj->rx_tail) {
@@ -145,8 +145,8 @@ void UART::_rx_complete_irq(serial_t *obj) {
     serial_receive(obj, &obj->rx_buffer_ptr[obj->rx_head], 1);
 
 
-		// TODO
-		//core_util_critical_section_exit();
+    // TODO
+    //core_util_critical_section_exit();
 }
 
 void UART::_tx_complete_irq(serial_t *obj) {
@@ -164,11 +164,11 @@ void UART::_tx_complete_irq(serial_t *obj) {
 
 void UART::end() {
 #if defined(SERIAL_CDC)
-	if (is_usb) {
-		return _SerialUSB.end();
-	}
+    if (is_usb) {
+        return _SerialUSB.end();
+    }
 #endif
-	    //clear any received data
+    //clear any received data
     _serial->rx_head = _serial->rx_tail;
     //wait for any outstanding data to be sent
     flush();
@@ -178,27 +178,27 @@ void UART::end() {
 
 int UART::available() {
 #if defined(SERIAL_CDC)
-	if (is_usb) {
-		return _SerialUSB.available();
-	}
+    if (is_usb) {
+        return _SerialUSB.available();
+    }
 #endif
-	//core_util_critical_section_enter();
-	int c = (SERIAL_RX_BUFFER_SIZE + _serial->rx_head - _serial->rx_tail) %
-           SERIAL_RX_BUFFER_SIZE;
+    //core_util_critical_section_enter();
+    int c = (SERIAL_RX_BUFFER_SIZE + _serial->rx_head - _serial->rx_tail) %
+            SERIAL_RX_BUFFER_SIZE;
 
 
-	//core_util_critical_section_exit();
-	return c;
+    //core_util_critical_section_exit();
+    return c;
 }
 
 int UART::peek() {
 #if defined(SERIAL_CDC)
-	if (is_usb) {
-		return _SerialUSB.peek();
-	}
+    if (is_usb) {
+        return _SerialUSB.peek();
+    }
 #endif
-	int c;
-	//core_util_critical_section_enter();
+    int c;
+    //core_util_critical_section_enter();
 
     if(_serial->rx_head == _serial->rx_tail) {
         c= -1;
@@ -207,22 +207,22 @@ int UART::peek() {
     }
 
 
-	//core_util_critical_section_exit();
-	return c;
+    //core_util_critical_section_exit();
+    return c;
 }
 
 int UART::read() {
 #if defined(SERIAL_CDC)
-	if (is_usb) {
-		return _SerialUSB.read();
-	}
+    if (is_usb) {
+        return _SerialUSB.read();
+    }
 #endif
     unsigned char c;
-	//core_util_critical_section_enter();
+    //core_util_critical_section_enter();
 
     // if the head isn't ahead of the tail, we don't have any characters
     if(_serial->rx_head == _serial->rx_tail) {
-	c= -1;
+        c= -1;
     } else {
         c = _serial->rx_buffer_ptr[_serial->rx_tail];
         _serial->rx_tail = (uint16_t)(_serial->rx_tail + 1) % SERIAL_RX_BUFFER_SIZE;
@@ -230,8 +230,8 @@ int UART::read() {
 
 
 
-	//core_util_critical_section_exit();
-	return c;
+    //core_util_critical_section_exit();
+    return c;
 }
 
 void UART::flush() {
@@ -242,7 +242,7 @@ void UART::flush() {
     //
     //
     //XXXX TODO
-#if (0) 
+#if (0)
     if(!_written) {
         return;
     }
@@ -261,9 +261,9 @@ void UART::flush() {
 
 size_t UART::write(uint8_t c) {
 #if defined(SERIAL_CDC)
-	if (is_usb) {
-		return _SerialUSB.write(c);
-	}
+    if (is_usb) {
+        return _SerialUSB.write(c);
+    }
 #endif
     _written = true;
     uint16_t nextWrite = (_serial->tx_head + 1) % SERIAL_TX_BUFFER_SIZE;
@@ -285,66 +285,66 @@ size_t UART::write(uint8_t c) {
 }
 
 void UART::block_tx(int _a) {
-	_block = false;
+    _block = false;
 }
 
 UART::operator bool() {
 #if defined(SERIAL_CDC)
-	if (is_usb) {
-		return _SerialUSB;
-	}
+    if (is_usb) {
+        return _SerialUSB;
+    }
 #endif
-	return _serial != NULL;
+    return _serial != NULL;
 }
 
 #if 0
 UART::operator mbed::FileHandle*() {
 #if defined(SERIAL_CDC)
-	if (is_usb) {
-		return &_SerialUSB;
-	}
+    if (is_usb) {
+        return &_SerialUSB;
+    }
 #endif
-	return _serial;
+    return _serial;
 }
 #endif
 
 #if defined(SERIAL_CDC)
-	uint32_t UART::baud() {
-		if (is_usb) {
-			return _SerialUSB.baud();
-		}
-		return 0;
-	}
-	uint8_t UART::stopbits() {
-		if (is_usb) {
-			return _SerialUSB.stopbits();
-		}
-		return 0;
-	}
-	uint8_t UART::paritytype() {
-		if (is_usb) {
-			return _SerialUSB.paritytype();
-		}
-		return 0;
-	}
-	uint8_t UART::numbits() {
-		if (is_usb) {
-			return _SerialUSB.numbits();
-		}
-		return 0;
-	}
-	bool UART::dtr() {
-		if (is_usb) {
-			return _SerialUSB.dtr();
-		}
-		return false;
-	}
-	bool UART::rts() {
-		if (is_usb) {
-			return _SerialUSB.rts();
-		}
-		return false;
-	}
+uint32_t UART::baud() {
+    if (is_usb) {
+        return _SerialUSB.baud();
+    }
+    return 0;
+}
+uint8_t UART::stopbits() {
+    if (is_usb) {
+        return _SerialUSB.stopbits();
+    }
+    return 0;
+}
+uint8_t UART::paritytype() {
+    if (is_usb) {
+        return _SerialUSB.paritytype();
+    }
+    return 0;
+}
+uint8_t UART::numbits() {
+    if (is_usb) {
+        return _SerialUSB.numbits();
+    }
+    return 0;
+}
+bool UART::dtr() {
+    if (is_usb) {
+        return _SerialUSB.dtr();
+    }
+    return false;
+}
+bool UART::rts() {
+    if (is_usb) {
+        return _SerialUSB.rts();
+    }
+    return false;
+}
 #endif
 
 #if defined(SERIAL_CDC)

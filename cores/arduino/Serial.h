@@ -32,60 +32,60 @@
 #define __ARDUINO_UART_IMPLEMENTATION__
 
 #if !defined(SERIAL_TX_BUFFER_SIZE)
-    #define SERIAL_TX_BUFFER_SIZE 64
+#define SERIAL_TX_BUFFER_SIZE 64
 #endif
 #if !defined(SERIAL_RX_BUFFER_SIZE)
-    #define SERIAL_RX_BUFFER_SIZE 64
+#define SERIAL_RX_BUFFER_SIZE 64
 #endif
 
 
 namespace arduino {
 
 class UART : public HardwareSerial {
-        public:
-                UART(int tx, int rx, int rts = -1, int cts = -1);
-                UART(PinName tx, PinName rx, PinName rts = NC, PinName cts = NC) : _tx(tx), _rx(rx), _rts(rts), _cts(cts) {}
-                UART() {
-                        is_usb = true;
-                }
-                void begin(unsigned long);
-                void begin(unsigned long baudrate, uint16_t config);
-                void end();
-                int available(void);
-                int peek(void);
-                int read(void);
-                void flush(void);
-                size_t write(uint8_t c);
-                size_t write(uint8_t c, size_t s);
-                using Print::write; // pull in write(str) and write(buf, size) from Print
-                operator bool();
+public:
+    UART(int tx, int rx, int rts = -1, int cts = -1);
+    UART(PinName tx, PinName rx, PinName rts = NC, PinName cts = NC) : _tx(tx), _rx(rx), _rts(rts), _cts(cts) {}
+    UART() {
+        is_usb = true;
+    }
+    void begin(unsigned long);
+    void begin(unsigned long baudrate, uint16_t config);
+    void end();
+    int available(void);
+    int peek(void);
+    int read(void);
+    void flush(void);
+    size_t write(uint8_t c);
+    size_t write(uint8_t c, size_t s);
+    using Print::write; // pull in write(str) and write(buf, size) from Print
+    operator bool();
 
 #if defined(SERIAL_CDC)
-                uint32_t baud();
-                uint8_t stopbits();
-                uint8_t paritytype();
-                uint8_t numbits();
-                bool dtr();
-                bool rts();
+    uint32_t baud();
+    uint8_t stopbits();
+    uint8_t paritytype();
+    uint8_t numbits();
+    bool dtr();
+    bool rts();
 #endif
 
-        private:
-		    // Interrupt handlers
-    		static void _rx_complete_irq(serial_t *obj);
-    		static void _tx_complete_irq(serial_t *obj);
+private:
+    // Interrupt handlers
+    static void _rx_complete_irq(serial_t *obj);
+    static void _tx_complete_irq(serial_t *obj);
 
-                void block_tx(int);
-                bool _block;
-                const size_t WRITE_BUFF_SZ = SERIAL_TX_BUFFER_SIZE;
-                serial_t* _serial = NULL;
-                //mbed_usb_serial* _usb_serial = NULL;
-    		// Has any byte been written to the UART since begin()
-    		volatile bool _written;
+    void block_tx(int);
+    bool _block;
+    const size_t WRITE_BUFF_SZ = SERIAL_TX_BUFFER_SIZE;
+    serial_t* _serial = NULL;
+    //mbed_usb_serial* _usb_serial = NULL;
+    // Has any byte been written to the UART since begin()
+    volatile bool _written;
 
-                PinName _tx, _rx, _rts, _cts;
-                RingBufferN<SERIAL_RX_BUFFER_SIZE> rx_buffer;
-                uint8_t intermediate_buf[4];
-                bool is_usb = false;
+    PinName _tx, _rx, _rts, _cts;
+    RingBufferN<SERIAL_RX_BUFFER_SIZE> rx_buffer;
+    uint8_t intermediate_buf[4];
+    bool is_usb = false;
 
 };
 }
