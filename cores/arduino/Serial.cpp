@@ -144,12 +144,7 @@ void UART::end() {
 		return _SerialUSB.end();
 	}
 #endif
-	//if (_serial != NULL && _serial->obj != NULL) {
-//		delete _serial->obj;
-//		_serial->obj = NULL;
-//		delete _serial;
-//		_serial = NULL;
-//	}
+	_serial = NULL;
 	rx_buffer.clear();
 }
 
@@ -238,7 +233,7 @@ UART::operator mbed::FileHandle*() {
 		return &_SerialUSB;
 	}
 #endif
-	return _serial->obj;
+	return _serial;
 }
 #endif
 
