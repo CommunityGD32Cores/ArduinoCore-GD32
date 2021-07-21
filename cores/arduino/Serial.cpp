@@ -34,8 +34,8 @@
 using namespace arduino;
 
 UART::UART(int tx, int rx, int rts, int cts, int uart_index) {
-    _serial->pin_tx = digitalPinToPinName(tx);
-    _serial->pin_rx = digitalPinToPinName(rx);
+    _serial.pin_tx = digitalPinToPinName(tx);
+    _serial.pin_rx = digitalPinToPinName(rx);
     if (rts >= 0) {
         _rts = digitalPinToPinName(rts);
     } else {
@@ -47,14 +47,14 @@ UART::UART(int tx, int rx, int rts, int cts, int uart_index) {
         _cts = NC;
     }
 
-    _serial->rx_buffer_ptr = rx_buffer;
-    _serial->tx_buffer_ptr = tx_buffer;
-    _serial->rx_head = 0;
-    _serial->rx_tail = 0;
-    _serial->tx_head = 0;
-    _serial->tx_tail = 0;
-    _serial->tx_count = 0;
-    _serial->index = uart_index;
+    _serial.rx_buffer_ptr = rx_buffer;
+    _serial.tx_buffer_ptr = tx_buffer;
+    _serial.rx_head = 0;
+    _serial.rx_tail = 0;
+    _serial.tx_head = 0;
+    _serial.tx_tail = 0;
+    _serial.tx_count = 0;
+    _serial.index = uart_index;
 
 }
 
@@ -65,7 +65,10 @@ void UART::begin(unsigned long baudrate, uint16_t config) {
         return;
     }
 #endif
-    begin(baudrate);
+
+
+
+
     int bits = 8;
     SerialParity parity = ParityNone;
     int stop_bits = 1;
@@ -105,25 +108,27 @@ void UART::begin(unsigned long baudrate, uint16_t config) {
         break;
     }
 
-    serial_format(_serial, bits, parity, stop_bits);
+    serial_init(&_serial, _serial.pin_tx, _serial.pin_rx);
+    //serial_format(&_serial, bits, parity, stop_bits);
+	serial_format(&_serial, 8, ParityNone, 1);
+    serial_baud(&_serial, baudrate);
+    // TODO
+    if (_rts != NC) {
+        //	_serial.obj->set_flow_control(mbed::SerialBase::Flow::RTSCTS, _rts, _cts);
+    }
+
+    uart_attach_rx_callback(&_serial, _rx_complete_irq);
+    serial_receive(&_serial, &_serial.rx_buffer_ptr[_serial.rx_head], 1);
 }
 
-void UART::begin(unsigned long baudrate) {
+void UART::begin(unsigned long baudrate) {	
+	begin(baudrate,  0x00); // that should default us to 8N1
 #if defined(SERIAL_CDC)
     if (is_usb) {
         return;
     }
 #endif
-    if (_serial == NULL) {
-        serial_init(_serial, _serial->pin_tx, _serial->pin_rx);
-    }
-    serial_baud(_serial, baudrate);
-    // TODO
-    if (_rts != NC) {
-        //	_serial->obj->set_flow_control(mbed::SerialBase::Flow::RTSCTS, _rts, _cts);
-    }
 
-    uart_attach_rx_callback(_serial, _rx_complete_irq);
 }
 
 void UART::_rx_complete_irq(serial_t *obj) {
@@ -177,11 +182,11 @@ void UART::end() {
     }
 #endif
     //clear any received data
-    _serial->rx_head = _serial->rx_tail;
+    _serial.rx_head = _serial.rx_tail;
     //wait for any outstanding data to be sent
     flush();
     //disable the USART
-    serial_free(_serial);
+    serial_free(&_serial);
 }
 
 int UART::available() {
@@ -191,7 +196,8 @@ int UART::available() {
     }
 #endif
     //core_util_critical_section_enter();
-    int c = (SERIAL_RX_BUFFER_SIZE + _serial->rx_head - _serial->rx_tail) %
+ 
+    int c = (SERIAL_RX_BUFFER_SIZE + _serial.rx_head - _serial.rx_tail) %
             SERIAL_RX_BUFFER_SIZE;
 
 
@@ -208,10 +214,10 @@ int UART::peek() {
     int c;
     //core_util_critical_section_enter();
 
-    if(_serial->rx_head == _serial->rx_tail) {
+    if(_serial.rx_head == _serial.rx_tail) {
         c= -1;
     } else {
-        c=  _serial->rx_buffer_ptr[_serial->rx_tail];
+        c=  _serial.rx_buffer_ptr[_serial.rx_tail];
     }
 
 
@@ -229,11 +235,11 @@ int UART::read() {
     //core_util_critical_section_enter();
 
     // if the head isn't ahead of the tail, we don't have any characters
-    if(_serial->rx_head == _serial->rx_tail) {
+    if(_serial.rx_head == _serial.rx_tail) {
         c= -1;
     } else {
-        c = _serial->rx_buffer_ptr[_serial->rx_tail];
-        _serial->rx_tail = (uint16_t)(_serial->rx_tail + 1) % SERIAL_RX_BUFFER_SIZE;
+        c = _serial.rx_buffer_ptr[_serial.rx_tail];
+        _serial.rx_tail = (uint16_t)(_serial.rx_tail + 1) % SERIAL_RX_BUFFER_SIZE;
     }
 
 
@@ -250,18 +256,16 @@ void UART::flush() {
     //
     //
     //XXXX TODO
-#if (0)
     if(!_written) {
         return;
     }
     //wait for transmit data to be sent
-    while((_serial->tx_head != _serial->tx_tail)) {
+    while((_serial.tx_head != _serial.tx_tail)) {
         // wait for transmit data to be sent
     }
     // Wait for transmission to complete
-    while((_serial->tx_state & OP_STATE_BUSY) != 0);
+    while((_serial.tx_state & OP_STATE_BUSY) != 0);
 
-#endif
 
 }
 
@@ -274,17 +278,17 @@ size_t UART::write(uint8_t c) {
     }
 #endif
     _written = true;
-    uint16_t nextWrite = (_serial->tx_head + 1) % SERIAL_TX_BUFFER_SIZE;
-    while(_serial->tx_tail == nextWrite) {
+    uint16_t nextWrite = (_serial.tx_head + 1) % SERIAL_TX_BUFFER_SIZE;
+    while(_serial.tx_tail == nextWrite) {
     }   // Spin locks if we're about to overwrite the buffer. This continues once the data is sent
-    _serial->tx_buffer_ptr[_serial->tx_head] = c;
-    _serial->tx_head = nextWrite;
+    _serial.tx_buffer_ptr[_serial.tx_head] = c;
+    _serial.tx_head = nextWrite;
 
-    _serial->tx_count++;
+    _serial.tx_count++;
 
-    if(!serial_tx_active(_serial)) {
-        uart_attach_tx_callback(_serial, _tx_complete_irq);
-        serial_transmit(_serial, &_serial->tx_buffer_ptr[_serial->tx_tail], 1);
+    if(!serial_tx_active(&_serial)) {
+        uart_attach_tx_callback(&_serial, _tx_complete_irq);
+        serial_transmit(&_serial, &_serial.tx_buffer_ptr[_serial.tx_tail], 1);
 
     }
     // XXX TODO arduino wants us to return the length of what we wrote
@@ -302,7 +306,7 @@ UART::operator bool() {
         return _SerialUSB;
     }
 #endif
-    return _serial != NULL;
+    return &_serial != NULL;
 }
 
 #if 0
@@ -312,7 +316,7 @@ UART::operator mbed::FileHandle*() {
         return &_SerialUSB;
     }
 #endif
-    return _serial;
+    return &_serial;
 }
 #endif
 

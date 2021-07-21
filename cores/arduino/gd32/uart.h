@@ -105,8 +105,8 @@ struct serial_s {
     uint16_t   tx_count;
     uint16_t   rx_count;
 
-    uint16_t rx_tail;
-    uint16_t tx_head;
+    volatile uint16_t rx_tail;
+    volatile uint16_t tx_head;
     volatile uint16_t rx_head;
     volatile uint16_t tx_tail;
 
