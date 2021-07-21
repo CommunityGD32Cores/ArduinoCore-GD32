@@ -102,6 +102,7 @@ extern "C" {
 #define PWM5                    PB15
 
 /* USART definitions */
+#define USE_USART1_SERIAL
 #define SERIAL_HOWMANY          1
 #define PIN_SERIAL_RX           PA3
 #define PIN_SERIAL_TX           PA2

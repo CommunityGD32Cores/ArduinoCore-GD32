@@ -108,6 +108,7 @@ extern "C" {
 /* USART definitions */
 
 #define SERIAL_HOWMANY          1
+#define USE_USART1_SERIAL	
 #define PIN_SERIAL_RX           PA3
 #define PIN_SERIAL_TX           PA2
 #define SERIAL1_RX          PIN_SERIAL_RX
