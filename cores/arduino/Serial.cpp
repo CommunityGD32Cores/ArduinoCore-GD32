@@ -109,9 +109,8 @@ void UART::begin(unsigned long baudrate, uint16_t config) {
     }
 
     serial_init(&_serial, _serial.pin_tx, _serial.pin_rx);
-    //serial_format(&_serial, bits, parity, stop_bits);
-	serial_format(&_serial, 8, ParityNone, 1);
     serial_baud(&_serial, baudrate);
+    serial_format(&_serial, bits, parity, stop_bits);
     // TODO
     if (_rts != NC) {
         //	_serial.obj->set_flow_control(mbed::SerialBase::Flow::RTSCTS, _rts, _cts);
@@ -189,6 +188,18 @@ void UART::end() {
     serial_free(&_serial);
 }
 
+
+int UART::availableForWrite(void)
+{
+
+    if(_serial.tx_head >= _serial.tx_tail) {
+        return SERIAL_TX_BUFFER_SIZE - 1 - _serial.tx_head + _serial.tx_tail;
+    }
+    return _serial.tx_tail - _serial.tx_head - 1;
+}
+
+
+
 int UART::available() {
 #if defined(SERIAL_CDC)
     if (is_usb) {
@@ -253,9 +264,6 @@ void UART::flush() {
     // If we have never written a byte, no need to flush. This special
     // case is needed since there is no way to force the TXC (transmit
     // complete) bit to 1 during initialization
-    //
-    //
-    //XXXX TODO
     if(!_written) {
         return;
     }

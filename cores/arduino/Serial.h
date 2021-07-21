@@ -52,6 +52,8 @@ public:
     void begin(unsigned long baudrate, uint16_t config);
     void end();
     int available(void);
+    int availableForWrite(void);
+
     int peek(void);
     int read(void);
     void flush(void);
@@ -76,7 +78,6 @@ private:
 
     void block_tx(int);
     bool _block;
-    const size_t WRITE_BUFF_SZ = SERIAL_TX_BUFFER_SIZE;
     serial_t _serial;
     //mbed_usb_serial* _usb_serial = NULL;
     // Has any byte been written to the UART since begin()
