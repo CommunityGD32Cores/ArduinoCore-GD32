@@ -22,7 +22,7 @@
 
 #include "api/USBAPI.h"
 #include "USBAPI.h"
-#include "SAMD21_USBDevice.h"
+//#include "SAMD21_USBDevice.h"
 #include "CDC.h"
 #include "api/PluggableUSB.h"
 
@@ -261,7 +261,7 @@ bool USBDeviceClass::sendDescriptor(USBSetup &setup)
 }
 
 void USBDeviceClass::standby() {
-	usbd.noRunInStandby();
+	// XXX usbd.noRunInStandby();
 }
 
 void USBDeviceClass::init()
@@ -299,20 +299,20 @@ void USBDeviceClass::init()
 	USB_SetHandler(&UDD_Handler);
 
 	// Reset USB Device
-	usbd.reset();
+	// XXX usbd.reset();
 
-	usbd.calibrate();
-	usbd.setDataSensitiveQoS();
-	usbd.setConfigSensitiveQoS();
-	usbd.setUSBDeviceMode();
-	usbd.runInStandby();
-	usbd.setFullSpeed();
+	// XXX usbd.calibrate();
+	// XXX usbd.setDataSensitiveQoS();
+	// XXX usbd.setConfigSensitiveQoS();
+	// XXX usbd.setUSBDeviceMode();
+	// XXX usbd.runInStandby();
+	// XXX usbd.setFullSpeed();
 
 	// Configure interrupts
-	NVIC_SetPriority((IRQn_Type) USB_IRQn, 0UL);
-	NVIC_EnableIRQ((IRQn_Type) USB_IRQn);
+	// XXX NVIC_SetPriority((IRQn_Type) USB_IRQn, 0UL);
+	// XXX NVIC_EnableIRQ((IRQn_Type) USB_IRQn);
 
-	usbd.enable();
+	// XXX usbd.enable();
 
 	initialized = true;
 
@@ -326,9 +326,9 @@ bool USBDeviceClass::attach()
 	if (!initialized)
 		return false;
 
-	usbd.attach();
-	usbd.enableEndOfResetInterrupt();
-	usbd.enableStartOfFrameInterrupt();
+	// XXX usbd.attach();
+	// XXX usbd.enableEndOfResetInterrupt();
+	// XXX usbd.enableStartOfFrameInterrupt();
 
 	_usbConfiguration = 0;
 	return true;
@@ -645,7 +645,7 @@ uint32_t USBDeviceClass::send(uint32_t ep, const void *data, uint32_t len)
 
 					// set byte count to zero, so that ZLP is sent
 					// instead of stale data
-					usbd.epBank1SetByteCount(ep, 0);
+					// XXX usbd.epBank1SetByteCount(ep, 0);
 					return -1;
 				}
 			}
@@ -654,7 +654,7 @@ uint32_t USBDeviceClass::send(uint32_t ep, const void *data, uint32_t len)
 		LastTransmitTimedOut[ep] = 0;
 
 		if (len >= EPX_SIZE) {
-			usbd.epBank1EnableAutoZLP(ep);
+			// XXX usbd.epBank1EnableAutoZLP(ep);
 			length = EPX_SIZE;
 		} else {
 			length = len;
@@ -663,14 +663,14 @@ uint32_t USBDeviceClass::send(uint32_t ep, const void *data, uint32_t len)
 		/* memcopy could be safer in multi threaded environment */
 		memcpy(&udd_ep_in_cache_buffer[ep], data, length);
 
-		usbd.epBank1SetAddress(ep, &udd_ep_in_cache_buffer[ep]);
-		usbd.epBank1SetByteCount(ep, length);
+		// XXX usbd.epBank1SetAddress(ep, &udd_ep_in_cache_buffer[ep]);
+		// XXX usbd.epBank1SetByteCount(ep, length);
 
 		// Clear the transfer complete flag
-		usbd.epBank1AckTransferComplete(ep);
+		// XXX usbd.epBank1AckTransferComplete(ep);
 
 		// RAM buffer is full, we can send data (IN)
-		usbd.epBank1SetReady(ep);
+		// XXX usbd.epBank1SetReady(ep);
 
 		written += length;
 		len -= length;
