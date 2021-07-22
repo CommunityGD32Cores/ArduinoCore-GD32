@@ -17,6 +17,7 @@
 */
 
 #include "Arduino.h"
+#include "gd32/systick.h"
 
 #ifdef __cplusplus
 extern "C" {
