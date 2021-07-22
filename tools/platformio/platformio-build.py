@@ -211,7 +211,7 @@ env.Append(
         "-fdata-sections",
         "-nostdlib",
         "--param",
-        "max-inline-insns-single=500",
+        "max-inline-insns-single=500"
     ],
     CPPDEFINES=[
         series,
@@ -220,6 +220,7 @@ env.Append(
         "ARDUINO_ARCH_GD32",
         "ARDUINO_%s" % board_id,
         ("BOARD_NAME", '\\"%s\\"' % board_id),
+        "USBCON",
     ],
     CPPPATH=[
         join(FRAMEWORK_DIR, "cores", "arduino", "api", "deprecated"),
@@ -284,6 +285,20 @@ if not board_config.get("build.ldscript", ""):
             )
         ]
     )
+
+
+#if "build.usb_product" in board_config:
+    env.Append(
+        CPPDEFINES=[
+            ("USB_VID", board_config.get("build.hwids")[0][0]),
+            ("USB_PID", board_config.get("build.hwids")[0][1]),
+            ("USB_PRODUCT", '\\"%s\\"' %
+             board_config.get("build.usb_product", "").replace('"', "")),
+            ("USB_MANUFACTURER", '\\"%s\\"' %
+             board_config.get("vendor", "").replace('"', ""))
+        ]
+    )
+
 
 #
 # Process configuration flags
