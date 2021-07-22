@@ -23,7 +23,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *****************************************************************************/
-#include "arduino.h"
+#include "Arduino.h"
 
 
 #ifdef __cplusplus
