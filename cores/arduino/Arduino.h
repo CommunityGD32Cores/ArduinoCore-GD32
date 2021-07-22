@@ -74,5 +74,11 @@ extern "C" {
 #include "variant.h"
 #include "HardwareSerial.h"
 
+
+// USB Device
+#include "USB/USBDesc.h"
+#include "USB/USBCore.h"
+#include "USB/USBAPI.h"
+
 #endif
 #endif

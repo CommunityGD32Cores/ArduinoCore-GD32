@@ -23,6 +23,11 @@
 #include "api/USBAPI.h"
 #include "USBAPI.h"
 //#include "SAMD21_USBDevice.h"
+
+#include "usbd_int.h"
+#include "usbd_std.h"
+#include "usbd_core.h"
+
 #include "CDC.h"
 #include "api/PluggableUSB.h"
 
