@@ -58,8 +58,14 @@ build.info.flags=-D{build.series} -D{build.product_line} -DARDUINO={runtime.ide.
 
 ## Defaults config
 build.xSerial=
-#build.enable_usb=
+
+# Default usb manufacturer will be replaced at compile time using
+# numeric vendor ID if available or by board's specific value.
+build.usb_manufacturer="Unknown"
+
+
 #build.usb_speed=
+build.usb_flags=-DUSB_VID={build.vid} -DUSB_PID={build.pid} -DUSBCON '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}'
 #build.enable_virtio=
 build.startup_file=
 build.flags.fp=

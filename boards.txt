@@ -12,6 +12,9 @@ gd_mbed_f30x.build.core=arduino
 gd_mbed_f30x.build.board=gd_mbed_f30x
 gd_mbed_f30x.build.mcu=cortex-m4
 gd_mbed_f30x.build.series=GD32F30x
+gd_mbed_f30x.build.extra_flags={build.usb_flags}
+
+
 
 gd_mbed_f30x.menu.pnum.GD32F307VG_MBED=GD32F307VG MBED
 gd_mbed_f30x.menu.pnum.GD32F307VG_MBED.upload.maximum_size=262144
@@ -73,6 +76,7 @@ gd_generic_f30x.build.core=arduino
 gd_generic_f30x.build.board=gd_generic_f30x
 gd_generic_f30x.build.mcu=cortex-m4
 gd_generic_f30x.build.series=GD32F30x
+gd_generic_f30x.build.extra_flags={build.usb_flags}
 
 # create a new entry for a new generic GD32F30x board here
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC=GD32F303CC (Generic)
@@ -144,6 +148,7 @@ gd_eval_f303.build.core=arduino
 gd_eval_f303.build.board=gd_eval_f303
 gd_eval_f303.build.mcu=cortex-m4
 gd_eval_f303.build.series=GD32F30x
+gd_eval_f30x.build.extra_flags={build.usb_flags}
 
 gd_eval_f303.menu.pnum.GD32F303ZE_EVAL=GD32F303ZE EVAL
 gd_eval_f303.menu.pnum.GD32F303ZE_EVAL.upload.maximum_size=524288
