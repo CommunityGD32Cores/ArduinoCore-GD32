@@ -57,6 +57,13 @@ extern "C" {
 #endif /* __cplusplus */
 #ifdef __cplusplus
 
+#define SystemCpuClock F_CPU
+
+#define clockCyclesPerMicrosecond() ( SystemCpuClock / 1000000L )
+#define clockCyclesToMicroseconds(a) ( ((a) * 1000L) / (SystemCpuClock / 1000L) )
+#define microsecondsToClockCycles(a) ( (a) * (SystemCpuClock / 1000000L) )
+
+void yield(void);
 
 
 void init(void);
