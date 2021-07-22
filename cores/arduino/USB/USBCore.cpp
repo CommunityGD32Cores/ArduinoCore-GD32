@@ -278,6 +278,10 @@ void USBDeviceClass::init()
 	digitalWrite(PIN_LED_RXL, HIGH);
 #endif
 
+#if 0
+
+	// XXX IMPLEMENT THIS
+
 	// Enable USB clock
 	PM->APBBMASK.reg |= PM_APBBMASK_USB;
 
@@ -295,8 +299,9 @@ void USBDeviceClass::init()
 	                    GCLK_CLKCTRL_CLKEN;
 	while (GCLK->STATUS.bit.SYNCBUSY)
 		;
+#endif
 
-	USB_SetHandler(&UDD_Handler);
+	// XXX TODO USB_SetHandler(&UDD_Handler);
 
 	// Reset USB Device
 	usbd.reset();
@@ -309,8 +314,11 @@ void USBDeviceClass::init()
 	usbd.setFullSpeed();
 
 	// Configure interrupts
+#if 0
+	// XXX TODO IMPLEMENT
 	NVIC_SetPriority((IRQn_Type) USB_IRQn, 0UL);
 	NVIC_EnableIRQ((IRQn_Type) USB_IRQn);
+#endif 
 
 	usbd.enable();
 
@@ -345,9 +353,13 @@ void USBDeviceClass::setAddress(uint32_t addr)
 	// Wait for transfer to complete
 	while (!usbd.epBank1IsTransferComplete(0)) {}
 
+#if 0
+	// XXX TODO 
 	// Set USB address to addr
 	USB->DEVICE.DADD.bit.DADD = addr; // Address
 	USB->DEVICE.DADD.bit.ADDEN = 1; // Enable
+#endif
+
 }
 
 bool USBDeviceClass::detach()
@@ -474,15 +486,18 @@ void USBDeviceClass::stall(uint32_t ep)
 	// TODO: use .bit. notation
 
 	// Stall endpoint
-	USB->DEVICE.DeviceEndpoint[ep].EPSTATUSSET.reg = USB_DEVICE_EPSTATUSSET_STALLRQ(2);
+	// XXX TODO USB->DEVICE.DeviceEndpoint[ep].EPSTATUSSET.reg = USB_DEVICE_EPSTATUSSET_STALLRQ(2);
 }
 
 bool USBDeviceClass::connected()
 {
+#if 0
+	// XXX TODO
 	// Count frame numbers
 	uint8_t f = USB->DEVICE.FNUM.bit.FNUM;
 	//delay(3);
 	return f != USB->DEVICE.FNUM.bit.FNUM;
+#endif
 }
 
 

@@ -167,7 +167,7 @@ bool Serial_::setup(USBSetup& setup)
 			}
 			else
 			{
-				cancelReset();
+				// XXX TODO cancelReset();
 			}
 			USBDevice.sendZlp(0);
 		}
