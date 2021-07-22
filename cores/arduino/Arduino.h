@@ -33,10 +33,24 @@
 #include "gd32/pins_arduino.h"
 #include "gd32/PeripheralPins.h"
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+#include "gd32/systick.h"
+#include "analog.h"
+#include "gd32/gpio_interrupt.h"
+#include "gd32/timer.h"
+#include "gd32/rtc.h"
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 #ifdef __cplusplus
 
 
 
+void init(void);
 void setup();
 void loop();
 
