@@ -17,10 +17,9 @@
 */
 
 #include <Arduino.h>
-#include <Reset.h> // Needed for auto-reset with 1200bps port touch
+// XXX #include <Reset.h> // Needed for auto-reset with 1200bps port touch
 #include "CDC.h"
 #include "USBAPI.h"
-#include "SAMD21_USBDevice.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -30,7 +29,7 @@
 
 using namespace arduino;
 
-extern USBDevice_SAMD21G18x usbd;
+// XXX extern USBDevice_SAMD21G18x usbd;
 
 #define CDC_SERIAL_BUFFER_SIZE	256
 
@@ -164,7 +163,7 @@ bool Serial_::setup(USBSetup& setup)
 			// port is open (bit 0 of lineState).
 			if (_usbLineInfo.dwDTERate == 1200 && (_usbLineInfo.lineState & CDC_LINESTATE_DTR) == 0)
 			{
-				initiateReset(250);
+				// XXX initiateReset(250);
 			}
 			else
 			{
@@ -192,8 +191,8 @@ Serial_::Serial_(USBDeviceClass &_usb) : PluggableUSBModule(3, 2, epType), usb(_
 }
 
 void Serial_::enableInterrupt() {
-	usbd.epBank1EnableTransferComplete(CDC_ENDPOINT_ACM);
-	usbd.epBank0EnableTransferComplete(CDC_ENDPOINT_OUT);
+	// XXX usbd.epBank1EnableTransferComplete(CDC_ENDPOINT_ACM);
+	// XXX usbd.epBank0EnableTransferComplete(CDC_ENDPOINT_OUT);
 }
 
 void Serial_::begin(uint32_t /* baud_count */)
@@ -240,7 +239,8 @@ int Serial_::read(void)
 		_serialPeek = -1;
 		return res;
 	}
-	return usb.recv(CDC_ENDPOINT_OUT);
+	// XXX return usb.recv(CDC_ENDPOINT_OUT);
+	return 0;
 }
 
 size_t Serial_::readBytes(char *buffer, size_t length)
@@ -249,7 +249,7 @@ size_t Serial_::readBytes(char *buffer, size_t length)
 	_startMillis = millis();
 	while (count < length)
 	{
-		uint32_t n = usb.recv(CDC_ENDPOINT_OUT, buffer+count, length-count);
+		uint32_t n ;// XXX = usb.recv(CDC_ENDPOINT_OUT, buffer+count, length-count);
 		if (n == 0 && (millis() - _startMillis) >= _timeout)
 			break;
 		count += n;
@@ -259,16 +259,16 @@ size_t Serial_::readBytes(char *buffer, size_t length)
 
 void Serial_::flush(void)
 {
-	usb.flush(CDC_ENDPOINT_IN);
+	// XXX usb.flush(CDC_ENDPOINT_IN);
 }
 
 void Serial_::clear(void) {
-	usb.clear(CDC_ENDPOINT_IN);
+	// XXX usb.clear(CDC_ENDPOINT_IN);
 }
 
 size_t Serial_::write(const uint8_t *buffer, size_t size)
 {
-	uint32_t r = usb.send(CDC_ENDPOINT_IN, buffer, size);
+	uint32_t r; // XXX = usb.send(CDC_ENDPOINT_IN, buffer, size);
 
 	if (r > 0) {
 		return r;

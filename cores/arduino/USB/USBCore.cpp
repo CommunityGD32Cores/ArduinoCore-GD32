@@ -38,7 +38,7 @@ using namespace arduino;
  * -------------------
  */
 
-USBDevice_SAMD21G18x usbd;
+//USBDevice_SAMD21G18x usbd;
 USBDeviceClass USBDevice;
 
 /** Pulse generation counters to keep track of the number of milliseconds remaining for each pulse type */
@@ -93,10 +93,10 @@ const DeviceDescriptor USB_DeviceDescriptor = D_DEVICE(0x00, 0x00, 0x00, 64, USB
 volatile uint32_t _usbConfiguration = 0;
 volatile uint32_t _usbSetInterface = 0;
 
-static __attribute__((__aligned__(4))) //__attribute__((__section__(".bss_hram0")))
+//XXX static __attribute__((__aligned__(4))) //__attribute__((__section__(".bss_hram0")))
 uint8_t udd_ep_out_cache_buffer[7][64];
 
-static __attribute__((__aligned__(4))) //__attribute__((__section__(".bss_hram0")))
+///XXX static __attribute__((__aligned__(4))) //__attribute__((__section__(".bss_hram0")))
 uint8_t udd_ep_in_cache_buffer[7][64];
 
 // Some EP are handled using EPHanlders.
@@ -279,22 +279,22 @@ void USBDeviceClass::init()
 #endif
 
 	// Enable USB clock
-	PM->APBBMASK.reg |= PM_APBBMASK_USB;
+	/// XXX PM->APBBMASK.reg |= PM_APBBMASK_USB;
 
 	// Set up the USB DP/DN pins
-	PORT->Group[0].PINCFG[PIN_PA24G_USB_DM].bit.PMUXEN = 1;
-	PORT->Group[0].PMUX[PIN_PA24G_USB_DM/2].reg &= ~(0xF << (4 * (PIN_PA24G_USB_DM & 0x01u)));
-	PORT->Group[0].PMUX[PIN_PA24G_USB_DM/2].reg |= MUX_PA24G_USB_DM << (4 * (PIN_PA24G_USB_DM & 0x01u));
-	PORT->Group[0].PINCFG[PIN_PA25G_USB_DP].bit.PMUXEN = 1;
-	PORT->Group[0].PMUX[PIN_PA25G_USB_DP/2].reg &= ~(0xF << (4 * (PIN_PA25G_USB_DP & 0x01u)));
-	PORT->Group[0].PMUX[PIN_PA25G_USB_DP/2].reg |= MUX_PA25G_USB_DP << (4 * (PIN_PA25G_USB_DP & 0x01u));
+	// XXX PORT->Group[0].PINCFG[PIN_PA24G_USB_DM].bit.PMUXEN = 1;
+	// XXX PORT->Group[0].PMUX[PIN_PA24G_USB_DM/2].reg &= ~(0xF << (4 * (PIN_PA24G_USB_DM & 0x01u)));
+	// XXX PORT->Group[0].PMUX[PIN_PA24G_USB_DM/2].reg |= MUX_PA24G_USB_DM << (4 * (PIN_PA24G_USB_DM & 0x01u));
+	// XXX PORT->Group[0].PINCFG[PIN_PA25G_USB_DP].bit.PMUXEN = 1;
+	// XXX PORT->Group[0].PMUX[PIN_PA25G_USB_DP/2].reg &= ~(0xF << (4 * (PIN_PA25G_USB_DP & 0x01u)));
+	// XXX PORT->Group[0].PMUX[PIN_PA25G_USB_DP/2].reg |= MUX_PA25G_USB_DP << (4 * (PIN_PA25G_USB_DP & 0x01u));
 
 	// Put Generic Clock Generator 0 as source for Generic Clock Multiplexer 6 (USB reference)
-	GCLK->CLKCTRL.reg = GCLK_CLKCTRL_ID(6)     | // Generic Clock Multiplexer 6
-	                    GCLK_CLKCTRL_GEN_GCLK0 | // Generic Clock Generator 0 is source
-	                    GCLK_CLKCTRL_CLKEN;
-	while (GCLK->STATUS.bit.SYNCBUSY)
-		;
+	// XXX GCLK->CLKCTRL.reg = GCLK_CLKCTRL_ID(6)     | // Generic Clock Multiplexer 6
+	// XXX                    GCLK_CLKCTRL_GEN_GCLK0 | // Generic Clock Generator 0 is source
+	// XXX                    GCLK_CLKCTRL_CLKEN;
+	// XXX while (GCLK->STATUS.bit.SYNCBUSY)
+        // XXX	;
 
 	USB_SetHandler(&UDD_Handler);
 
@@ -336,32 +336,32 @@ bool USBDeviceClass::attach()
 
 void USBDeviceClass::setAddress(uint32_t addr)
 {
-	usbd.epBank1SetByteCount(0, 0);
-	usbd.epBank1AckTransferComplete(0);
+	// XXX usbd.epBank1SetByteCount(0, 0);
+	// XXX usbd.epBank1AckTransferComplete(0);
 
 	// RAM buffer is full, we can send data (IN)
-	usbd.epBank1SetReady(0);
+	// XXX usbd.epBank1SetReady(0);
 
 	// Wait for transfer to complete
-	while (!usbd.epBank1IsTransferComplete(0)) {}
+	// XXX while (!usbd.epBank1IsTransferComplete(0)) {}
 
 	// Set USB address to addr
-	USB->DEVICE.DADD.bit.DADD = addr; // Address
-	USB->DEVICE.DADD.bit.ADDEN = 1; // Enable
+	// XXX USB->DEVICE.DADD.bit.DADD = addr; // Address
+	// XXX USB->DEVICE.DADD.bit.ADDEN = 1; // Enable
 }
 
 bool USBDeviceClass::detach()
 {
 	if (!initialized)
 		return false;
-	usbd.detach();
+	// XXX usbd.detach();
 	return true;
 }
 
 bool USBDeviceClass::end() {
 	if (!initialized)
 		return false;
-	usbd.disable();
+	// XXX usbd.disable();
 	return true;
 }
 
@@ -412,9 +412,9 @@ void USBDeviceClass::initEP(uint32_t ep, uint32_t config)
 {
 	if (config == (USB_ENDPOINT_TYPE_INTERRUPT | USB_ENDPOINT_IN(0)))
 	{
-		usbd.epBank1SetSize(ep, 64);
-		usbd.epBank1SetAddress(ep, &udd_ep_in_cache_buffer[ep]);
-		usbd.epBank1SetType(ep, 4); // INTERRUPT IN
+		// XXX usbd.epBank1SetSize(ep, 64);
+		// XXX usbd.epBank1SetAddress(ep, &udd_ep_in_cache_buffer[ep]);
+		// XXX usbd.epBank1SetType(ep, 4); // INTERRUPT IN
 	}
 	else if (config == (USB_ENDPOINT_TYPE_BULK | USB_ENDPOINT_OUT(0)))
 	{
@@ -425,24 +425,24 @@ void USBDeviceClass::initEP(uint32_t ep, uint32_t config)
 	}
 	else if (config == (USB_ENDPOINT_TYPE_BULK | USB_ENDPOINT_IN(0)))
 	{
-		usbd.epBank1SetSize(ep, 64);
-		usbd.epBank1SetAddress(ep, &udd_ep_in_cache_buffer[ep]);
-		usbd.epBank1SetType(ep, 3); // BULK IN
+		// XXX usbd.epBank1SetSize(ep, 64);
+		// XXX usbd.epBank1SetAddress(ep, &udd_ep_in_cache_buffer[ep]);
+		// XXX usbd.epBank1SetType(ep, 3); // BULK IN
 	}
 	else if (config == USB_ENDPOINT_TYPE_CONTROL)
 	{
 		// Setup Control OUT
-		usbd.epBank0SetSize(ep, 64);
-		usbd.epBank0SetAddress(ep, &udd_ep_out_cache_buffer[ep]);
-		usbd.epBank0SetType(ep, 1); // CONTROL OUT / SETUP
+		// XXX usbd.epBank0SetSize(ep, 64);
+		// XXX usbd.epBank0SetAddress(ep, &udd_ep_out_cache_buffer[ep]);
+		// XXX usbd.epBank0SetType(ep, 1); // CONTROL OUT / SETUP
 
 		// Setup Control IN
-		usbd.epBank1SetSize(ep, 64);
-		usbd.epBank1SetAddress(ep, &udd_ep_in_cache_buffer[ep]);
-		usbd.epBank1SetType(ep, 1); // CONTROL IN
+		// XXX usbd.epBank1SetSize(ep, 64);
+		// XXX usbd.epBank1SetAddress(ep, &udd_ep_in_cache_buffer[ep]);
+		// XXX usbd.epBank1SetType(ep, 1); // CONTROL IN
 
 		// Release OUT EP
-		usbd.epReleaseOutBank0(ep, 64);
+		// XXX usbd.epReleaseOutBank0(ep, 64);
 	}
 }
 
@@ -450,22 +450,22 @@ void USBDeviceClass::flush(uint32_t ep)
 {
 	if (available(ep)) {
 		// RAM buffer is full, we can send data (IN)
-		usbd.epBank1SetReady(ep);
+		// XXX usbd.epBank1SetReady(ep);
 
 	 	// Clear the transfer complete flag
-		usbd.epBank1AckTransferComplete(ep);
+		// XXX usbd.epBank1AckTransferComplete(ep);
 	}
 }
 
 void USBDeviceClass::clear(uint32_t ep) {
-	usbd.epBank1SetAddress(ep, &udd_ep_in_cache_buffer[ep]);
-	usbd.epBank1SetByteCount(ep, 0);
+	// XXX usbd.epBank1SetAddress(ep, &udd_ep_in_cache_buffer[ep]);
+	// XXX usbd.epBank1SetByteCount(ep, 0);
 
 	// Clear the transfer complete flag
-	usbd.epBank1AckTransferComplete(ep);
+	// XXX usbd.epBank1AckTransferComplete(ep);
 
 	// RAM buffer is full, we can send data (IN)
-	usbd.epBank1SetReady(ep);
+	// XXX usbd.epBank1SetReady(ep);
 }
 
 void USBDeviceClass::stall(uint32_t ep)
@@ -490,6 +490,10 @@ uint32_t USBDeviceClass::recvControl(void *_data, uint32_t len)
 {
 	uint8_t *data = reinterpret_cast<uint8_t *>(_data);
 
+	uint32_t read;
+#if 0
+// XXX TODO fill in all this code
+
 	//usbd.epBank0AckSetupReceived(0);
 	uint32_t read = armRecvCtrlOUT(0);
 	if (read > len)
@@ -499,6 +503,7 @@ uint32_t USBDeviceClass::recvControl(void *_data, uint32_t len)
 	for (uint32_t i=0; i<len; i++) {
 		data[i] = buffer[i];
 	}
+#endif
 
 	return read;
 }
@@ -509,7 +514,7 @@ uint32_t USBDeviceClass::available(uint32_t ep)
 	if (epHandlers[ep]) {
 		return epHandlers[ep]->available();
 	} else {
-		return usbd.epBank0ByteCount(ep);
+		// XXX return usbd.epBank0ByteCount(ep);
 	}
 }
 
@@ -534,21 +539,21 @@ uint32_t USBDeviceClass::recv(uint32_t ep, void *_data, uint32_t len)
 	if (available(ep) < len)
 		len = available(ep);
 
-	usbd.epBank0SetByteCount(ep, 0);
-	usbd.epBank0DisableTransferComplete(ep);
+	// XXX usbd.epBank0SetByteCount(ep, 0);
+	// XXX usbd.epBank0DisableTransferComplete(ep);
 
 	memcpy(_data, udd_ep_out_cache_buffer[ep], len);
 
 	// release empty buffer
 	if (len && !available(ep)) {
 		// The RAM Buffer is empty: we can receive data
-		usbd.epBank0ResetReady(ep);
+		// XXX usbd.epBank0ResetReady(ep);
 
 		// Clear Transfer complete 0 flag
-		usbd.epBank0AckTransferComplete(ep);
+		// XXX usbd.epBank0AckTransferComplete(ep);
 
 		// Enable Transfer complete 0 interrupt
-		usbd.epBank0EnableTransferComplete(ep);
+		// XXX usbd.epBank0EnableTransferComplete(ep);
 	}
 
 	return len;
@@ -568,7 +573,7 @@ int USBDeviceClass::recv(uint32_t ep)
 uint8_t USBDeviceClass::armRecvCtrlOUT(uint32_t ep)
 {
 	// Get endpoint configuration from setting register
-	usbd.epBank0SetAddress(ep, &udd_ep_out_cache_buffer[ep]);
+	// XXX usbd.epBank0SetAddress(ep, &udd_ep_out_cache_buffer[ep]);
 	/* Atmel-42181G–SAM-D21_Datasheet–09/2015 / Page 806
 	 *
 	 * For OUT endpoints, MULTI_PACKET_SIZE holds the total
@@ -579,15 +584,16 @@ uint8_t USBDeviceClass::armRecvCtrlOUT(uint32_t ep)
 	 * all endpoints MULTI_PACKET_SIZE should not be set to
 	 * a value < SIZE, this means at least to 64.
 	 */
-	usbd.epBank0SetMultiPacketSize(ep, 64);
-	usbd.epBank0SetByteCount(ep, 0);
+	// XXX usbd.epBank0SetMultiPacketSize(ep, 64);
+	// XXX usbd.epBank0SetByteCount(ep, 0);
 
-	usbd.epBank0ResetReady(ep);
+	// XXX usbd.epBank0ResetReady(ep);
 
 	// Wait OUT
-	while (!usbd.epBank0IsReady(ep)) {}
-	while (!usbd.epBank0IsTransferComplete(ep)) {}
-	return usbd.epBank0ByteCount(ep);
+	// XXX while (!usbd.epBank0IsReady(ep)) {}
+	// XXX while (!usbd.epBank0IsTransferComplete(ep)) {}
+	// XXX return usbd.epBank0ByteCount(ep);
+	return 0; // XXX remove
 }
 
 // Timeout for sends
@@ -678,9 +684,9 @@ uint32_t USBDeviceClass::armSend(uint32_t ep, const void* data, uint32_t len)
 	memcpy(&udd_ep_in_cache_buffer[ep], data, len);
 
 	// Get endpoint configuration from setting register
-	usbd.epBank1SetAddress(ep, &udd_ep_in_cache_buffer[ep]);
-	usbd.epBank1SetMultiPacketSize(ep, 0);
-	usbd.epBank1SetByteCount(ep, len);
+	// XXX usbd.epBank1SetAddress(ep, &udd_ep_in_cache_buffer[ep]);
+	// XXX usbd.epBank1SetMultiPacketSize(ep, 0);
+	// XXX usbd.epBank1SetByteCount(ep, len);
 
 	return len;
 }
@@ -714,7 +720,7 @@ uint32_t USBDeviceClass::sendControl(const void* _data, uint32_t len)
 void USBDeviceClass::sendZlp(uint32_t ep)
 {
 	// Set the byte count as zero
-	usbd.epBank1SetByteCount(ep, 0);
+	// XXX usbd.epBank1SetByteCount(ep, 0);
 }
 
 bool USBDeviceClass::handleStandardSetup(USBSetup &setup)
@@ -831,23 +837,23 @@ void USBDeviceClass::ISRHandler()
 	}
 
 	// End-Of-Reset
-	if (usbd.isEndOfResetInterrupt())
+	if (0)  // XXX usbd.isEndOfResetInterrupt())
 	{
-		usbd.ackEndOfResetInterrupt();
+		// XXX usbd.ackEndOfResetInterrupt();
 
 		// Configure EP 0
 		initEP(0, USB_ENDPOINT_TYPE_CONTROL);
 
 		// Enable Setup-Received interrupt
-		usbd.epBank0EnableSetupReceived(0);
+		// XXX usbd.epBank0EnableSetupReceived(0);
 
 		_usbConfiguration = 0;
 	}
 
 	// Start-Of-Frame
-	if (usbd.isStartOfFrameInterrupt())
+	if (0) // XXX usbd.isStartOfFrameInterrupt())
 	{
-		usbd.ackStartOfFrameInterrupt();
+		// XXX usbd.ackStartOfFrameInterrupt();
 
 		// check whether the one-shot period has elapsed.  if so, turn off the LED
 #ifdef PIN_LED_TXL
@@ -868,10 +874,10 @@ void USBDeviceClass::ISRHandler()
 	}
 
 	/* Remove any stall requests for endpoint #0 */
-	if (usbd.epBank0IsStalled(0)) { usbd.epBank0DisableStalled(0); }
+ 	// XXX	if (usbd.epBank0IsStalled(0)) { usbd.epBank0DisableStalled(0); }
 
 	// Endpoint 0 Received Setup interrupt
-	if (usbd.epBank0IsSetupReceived(0))
+	if (0) // XXX (usbd.epBank0IsSetupReceived(0))
 	{
 		/* Retrieve received endpoint #0 data from buffer */
 		USBSetup setup;
@@ -885,8 +891,8 @@ void USBDeviceClass::ISRHandler()
 		 *   For IN endpoints, BYTE_COUNT holds the number of bytes to be sent in the next IN transaction.
 		 *   For OUT endpoint or SETUP endpoints, BYTE_COUNT holds the number of bytes received upon the last OUT or SETUP transaction.
 		 */
-		usbd.epBank0SetByteCount(0, 0);
-		usbd.epBank0ResetReady(0);
+		// usbd.epBank0SetByteCount(0, 0);
+		// usbd.epBank0ResetReady(0);
 
 		bool ok;
 		if (REQUEST_STANDARD == (setup.bmRequestType & REQUEST_TYPE)) {
@@ -898,28 +904,28 @@ void USBDeviceClass::ISRHandler()
 		}
 
 		if (ok) {
-			usbd.epBank1SetReady(0);
+		 	// XXX	usbd.epBank1SetReady(0);
 		} else {
 			stall(0);
 		}
 
-		if (usbd.epBank1IsStalled(0))
+		if (0) // XXX (usbd.epBank1IsStalled(0))
 		{
 			// Remove stall request
-			usbd.epBank1DisableStalled(0);
+			// XXX usbd.epBank1DisableStalled(0);
 		}
 	} // end Received Setup handler
-	usbd.epAckPendingInterrupts(0);
+	// XXX usbd.epAckPendingInterrupts(0);
 
 	for (int ep = 1; ep < USB_EPT_NUM; ep++) {
 		// Endpoint Transfer Complete (0/1) Interrupt
-		if (usbd.epHasPendingInterrupts(ep)) {
+		if (0) { // XXX usbd.epHasPendingInterrupts(ep)) {
 			if (epHandlers[ep]) {
 				epHandlers[ep]->handleEndpoint();
 			} else {
 				#if defined(PLUGGABLE_USB_ENABLED)
 				SerialUSB.handleEndpoint(ep);
-				usbd.epAckPendingInterrupts(ep);
+				// XXX usbd.epAckPendingInterrupts(ep);
 				#endif
 			}
 		}
