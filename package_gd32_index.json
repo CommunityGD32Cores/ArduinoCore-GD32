@@ -3,14 +3,14 @@
     {
       "email": "",
       "help": {
-        "online": "https://github.com/CommunityGD32Cores/GD32Core-New"
+        "online": "https://github.com/CommunityGD32Cores/ArduinoCore-GD32"
       },
       "maintainer": "Some random folks",
       "name": "GD32Community",
       "platforms": [
         {
           "architecture": "gd32",
-          "archiveFileName": "GD32Core-New-main.zip",
+          "archiveFileName": "ArduinoCore-GD32-main.zip",
           "boards": [
             {
               "name": "GD32F303ZE EVAL"
@@ -44,7 +44,7 @@
               "name": "dfu-util"
             }
           ],
-          "url": "https://github.com/CommunityGD32Cores/GD32Core-New/archive/refs/heads/main.zip",
+          "url": "https://github.com/CommunityGD32Cores/ArduinoCore-GD32/archive/refs/heads/main.zip",
           "version": "0.0.1"
         }
       ],
@@ -194,7 +194,7 @@
           ]
         }
       ],
-      "websiteURL": "https://github.com/CommunityGD32Cores/GD32Core-New/"
+      "websiteURL": "https://github.com/CommunityGD32Cores/ArduinoCore-GD32/"
     }
   ]
 }
