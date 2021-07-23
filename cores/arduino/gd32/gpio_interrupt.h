@@ -1,7 +1,7 @@
 #ifndef _GPIO_INTERRUPT_
 #define _GPIO_INTERRUPT_
 
-#include "arduino.h"
+#include "Arduino.h"
 
 #define EXTI_IRQ_PRIO       3
 #define EXTI_IRQ_SUBPRIO    0
