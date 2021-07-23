@@ -1,6 +1,9 @@
 This is the USB Core from the Arduino SAMD implementation. 
 I chose that because this is a first-party ARM core that uses a modern PluggableUSB-capable USB Core.
 
+
 All of the code that needs to be replaced with a GD32 implementation is commented out with an
 
 "#if 0" or "// XXX"
+
+I now strongly suspect that most USBCore.cpp and GD32F3_USBDevice.h should get chucked out and replaced with a much thinner wrapper over GigaDevice's firmware library USBD
