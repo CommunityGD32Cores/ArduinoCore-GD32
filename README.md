@@ -33,11 +33,11 @@ And here it is using `analogRead()` to read the voltage over a potentiomeneter a
 
 ## Using this core with PlatformIO
 
-Currently, development of this core is being done using PlatformIO. It uses the custom PlatformIO platform https://github.com/maxgerhardt/platform-gd32. 
+Currently, development of this core is being done using PlatformIO. It uses the custom PlatformIO platform https://github.com/CommunityGD32Cores/platform-gd32. 
 
 Using PlatformIO is already possible to very easily edit code in the IDE and even live-debug a chip (with e.g. an ST-Link)
 
-Example projects for this platform for the SPL framework and this Arduino core are currently hosted at https://github.com/maxgerhardt/gd32-pio-projects, but are subject to be moved soon.
+Various example projects for this platform for the SPL framework and this Arduino core are currently hosted at https://github.com/CommunityGD32Cores/gd32-pio-projects.
 
 ## Using this core with the Arduino IDE
 
@@ -113,6 +113,12 @@ Arduino core:
 * Added catalog of issues for future work
 * Added Arduino IDE build support, ~~upload not yet working~~ upload working fine :)
 
+*24.07.2021:*
+* moved all relevant projects into the Github org instead of personal accounts, adapted URLs
+* build fixes for Linux
+* added CI to projects repository, now builds 15 projects fully automatically
+* Jesse worked on merging new-style Arduino APIs (https://github.com/arduino/ArduinoCore-API/) to this core
+* Jesse started working on USB support (and USB bootloaders)
 
 ## ToDo / thoughts
 
