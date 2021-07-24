@@ -51,6 +51,7 @@ void pinMode(pin_size_t ulPin, PinMode ulMode)
         case INPUT_PULLDOWN:
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_IPD, 0, 0));
             break;
+ // now done in analogRead().
  //       case INPUT_ANALOG:
  //           pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_AIN, 0, 0));
  //           break;

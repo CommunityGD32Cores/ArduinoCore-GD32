@@ -54,6 +54,8 @@ int analogRead(pin_size_t ulPin)
 {
     uint32_t value = 0;
     PinName p = DIGITAL_TO_PINNAME(ulPin);
+    //set pin mode to analog in before read
+    pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_AIN, 0, 0));    
     switch(ulPin) {
         case ADC_TEMP:
             p = ADC_TEMP;
