@@ -191,7 +191,7 @@ def get_arduino_board_id(board_config, mcu):
 
 
 board_id = get_arduino_board_id(board_config, mcu)
-spl_series = board_config.get("build.spl_series","").upper()
+spl_series = board_config.get("build.spl_series","")
 
 env.Append(
     ASFLAGS=["-x", "assembler-with-cpp"],

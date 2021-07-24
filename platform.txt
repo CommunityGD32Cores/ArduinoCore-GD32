@@ -47,8 +47,10 @@ compiler.elf2bin.extra_flags=
 compiler.elf2hex.extra_flags=
 
 # These can be overriden in boards.txt
+
 build.extra_flags=
-build.bootloader_flags=
+build.flash_offset=0
+build.bootloader_flags=-DVECT_TAB_OFFSET={build.flash_offset}
 build.ldscript=ldscript.ld
 
 ## Build information's flag
@@ -63,7 +65,6 @@ build.startup_file=
 build.flags.fp=
 build.flags.optimize=-O0
 build.flags.ldspecs=--specs=nano.specs
-build.flash_offset=0
 
 # compile patterns
 ## Compile c files
@@ -130,3 +131,13 @@ tools.jlink_upload.path={runtime.tools.xpack-openocd-0.11.0-1.path}/bin
 tools.jlink_upload.upload.params.verbose=-d2
 tools.jlink_upload.upload.params.quiet=n
 tools.jlink_upload.upload.pattern="{path}/{cmd}" -s "{path}/scripts" -f interface/jlink.cfg -c "transport select swd" -c "set CPUTAPID 0" -f {upload.openocd_script} -c "program {{build.path}/{build.project_name}.elf} verify reset; shutdown"
+
+#
+# DFU_UTIL
+#
+tools.dfu-util.path={runtime.tools.dfu-util.path}
+tools.dfu-util.cmd=dfu-util
+tools.dfu-util.upload.params.verbose=-d
+tools.dfu-util.upload.params.quiet=
+tools.dfu-util.upload.pattern="{path}/{cmd}" --device {upload.vid}:{upload.pid} -D "{build.path}/{build.project_name}.bin" -R {upload.options}
+
