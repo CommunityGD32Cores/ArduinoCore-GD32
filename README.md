@@ -119,6 +119,7 @@ Arduino core:
 * added CI to projects repository, now builds 15 projects fully automatically
 * Jesse worked on merging new-style Arduino APIs (https://github.com/arduino/ArduinoCore-API/) to this core
 * Jesse started working on USB support (and USB bootloaders)
+* later that day, the new ArduinoCore-API adoption was successfully merged and tested
 
 ## ToDo / thoughts
 
