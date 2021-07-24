@@ -17,6 +17,7 @@
 */
 
 #include "Arduino.h"
+#include "systick.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -42,6 +43,24 @@ void delay(uint32_t ms)
             __NOP();
         } while(getCurrentMillis() - start < ms);
     }
+}
+
+void delayMicroseconds(unsigned int us)
+{
+    __IO uint32_t currentTicks = SysTick->VAL;
+    /* Number of ticks per millisecond */
+    const uint32_t tickPerMs = SysTick->LOAD + 1;
+    /* Number of ticks to count */
+    const uint32_t nbTicks = ((us - ((us > 0) ? 1 : 0)) * tickPerMs) / 1000;
+    /* Number of elapsed ticks */
+    uint32_t elapsedTicks = 0;
+    __IO uint32_t oldTicks = currentTicks;
+    do {
+        currentTicks = SysTick->VAL;
+        elapsedTicks += (oldTicks < currentTicks) ? tickPerMs + oldTicks - currentTicks :
+                        oldTicks - currentTicks;
+        oldTicks = currentTicks;
+    } while(nbTicks > elapsedTicks);
 }
 
 #ifdef __cplusplus
