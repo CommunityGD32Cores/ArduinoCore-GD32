@@ -40,6 +40,9 @@ using namespace arduino;
 
 
 #ifdef __cplusplus
+/* include outside of extern C block, this is basically a C++ library */
+#include "pwm.h"
+
 extern "C" {
 #endif /* __cplusplus */
 #include "gd32/systick.h"
