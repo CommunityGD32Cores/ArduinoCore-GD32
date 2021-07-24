@@ -29,6 +29,11 @@
 #define Arduino_h
 
 #include "api/ArduinoAPI.h"
+
+#if defined(__cplusplus)
+using namespace arduino;
+#endif
+
 #include "gd32f30x.h"
 #include "gd32/pins_arduino.h"
 #include "gd32/PeripheralPins.h"
