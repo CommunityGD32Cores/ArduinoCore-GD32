@@ -20,8 +20,7 @@
 #include <api/Interrupts.h>
 #include "gpio_interrupt.h"
 
-
-void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinMode mode)
+void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus mode)
 {
     exti_trig_type_enum it_mode;
     PinName pinname = DIGITAL_TO_PINNAME(pin);
