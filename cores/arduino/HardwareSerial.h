@@ -26,7 +26,7 @@
 
 #include <inttypes.h>
 
-#include "Stream.h"
+#include "api/Stream.h"
 #include "uart.h"
 
 

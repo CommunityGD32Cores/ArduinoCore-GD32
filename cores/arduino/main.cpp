@@ -25,6 +25,20 @@
  *****************************************************************************/
 #include "Arduino.h"
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+void init(void)
+{
+    systick_config();
+}
+
+#ifdef __cplusplus
+}
+#endif
+
+
 // Force init to be called *first*, i.e. before static object allocation.
 // Otherwise, statically allocated objects that need libmaple may fail.
 __attribute__((constructor(101))) void premain()

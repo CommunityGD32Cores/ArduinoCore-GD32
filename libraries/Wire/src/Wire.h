@@ -22,7 +22,7 @@
 #ifndef TwoWire_h
 #define TwoWire_h
 
-#include "Stream.h"
+#include "api/Stream.h"
 #include "Arduino.h"
 extern "C" {
 #include "utility/twi.h"

@@ -277,6 +277,9 @@ typedef enum {
 #define GD_PIN_CHANNEL_GET(X)     ((X >> PIN_CHANNEL_SHIFT) & PIN_CHANNEL_MASK)
 #define GD_PIN_CHON_GET(X)        ((X >> PIN_CHON_SHIFT) & PIN_CHON_MASK)
 
+
+
+
 typedef enum {
     PIN_MODE_INPUT         = 0,
     PIN_MODE_AIN           = 0,
@@ -291,7 +294,7 @@ typedef enum {
     PIN_MODE_AF_PP         = 7,
     PIN_MODE_ANALOG        = 3,
 
-} PinMode;
+} GD32PinMode;
 
 /* GPIO pull-up/pull-down/none */
 enum {

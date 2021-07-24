@@ -222,7 +222,8 @@ env.Append(
         ("BOARD_NAME", '\\"%s\\"' % board_id),
     ],
     CPPPATH=[
-        join(FRAMEWORK_DIR, "cores", "arduino", "avr"),
+        join(FRAMEWORK_DIR, "cores", "arduino", "api", "deprecated"),
+        join(FRAMEWORK_DIR, "cores", "arduino", "api", "deprecated-avr-comp"),
         join(FRAMEWORK_DIR, "cores", "arduino", "gd32"),
         join(FRAMEWORK_DIR, "cores", "arduino", "gd32", "Source"),
         join(FRAMEWORK_DIR, "system", "CMSIS"),

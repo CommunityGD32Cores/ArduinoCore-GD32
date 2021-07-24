@@ -24,13 +24,41 @@
  * SOFTWARE.
  *****************************************************************************/
 
-#ifndef _WIRISH_WPROGRAM_H_
-#define _WIRISH_WPROGRAM_H_
 
-#include "wiring.h"
+#ifndef Arduino_h
+#define Arduino_h
 
+#include "api/ArduinoAPI.h"
+
+#if defined(__cplusplus)
+using namespace arduino;
+#endif
+
+#include "gd32f30x.h"
+#include "gd32/pins_arduino.h"
+#include "gd32/PeripheralPins.h"
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+#include "gd32/systick.h"
+#include "analog.h"
+#include "gd32/gpio_interrupt.h"
+#include "gd32/timer.h"
+#include "gd32/rtc.h"
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+#ifdef __cplusplus
+
+
+
+void init(void);
 void setup();
 void loop();
+
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
@@ -40,5 +68,7 @@ extern "C" {
 #endif // __cplusplus
 
 #include "variant.h"
+#include "HardwareSerial.h"
 
+#endif
 #endif

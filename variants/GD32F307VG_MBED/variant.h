@@ -102,9 +102,13 @@ extern "C" {
 #define PWM5                    PB15
 
 /* USART definitions */
-#define USE_USART1_SERIAL       1
+#define USE_USART1_SERIAL
+#define SERIAL_HOWMANY          1
 #define PIN_SERIAL_RX           PA3
 #define PIN_SERIAL_TX           PA2
+#define SERIAL1_RX		PIN_SERIAL_RX
+#define SERIAL1_TX		PIN_SERIAL_TX
+
 
 /* ADC definitions */
 #define ADC_RESOLUTION          10

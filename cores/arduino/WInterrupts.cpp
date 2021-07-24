@@ -17,11 +17,11 @@
 */
 
 #include "Arduino.h"
-#include "WInterrupts.h"
+#include <api/Interrupts.h>
 #include "gpio_interrupt.h"
 
 
-void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
+void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinMode mode)
 {
     exti_trig_type_enum it_mode;
     PinName pinname = DIGITAL_TO_PINNAME(pin);
