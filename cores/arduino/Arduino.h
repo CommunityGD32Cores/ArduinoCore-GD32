@@ -47,6 +47,7 @@ extern "C" {
 #endif /* __cplusplus */
 #include "gd32/systick.h"
 #include "analog.h"
+#include "wiring_analog_extra.h"
 #include "gd32/gpio_interrupt.h"
 #include "gd32/timer.h"
 #include "gd32/rtc.h"
