@@ -21,9 +21,9 @@
 #include <Arduino.h>
 
 #include "api/USBAPI.h"
-#include "USBAPI.h"
 #include "CDC.h"
 #include "api/PluggableUSB.h"
+#include "USBDeviceClass.h"
 
 #include <stdlib.h>
 #include <stdio.h>

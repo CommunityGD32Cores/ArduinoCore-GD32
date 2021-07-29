@@ -4,7 +4,7 @@
 #ifdef CDC_ENABLED
 
 #include "USBDesc.h"
-#include "USBAPI.h"
+#include "USBDeviceClass.h"
 #include "api/PluggableUSB.h"
 
 
