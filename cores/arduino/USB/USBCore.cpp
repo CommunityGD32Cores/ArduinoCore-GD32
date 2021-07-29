@@ -22,7 +22,6 @@
 
 #include "api/USBAPI.h"
 #include "USBAPI.h"
-#include "GD32F3_USBDevice.h"
 #include "CDC.h"
 #include "api/PluggableUSB.h"
 
@@ -38,7 +37,6 @@ using namespace arduino;
  * -------------------
  */
 
-USBDevice_GD32F30x usbd;
 USBDeviceClass USBDevice;
 
 /** Pulse generation counters to keep track of the number of milliseconds remaining for each pulse type */
@@ -278,40 +276,25 @@ void USBDeviceClass::init()
 	digitalWrite(PIN_LED_RXL, HIGH);
 #endif
 
-#if 0
 
 	// XXX IMPLEMENT THIS
 
 	// Enable USB clock
-	PM->APBBMASK.reg |= PM_APBBMASK_USB;
 
 	// Set up the USB DP/DN pins
-	PORT->Group[0].PINCFG[PIN_PA24G_USB_DM].bit.PMUXEN = 1;
-	PORT->Group[0].PMUX[PIN_PA24G_USB_DM/2].reg &= ~(0xF << (4 * (PIN_PA24G_USB_DM & 0x01u)));
-	PORT->Group[0].PMUX[PIN_PA24G_USB_DM/2].reg |= MUX_PA24G_USB_DM << (4 * (PIN_PA24G_USB_DM & 0x01u));
-	PORT->Group[0].PINCFG[PIN_PA25G_USB_DP].bit.PMUXEN = 1;
-	PORT->Group[0].PMUX[PIN_PA25G_USB_DP/2].reg &= ~(0xF << (4 * (PIN_PA25G_USB_DP & 0x01u)));
-	PORT->Group[0].PMUX[PIN_PA25G_USB_DP/2].reg |= MUX_PA25G_USB_DP << (4 * (PIN_PA25G_USB_DP & 0x01u));
 
 	// Put Generic Clock Generator 0 as source for Generic Clock Multiplexer 6 (USB reference)
-	GCLK->CLKCTRL.reg = GCLK_CLKCTRL_ID(6)     | // Generic Clock Multiplexer 6
-	                    GCLK_CLKCTRL_GEN_GCLK0 | // Generic Clock Generator 0 is source
-	                    GCLK_CLKCTRL_CLKEN;
-	while (GCLK->STATUS.bit.SYNCBUSY)
-		;
-#endif
 
 	// XXX TODO USB_SetHandler(&UDD_Handler);
 
 	// Reset USB Device
-	usbd.reset();
 
-	usbd.calibrate();
-	usbd.setDataSensitiveQoS();
-	usbd.setConfigSensitiveQoS();
-	usbd.setUSBDeviceMode();
-	usbd.runInStandby();
-	usbd.setFullSpeed();
+//	usbd.calibrate();
+//	usbd.setDataSensitiveQoS();
+//	usbd.setConfigSensitiveQoS();
+//	usbd.setUSBDeviceMode();
+//	usbd.runInStandby();
+//	usbd.setFullSpeed();
 
 	// Configure interrupts
 #if 0
@@ -320,7 +303,6 @@ void USBDeviceClass::init()
 	NVIC_EnableIRQ((IRQn_Type) USB_IRQn);
 #endif 
 
-	usbd.enable();
 
 	initialized = true;
 
@@ -356,8 +338,6 @@ void USBDeviceClass::setAddress(uint32_t addr)
 #if 0
 	// XXX TODO 
 	// Set USB address to addr
-	USB->DEVICE.DADD.bit.DADD = addr; // Address
-	USB->DEVICE.DADD.bit.ADDEN = 1; // Enable
 #endif
 
 }
@@ -366,14 +346,14 @@ bool USBDeviceClass::detach()
 {
 	if (!initialized)
 		return false;
-	usbd.detach();
+	// Detach USB
 	return true;
 }
 
 bool USBDeviceClass::end() {
 	if (!initialized)
 		return false;
-	usbd.disable();
+	// Disable USB
 	return true;
 }
 
@@ -444,17 +424,10 @@ void USBDeviceClass::initEP(uint32_t ep, uint32_t config)
 	else if (config == USB_ENDPOINT_TYPE_CONTROL)
 	{
 		// Setup Control OUT
-		usbd.epBank0SetSize(ep, 64);
-		usbd.epBank0SetAddress(ep, &udd_ep_out_cache_buffer[ep]);
-		usbd.epBank0SetType(ep, 1); // CONTROL OUT / SETUP
 
 		// Setup Control IN
-		usbd.epBank1SetSize(ep, 64);
-		usbd.epBank1SetAddress(ep, &udd_ep_in_cache_buffer[ep]);
-		usbd.epBank1SetType(ep, 1); // CONTROL IN
 
 		// Release OUT EP
-		usbd.epReleaseOutBank0(ep, 64);
 	}
 }
 
