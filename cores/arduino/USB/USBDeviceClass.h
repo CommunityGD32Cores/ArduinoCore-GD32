@@ -27,6 +27,7 @@
 #include "api/Stream.h"
 #include "api/RingBuffer.h"
 #include "api/USBAPI.h"
+#include "USBDesc.h"
 #include "USBDescriptors.h"
 #include "CDC.h"
 
