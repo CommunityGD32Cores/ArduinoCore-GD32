@@ -38,9 +38,7 @@ board_config = env.BoardConfig()
 board_name = env.subst("$BOARD")
 
 FRAMEWORK_DIR = platform.get_package_dir("framework-arduinogd32")
-CMSIS_DIR = join(FRAMEWORK_DIR, "system", "CMSIS")
 assert isdir(FRAMEWORK_DIR)
-assert isdir(CMSIS_DIR)
 
 
 mcu = board_config.get("build.mcu", "")
@@ -226,10 +224,10 @@ env.Append(
         join(FRAMEWORK_DIR, "cores", "arduino", "api", "deprecated-avr-comp"),
         join(FRAMEWORK_DIR, "cores", "arduino", "gd32"),
         join(FRAMEWORK_DIR, "cores", "arduino", "gd32", "Source"),
-        join(FRAMEWORK_DIR, "system", "CMSIS"),
-        join(FRAMEWORK_DIR, "system", "CMSIS", "GD", spl_series, "Include"),
-        join(FRAMEWORK_DIR, "system", "CMSIS", "GD", spl_series, "Source"),
-        join(FRAMEWORK_DIR, "system", "CMSIS", "GD", spl_series, "Source", "GCC"),
+        join(FRAMEWORK_DIR, "system", spl_series + "_firmware", "CMSIS"),
+        join(FRAMEWORK_DIR, "system", spl_series + "_firmware", "CMSIS", "GD", spl_series, "Include"),
+        join(FRAMEWORK_DIR, "system", spl_series + "_firmware", "CMSIS", "GD", spl_series, "Source"),
+        join(FRAMEWORK_DIR, "system", spl_series + "_firmware", "CMSIS", "GD", spl_series, "Source", "GCC"),
         join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_standard_peripheral", "Include"),
         join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_standard_peripheral", "Source"),
         join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_usbd_driver", "Include"),
