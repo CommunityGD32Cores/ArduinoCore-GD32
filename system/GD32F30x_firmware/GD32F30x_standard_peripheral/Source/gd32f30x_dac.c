@@ -1,38 +1,37 @@
 /*!
-    \file  gd32f30x_dac.c
-    \brief DAC driver
+    \file    gd32f30x_dac.c
+    \brief   DAC driver
 
     \version 2017-02-10, V1.0.0, firmware for GD32F30x
     \version 2018-10-10, V1.1.0, firmware for GD32F30x
     \version 2018-12-25, V2.0.0, firmware for GD32F30x
+    \version 2020-09-30, V2.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2018, GigaDevice Semiconductor Inc.
+    Copyright (c) 2020, GigaDevice Semiconductor Inc.
 
-    All rights reserved.
-
-    Redistribution and use in source and binary forms, with or without modification,
+    Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
 
-    1. Redistributions of source code must retain the above copyright notice, this
+    1. Redistributions of source code must retain the above copyright notice, this 
        list of conditions and the following disclaimer.
-    2. Redistributions in binary form must reproduce the above copyright notice,
-       this list of conditions and the following disclaimer in the documentation
+    2. Redistributions in binary form must reproduce the above copyright notice, 
+       this list of conditions and the following disclaimer in the documentation 
        and/or other materials provided with the distribution.
-    3. Neither the name of the copyright holder nor the names of its contributors
-       may be used to endorse or promote products derived from this software without
+    3. Neither the name of the copyright holder nor the names of its contributors 
+       may be used to endorse or promote products derived from this software without 
        specific prior written permission.
 
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
 OF SUCH DAMAGE.
 */
 
@@ -63,12 +62,12 @@ void dac_deinit(void)
 */
 void dac_enable(uint32_t dac_periph)
 {
-    if(DAC0 == dac_periph) {
+    if(DAC0 == dac_periph){
         DAC_CTL |= DAC_CTL_DEN0;
-    } else {
+    }else{
         DAC_CTL |= DAC_CTL_DEN1;
     }
-}
+} 
 
 /*!
     \brief      disable DAC
@@ -78,9 +77,9 @@ void dac_enable(uint32_t dac_periph)
 */
 void dac_disable(uint32_t dac_periph)
 {
-    if(DAC0 == dac_periph) {
+    if(DAC0 == dac_periph){
         DAC_CTL &= ~DAC_CTL_DEN0;
-    } else {
+    }else{
         DAC_CTL &= ~DAC_CTL_DEN1;
     }
 }
@@ -93,9 +92,9 @@ void dac_disable(uint32_t dac_periph)
 */
 void dac_dma_enable(uint32_t dac_periph)
 {
-    if(DAC0 == dac_periph) {
+    if(DAC0 == dac_periph){
         DAC_CTL |= DAC_CTL_DDMAEN0;
-    } else {
+    }else{
         DAC_CTL |= DAC_CTL_DDMAEN1;
     }
 }
@@ -108,9 +107,9 @@ void dac_dma_enable(uint32_t dac_periph)
 */
 void dac_dma_disable(uint32_t dac_periph)
 {
-    if(DAC0 == dac_periph) {
+    if(DAC0 == dac_periph){
         DAC_CTL &= ~DAC_CTL_DDMAEN0;
-    } else {
+    }else{
         DAC_CTL &= ~DAC_CTL_DDMAEN1;
     }
 }
@@ -123,9 +122,9 @@ void dac_dma_disable(uint32_t dac_periph)
 */
 void dac_output_buffer_enable(uint32_t dac_periph)
 {
-    if(DAC0 == dac_periph) {
+    if(DAC0 == dac_periph){
         DAC_CTL &= ~DAC_CTL_DBOFF0;
-    } else {
+    }else{
         DAC_CTL &= ~DAC_CTL_DBOFF1;
     }
 }
@@ -138,9 +137,9 @@ void dac_output_buffer_enable(uint32_t dac_periph)
 */
 void dac_output_buffer_disable(uint32_t dac_periph)
 {
-    if(DAC0 == dac_periph) {
+    if(DAC0 == dac_periph){
         DAC_CTL |= DAC_CTL_DBOFF0;
-    } else {
+    }else{
         DAC_CTL |= DAC_CTL_DBOFF1;
     }
 }
@@ -154,10 +153,10 @@ void dac_output_buffer_disable(uint32_t dac_periph)
 uint16_t dac_output_value_get(uint32_t dac_periph)
 {
     uint16_t data = 0U;
-    if(DAC0 == dac_periph) {
+    if(DAC0 == dac_periph){
         /* store the DAC0 output value */
         data = (uint16_t)DAC0_DO;
-    } else {
+    }else{
         /* store the DAC1 output value */
         data = (uint16_t)DAC1_DO;
     }
@@ -178,39 +177,39 @@ uint16_t dac_output_value_get(uint32_t dac_periph)
 */
 void dac_data_set(uint32_t dac_periph, uint32_t dac_align, uint16_t data)
 {
-    if(DAC0 == dac_periph) {
-        switch(dac_align) {
-            /* data right 12 bit alignment */
-            case DAC_ALIGN_12B_R:
-                DAC0_R12DH = data;
-                break;
-            /* data left 12 bit alignment */
-            case DAC_ALIGN_12B_L:
-                DAC0_L12DH = data;
-                break;
-            /* data right 8 bit alignment */
-            case DAC_ALIGN_8B_R:
-                DAC0_R8DH = data;
-                break;
-            default:
-                break;
+    if(DAC0 == dac_periph){
+        switch(dac_align){
+        /* data right 12 bit alignment */
+        case DAC_ALIGN_12B_R:
+            DAC0_R12DH = data;
+            break;
+        /* data left 12 bit alignment */
+        case DAC_ALIGN_12B_L:
+            DAC0_L12DH = data;
+            break;
+        /* data right 8 bit alignment */
+        case DAC_ALIGN_8B_R:
+            DAC0_R8DH = data;
+            break;
+        default:
+            break;
         }
-    } else {
-        switch(dac_align) {
-            /* data right 12 bit alignment */
-            case DAC_ALIGN_12B_R:
-                DAC1_R12DH = data;
-                break;
-            /* data left 12 bit alignment */
-            case DAC_ALIGN_12B_L:
-                DAC1_L12DH = data;
-                break;
-            /* data right 8 bit alignment */
-            case DAC_ALIGN_8B_R:
-                DAC1_R8DH = data;
-                break;
-            default:
-                break;
+    }else{
+        switch(dac_align){
+        /* data right 12 bit alignment */
+        case DAC_ALIGN_12B_R:
+            DAC1_R12DH = data;
+            break;
+        /* data left 12 bit alignment */
+        case DAC_ALIGN_12B_L:
+            DAC1_L12DH = data;
+            break;
+        /* data right 8 bit alignment */
+        case DAC_ALIGN_8B_R:
+            DAC1_R8DH = data;
+            break;
+        default:
+            break;
         }
     }
 }
@@ -223,9 +222,9 @@ void dac_data_set(uint32_t dac_periph, uint32_t dac_align, uint16_t data)
 */
 void dac_trigger_enable(uint32_t dac_periph)
 {
-    if(DAC0 == dac_periph) {
+    if(DAC0 == dac_periph){
         DAC_CTL |= DAC_CTL_DTEN0;
-    } else {
+    }else{
         DAC_CTL |= DAC_CTL_DTEN1;
     }
 }
@@ -238,9 +237,9 @@ void dac_trigger_enable(uint32_t dac_periph)
 */
 void dac_trigger_disable(uint32_t dac_periph)
 {
-    if(DAC0 == dac_periph) {
+    if(DAC0 == dac_periph){
         DAC_CTL &= ~DAC_CTL_DTEN0;
-    } else {
+    }else{
         DAC_CTL &= ~DAC_CTL_DTEN1;
     }
 }
@@ -262,13 +261,13 @@ void dac_trigger_disable(uint32_t dac_periph)
     \param[out] none
     \retval     none
 */
-void dac_trigger_source_config(uint32_t dac_periph, uint32_t triggersource)
+void dac_trigger_source_config(uint32_t dac_periph,uint32_t triggersource)
 {
-    if(DAC0 == dac_periph) {
+    if(DAC0 == dac_periph){
         /* configure DAC0 trigger source */
         DAC_CTL &= ~DAC_CTL_DTSEL0;
         DAC_CTL |= triggersource;
-    } else {
+    }else{
         /* configure DAC1 trigger source */
         DAC_CTL &= ~DAC_CTL_DTSEL1;
         DAC_CTL |= (triggersource << DAC1_REG_OFFSET);
@@ -282,9 +281,9 @@ void dac_trigger_source_config(uint32_t dac_periph, uint32_t triggersource)
 */
 void dac_software_trigger_enable(uint32_t dac_periph)
 {
-    if(DAC0 == dac_periph) {
+    if(DAC0 == dac_periph){
         DAC_SWT |= DAC_SWT_SWTR0;
-    } else {
+    }else{
         DAC_SWT |= DAC_SWT_SWTR1;
     }
 }
@@ -297,9 +296,9 @@ void dac_software_trigger_enable(uint32_t dac_periph)
 */
 void dac_software_trigger_disable(uint32_t dac_periph)
 {
-    if(DAC0 == dac_periph) {
+    if(DAC0 == dac_periph){
         DAC_SWT &= ~DAC_SWT_SWTR0;
-    } else {
+    }else{
         DAC_SWT &= ~DAC_SWT_SWTR1;
     }
 }
@@ -317,11 +316,11 @@ void dac_software_trigger_disable(uint32_t dac_periph)
 */
 void dac_wave_mode_config(uint32_t dac_periph, uint32_t wave_mode)
 {
-    if(DAC0 == dac_periph) {
+    if(DAC0 == dac_periph){
         /* configure DAC0 wave mode */
         DAC_CTL &= ~DAC_CTL_DWM0;
         DAC_CTL |= wave_mode;
-    } else {
+    }else{
         /* configure DAC1 wave mode */
         DAC_CTL &= ~DAC_CTL_DWM1;
         DAC_CTL |= (wave_mode << DAC1_REG_OFFSET);
@@ -350,11 +349,11 @@ void dac_wave_mode_config(uint32_t dac_periph, uint32_t wave_mode)
 */
 void dac_wave_bit_width_config(uint32_t dac_periph, uint32_t bit_width)
 {
-    if(DAC0 == dac_periph) {
+    if(DAC0 == dac_periph){
         /* configure DAC0 wave bit width */
         DAC_CTL &= ~DAC_CTL_DWBW0;
         DAC_CTL |= bit_width;
-    } else {
+    }else{
         /* configure DAC1 wave bit width */
         DAC_CTL &= ~DAC_CTL_DWBW1;
         DAC_CTL |= (bit_width << DAC1_REG_OFFSET);
@@ -383,11 +382,11 @@ void dac_wave_bit_width_config(uint32_t dac_periph, uint32_t bit_width)
 */
 void dac_lfsr_noise_config(uint32_t dac_periph, uint32_t unmask_bits)
 {
-    if(DAC0 == dac_periph) {
+    if(DAC0 == dac_periph){
         /* configure DAC0 LFSR noise mode */
         DAC_CTL &= ~DAC_CTL_DWBW0;
         DAC_CTL |= unmask_bits;
-    } else {
+    }else{
         /* configure DAC1 LFSR noise mode */
         DAC_CTL &= ~DAC_CTL_DWBW1;
         DAC_CTL |= (unmask_bits << DAC1_REG_OFFSET);
@@ -416,11 +415,11 @@ void dac_lfsr_noise_config(uint32_t dac_periph, uint32_t unmask_bits)
 */
 void dac_triangle_noise_config(uint32_t dac_periph, uint32_t amplitude)
 {
-    if(DAC0 == dac_periph) {
+    if(DAC0 == dac_periph){
         /* configure DAC0 triangle noise mode */
         DAC_CTL &= ~DAC_CTL_DWBW0;
         DAC_CTL |= amplitude;
-    } else {
+    }else{
         /* configure DAC1 triangle noise mode */
         DAC_CTL &= ~DAC_CTL_DWBW1;
         DAC_CTL |= (amplitude << DAC1_REG_OFFSET);
@@ -463,7 +462,7 @@ void dac_concurrent_software_trigger_enable(void)
 {
     uint32_t swt = 0U;
     swt = DAC_SWT_SWTR0 | DAC_SWT_SWTR1;
-    DAC_SWT |= (swt);
+    DAC_SWT |= (swt); 
 }
 
 /*!
@@ -520,23 +519,23 @@ void dac_concurrent_output_buffer_disable(void)
 void dac_concurrent_data_set(uint32_t dac_align, uint16_t data0, uint16_t data1)
 {
     uint32_t data = 0U;
-    switch(dac_align) {
-        /* data right 12b alignment */
-        case DAC_ALIGN_12B_R:
-            data = ((uint32_t)data1 << DH_12BIT_OFFSET) | data0;
-            DACC_R12DH = data;
-            break;
-        /* data left 12b alignment */
-        case DAC_ALIGN_12B_L:
-            data = ((uint32_t)data1 << DH_12BIT_OFFSET) | data0;
-            DACC_L12DH = data;
-            break;
-        /* data right 8b alignment */
-        case DAC_ALIGN_8B_R:
-            data = ((uint32_t)data1 << DH_8BIT_OFFSET) | data0;
-            DACC_R8DH = data;
-            break;
-        default:
-            break;
+    switch(dac_align){
+    /* data right 12b alignment */
+    case DAC_ALIGN_12B_R:
+        data = ((uint32_t)data1 << DH_12BIT_OFFSET) | data0;
+        DACC_R12DH = data;
+        break;
+    /* data left 12b alignment */
+    case DAC_ALIGN_12B_L:
+        data = ((uint32_t)data1 << DH_12BIT_OFFSET) | data0;
+        DACC_L12DH = data;
+        break;
+    /* data right 8b alignment */
+    case DAC_ALIGN_8B_R:
+        data = ((uint32_t)data1 << DH_8BIT_OFFSET) | data0;
+        DACC_R8DH = data;
+        break;
+    default:
+        break;
     }
 }
