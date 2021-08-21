@@ -26,6 +26,7 @@ OF SUCH DAMAGE.
 */
 
 #include "HardwareRTC.h"
+#include <cstddef>
 
 HWRTC rtc;
 
