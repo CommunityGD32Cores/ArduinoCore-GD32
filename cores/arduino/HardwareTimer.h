@@ -30,6 +30,15 @@ OF SUCH DAMAGE.
 
 #include "timer.h"
 
+// Copied from 1.0.x firmware library for compatibility, but this is
+// unspecified in the data sheet. Being able to use both edges is not
+// described as supported behavior, and bit 4 is in a reserved section
+// of the TIMERx_CHCTL2 register. -bjc (2021-Aug-20)
+#ifndef TIMER_IC_POLARITY_BOTH_EDGE
+#define TIMER_IC_POLARITY_BOTH_EDGE         ((uint16_t)0x000AU)                     /*!< input capture both edge(not for timer1..6) */
+#endif
+
+
 typedef void(*timerCallback_t)(void);
 
 class HardwareTimer {
