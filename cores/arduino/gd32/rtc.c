@@ -27,6 +27,16 @@ OF SUCH DAMAGE.
 
 #include "rtc.h"
 
+/*
+  In the definitions for GD32F30X_{H,X}D, this is 'Alarm', but for the
+  CL variant, it’s 'ALARM'. The core uses the upper case version. I
+  have no good solution other than getting the official firmware
+  library changed. -bjc (2021-Aug-20)
+*/
+#if defined(GD32F30X_HD) || defined (GD32F30X_XD)
+#define RTC_ALARM_IRQn RTC_Alarm_IRQn
+#endif
+
 /*!
     \brief      rtc init
     \param[in]  none
