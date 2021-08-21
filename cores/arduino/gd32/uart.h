@@ -75,6 +75,36 @@ extern "C" {
 
 #define SERIAL_RESERVED_CHAR_MATCH (255)
 
+// gd_{status,operation_state}_enum cribbed from previous library
+// and put here because they don’t appear in the GD firmware library
+// upstream, and appear to have been added after-the-fact in
+// gd32f30x.h by some porter. -bjc (2021-Aug-20)
+
+typedef enum {
+    GD_OK       = 0x00U,
+    GD_ERROR    = 0x01U,
+    GD_BUSY     = 0x02U,
+    GD_TIMEOUT  = 0x03U
+} gd_status_enum;
+
+typedef enum {
+    OP_STATE_RESET             = 0x00U,
+    OP_STATE_READY             = 0x01U,
+    OP_STATE_BUSY              = 0x02U,
+    OP_STATE_TIMEOUT           = 0x03U,
+    OP_STATE_ERROR             = 0x04U,
+    OP_STATE_ABORT             = 0x05U,
+    OP_STATE_LISTEN            = 0x06U,
+
+    OP_STATE_BUSY_TX           = 0x21U, /* (OP_STATE_BUSY << 4) + 1 */
+    OP_STATE_BUSY_RX           = 0x22U, /* (OP_STATE_BUSY << 4) + 2 */
+
+    OP_STATE_BUSY_TX_LISTEN    = 0x61U, /* (OP_STATE_LISTEN << 4) + 1 */
+    OP_STATE_BUSY_RX_LISTEN    = 0x62U, /* (OP_STATE_LISTEN << 4) + 2 */
+
+    OP_STATE_BUTT
+} operation_state_enum;
+
 typedef enum {
     ParityNone = 0,
     ParityOdd = 1,
@@ -117,6 +147,7 @@ struct serial_s {
     void (*tx_callback)(serial_t *obj);
     void (*rx_callback)(serial_t *obj);
 };
+
 /* Initialize the serial peripheral. It sets the default parameters for serial peripheral, and configures its specifieds pins. */
 void serial_init(serial_t *obj, PinName tx, PinName rx);
 /* Release the serial peripheral, not currently invoked. It requires further resource management. */
