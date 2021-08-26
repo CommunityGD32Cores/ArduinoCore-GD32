@@ -144,6 +144,8 @@ gd_eval_f303.build.core=arduino
 gd_eval_f303.build.board=gd_eval_f303
 gd_eval_f303.build.mcu=cortex-m4
 gd_eval_f303.build.series=GD32F30x
+gd_eval_f303.build.extra_flags='-DKALEIDOSCOPE_HARDWARE_H="Kaleidoscope-Hardware-GD32-Eval.h"' '-DUSB_PRODUCT="gd32"'
+
 
 gd_eval_f303.menu.pnum.GD32F303ZE_EVAL=GD32F303ZE EVAL
 gd_eval_f303.menu.pnum.GD32F303ZE_EVAL.upload.maximum_size=524288
