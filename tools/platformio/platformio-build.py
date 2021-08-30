@@ -224,6 +224,7 @@ env.Append(
         join(FRAMEWORK_DIR, "cores", "arduino", "api", "deprecated-avr-comp"),
         join(FRAMEWORK_DIR, "cores", "arduino", "gd32"),
         join(FRAMEWORK_DIR, "cores", "arduino", "gd32", "Source"),
+        join(FRAMEWORK_DIR, "system", "startup"),
         join(FRAMEWORK_DIR, "system", spl_series + "_firmware", "CMSIS"),
         join(FRAMEWORK_DIR, "system", spl_series + "_firmware", "CMSIS", "GD", spl_series, "Include"),
         join(FRAMEWORK_DIR, "system", spl_series + "_firmware", "CMSIS", "GD", spl_series, "Source"),
