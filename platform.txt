@@ -5,7 +5,7 @@ version=1.0.0
 
 #compile variables
 ##compile Include 
-compiler.gd.extra_include= "-I{build.source.path}" "-I{build.core.path}/api/deprecated-avr-comp" "-I{build.core.path}/api/deprecated" "-I{build.core.path}/gd32" "-I{build.core.path}/gd32/Source" "-I{build.system.path}/{build.series}_firmware/{build.series}_standard_peripheral/Source" "-I{build.system.path}/{build.series}_firmware/{build.series}_standard_peripheral/Include"  "-I{build.system.path}/{build.series}_firmware/CMSIS" "-I{build.system.path}/{build.series}_firmware/CMSIS/GD/{build.series}/Include" "-I{build.system.path}/{build.series}_firmware/CMSIS/GD/{build.series}/Source/GCC" "-I{build.system.path}/{build.series}_firmware/CMSIS/GD/{build.series}/Source"
+compiler.gd.extra_include= "-I{build.source.path}" "-I{build.core.path}/api/deprecated-avr-comp" "-I{build.core.path}/api/deprecated" "-I{build.core.path}/gd32" "-I{build.core.path}/gd32/Source" "-I{build.system.path}/startup" "-I{build.system.path}/{build.series}_firmware/{build.series}_standard_peripheral/Source" "-I{build.system.path}/{build.series}_firmware/{build.series}_standard_peripheral/Include"  "-I{build.system.path}/{build.series}_firmware/CMSIS" "-I{build.system.path}/{build.series}_firmware/CMSIS/GD/{build.series}/Include" "-I{build.system.path}/{build.series}_firmware/CMSIS/GD/{build.series}/Source/GCC" "-I{build.system.path}/{build.series}_firmware/CMSIS/GD/{build.series}/Source"
 
 ## compile warning
 compiler.warning_flags=-w
