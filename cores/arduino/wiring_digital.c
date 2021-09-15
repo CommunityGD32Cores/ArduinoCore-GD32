@@ -38,13 +38,13 @@ void pinMode(pin_size_t ulPin, PinMode ulMode)
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_IPD, 0, 0));
             break;
         case OUTPUT:
-            pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUT_PP, 0, 0));
+            pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUT_PP, PIN_OTYPE_PP, 0));
             break;
         case INPUT_ANALOG: // From PinModeExtension
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_AIN, 0, 0));
             break;
         case OUTPUT_OPEN_DRAIN: // From PinModeExtension
-            pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUT_OD, 0, 0));
+            pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUT_OD, PIN_OTYPE_OD, 0));
             break;
         default:
             break;
