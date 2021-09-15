@@ -36,8 +36,6 @@
 extern "C" {
 #endif
 
-// TODO XXX Arduino API does not currently support INPUT_ANALOG  or OUTPUT_OPEN_DRAIN
-//
 void pinMode(pin_size_t ulPin, PinMode ulMode)
 {
     PinName p = DIGITAL_TO_PINNAME(ulPin);
@@ -51,18 +49,16 @@ void pinMode(pin_size_t ulPin, PinMode ulMode)
         case INPUT_PULLDOWN:
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_IPD, 0, 0));
             break;
- // now done in analogRead().
- //       case INPUT_ANALOG:
- //           pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_AIN, 0, 0));
- //           break;
         case OUTPUT:
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUT_PP, 0, 0));
             break;
- //       case OUTPUT_OPEN_DRAIN:
- //           pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUT_OD, 0, 0));
- //           break;
+        case INPUT_ANALOG: // From PinModeExtension
+            pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_AIN, 0, 0));
+            break;
+        case OUTPUT_OPEN_DRAIN: // From PinModeExtension
+            pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUT_OD, 0, 0));
+            break;
         default:
-            //Error_Handler();
             break;
     }
 }
