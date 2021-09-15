@@ -20,18 +20,6 @@
 #include "gd32/PinConfigured.h"
 #include "gd32/PinNames.h"
 
-
-/*  PinModes 
-#define INPUT         0x0
-#define OUTPUT              0x1
-#define INPUT_PULLUP        0x2
-
-#define INPUT_FLOATING      INPUT
-#define INPUT_PULLDOWN      0x3
-#define INPUT_ANALOG        0x4
-#define OUTPUT_OPEN_DRAIN   0x5
-*/
-
 #ifdef __cplusplus
 extern "C" {
 #endif
