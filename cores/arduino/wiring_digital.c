@@ -20,24 +20,10 @@
 #include "gd32/PinConfigured.h"
 #include "gd32/PinNames.h"
 
-
-/*  PinModes 
-#define INPUT         0x0
-#define OUTPUT              0x1
-#define INPUT_PULLUP        0x2
-
-#define INPUT_FLOATING      INPUT
-#define INPUT_PULLDOWN      0x3
-#define INPUT_ANALOG        0x4
-#define OUTPUT_OPEN_DRAIN   0x5
-*/
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-// TODO XXX Arduino API does not currently support INPUT_ANALOG  or OUTPUT_OPEN_DRAIN
-//
 void pinMode(pin_size_t ulPin, PinMode ulMode)
 {
     PinName p = DIGITAL_TO_PINNAME(ulPin);
@@ -51,18 +37,16 @@ void pinMode(pin_size_t ulPin, PinMode ulMode)
         case INPUT_PULLDOWN:
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_IPD, 0, 0));
             break;
- // now done in analogRead().
- //       case INPUT_ANALOG:
- //           pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_AIN, 0, 0));
- //           break;
         case OUTPUT:
-            pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUT_PP, 0, 0));
+            pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUT_PP, PIN_OTYPE_PP, 0));
             break;
- //       case OUTPUT_OPEN_DRAIN:
- //           pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUT_OD, 0, 0));
- //           break;
+        case INPUT_ANALOG: // From PinModeExtension
+            pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_AIN, 0, 0));
+            break;
+        case OUTPUT_OPEN_DRAIN: // From PinModeExtension
+            pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUT_OD, PIN_OTYPE_OD, 0));
+            break;
         default:
-            //Error_Handler();
             break;
     }
 }
