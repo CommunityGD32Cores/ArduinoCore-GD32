@@ -109,12 +109,22 @@ extern "C" {
 /* USART definitions */
 
 #define SERIAL_HOWMANY          1
-#define USE_USART1_SERIAL	
+/* by default now, use PA9 for TX. To get the old behavior for PA3, define the USE_USART1_SERIAL macro. */
+#if !defined(USE_USART0_SERIAL) && !defined(USE_USART1_SERIAL)
+#define USE_USART0_SERIAL	
+#endif
+
+#ifdef USE_USART0_SERIAL	
+#define PIN_SERIAL_RX           PA10
+#define PIN_SERIAL_TX           PA9
+#define SERIAL0_RX          PIN_SERIAL_RX
+#define SERIAL0_TX          PIN_SERIAL_TX
+#elif defined(USE_USART1_SERIAL)
 #define PIN_SERIAL_RX           PA3
 #define PIN_SERIAL_TX           PA2
 #define SERIAL1_RX          PIN_SERIAL_RX
 #define SERIAL1_TX          PIN_SERIAL_TX
-
+#endif
 
 /* ADC definitions */
 #define ADC_RESOLUTION          10
