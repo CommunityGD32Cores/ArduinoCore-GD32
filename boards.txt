@@ -262,11 +262,11 @@ keyboardio_model_100.build.board=keyboardio_model_100
 keyboardio_model_100.build.mcu=cortex-m4
 # I think this is the right number. It's 2**20. The previous definition was 2**18
 keyboardio_model_100.upload.maximum_size=1048576
-keyboardio_model_100.upload.maximum_data_size=49152
+keyboardio_model_100.upload.maximum_data_size=98304
 
 # These two definitions set -D flags to the compiler to get the right code compiled for our MCU 
 keyboardio_model_100.build.series=GD32F30x
-keyboardio_model_100.build.product_line=GD32F30X_HD
+keyboardio_model_100.build.product_line=GD32F30X_XD
 
 keyboardio_model_100.build.variant=keyboardio_model_100
 keyboardio_model_100.upload.openocd_script=target/stm32f1x.cfg
