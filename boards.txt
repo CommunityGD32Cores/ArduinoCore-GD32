@@ -253,3 +253,36 @@ gd_mbed_f4xx.menu.opt.ogstd.build.flags.optimize=-Og
 gd_mbed_f4xx.menu.opt.ogstd.build.flags.ldspecs=
 
 ################################################################################################
+# Maker: Keyboardio
+################################################################################################
+keyboardio_model_100.name=Keyboardio MOdel 100
+
+keyboardio_model_100.build.core=arduino
+keyboardio_model_100.build.board=keyboardio_model_100
+keyboardio_model_100.build.mcu=cortex-m4
+# I think this is the right number. It's 2**20. The previous definition was 2**18
+keyboardio_model_100.upload.maximum_size=1048576
+keyboardio_model_100.upload.maximum_data_size=49152
+
+# These two definitions set -D flags to the compiler to get the right code compiled for our MCU 
+keyboardio_model_100.build.series=GD32F30x
+keyboardio_model_100.build.product_line=GD32F30X_HD
+
+keyboardio_model_100.build.variant=keyboardio_model_100
+keyboardio_model_100.upload.openocd_script=target/stm32f1x.cfg
+
+
+keyboardio_model_100.menu.upload_method.dfuUtilMethod=dfu-util (DFU - Keyboardio DAPBoot bootloader)
+keyboardio_model_100.menu.upload_method.dfuUtilMethod.upload.protocol=dfu
+keyboardio_model_100.menu.upload_method.dfuUtilMethod.upload.tool=dfu-util
+keyboardio_model_100.menu.upload_method.dfuUtilMethod.upload.options=
+keyboardio_model_100.menu.upload_method.dfuUtilMethod.build.flash_offset=0x2000
+keyboardio_model_100.menu.upload_method.dfuUtilMethod.upload.pid=0x2301
+keyboardio_model_100.menu.upload_method.dfuUtilMethod.upload.vid=0x1209
+
+#Upload menu
+keyboardio_model_100.menu.upload_method.stlinkMethod=STLink (SWD)
+keyboardio_model_100.menu.upload_method.stlinkMethod.upload.protocol=stlink
+keyboardio_model_100.menu.upload_method.stlinkMethod.upload.options=
+keyboardio_model_100.menu.upload_method.stlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+keyboardio_model_100.menu.upload_method.stlinkMethod.upload.tool=stlink_upload
