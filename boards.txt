@@ -255,7 +255,7 @@ gd_mbed_f4xx.menu.opt.ogstd.build.flags.ldspecs=
 ################################################################################################
 # Maker: Keyboardio
 ################################################################################################
-keyboardio_model_100.name=Keyboardio MOdel 100
+keyboardio_model_100.name=Keyboardio Model 100
 
 keyboardio_model_100.build.core=arduino
 keyboardio_model_100.build.board=keyboardio_model_100
