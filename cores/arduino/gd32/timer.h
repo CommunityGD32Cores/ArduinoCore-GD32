@@ -35,7 +35,7 @@ OF SUCH DAMAGE.
 /* ############# Timer interrupt definition ############# */
 #if defined(TIMER0) && !defined(TIMER0_IRQn)
     #if defined(GD32F30x)
-#if defined(GD32F30X_CL)
+#if defined(GD32F30X_CL) || defined(GD32F30X_XD)
         #define TIMER0_IRQn TIMER0_UP_TIMER9_IRQn
         #define TIMER0_IRQHandler TIMER0_UP_TIMER9_IRQHandler
 #else
@@ -47,7 +47,7 @@ OF SUCH DAMAGE.
 
 #if defined(TIMER7) && !defined(TIMER7_IRQn)
     #if defined(GD32F30x)
-#if defined(GD32F30X_CL)
+#if defined(GD32F30X_CL) || defined(GD32F30X_XD)
         #define TIMER7_IRQn TIMER7_UP_TIMER12_IRQn
         #define TIMER7_IRQHandler TIMER7_UP_TIMER12_IRQHandler
 #else
@@ -57,7 +57,7 @@ OF SUCH DAMAGE.
     #endif
 #endif
 
-#if defined(GD32F30X_CL)
+#if defined(GD32F30X_CL) || defined(GD32F30X_XD)
 #if defined(TIMER8) && !defined(TIMER8_IRQn)
     #if defined(GD32F30x)
         #define TIMER8_IRQn TIMER0_BRK_TIMER8_IRQn
