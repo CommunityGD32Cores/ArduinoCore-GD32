@@ -24,7 +24,7 @@
  * SOFTWARE.
  *****************************************************************************/
 #include "Arduino.h"
-
+#include "USBCore.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -48,6 +48,10 @@ __attribute__((constructor(101))) void premain()
 
 int main(void)
 {
+    // TODO: remove this and only call it when the USB is attempted to
+    // be used.
+    USBCore().connect();
+
     setup();
 
     while (1) {

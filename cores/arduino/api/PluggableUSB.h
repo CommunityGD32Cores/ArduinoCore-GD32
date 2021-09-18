@@ -36,7 +36,7 @@ protected:
   virtual bool setup(USBSetup& setup) = 0;
   virtual int getInterface(uint8_t* interfaceCount) = 0;
   virtual int getDescriptor(USBSetup& setup) = 0;
-  virtual uint8_t getShortName(char *name) { name[0] = 'A'+pluggedInterface; return 1; }
+  virtual uint8_t getShortName(char* name) { name[0] = 'A'+pluggedInterface; return 1; }
 
   uint8_t pluggedInterface;
   uint8_t pluggedEndpoint;
@@ -45,19 +45,22 @@ protected:
   const uint8_t numInterfaces;
   const unsigned int *endpointType;
 
-  PluggableUSBModule *next = NULL;
+  PluggableUSBModule* next = NULL;
 
   friend class PluggableUSB_;
 };
 
 class PluggableUSB_ {
 public:
-  PluggableUSB_();
+  PluggableUSB_(uint8_t firstIf, uint8_t firstEp);
   bool plug(PluggableUSBModule *node);
   int getInterface(uint8_t* interfaceCount);
   int getDescriptor(USBSetup& setup);
   bool setup(USBSetup& setup);
-  void getShortName(char *iSerialNum);
+  void getShortName(char* iSerialNum);
+
+  uint8_t ifCount();
+  uint8_t epCount();
 
 private:
   uint8_t lastIf;
@@ -70,9 +73,6 @@ private:
 // core need to define
 void* epBuffer(unsigned int n); // -> returns a pointer to the Nth element of the EP buffer structure
 
-// Replacement for global singleton.
-// This function prevents static-initialization-order-fiasco
-// https://isocpp.org/wiki/faq/ctors#static-init-order-on-first-use
 arduino::PluggableUSB_& PluggableUSB();
 
 #endif
