@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Extended and rewritten by Maximilian Gerhardt <maximilian.gerhardt@rub.de>
-# for GD32 core. 
+# for GD32 core.
 
 """
 Arduino
@@ -218,6 +218,7 @@ env.Append(
         "ARDUINO_ARCH_GD32",
         "ARDUINO_%s" % board_id,
         ("BOARD_NAME", '\\"%s\\"' % board_id),
+        ("ARDUINO_UPLOAD_MAXIMUM_SIZE", board_config.get("upload.maximum_size")),
     ],
     CPPPATH=[
         join(FRAMEWORK_DIR, "cores", "arduino", "api", "deprecated"),
