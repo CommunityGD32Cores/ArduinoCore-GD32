@@ -62,7 +62,7 @@ typedef enum {
     INT_OVERFLOW_MODE
 } INT_MODE;
 
-void rtc_init(void);                                            //rtc init
+void rtc_Init(void);                                            //rtc init
 void rtc_setUTCTime(UTCTimeStruct *utcTime);                    //rtc set UTC time
 void rtc_setSecTime(uint32_t secTime);                          //rtc set second time
 uint32_t rtc_getSecTime(void);                                  //rtc get second time

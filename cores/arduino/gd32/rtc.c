@@ -43,7 +43,7 @@ OF SUCH DAMAGE.
     \param[out] none
     \retval     none
 */
-void rtc_init(void)
+void rtc_Init(void)
 {
     nvic_priority_group_set(NVIC_PRIGROUP_PRE2_SUB2);
     nvic_irq_enable(RTC_IRQn, 2, 0);
@@ -68,12 +68,16 @@ void rtc_init(void)
     /* wait for RTC registers synchronization */
     rtc_register_sync_wait();
 
+#if defined(GD32F30x)
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
+#endif
     /* set RTC prescaler: set RTC period to 1s */
     rtc_prescaler_set(32767);
+#if defined(GD32F30x)
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
+#endif
 }
 
 /*!
@@ -85,12 +89,16 @@ void rtc_init(void)
 void rtc_setUTCTime(UTCTimeStruct *utcTime)
 {
     uint32_t secTime = mkTimtoStamp(utcTime) - SECONDS_PER_HOUR * 8;
+#if defined(GD32F30x)
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
+#endif
     /* change the current time */
     rtc_counter_set(secTime);
+#if defined(GD32F30x)
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
+#endif
 }
 
 /*!
@@ -132,13 +140,16 @@ void rtc_getUTCTime(UTCTimeStruct *utcTime)
 */
 void rtc_setSecTime(uint32_t secTime)
 {
+#if defined(GD32F30x)
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
+#endif
     /* change the current time */
     rtc_counter_set(secTime);
+#if defined(GD32F30x)
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
-
+#endif
 }
 
 /*!
@@ -160,12 +171,16 @@ uint32_t rtc_getSecTime(void)
 */
 void rtc_setAlarmTime(uint32_t alarmTime)
 {
+#if defined(GD32F30x)
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
+#endif
     /* change the current time */
     rtc_alarm_config(alarmTime);
+#if defined(GD32F30x)
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
+#endif
 }
 
 /*!
