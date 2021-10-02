@@ -587,7 +587,11 @@ void PWM_init(pwmDevice_t *pwmDevice, pwmPeriodCycle_t *pwmPeriodCycle)
     uint32_t periph = pwmDevice->timer;
     nvic_irq_enable(getTimerCCIrq(periph), 2, 2);
     timer_clock_enable(periph);
+    #if defined(GD32F30x)
     rcu_periph_clock_enable(RCU_AF);
+    #elif defined(GD32F3x0)
+    rcu_periph_clock_enable(RCU_CFGCMP);
+    #endif
     /* configure TIMER base function */
     timer_initpara.prescaler = getTimerClkFrequency(periph) / 1000000 - 1 ;
     timer_initpara.period = 9999;
