@@ -178,7 +178,7 @@ static int i2c_stop(i2c_t *obj)
     int timeout = FLAG_TIMEOUT;
     while((I2C_CTL0(obj_s->i2c) & I2C_CTL0_STOP)) {
         if ((timeout--) == 0) {
-            return I2C_ERROR_BUS_BUSY;
+            return 2;
         }
     }
 
