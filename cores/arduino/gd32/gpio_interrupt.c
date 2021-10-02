@@ -65,8 +65,8 @@ void gpio_interrupt_enable(uint32_t portNum, uint32_t pinNum, void (*callback)(v
 
     #if defined(GD32F3x0)
     syscfg_exti_line_config(
-        (uint8_t) portNum), 
-        (uint8_t) pinNum));
+        (uint8_t) portNum, 
+        (uint8_t) pinNum);
     #elif defined(GD32F30x)
     gpio_exti_source_select(portNum, pinNum);
     #endif
