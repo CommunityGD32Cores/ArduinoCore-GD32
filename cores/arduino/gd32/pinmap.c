@@ -27,7 +27,7 @@ extern const int GD_GPIO_SPEED[];
 #if defined(GD32F30x) || defined(GD32F10x)
     extern const int GD_GPIO_REMAP[];
 #endif
-#if defined(GD32F3x0) || defined(GD32F4xx)
+#if defined(GD32F3x0) || defined(GD32F1x0) || defined(GD32F4xx)
     extern const int GD_GPIO_PULL_UP_DOWN[];
     extern const int GD_GPIO_OUTPUT_MODE[];
     extern const int GD_GPIO_AF[];
@@ -78,7 +78,7 @@ void pin_function(PinName pin, int function)
         rcu_periph_clock_enable(RCU_AF);
         gpio_pin_remap_config(GD_GPIO_REMAP[remap], ENABLE);
     }
-#elif defined(GD32F3x0) || defined(GD32F4xx) 
+#elif defined(GD32F3x0) || defined(GD32F1x0) || defined(GD32F4xx) 
     gpio_af_set(gpio, GD_GPIO_AF[af], gd_pin);
     gpio_mode_set(gpio, GD_GPIO_MODE[mode], GD_GPIO_PULL_UP_DOWN[pull], gd_pin);
     gpio_output_options_set(gpio, GD_GPIO_OUTPUT_MODE[output], GD_GPIO_SPEED[speed], gd_pin);

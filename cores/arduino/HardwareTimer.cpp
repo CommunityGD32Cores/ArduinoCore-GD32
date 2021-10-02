@@ -192,7 +192,7 @@ void HardwareTimer::setCaptureMode(uint32_t ulpin, uint8_t channel, captureMode 
     if(0 != remap) {
         gpio_pin_remap_config(GD_GPIO_REMAP[remap], ENABLE);
     }
-    #elif defined(GD32F3x0)
+    #elif defined(GD32F3x0) || defined(GD32F1x0)
     /* !!TODO!! */
     #endif
 

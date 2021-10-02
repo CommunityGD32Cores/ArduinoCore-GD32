@@ -25,7 +25,7 @@ extiConf_t gpio_exti_infor[EXTI_NUMS] = {
     {EXTI10_15_IRQn,  NULL},
     {EXTI10_15_IRQn,  NULL},
     {EXTI10_15_IRQn,  NULL}
-#elif defined(GD32F3x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0)
     {EXTI0_1_IRQn,      NULL},
     {EXTI0_1_IRQn,      NULL},
     {EXTI2_3_IRQn,      NULL},
@@ -56,14 +56,14 @@ void gpio_interrupt_enable(uint32_t portNum, uint32_t pinNum, void (*callback)(v
     #if defined(GD32F30x)
     rcu_periph_clock_enable(RCU_AF);
     gpio_init(gpio_port[portNum], GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, gpio_pin[pinNum]);
-    #elif defined(GD32F3x0)
+    #elif defined(GD32F3x0) || defined(GD32F1x0)
     rcu_periph_clock_enable(RCU_CFGCMP);
     gpio_mode_set(gpio_port[portNum], GPIO_MODE_INPUT, GPIO_PUPD_NONE, gpio_pin[pinNum]);
     #endif
 
     nvic_irq_enable(gpio_exti_infor[pinNum].irqNum, EXTI_IRQ_PRIO, EXTI_IRQ_SUBPRIO);
 
-    #if defined(GD32F3x0)
+    #if defined(GD32F3x0) || defined(GD32F1x0)
     syscfg_exti_line_config(
         (uint8_t) portNum, 
         (uint8_t) pinNum);
@@ -143,7 +143,7 @@ void EXTI10_15_IRQHandler(void)
         exti_callbackHandler(i);
     }
 }
-#elif defined(GD32F3x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0)
 void EXTI0_1_IRQHandler(void)
 {
     uint32_t i;

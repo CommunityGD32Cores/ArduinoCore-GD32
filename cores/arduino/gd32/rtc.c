@@ -38,7 +38,7 @@ OF SUCH DAMAGE.
 #define RTC_ALARM_IRQn RTC_Alarm_IRQn
 #endif
 
-#if defined(GD32F3x0)
+#if defined(GD32F3x0) || defined(GD32F1x0)
 /* 
  * wrapper functions for microcontrollers that have an RTC
  * with an asychronous and synchronous prescaler (A,S)
@@ -99,7 +99,7 @@ void rtc_Init(void)
     /* reset backup domain */
     #if defined(GD32F30x)
     bkp_deinit();
-    #elif defined(GD32F3x0)
+    #elif defined(GD32F3x0) || defined(GD32F1x0)
     rcu_bkp_reset_enable();
     rcu_bkp_reset_disable();
     #endif
@@ -142,7 +142,7 @@ void rtc_setUTCTime(UTCTimeStruct *utcTime)
     rtc_counter_set(secTime);
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
-#elif defined(GD32F3x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0)
     rtc_parameter_struct curr_date;
     rtc_current_time_get(&curr_date);
     curr_date.rtc_hour = utcTime->hour;
@@ -185,7 +185,7 @@ void rtc_getUTCTime(UTCTimeStruct *utcTime)
         }
         utcTime->day += numDays;
     }
-#elif defined(GD32F3x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0)
     rtc_parameter_struct curr_date;
     rtc_current_time_get(&curr_date);
     utcTime->hour = curr_date.rtc_hour;
@@ -212,7 +212,7 @@ void rtc_setSecTime(uint32_t secTime)
     rtc_counter_set(secTime);
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
-#elif defined(GD32F3x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0)
     /* convert total seconds into date and set as UTC time */
     time_t t = (time_t) secTime;
     struct tm ts = *localtime(&t);
@@ -253,7 +253,7 @@ void rtc_setAlarmTime(uint32_t alarmTime)
     rtc_alarm_config(alarmTime);
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
-#elif defined(GD32F3x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0)
     rtc_alarm_struct rtc_alarm_time;
     time_t t = (time_t) alarmTime;
     struct tm ts = *localtime(&t);
@@ -348,7 +348,7 @@ void RTC_IRQHandler(void)
         rtc_flag_clear(RTC_FLAG_OVERFLOW);
         RTC_Handler(INT_OVERFLOW_MODE);
     }
-#elif defined(GD32F3x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0)
     if(rtc_flag_get(RTC_FLAG_ALARM0) != RESET){
         rtc_flag_clear(RTC_FLAG_ALARM0);
         exti_flag_clear(EXTI_17);
