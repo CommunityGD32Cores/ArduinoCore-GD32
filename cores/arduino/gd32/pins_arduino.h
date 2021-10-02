@@ -55,8 +55,25 @@ static const uint8_t SCK  = PIN_SPI_SCK;
 static const uint8_t SDA = PIN_WIRE_SDA;
 static const uint8_t SCL = PIN_WIRE_SCL;
 
+/* the PIN_SERIAL_TX/RX definitions point to the default Serial's pins */
 static const uint8_t TX = PIN_SERIAL_TX;
 static const uint8_t RX = PIN_SERIAL_RX;
+
+#if defined(SERIAL0_RX)
+static const uint8_t RX0 = SERIAL0_RX;
+#endif
+
+#if defined(SERIAL0_TX)
+static const uint8_t TX0 = SERIAL0_TX;
+#endif
+
+#if defined(SERIAL1_RX)
+static const uint8_t RX1 = SERIAL1_RX;
+#endif
+
+#if defined(SERIAL1_TX)
+static const uint8_t TX1 = SERIAL1_TX;
+#endif
 
 /* configure analog pins */
 #ifndef ANALOG_PINS_NUM

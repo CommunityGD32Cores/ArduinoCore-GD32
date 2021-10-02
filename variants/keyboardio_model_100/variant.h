@@ -77,9 +77,9 @@ extern "C" {
 #define ANALOG_PINS_LAST        PB2
 
 /* LED definitions */
-#define LED_BUILTIN             PC13
-#define LED_GREEN               PC13
-#define LED2                    PB2
+#define LED_BUILTIN             PB0
+#define LED_GREEN               PB0
+#define LED2                    PB1
 
 /* user keys definitions */
 #define KEY0                    PB10
@@ -91,9 +91,6 @@ extern "C" {
 #define PIN_SPI_MISO            PB14
 #define PIN_SPI_SCK             PB13
 
-/* I2C definitions */
-#define PIN_WIRE_SDA            PB9
-#define PIN_WIRE_SCL            PB8
 
 /* TIMER or PWM definitions */
 #define TIMER_TONE              TIMER5
@@ -109,22 +106,13 @@ extern "C" {
 /* USART definitions */
 
 #define SERIAL_HOWMANY          1
-/* by default now, use PA9 for TX. To get the old behavior for PA3, define the USE_USART1_SERIAL macro. */
-#if !defined(USE_USART0_SERIAL) && !defined(USE_USART1_SERIAL)
-#define USE_USART0_SERIAL	
-#endif
 
-#ifdef USE_USART0_SERIAL	
+#define USE_USART0_SERIAL       
 #define PIN_SERIAL_RX           PA10
 #define PIN_SERIAL_TX           PA9
 #define SERIAL0_RX          PIN_SERIAL_RX
 #define SERIAL0_TX          PIN_SERIAL_TX
-#elif defined(USE_USART1_SERIAL)
-#define PIN_SERIAL_RX           PA3
-#define PIN_SERIAL_TX           PA2
-#define SERIAL1_RX          PIN_SERIAL_RX
-#define SERIAL1_TX          PIN_SERIAL_TX
-#endif
+
 
 /* ADC definitions */
 #define ADC_RESOLUTION          10
@@ -132,6 +120,8 @@ extern "C" {
 
 /* I2C definitions */
 #define USE_I2C       1
+#define PIN_WIRE_SDA            PB7
+#define PIN_WIRE_SCL            PB6
 
 #ifdef __cplusplus
 } // extern "C"

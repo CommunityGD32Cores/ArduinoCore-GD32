@@ -48,7 +48,13 @@ typedef enum {
 
 static struct i2c_s *obj_s_buf[I2C_NUM] = {NULL};
 #define BUSY_TIMEOUT  ((SystemCoreClock / obj_s->freq) * 2 * 10)
+
+#ifndef WIRE_I2C_FLAG_TIMEOUT
 #define FLAG_TIMEOUT  (0xF0000U)
+#else
+#define FLAG_TIMEOUT WIRE_I2C_FLAG_TIMEOUT
+#endif
+
 #define I2C_S(obj)    (struct i2c_s *) (obj)
 
 /** Initialize the I2C peripheral
@@ -168,8 +174,13 @@ static int i2c_stop(i2c_t *obj)
     /* generate a STOP condition */
     i2c_stop_on_bus(obj_s->i2c);
 
-    /* wait for STOP bit reset */
-    while((I2C_CTL0(obj_s->i2c) & I2C_CTL0_STOP));
+    /* wait for STOP bit reset with timeout */
+    int timeout = FLAG_TIMEOUT;
+    while((I2C_CTL0(obj_s->i2c) & I2C_CTL0_STOP)) {
+        if ((timeout--) == 0) {
+            return 2;
+        }
+    }
 
     return 0;
 }
@@ -341,7 +352,7 @@ i2c_status_enum i2c_master_receive(i2c_t *obj, uint8_t address, uint8_t *data, u
             }
         }
         timeout = FLAG_TIMEOUT;
-        while(!i2c_flag_get(obj->i2c, I2C_FLAG_RBNE));
+        while((!i2c_flag_get(obj->i2c, I2C_FLAG_RBNE)) && (--timeout != 0));
         data[count] = i2c_data_receive(obj->i2c);
     }
 
