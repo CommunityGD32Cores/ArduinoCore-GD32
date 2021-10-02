@@ -59,6 +59,10 @@ class EEPROMClass {
     write(offset, val);
   }
 
+  void commit() {
+    storage_.commit();
+  }
+
   void begin() {
     storage_.begin();
   }
