@@ -23,4 +23,31 @@
     #include "gd32f30x_timer.c"
     #include "gd32f30x_usart.c"
     #include "gd32f30x_wwdgt.c"
+#elif defined(GD32F3x0)
+    #include "gd32f3x0_adc.c"
+    #include "gd32f3x0_crc.c"
+    #include "gd32f3x0_ctc.c"
+    #include "gd32f3x0_dbg.c"
+    #include "gd32f3x0_dma.c"
+    #include "gd32f3x0_exti.c"
+    #include "gd32f3x0_fmc.c"
+    #include "gd32f3x0_fwdgt.c"
+    #include "gd32f3x0_gpio.c"
+    #include "gd32f3x0_i2c.c"
+    #include "gd32f3x0_misc.c"
+    #include "gd32f3x0_pmu.c"
+    #include "gd32f3x0_rcu.c"
+    #include "gd32f3x0_rtc.c"
+    #include "gd32f3x0_spi.c"
+    #include "gd32f3x0_syscfg.c"
+    #include "gd32f3x0_timer.c"
+    #include "gd32f3x0_tsi.c"
+    #include "gd32f3x0_usart.c"
+    #ifdef GD32F350
+    #include "gd32f3x0_cec.h"
+    #include "gd32f3x0_cmp.h"
+    #include "gd32f3x0_dac.h"
+    #endif 
+#else
+#error "Unknown chip series!"
 #endif

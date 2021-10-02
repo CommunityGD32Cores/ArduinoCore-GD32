@@ -30,6 +30,18 @@ OF SUCH DAMAGE.
 #include "uart.h"
 #include "Arduino.h"
 
+#if defined(USART_DATA)
+#define GD32_USART_TX_DATA USART_DATA
+#define GD32_USART_RX_DATA USART_DATA
+#define GD32_USART_STAT    USART_STAT0
+#elif defined(USART_RDATA) && defined(USART_TDATA)
+#define GD32_USART_TX_DATA USART_TDATA
+#define GD32_USART_RX_DATA USART_RDATA
+#define GD32_USART_STAT    USART_STAT
+#else
+#error "We don't understand this USART peripheral."
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -54,8 +66,32 @@ typedef enum {
 } int_uart_indexes_t;
 
 static struct serial_s *obj_s_buf[UART_NUM] = {NULL};
-static rcu_periph_enum usart_clk[UART_NUM]  = {RCU_USART0, RCU_USART1, RCU_USART2, RCU_UART3, RCU_UART4};
-static IRQn_Type usart_irq_n[UART_NUM]      = {USART0_IRQn, USART1_IRQn, USART2_IRQn, UART3_IRQn, UART4_IRQn};
+static rcu_periph_enum usart_clk[UART_NUM]  = {
+    RCU_USART0, 
+    RCU_USART1,
+#ifdef USART2
+    RCU_USART2, 
+#endif
+#ifdef USART3
+    RCU_UART3, 
+#endif
+#ifdef USART4
+    RCU_UART4
+#endif
+};
+static IRQn_Type usart_irq_n[UART_NUM]      = {
+    USART0_IRQn, 
+    USART1_IRQn, 
+#ifdef USART2
+    USART2_IRQn, 
+#endif
+#ifdef USART3
+    UART3_IRQn, 
+#endif
+#ifdef USART4
+    UART4_IRQn
+#endif
+};
 
 #define GET_SERIAL_S(obj) (obj)
 
@@ -402,20 +438,20 @@ static gd_status_enum usart_rx_interrupt(struct serial_s *obj_s)
             temp = (uint16_t *) obj_s->rx_buffer_ptr;
             if(obj_s->parity == USART_PM_NONE) {
                 /* 9-bit data, none parity bit */
-                *temp = (uint16_t)(USART_DATA(obj_s->uart) & (uint16_t)0x01FF);
+                *temp = (uint16_t)(GD32_USART_RX_DATA(obj_s->uart) & (uint16_t)0x01FF);
                 obj_s->rx_buffer_ptr += 2U;
             } else {
                 /* 9-bit data, with parity bit */
-                *temp = (uint16_t)(USART_DATA(obj_s->uart) & (uint16_t)0x00FF);
+                *temp = (uint16_t)(GD32_USART_RX_DATA(obj_s->uart) & (uint16_t)0x00FF);
                 obj_s->rx_buffer_ptr += 1U;
             }
         } else {
             if(obj_s->parity == USART_PM_NONE) {
                 /* 8-bit data, none parity bit */
-                *obj_s->rx_buffer_ptr++ = (uint8_t)(USART_DATA(obj_s->uart) & (uint8_t)0x00FF);
+                *obj_s->rx_buffer_ptr++ = (uint8_t)(GD32_USART_RX_DATA(obj_s->uart) & (uint8_t)0x00FF);
             } else {
                 /* 8-bit data, with parity bit */
-                *obj_s->rx_buffer_ptr++ = (uint8_t)(USART_DATA(obj_s->uart) & (uint8_t)0x007F);
+                *obj_s->rx_buffer_ptr++ = (uint8_t)(GD32_USART_RX_DATA(obj_s->uart) & (uint8_t)0x007F);
             }
         }
 
@@ -446,14 +482,14 @@ static gd_status_enum usart_tx_interrupt(struct serial_s *obj_s)
     if(obj_s->tx_state == OP_STATE_BUSY_TX) {
         if(obj_s->databits == USART_WL_9BIT) {
             temp = (uint16_t *) obj_s->tx_buffer_ptr;
-            USART_DATA(obj_s->uart) = (uint16_t)(*temp & (uint16_t)0x01FF);
+            GD32_USART_TX_DATA(obj_s->uart) = (uint16_t)(*temp & (uint16_t)0x01FF);
             if(obj_s->parity == USART_PM_NONE) {
                 obj_s->tx_buffer_ptr += 2U;
             } else {
                 obj_s->tx_buffer_ptr += 1U;
             }
         } else {
-            USART_DATA(obj_s->uart) = (uint8_t)(*obj_s->tx_buffer_ptr++ & (uint8_t)0x00FF);
+            GD32_USART_TX_DATA(obj_s->uart) = (uint8_t)(*obj_s->tx_buffer_ptr++ & (uint8_t)0x00FF);
         }
 
         if(--obj_s->tx_count == 0U) {
@@ -627,7 +663,7 @@ static void usart_irq(struct serial_s *obj_s)
     uint32_t err_flags = 0U;
 
     /* no error occurs */
-    err_flags = (USART_STAT0(obj_s->uart) & (uint32_t)(USART_FLAG_PERR | USART_FLAG_FERR |
+    err_flags = (GD32_USART_STAT(obj_s->uart) & (uint32_t)(USART_FLAG_PERR | USART_FLAG_FERR |
                                                        USART_FLAG_ORERR | USART_FLAG_NERR));
     if(err_flags == RESET) {
         /* check whether USART is in receiver mode or not */
@@ -652,22 +688,22 @@ static void usart_irq(struct serial_s *obj_s)
 
     if(usart_interrupt_flag_get(obj_s->uart, USART_INT_FLAG_ERR_ORERR) != RESET) {
         /* clear ORERR error flag by reading USART DATA register */
-        USART_DATA(obj_s->uart);
+        GD32_USART_RX_DATA(obj_s->uart);
     }
 
     if(usart_interrupt_flag_get(obj_s->uart, USART_INT_FLAG_ERR_NERR) != RESET) {
         /* clear NERR error flag by reading USART DATA register */
-        USART_DATA(obj_s->uart);
+        GD32_USART_RX_DATA(obj_s->uart);
     }
 
     if(usart_interrupt_flag_get(obj_s->uart, USART_INT_FLAG_ERR_FERR) != RESET) {
         /* clear FERR error flag by reading USART DATA register */
-        USART_DATA(obj_s->uart);
+        GD32_USART_RX_DATA(obj_s->uart);
     }
 
     if(usart_interrupt_flag_get(obj_s->uart, USART_INT_FLAG_PERR) != RESET) {
         /* clear PERR error flag by reading USART DATA register */
-        USART_DATA(obj_s->uart);
+        GD32_USART_RX_DATA(obj_s->uart);
     }
 }
 

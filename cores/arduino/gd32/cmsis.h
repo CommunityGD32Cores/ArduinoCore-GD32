@@ -7,7 +7,7 @@
 #ifndef MBED_CMSIS_H
 #define MBED_CMSIS_H
 
-#include "gd32f30x.h"
+#include <gd32xxyy.h>
 #include "cmsis_nvic.h"
 
 #endif

@@ -27,7 +27,7 @@ OF SUCH DAMAGE.
 
 #ifndef _GD32_DEF_
 #define _GD32_DEF_
-#include "gd32f30x.h"
+#include "gd32xxyy.h"
 
 /**
  * @brief GD32 core version number

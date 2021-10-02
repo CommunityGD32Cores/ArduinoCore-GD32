@@ -26,6 +26,7 @@ OF SUCH DAMAGE.
 */
 
 #include "rtc.h"
+#include <time.h>
 
 /*
   In the definitions for GD32F30X_{H,X}D, this is 'Alarm', but for the
@@ -37,24 +38,71 @@ OF SUCH DAMAGE.
 #define RTC_ALARM_IRQn RTC_Alarm_IRQn
 #endif
 
+#if defined(GD32F3x0)
+/* 
+ * wrapper functions for microcontrollers that have an RTC
+ * with an asychronous and synchronous prescaler (A,S)
+*/
+void rtc_prescaler_set(uint32_t prescaler) {
+    //ignore incoming prescalar for now -- prescale to 1 per sec
+    (void) prescaler;
+    ErrStatus error_status = ERROR;
+    RTC_WPK = RTC_UNLOCK_KEY1;
+    RTC_WPK = RTC_UNLOCK_KEY2;
+
+    /* values good for LXTAL clock source (32kHz) */
+    uint16_t prescaler_s = 0xFF;
+    uint16_t prescaler_a = 0x7F;
+
+    error_status = rtc_init_mode_enter();
+    RTC_PSC = (uint32_t)(PSC_FACTOR_A(prescaler_a)| \
+                            PSC_FACTOR_S(prescaler_s));
+    rtc_init_mode_exit();
+    error_status = rtc_register_sync_wait();
+    RTC_WPK = RTC_LOCK_KEY;
+}
+
+/* get RTC counter by getting Unix time and converting to timestamp */
+uint32_t rtc_counter_get() {
+    UTCTimeStruct utcTime;
+    rtc_getUTCTime(&utcTime);
+    struct tm ts;
+    ts.tm_hour = utcTime.hour;
+    ts.tm_min = utcTime.minutes;
+    ts.tm_sec = utcTime.seconds;
+    ts.tm_year = utcTime.year;
+    ts.tm_mon = utcTime.month;
+    ts.tm_mday = utcTime.day;
+    time_t unix_time = mktime(&ts);
+    return (uint32_t) unix_time;
+}
+#endif
+
 /*!
     \brief      rtc init
     \param[in]  none
     \param[out] none
     \retval     none
 */
-void rtc_init(void)
+void rtc_Init(void)
 {
     nvic_priority_group_set(NVIC_PRIGROUP_PRE2_SUB2);
     nvic_irq_enable(RTC_IRQn, 2, 0);
+    #if defined(GD32F30x)
     nvic_irq_enable(RTC_ALARM_IRQn, 2, 0);
     /* enable PMU and BKPI clocks */
     rcu_periph_clock_enable(RCU_BKPI);
+    #endif
     rcu_periph_clock_enable(RCU_PMU);
     /* allow access to BKP domain */
     pmu_backup_write_enable();
     /* reset backup domain */
+    #if defined(GD32F30x)
     bkp_deinit();
+    #elif defined(GD32F3x0)
+    rcu_bkp_reset_enable();
+    rcu_bkp_reset_disable();
+    #endif
     /* enable LXTAL */
     rcu_osci_on(RCU_LXTAL);
     /* wait till LXTAL is ready */
@@ -66,12 +114,16 @@ void rtc_init(void)
     /* wait for RTC registers synchronization */
     rtc_register_sync_wait();
 
+#if defined(GD32F30x)
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
+#endif
     /* set RTC prescaler: set RTC period to 1s */
     rtc_prescaler_set(32767);
+#if defined(GD32F30x)
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
+#endif
 }
 
 /*!
@@ -82,6 +134,7 @@ void rtc_init(void)
 */
 void rtc_setUTCTime(UTCTimeStruct *utcTime)
 {
+#if defined(GD32F30x)
     uint32_t secTime = mkTimtoStamp(utcTime) - SECONDS_PER_HOUR * 8;
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
@@ -89,6 +142,17 @@ void rtc_setUTCTime(UTCTimeStruct *utcTime)
     rtc_counter_set(secTime);
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
+#elif defined(GD32F3x0)
+    rtc_parameter_struct curr_date;
+    rtc_current_time_get(&curr_date);
+    curr_date.rtc_hour = utcTime->hour;
+    curr_date.rtc_minute = utcTime->minutes;
+    curr_date.rtc_second = utcTime->seconds;
+    curr_date.rtc_year = utcTime->year - 2000;
+    curr_date.rtc_month = utcTime->month;
+    curr_date.rtc_date = utcTime->day;
+    rtc_init(&curr_date);
+#endif
 }
 
 /*!
@@ -99,6 +163,7 @@ void rtc_setUTCTime(UTCTimeStruct *utcTime)
 */
 void rtc_getUTCTime(UTCTimeStruct *utcTime)
 {
+#if defined(GD32F30x)
     uint32_t timestamp = rtc_getSecTime() + SECONDS_PER_HOUR * 8;
     uint32_t day = timestamp % SECONDS_PER_DAY;  //seconds less then one day
 
@@ -120,6 +185,16 @@ void rtc_getUTCTime(UTCTimeStruct *utcTime)
         }
         utcTime->day += numDays;
     }
+#elif defined(GD32F3x0)
+    rtc_parameter_struct curr_date;
+    rtc_current_time_get(&curr_date);
+    utcTime->hour = curr_date.rtc_hour;
+    utcTime->minutes = curr_date.rtc_minute;
+    utcTime->seconds = curr_date.rtc_second;
+    utcTime->year = 2000 + curr_date.rtc_year;
+    utcTime->month = curr_date.rtc_month;
+    utcTime->day = curr_date.rtc_date;
+#endif
 }
 
 /*!
@@ -130,13 +205,26 @@ void rtc_getUTCTime(UTCTimeStruct *utcTime)
 */
 void rtc_setSecTime(uint32_t secTime)
 {
+#if defined(GD32F30x)
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
     /* change the current time */
     rtc_counter_set(secTime);
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
-
+#elif defined(GD32F3x0)
+    /* convert total seconds into date and set as UTC time */
+    time_t t = (time_t) secTime;
+    struct tm ts = *localtime(&t);
+    UTCTimeStruct utcTime;
+    utcTime.hour = ts.tm_hour;
+    utcTime.minutes = ts.tm_min;
+    utcTime.seconds = ts.tm_sec;
+    utcTime.year = ts.tm_year;
+    utcTime.month = ts.tm_mon;
+    utcTime.day = ts.tm_mday;
+    rtc_setUTCTime(&utcTime);
+#endif
 }
 
 /*!
@@ -158,12 +246,34 @@ uint32_t rtc_getSecTime(void)
 */
 void rtc_setAlarmTime(uint32_t alarmTime)
 {
+#if defined(GD32F30x)
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
     /* change the current time */
     rtc_alarm_config(alarmTime);
     /* wait until last write operation on RTC registers has finished */
     rtc_lwoff_wait();
+#elif defined(GD32F3x0)
+    rtc_alarm_struct rtc_alarm_time;
+    time_t t = (time_t) alarmTime;
+    struct tm ts = *localtime(&t);
+    rtc_alarm_time.rtc_alarm_mask = RTC_ALARM_DATE_MASK|RTC_ALARM_HOUR_MASK|RTC_ALARM_MINUTE_MASK|RTC_ALARM_SECOND_MASK;
+    rtc_alarm_time.rtc_weekday_or_date = RTC_ALARM_DATE_SELECTED;
+    rtc_alarm_time.rtc_alarm_day = ts.tm_mday;
+    if(ts.tm_hour <= 12) {
+        rtc_alarm_time.rtc_am_pm = RTC_AM;
+        rtc_alarm_time.rtc_alarm_hour = ts.tm_hour;
+    } else {
+        rtc_alarm_time.rtc_am_pm = RTC_PM;
+        rtc_alarm_time.rtc_alarm_hour = 12 - ts.tm_hour;
+    }
+    rtc_alarm_time.rtc_alarm_minute = ts.tm_min;
+    rtc_alarm_time.rtc_alarm_second = ts.tm_sec;
+    rtc_alarm_time.rtc_weekday_or_date = ts.tm_sec;
+
+    rtc_alarm_config(&rtc_alarm_time);
+    rtc_alarm_enable();
+#endif
 }
 
 /*!
@@ -176,16 +286,20 @@ void rtc_attachInterrupt(INT_MODE mode)
 {
     uint32_t interrupt = 0;
     switch(mode) {
+#if defined(GD32F30x)
         case INT_SECOND_MODE:
             interrupt = RTC_INT_SECOND;
             break;
+#endif
         case INT_ALARM_MODE:
             interrupt = RTC_INT_ALARM;
             exti_init(EXTI_17, EXTI_INTERRUPT, EXTI_TRIG_RISING);
             break;
+#if defined(GD32F30x)
         case INT_OVERFLOW_MODE:
             interrupt = RTC_INT_OVERFLOW;
             break;
+#endif
     }
     rtc_interrupt_enable(interrupt);
 }
@@ -200,15 +314,19 @@ void rtc_detachInterrupt(INT_MODE mode)
 {
     uint32_t interrupt = 0;
     switch(mode) {
+#if defined(GD32F30x)
         case INT_SECOND_MODE:
             interrupt = RTC_INT_SECOND;
             break;
+#endif
         case INT_ALARM_MODE:
             interrupt = RTC_INT_ALARM;
             break;
+#if defined(GD32F30x)
         case INT_OVERFLOW_MODE:
             interrupt = RTC_INT_OVERFLOW;
             break;
+#endif
     }
     rtc_interrupt_disable(interrupt);
 }
@@ -221,6 +339,7 @@ void rtc_detachInterrupt(INT_MODE mode)
 */
 void RTC_IRQHandler(void)
 {
+#if defined(GD32F30x)
     if(rtc_flag_get(RTC_FLAG_SECOND) != RESET) {
         rtc_flag_clear(RTC_FLAG_SECOND);
         RTC_Handler(INT_SECOND_MODE);
@@ -229,6 +348,13 @@ void RTC_IRQHandler(void)
         rtc_flag_clear(RTC_FLAG_OVERFLOW);
         RTC_Handler(INT_OVERFLOW_MODE);
     }
+#elif defined(GD32F3x0)
+    if(rtc_flag_get(RTC_FLAG_ALARM0) != RESET){
+        rtc_flag_clear(RTC_FLAG_ALARM0);
+        exti_flag_clear(EXTI_17);
+        RTC_Handler(INT_ALARM_MODE);
+    } 
+#endif
 }
 
 /*!
@@ -237,6 +363,7 @@ void RTC_IRQHandler(void)
     \param[out] none
     \retval     none
 */
+#if defined(GD32F30x)
 void RTC_Alarm_IRQHandler(void)
 {
     if(rtc_flag_get(RTC_FLAG_ALARM) != RESET) {
@@ -245,6 +372,7 @@ void RTC_Alarm_IRQHandler(void)
         RTC_Handler(INT_ALARM_MODE);
     }
 }
+#endif
 
 /*!
     \brief      get month length

@@ -34,7 +34,7 @@
 using namespace arduino;
 #endif
 
-#include "gd32f30x.h"
+#include "gd32xxyy.h"
 #include "gd32/pins_arduino.h"
 #include "gd32/PeripheralPins.h"
 

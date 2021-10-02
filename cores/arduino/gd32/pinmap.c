@@ -20,20 +20,20 @@
 #include "pinmap.h"
 #include "PortNames.h"
 #include <stdio.h> /* for some debug printfs() below */
-#define GD32F30x_CL
+//#define GD32F30x_CL
 
 extern const int GD_GPIO_MODE[];
 extern const int GD_GPIO_SPEED[];
 #if defined(GD32F30x) || defined(GD32F10x)
     extern const int GD_GPIO_REMAP[];
 #endif
-#if defined(GD32F4xx)
+#if defined(GD32F3x0) || defined(GD32F4xx)
     extern const int GD_GPIO_PULL_UP_DOWN[];
     extern const int GD_GPIO_OUTPUT_MODE[];
     extern const int GD_GPIO_AF[];
 #endif
 
-static void gpio_mode_set(uint32_t gpio_periph, uint32_t mode, uint32_t pin);
+static void gd32_gpio_mode_set(uint32_t gpio_periph, uint32_t mode, uint32_t pin);
 uint32_t gpio_clock_enable(uint32_t port_idx);
 
 bool pin_in_pinmap(PinName pin, const PinMap *map)
@@ -57,7 +57,7 @@ bool pin_in_pinmap(PinName pin, const PinMap *map)
 void pin_function(PinName pin, int function)
 {
     if((PinName)NC == pin) {
-        printf("pin name not exist");
+        printf("pin name does not exist");
         while(1);
     }
 
@@ -72,14 +72,13 @@ void pin_function(PinName pin, int function)
 
     uint32_t gpio = gpio_clock_enable(port);
 
-#if defined(GD32F30x_CL)
+#if defined(GD32F30x)
     gpio_init(gpio, GD_GPIO_MODE[mode], GD_GPIO_SPEED[speed], gd_pin);
     if(remap != 0) {
         rcu_periph_clock_enable(RCU_AF);
         gpio_pin_remap_config(GD_GPIO_REMAP[remap], ENABLE);
     }
-#endif
-#if defined(GD32F4xx)
+#elif defined(GD32F3x0) || defined(GD32F4xx) 
     gpio_af_set(gpio, GD_GPIO_AF[af], gd_pin);
     gpio_mode_set(gpio, GD_GPIO_MODE[mode], GD_GPIO_PULL_UP_DOWN[pull], gd_pin);
     gpio_output_options_set(gpio, GD_GPIO_OUTPUT_MODE[output], GD_GPIO_SPEED[speed], gd_pin);
@@ -176,12 +175,12 @@ uint32_t pinmap_function(PinName pin, const PinMap *map)
  * @param mode gpio pin mode
  * @param pin gpio pin number
  */
-static void gpio_mode_set(uint32_t gpio_periph, uint32_t mode, uint32_t pin)
+static void gd32_gpio_mode_set(uint32_t gpio_periph, uint32_t mode, uint32_t pin)
 {
     uint16_t i;
     uint32_t temp_mode = 0U;
     uint32_t reg = 0U;
-#if defined(GD32F30x_CL)
+#if defined(GD32F30x)
     /* GPIO mode configuration */
     temp_mode = (uint32_t)(mode & ((uint32_t)0x0FU));
 
@@ -288,18 +287,24 @@ uint32_t gpio_clock_enable(uint32_t port_idx) {
             gpio_add = GPIOD;
             rcu_periph_clock_enable(RCU_GPIOD);
             break;
+        #ifdef GPIOE
         case PORTE:
             gpio_add = GPIOE;
             rcu_periph_clock_enable(RCU_GPIOE);
             break;
+        #endif
+        #ifdef GPIOF
         case PORTF:
             gpio_add = GPIOF;
             rcu_periph_clock_enable(RCU_GPIOF);
             break;
+        #endif
+        #ifdef GPIOG
         case PORTG:
             gpio_add = GPIOG;
             rcu_periph_clock_enable(RCU_GPIOG);
             break;
+        #endif
         default:
             printf("port number not exist");
             break;

@@ -8,6 +8,7 @@ typedef struct {
 } extiConf_t;
 
 extiConf_t gpio_exti_infor[EXTI_NUMS] = {
+#if defined(GD32F30x)
     {EXTI0_IRQn,      NULL},
     {EXTI1_IRQn,      NULL},
     {EXTI2_IRQn,      NULL},
@@ -24,6 +25,24 @@ extiConf_t gpio_exti_infor[EXTI_NUMS] = {
     {EXTI10_15_IRQn,  NULL},
     {EXTI10_15_IRQn,  NULL},
     {EXTI10_15_IRQn,  NULL}
+#elif defined(GD32F3x0)
+    {EXTI0_1_IRQn,      NULL},
+    {EXTI0_1_IRQn,      NULL},
+    {EXTI2_3_IRQn,      NULL},
+    {EXTI2_3_IRQn,      NULL},
+    {EXTI4_15_IRQn,      NULL},
+    {EXTI4_15_IRQn,    NULL},
+    {EXTI4_15_IRQn,    NULL},
+    {EXTI4_15_IRQn,    NULL},
+    {EXTI4_15_IRQn,    NULL},
+    {EXTI4_15_IRQn,    NULL},
+    {EXTI4_15_IRQn,  NULL},
+    {EXTI4_15_IRQn,  NULL},
+    {EXTI4_15_IRQn,  NULL},
+    {EXTI4_15_IRQn,  NULL},
+    {EXTI4_15_IRQn,  NULL},
+    {EXTI4_15_IRQn,  NULL}
+#endif
 };
 
 void gpio_interrupt_enable(uint32_t portNum, uint32_t pinNum, void (*callback)(void), uint32_t mode)
@@ -34,11 +53,24 @@ void gpio_interrupt_enable(uint32_t portNum, uint32_t pinNum, void (*callback)(v
     gpio_exti_infor[pinNum].callback = callback;
 
     gpio_clock_enable(portNum);
+    #if defined(GD32F30x)
     rcu_periph_clock_enable(RCU_AF);
     gpio_init(gpio_port[portNum], GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, gpio_pin[pinNum]);
+    #elif defined(GD32F3x0)
+    rcu_periph_clock_enable(RCU_CFGCMP);
+    gpio_mode_set(gpio_port[portNum], GPIO_MODE_INPUT, GPIO_PUPD_NONE, gpio_pin[pinNum]);
+    #endif
+
     nvic_irq_enable(gpio_exti_infor[pinNum].irqNum, EXTI_IRQ_PRIO, EXTI_IRQ_SUBPRIO);
 
+    #if defined(GD32F3x0)
+    syscfg_exti_line_config(
+        (uint8_t) portNum, 
+        (uint8_t) pinNum);
+    #elif defined(GD32F30x)
     gpio_exti_source_select(portNum, pinNum);
+    #endif
+
     exti_init(exti_line, exti_mode, trig_type);
     exti_interrupt_flag_clear(exti_line);
 
@@ -69,7 +101,7 @@ void exti_callbackHandler(uint32_t pinNum)
     }
 }
 
-
+#if defined(GD32F30x)
 void EXTI0_IRQHandler(void)
 {
     exti_callbackHandler(0);
@@ -111,3 +143,28 @@ void EXTI10_15_IRQHandler(void)
         exti_callbackHandler(i);
     }
 }
+#elif defined(GD32F3x0)
+void EXTI0_1_IRQHandler(void)
+{
+    uint32_t i;
+    for(i = 0; i <= 1; i++) {
+        exti_callbackHandler(i);
+    }
+}
+
+void EXTI2_3_IRQHandler(void)
+{
+    uint32_t i;
+    for(i = 2; i <= 3; i++) {
+        exti_callbackHandler(i);
+    }
+}
+
+void EXTI4_15_IRQHandler(void)
+{
+    uint32_t i;
+    for(i = 4; i <= 15; i++) {
+        exti_callbackHandler(i);
+    }
+}
+#endif

@@ -40,7 +40,7 @@ OF SUCH DAMAGE.
 #define SYSTICK_H
 
 #include <stdint.h>
-#include "gd32f30x.h"
+#include "gd32xxyy.h"
 
 /* configure systick */
 void systick_config(void);

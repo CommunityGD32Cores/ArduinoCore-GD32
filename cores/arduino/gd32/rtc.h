@@ -28,7 +28,7 @@ OF SUCH DAMAGE.
 #ifndef _GD_RTC_H_
 #define _GD_RTC_H_
 
-#include "gd32f30x_rtc.h"
+#include "gd32xxyy.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -62,7 +62,7 @@ typedef enum {
     INT_OVERFLOW_MODE
 } INT_MODE;
 
-void rtc_init(void);                                            //rtc init
+void rtc_Init(void);                                            //rtc init
 void rtc_setUTCTime(UTCTimeStruct *utcTime);                    //rtc set UTC time
 void rtc_setSecTime(uint32_t secTime);                          //rtc set second time
 uint32_t rtc_getSecTime(void);                                  //rtc get second time

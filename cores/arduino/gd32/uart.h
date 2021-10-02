@@ -31,7 +31,7 @@ OF SUCH DAMAGE.
 #define UART_H
 
 /* Includes ------------------------------------------------------------------*/
-#include "gd32f30x.h"
+#include "gd32xxyy.h"
 #include "PinNames.h"
 #include "PeripheralNames.h"
 #include "pinmap.h"
