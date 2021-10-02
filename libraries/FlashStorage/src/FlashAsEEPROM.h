@@ -44,6 +44,7 @@ class EEPROMClass {
   template<typename T>
   const T& put(uint32_t offset, const T& t) {
     storage_.write(offset, (const uint8_t *)&t, sizeof(T));
+    return t;
   }
 
   uint8_t read(uint32_t offset) {
