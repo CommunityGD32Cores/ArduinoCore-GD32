@@ -347,7 +347,7 @@ i2c_status_enum i2c_master_receive(i2c_t *obj, uint8_t address, uint8_t *data, u
             }
         }
         timeout = FLAG_TIMEOUT;
-        while(!i2c_flag_get(obj->i2c, I2C_FLAG_RBNE));
+        while((!i2c_flag_get(obj->i2c, I2C_FLAG_RBNE)) && (--timeout != 0));
         data[count] = i2c_data_receive(obj->i2c);
     }
 
