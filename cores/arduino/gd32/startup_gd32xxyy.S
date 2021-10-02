@@ -8,4 +8,7 @@
 #ifdef GD32F30X_XD
 #include "startup_gd32f30x_xd.S"
 #endif
+#elif defined(GD32F3x0)
+#include "startup_gd32f3x0.S"
+#else "Unknown chip series!"
 #endif

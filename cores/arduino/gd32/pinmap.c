@@ -20,7 +20,7 @@
 #include "pinmap.h"
 #include "PortNames.h"
 #include <stdio.h> /* for some debug printfs() below */
-#define GD32F30x_CL
+//#define GD32F30x_CL
 
 extern const int GD_GPIO_MODE[];
 extern const int GD_GPIO_SPEED[];
@@ -72,7 +72,7 @@ void pin_function(PinName pin, int function)
 
     uint32_t gpio = gpio_clock_enable(port);
 
-#if defined(GD32F30x_CL)
+#if defined(GD32F30x)
     gpio_init(gpio, GD_GPIO_MODE[mode], GD_GPIO_SPEED[speed], gd_pin);
     if(remap != 0) {
         rcu_periph_clock_enable(RCU_AF);
