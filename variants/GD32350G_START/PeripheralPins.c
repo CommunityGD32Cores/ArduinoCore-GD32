@@ -219,6 +219,7 @@ const uint32_t gpio_port[] = {
     GPIOB,
     GPIOC,
     GPIOD,
+    GPIOF
 };
 const uint32_t gpio_pin[] = {
     GPIO_PIN_0,
