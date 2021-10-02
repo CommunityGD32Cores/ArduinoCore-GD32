@@ -53,7 +53,7 @@ class FlashStorage {
     fmc_unlock();
 
     uint8_t *src = (uint8_t *)data_area_start;
-    for (auto i = 0; i < _storage_size; i++) {
+    for (uint32_t i = 0; i < _storage_size; i++) {
       buffer_[i] = src[i];
     }
   }
