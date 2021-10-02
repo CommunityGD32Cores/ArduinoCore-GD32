@@ -27,9 +27,26 @@
     bit 9:10  gpio speed
     bit 11:15 adc  /timer channel
 */
-const int GD_GPIO_REMAP[] = {
-    /* don't yet know how to implement remaps. */
-    /* probably needs alternative implementation. */
+const int GD_GPIO_PULL_UP_DOWN[] = {
+    GPIO_PUPD_NONE,             /* 0 */
+    GPIO_PUPD_PULLUP,           /* 1 */
+    GPIO_PUPD_PULLDOWN,         /* 2 */
+};
+
+const int GD_GPIO_OUTPUT_MODE[] = {
+    GPIO_OTYPE_PP,             /* 0 */
+    GPIO_OTYPE_OD,             /* 1 */
+};
+
+const int GD_GPIO_AF[] = {
+    GPIO_AF_0,             /* 0 */
+    GPIO_AF_1,             /* 1 */
+    GPIO_AF_2,             /* 2 */
+    GPIO_AF_3,             /* 3 */
+    GPIO_AF_4,             /* 4 */
+    GPIO_AF_5,             /* 5 */
+    GPIO_AF_6,             /* 6 */
+    GPIO_AF_7,             /* 7 */
 };
 
 /* GPIO MODE */
@@ -135,7 +152,7 @@ const PinMap PinMap_PWM[] = {
 /* USART PinMap */
 const PinMap PinMap_UART_TX[] = {
     {PORTA_9,  USART0, 7},
-    {PORTB_6,  USART0, 7 | (3 << 3)},   /* GPIO_USART0_TX_REMAP */
+    {PORTB_6,  USART0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, GPIO_AF_1)},   /* GPIO_USART0_TX_REMAP */
     {PORTA_2,  USART1, 7},
     //{PORTD_5,  USART1, 7 | (4 << 3)},   /* GPIO_USART1_TX_REMAP */
     // {PORTB_10, UART_2, 7},
@@ -148,7 +165,7 @@ const PinMap PinMap_UART_TX[] = {
 
 const PinMap PinMap_UART_RX[] = {
     {PORTA_10, USART0, 1},
-    {PORTB_7,  USART0, 1 | (3 << 3)},   /* GPIO_USART0_RX_REMAP */
+    {PORTB_7,  USART0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, GPIO_AF_1)},
     // {PORTA_3,  UART_1, 1},
     // {PORTD_6,  UART_1, 1 | (4 << 3)},   /* GPIO_USART1_RX_REMAP */
     // {PORTB_11, UART_2, 1},
