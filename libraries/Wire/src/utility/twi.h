@@ -32,7 +32,7 @@ OF SUCH DAMAGE.
 
 #include "gd32_def.h"
 #include "PeripheralPins.h"
-#include "gd32f30x.h"
+#include "gd32xxyy.h"
 
 #ifdef __cplusplus
 extern "C" {

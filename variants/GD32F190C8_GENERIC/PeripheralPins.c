@@ -98,14 +98,14 @@ const PinMap PinMap_DAC[] = {
 
 /* I2C PinMap */
 const PinMap PinMap_I2C_SDA[] = {
-    {PORTB_7,  I2C0, 6},
+    {PORTB_7,  I2C0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_OD, PIN_PUPD_PULLUP, GPIO_AF_1)},
     {PORTB_9,  I2C0, 6 | (2 << 3)},    /* GPIO_I2C0_REMAP */
     {PORTB_11, I2C1, 6},
     {NC,    NC,    0}
 };
 
 const PinMap PinMap_I2C_SCL[] = {
-    {PORTB_6,  I2C0, 6},
+    {PORTB_6,  I2C0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_OD, PIN_PUPD_PULLUP, GPIO_AF_1)},
     {PORTB_8,  I2C0, 6 | (2 << 3)},    /* GPIO_I2C0_REMAP */
     {PORTB_10, I2C1, 6},
     {NC,    NC,    0}
