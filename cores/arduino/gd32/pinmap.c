@@ -78,8 +78,7 @@ void pin_function(PinName pin, int function)
         rcu_periph_clock_enable(RCU_AF);
         gpio_pin_remap_config(GD_GPIO_REMAP[remap], ENABLE);
     }
-#endif
-#if defined(GD32F4xx)
+#elif defined(GD32F4xx)
     gpio_af_set(gpio, GD_GPIO_AF[af], gd_pin);
     gpio_mode_set(gpio, GD_GPIO_MODE[mode], GD_GPIO_PULL_UP_DOWN[pull], gd_pin);
     gpio_output_options_set(gpio, GD_GPIO_OUTPUT_MODE[output], GD_GPIO_SPEED[speed], gd_pin);
@@ -288,18 +287,24 @@ uint32_t gpio_clock_enable(uint32_t port_idx) {
             gpio_add = GPIOD;
             rcu_periph_clock_enable(RCU_GPIOD);
             break;
+        #ifdef GPIOE
         case PORTE:
             gpio_add = GPIOE;
             rcu_periph_clock_enable(RCU_GPIOE);
             break;
+        #endif
+        #ifdef GPIOF
         case PORTF:
             gpio_add = GPIOF;
             rcu_periph_clock_enable(RCU_GPIOF);
             break;
+        #endif
+        #ifdef GPIOG
         case PORTG:
             gpio_add = GPIOG;
             rcu_periph_clock_enable(RCU_GPIOG);
             break;
+        #endif
         default:
             printf("port number not exist");
             break;

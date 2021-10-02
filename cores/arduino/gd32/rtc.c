@@ -47,9 +47,11 @@ void rtc_init(void)
 {
     nvic_priority_group_set(NVIC_PRIGROUP_PRE2_SUB2);
     nvic_irq_enable(RTC_IRQn, 2, 0);
+    #if defined(GD32F30x)
     nvic_irq_enable(RTC_ALARM_IRQn, 2, 0);
     /* enable PMU and BKPI clocks */
     rcu_periph_clock_enable(RCU_BKPI);
+    #endif
     rcu_periph_clock_enable(RCU_PMU);
     /* allow access to BKP domain */
     pmu_backup_write_enable();
@@ -176,16 +178,20 @@ void rtc_attachInterrupt(INT_MODE mode)
 {
     uint32_t interrupt = 0;
     switch(mode) {
+#if defined(GD32F30x)
         case INT_SECOND_MODE:
             interrupt = RTC_INT_SECOND;
             break;
+#endif
         case INT_ALARM_MODE:
             interrupt = RTC_INT_ALARM;
             exti_init(EXTI_17, EXTI_INTERRUPT, EXTI_TRIG_RISING);
             break;
+#if defined(GD32F30x)
         case INT_OVERFLOW_MODE:
             interrupt = RTC_INT_OVERFLOW;
             break;
+#endif
     }
     rtc_interrupt_enable(interrupt);
 }
@@ -200,15 +206,19 @@ void rtc_detachInterrupt(INT_MODE mode)
 {
     uint32_t interrupt = 0;
     switch(mode) {
+#if defined(GD32F30x)
         case INT_SECOND_MODE:
             interrupt = RTC_INT_SECOND;
             break;
+#endif
         case INT_ALARM_MODE:
             interrupt = RTC_INT_ALARM;
             break;
+#if defined(GD32F30x)
         case INT_OVERFLOW_MODE:
             interrupt = RTC_INT_OVERFLOW;
             break;
+#endif
     }
     rtc_interrupt_disable(interrupt);
 }
@@ -221,6 +231,7 @@ void rtc_detachInterrupt(INT_MODE mode)
 */
 void RTC_IRQHandler(void)
 {
+#if defined(GD32F30x)
     if(rtc_flag_get(RTC_FLAG_SECOND) != RESET) {
         rtc_flag_clear(RTC_FLAG_SECOND);
         RTC_Handler(INT_SECOND_MODE);
@@ -229,6 +240,13 @@ void RTC_IRQHandler(void)
         rtc_flag_clear(RTC_FLAG_OVERFLOW);
         RTC_Handler(INT_OVERFLOW_MODE);
     }
+#elif defined(GD32F3x0)
+    if(rtc_flag_get(RTC_STAT_ALRM0F) != RESET){
+        rtc_flag_clear(RTC_STAT_ALRM0F);
+        exti_flag_clear(EXTI_17);
+        RTC_Handler(INT_ALARM_MODE);
+    } 
+#endif
 }
 
 /*!
@@ -237,6 +255,7 @@ void RTC_IRQHandler(void)
     \param[out] none
     \retval     none
 */
+#if defined(GD32F30x)
 void RTC_Alarm_IRQHandler(void)
 {
     if(rtc_flag_get(RTC_FLAG_ALARM) != RESET) {
@@ -245,6 +264,7 @@ void RTC_Alarm_IRQHandler(void)
         RTC_Handler(INT_ALARM_MODE);
     }
 }
+#endif
 
 /*!
     \brief      get month length

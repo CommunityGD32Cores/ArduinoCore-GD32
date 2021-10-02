@@ -77,13 +77,11 @@ extern "C" {
 #define ANALOG_PINS_LAST        PB2
 
 /* LED definitions */
-#define LED_BUILTIN             PC13
-#define LED_GREEN               PC13
-#define LED2                    PB2
+#define LED_BUILTIN             PA1
+#define LED_GREEN               PA1
 
 /* user keys definitions */
-#define KEY0                    PB10
-#define KEY1                    PB11
+#define KEY0                    PA0
 
 /* SPI definitions */
 #define PIN_SPI_SS              PA8
@@ -109,22 +107,12 @@ extern "C" {
 /* USART definitions */
 
 #define SERIAL_HOWMANY          1
-/* by default now, use PA9 for TX. To get the old behavior for PA3, define the USE_USART1_SERIAL macro. */
-#if !defined(USE_USART0_SERIAL) && !defined(USE_USART1_SERIAL)
-#define USE_USART0_SERIAL	
-#endif
 
-#ifdef USE_USART0_SERIAL	
-#define PIN_SERIAL_RX           PA10
-#define PIN_SERIAL_TX           PA9
+#define USE_USART0_SERIAL	
+#define PIN_SERIAL_RX           PB7
+#define PIN_SERIAL_TX           PB6
 #define SERIAL0_RX          PIN_SERIAL_RX
 #define SERIAL0_TX          PIN_SERIAL_TX
-#elif defined(USE_USART1_SERIAL)
-#define PIN_SERIAL_RX           PA3
-#define PIN_SERIAL_TX           PA2
-#define SERIAL1_RX          PIN_SERIAL_RX
-#define SERIAL1_TX          PIN_SERIAL_TX
-#endif
 
 /* ADC definitions */
 #define ADC_RESOLUTION          10

@@ -26,8 +26,7 @@ extern "C" {
 #endif
 
 typedef enum {
-    ADC_0 = (int)ADC0,
-    ADC_1 = (int)ADC1
+    ADC_0 = (int)ADC
 } ADCName;
 
 typedef enum {
@@ -36,28 +35,31 @@ typedef enum {
 
 typedef enum {
     UART_0 = (int)USART0,
-    UART_1 = (int)USART1,
-    UART_2 = (int)USART2
+#ifdef USART1
+    UART_1 = (int)USART1
+#endif
 } UARTName;
 
 typedef enum {
     SPI_0 = (int)SPI0,
-    SPI_1 = (int)SPI1,
-    SPI_2 = (int)SPI2
+#ifdef SPI1
+    SPI_1 = (int)SPI1
+#endif
 } SPIName;
 
 typedef enum {
     I2C_0 = (int)I2C0,
+#ifdef I2C1
     I2C_1 = (int)I2C1
+#endif
 } I2CName;
 
 typedef enum {
     PWM_0 = (int)TIMER0,
     PWM_1 = (int)TIMER1,
     PWM_2 = (int)TIMER2,
-    PWM_3 = (int)TIMER3,
-    PWM_4 = (int)TIMER4
-    /* Timer 5 and 6 are there in hardware but cannot be used to generate PWM. We do not have Timer7. */
+    PWM_5 = (int)TIMER5
+    /* Timer 14..16 are also there, are these usable for PWM? */
 } PWMName;
 
 

@@ -28,7 +28,7 @@ OF SUCH DAMAGE.
 #ifndef _GD_RTC_H_
 #define _GD_RTC_H_
 
-#include "gd32f30x_rtc.h"
+#include "gd32xxyy.h"
 
 #ifdef __cplusplus
 extern "C"
