@@ -52,6 +52,8 @@ OF SUCH DAMAGE.
 #endif
 #elif defined(GD32F3x0)
     #define ADC_NUMS  1
+#elif defined(GD32F1x0)
+    #define ADC_NUMS  1
 #endif
 
 #if DAC_NUMS != 0
@@ -75,7 +77,7 @@ void set_dac_value(PinName pinname, uint16_t value)
         dac_output_buffer_enable(dac_periph);
         dac_enable(dac_periph);
         dac_data_set(dac_periph, DAC_ALIGN_12B_R, value);
-#elif defined(GD32F3x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0)
         /* only has 1 DAC at maximum, no need for a parameter... */
         dac_trigger_disable();
         dac_wave_mode_config(DAC_WAVE_DISABLE);
@@ -88,7 +90,7 @@ void set_dac_value(PinName pinname, uint16_t value)
         //set dac value
 #if defined(GD32F30x)
         dac_data_set(dac_periph, DAC_ALIGN_12B_R, value);
-#elif defined(GD32F3x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0)
         dac_data_set(DAC_ALIGN_12B_R, value);
 #endif
     }
@@ -121,7 +123,7 @@ uint16_t get_adc_value(PinName pinname)
         adc_resolution_config(adc_periph, ADC_RESOLUTION_12B);
         adc_data_alignment_config(adc_periph, ADC_DATAALIGN_RIGHT);
         adc_channel_length_config(adc_periph, ADC_REGULAR_CHANNEL, 1U);
-#elif defined(GD32F3x0) 
+#elif defined(GD32F3x0) || defined(GD32F1x0)
         rcu_adc_clock_config(RCU_ADCCK_APB2_DIV6);
         adc_special_function_config(ADC_CONTINUOUS_MODE, ENABLE);
         adc_resolution_config(ADC_RESOLUTION_12B);
@@ -132,7 +134,7 @@ uint16_t get_adc_value(PinName pinname)
         adc_external_trigger_source_config(adc_periph, ADC_REGULAR_CHANNEL, ADC0_1_2_EXTTRIG_REGULAR_NONE);
 #elif defined(GD32VF103) /* what?! Code for a RISC-V MCU here? */
         adc_external_trigger_source_config(adc_periph, ADC_REGULAR_CHANNEL, ADC0_1_EXTTRIG_REGULAR_NONE);
-#elif defined(GD32F3x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0)
         adc_external_trigger_source_config(ADC_REGULAR_CHANNEL, ADC_EXTTRIG_REGULAR_NONE);
 #endif
 #if defined(GD32F30x)
@@ -140,7 +142,7 @@ uint16_t get_adc_value(PinName pinname)
         adc_enable(adc_periph);
         delay(1U);
         adc_calibration_enable(adc_periph);
-#elif defined(GD32F3x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0)
         adc_external_trigger_config(ADC_REGULAR_CHANNEL, ENABLE);
         adc_enable();
         delay(1U);
@@ -154,7 +156,7 @@ uint16_t get_adc_value(PinName pinname)
     while(!adc_flag_get(adc_periph, ADC_FLAG_EOC));
     adc_flag_clear(adc_periph, ADC_FLAG_EOC);
     value = adc_regular_data_read(adc_periph);
-#elif defined(GD32F3x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0)
     adc_regular_channel_config(0U, channel, ADC_SAMPLETIME_7POINT5);
     adc_software_trigger_enable(ADC_REGULAR_CHANNEL);
     while(!adc_flag_get(ADC_FLAG_EOC));
@@ -308,7 +310,7 @@ void adc_clock_enable(uint32_t instance)
             temp = RCU_ADC2;
             break;
 #endif
-#elif defined(GD32F3x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0)
         case ADC:
             temp = RCU_ADC;
             break;

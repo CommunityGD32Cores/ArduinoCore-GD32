@@ -57,6 +57,12 @@ static struct i2c_s *obj_s_buf[I2C_NUM] = {NULL};
 
 #define I2C_S(obj)    (struct i2c_s *) (obj)
 
+#if defined(GD32F1x0) || defined(GD32F3x0) || defined(GD32F4xx)
+#define GD32_I2C_FLAG_IS_TRANSMTR_OR_RECVR I2C_FLAG_TR
+#else
+#define GD32_I2C_FLAG_IS_TRANSMTR_OR_RECVR I2C_FLAG_TRS
+#endif
+
 /** Initialize the I2C peripheral
  *
  * @param obj       The I2C object
@@ -505,7 +511,7 @@ static void i2c_irq(struct i2c_s *obj_s)
         i2c_interrupt_flag_clear(I2C0, I2C_INT_FLAG_ADDSEND);
         //memset(_rx_Buffer, _rx_count, 0);
         obj_s->rx_count = 0;
-        if(i2c_flag_get(I2C0, I2C_FLAG_TRS)) {
+        if(i2c_flag_get(I2C0, GD32_I2C_FLAG_IS_TRANSMTR_OR_RECVR)) {
             obj_s->slave_transmit_callback();
         }
     } else if((i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_TBE)) &&
@@ -522,7 +528,7 @@ static void i2c_irq(struct i2c_s *obj_s)
     } else if(i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_STPDET)) {
         /* clear the STPDET bit */
         i2c_enable(I2C0);
-        if(!i2c_flag_get(I2C0, I2C_FLAG_TRS)) {
+        if(!i2c_flag_get(I2C0, GD32_I2C_FLAG_IS_TRANSMTR_OR_RECVR)) {
             obj_s->rx_buffer_ptr = obj_s->rx_buffer_ptr - obj_s->rx_count ;
             obj_s->slave_receive_callback(obj_s->rx_buffer_ptr, obj_s->rx_count);
         }
