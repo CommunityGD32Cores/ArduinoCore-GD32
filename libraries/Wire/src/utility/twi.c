@@ -174,8 +174,13 @@ static int i2c_stop(i2c_t *obj)
     /* generate a STOP condition */
     i2c_stop_on_bus(obj_s->i2c);
 
-    /* wait for STOP bit reset */
-    while((I2C_CTL0(obj_s->i2c) & I2C_CTL0_STOP));
+    /* wait for STOP bit reset with timeout */
+    int timeout = FLAG_TIMEOUT;
+    while((I2C_CTL0(obj_s->i2c) & I2C_CTL0_STOP)) {
+        if ((timeout--) == 0) {
+            return I2C_ERROR_BUS_BUSY;
+        }
+    }
 
     return 0;
 }
