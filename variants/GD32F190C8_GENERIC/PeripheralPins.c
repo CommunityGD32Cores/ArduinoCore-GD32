@@ -47,6 +47,8 @@ const int GD_GPIO_AF[] = {
     GPIO_AF_5,             /* 5 */
     GPIO_AF_6,             /* 6 */
     GPIO_AF_7,             /* 7 */
+    GPIO_AF_9,             /* 8 */
+    GPIO_AF_11             /* 9 */
 };
 
 /* GPIO MODE */
