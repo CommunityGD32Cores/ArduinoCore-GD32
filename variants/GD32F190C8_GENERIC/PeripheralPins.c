@@ -47,7 +47,26 @@ const int GD_GPIO_AF[] = {
     GPIO_AF_5,             /* 5 */
     GPIO_AF_6,             /* 6 */
     GPIO_AF_7,             /* 7 */
+    GPIO_AF_9,             /* 8 */
+    GPIO_AF_11             /* 9 */
 };
+
+/* pin descriptions only reference the index in the array, so
+ * to get e.g. AF11 one must give it index = 9. provide 
+ * convenience macros here.
+ * for all other arrays, the value is also equivalent to the index,
+ * so there doesn't need to be anything done more.
+ */
+#define IND_GPIO_AF_0 0
+#define IND_GPIO_AF_1 1
+#define IND_GPIO_AF_2 2
+#define IND_GPIO_AF_3 3
+#define IND_GPIO_AF_4 4
+#define IND_GPIO_AF_5 5
+#define IND_GPIO_AF_6 6
+#define IND_GPIO_AF_7 7
+#define IND_GPIO_AF_9 8
+#define IND_GPIO_AF_11 9
 
 /* GPIO MODE */
 const int GD_GPIO_MODE[] = {
@@ -59,9 +78,10 @@ const int GD_GPIO_MODE[] = {
 
 /* GPIO SPEED */
 const int GD_GPIO_SPEED[] = {
-    GPIO_OSPEED_50MHZ,            /* 0 */
+    GPIO_OSPEED_2MHZ,             /* 0 */
     GPIO_OSPEED_10MHZ,            /* 1 */
-    GPIO_OSPEED_2MHZ,             /* 2 */
+    0,                            /* 2 (unused) */
+    GPIO_OSPEED_50MHZ,            /* 3 */
 };
 
 /* ADC PinMap */
@@ -150,8 +170,8 @@ const PinMap PinMap_PWM[] = {
 
 /* USART PinMap */
 const PinMap PinMap_UART_TX[] = {
-    {PORTA_9,  USART0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, GPIO_AF_1)},
-    {PORTB_6,  USART0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, GPIO_AF_1)},   /* GPIO_USART0_TX_REMAP */
+    {PORTA_9,  USART0, GD_PIN_FUNCTION4(GPIO_MODE_AF, GPIO_OTYPE_PP, GPIO_PUPD_PULLUP, IND_GPIO_AF_1)},
+    {PORTB_6,  USART0, GD_PIN_FUNCTION4(GPIO_MODE_AF, GPIO_OTYPE_PP, GPIO_PUPD_PULLUP, IND_GPIO_AF_1)},   /* GPIO_USART0_TX_REMAP */
     {PORTA_2,  USART1, 7},
     //{PORTD_5,  USART1, 7 | (4 << 3)},   /* GPIO_USART1_TX_REMAP */
     // {PORTB_10, UART_2, 7},
@@ -163,8 +183,8 @@ const PinMap PinMap_UART_TX[] = {
 };
 
 const PinMap PinMap_UART_RX[] = {
-    {PORTA_10, USART0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, GPIO_AF_1)},
-    {PORTB_7,  USART0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, GPIO_AF_1)},
+    {PORTA_10, USART0, GD_PIN_FUNCTION4(GPIO_MODE_AF, GPIO_OTYPE_PP, GPIO_PUPD_PULLUP, IND_GPIO_AF_1)},
+    {PORTB_7,  USART0, GD_PIN_FUNCTION4(GPIO_MODE_AF, GPIO_OTYPE_PP, GPIO_PUPD_PULLUP, IND_GPIO_AF_1)},
     // {PORTA_3,  UART_1, 1},
     // {PORTD_6,  UART_1, 1 | (4 << 3)},   /* GPIO_USART1_RX_REMAP */
     // {PORTB_11, UART_2, 1},

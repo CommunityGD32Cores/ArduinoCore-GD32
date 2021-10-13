@@ -142,6 +142,7 @@ void i2c_clock_config(uint32_t i2c_periph, uint32_t clkspeed, uint32_t dutycyc)
             clkc |= 0x0001U;  
         }
         I2C_CKCFG(i2c_periph) |= I2C_CKCFG_FAST;
+        I2C_CKCFG(i2c_periph) &= ~I2C_CKCFG_CLKC; //bugfix: clear out previous CLKC value.
         I2C_CKCFG(i2c_periph) |= clkc;
     }else{
         /* illegal parameters */
