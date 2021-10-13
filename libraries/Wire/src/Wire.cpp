@@ -330,11 +330,11 @@ void TwoWire::onRequest(void (*function)(void))
     user_onRequest = function;
 }
 
-
-
-
 void TwoWire::setClock(uint32_t clock_hz)
 {
+    //tests show tha clock can only be changed while the I2C peripheral is **of**.
+    i2c_disable(_i2c.i2c);
     i2c_set_clock(&_i2c, clock_hz);
+    i2c_enable(_i2c.i2c);
 }
 
