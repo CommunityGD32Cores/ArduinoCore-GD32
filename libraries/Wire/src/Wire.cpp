@@ -232,7 +232,7 @@ size_t TwoWire::write(uint8_t data)
   *         beginTransmission() and before endTransmission().
   * @param  pdata: pointer to the buffer data
   * @param  quantity: number of bytes to write
-  * @retval number of bytes ready to write.
+  * @retval the number of bytes written
   */
 size_t TwoWire::write(const uint8_t *data, size_t quantity)
 {
@@ -250,7 +250,7 @@ size_t TwoWire::write(const uint8_t *data, size_t quantity)
             ret = 0;
         }
     }
-    return quantity;
+    return ret;
 }
 
 int TwoWire::available(void)

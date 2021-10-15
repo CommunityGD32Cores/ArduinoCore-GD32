@@ -74,7 +74,7 @@ static struct i2c_s *obj_s_buf[I2C_NUM] = {NULL};
 void i2c_init(i2c_t *obj, PinName sda, PinName scl, uint8_t address)
 {
     struct i2c_s *obj_s = I2C_S(obj);
-    uint32_t speed;
+    uint32_t default_speed = 100000;
     /* find the I2C by pins */
     uint32_t i2c_sda = pinmap_peripheral(sda, PinMap_I2C_SDA);
     uint32_t i2c_scl = pinmap_peripheral(scl, PinMap_I2C_SCL);
@@ -105,7 +105,8 @@ void i2c_init(i2c_t *obj, PinName sda, PinName scl, uint8_t address)
     pinmap_pinout(scl, PinMap_I2C_SCL);
 
     /* I2C clock configure */
-    i2c_clock_config(obj->i2c, 100000, I2C_DTCY_2);
+    i2c_clock_config(obj->i2c, default_speed, I2C_DTCY_2);
+
     /* I2C address configure */
     i2c_mode_addr_config(obj->i2c, I2C_I2CMODE_ENABLE, I2C_ADDFORMAT_7BITS, address);
 
@@ -340,7 +341,7 @@ i2c_status_enum i2c_master_receive(i2c_t *obj, uint8_t address, uint8_t *data, u
     i2c_flag_clear(obj->i2c, I2C_FLAG_ADDSEND);
 
     for(count = 0; count < length; count++) {
-        if(length > 2 && count == length - 3) {
+        if(length > 2 && count == (uint32_t)length - 3) {
             timeout = FLAG_TIMEOUT;
 
             while((!i2c_flag_get(obj->i2c, I2C_FLAG_BTC)) && (--timeout != 0));
