@@ -20,7 +20,7 @@ static void tonePeriodElapsedCallback()
     uint32_t port = gpio_port[GD_PORT_GET(TimerTone_pinInfo.pin)];
     uint8_t pin =  gpio_pin[GD_PIN_GET(TimerTone_pinInfo.pin)];
 
-    if(port != NC) {
+    if(port != (uint32_t)NC) {
         if(TimerTone_pinInfo.count == -1) {
             gpio_bit_write(port, pin, (bit_status)(1 - (int)gpio_input_bit_get(port, pin)));
         } else if(TimerTone_pinInfo.count != 0) {
