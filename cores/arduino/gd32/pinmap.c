@@ -62,11 +62,8 @@ void pin_function(PinName pin, int function)
     }
 
     uint32_t mode   = GD_PIN_MODE_GET(function);
-    // uint32_t af  =   GD_PIN_AF_GET(function);
     uint32_t remap  = GD_PIN_REMAP_GET(function);
     uint32_t speed  = GD_PIN_SPEED_GET(function);
-    // uint32_t output = GD_PIN_OUTPUT_MODE_GET(function) ;
-    // uint32_t pull =  GD_PIN_PULL_STATE_GET(function);
     uint32_t port   = GD_PORT_GET(pin);
     uint32_t gd_pin = 1 << GD_PIN_GET(pin);
 
@@ -79,6 +76,10 @@ void pin_function(PinName pin, int function)
         gpio_pin_remap_config(GD_GPIO_REMAP[remap], ENABLE);
     }
 #elif defined(GD32F3x0) || defined(GD32F1x0) || defined(GD32F4xx) 
+    uint32_t af  =   GD_PIN_AF_GET(function);
+    uint32_t output = GD_PIN_OUTPUT_MODE_GET(function);
+    uint32_t pull =  GD_PIN_PULL_STATE_GET(function);
+
     gpio_af_set(gpio, GD_GPIO_AF[af], gd_pin);
     gpio_mode_set(gpio, GD_GPIO_MODE[mode], GD_GPIO_PULL_UP_DOWN[pull], gd_pin);
     gpio_output_options_set(gpio, GD_GPIO_OUTPUT_MODE[output], GD_GPIO_SPEED[speed], gd_pin);
