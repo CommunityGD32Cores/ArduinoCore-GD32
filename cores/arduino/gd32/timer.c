@@ -196,7 +196,7 @@ uint32_t getPWMIndex(pwmDevice_t instance)
 */
 void timer_clock_enable(uint32_t instance)
 {
-    uint32_t temp;
+    uint32_t temp = 0;
     switch(instance) {
 #if defined(TIMER0) && defined(RCU_TIMER0)
         case TIMER0:
@@ -282,7 +282,7 @@ void timer_clock_enable(uint32_t instance)
 */
 void timer_clock_disable(uint32_t instance)
 {
-    uint32_t temp;
+    uint32_t temp = 0;
     switch(instance) {
 #if defined(TIMER0) && defined(RCU_TIMER0)
         case TIMER0:
