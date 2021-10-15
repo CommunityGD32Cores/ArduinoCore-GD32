@@ -62,11 +62,11 @@ void pin_function(PinName pin, int function)
     }
 
     uint32_t mode   = GD_PIN_MODE_GET(function);
-    uint32_t af     = GD_PIN_AF_GET(function);
+    // uint32_t af  =   GD_PIN_AF_GET(function);
     uint32_t remap  = GD_PIN_REMAP_GET(function);
     uint32_t speed  = GD_PIN_SPEED_GET(function);
-    uint32_t output = GD_PIN_OUTPUT_MODE_GET(function) ;
-    uint32_t pull   = GD_PIN_PULL_STATE_GET(function);
+    // uint32_t output = GD_PIN_OUTPUT_MODE_GET(function) ;
+    // uint32_t pull =  GD_PIN_PULL_STATE_GET(function);
     uint32_t port   = GD_PORT_GET(pin);
     uint32_t gd_pin = 1 << GD_PIN_GET(pin);
 
