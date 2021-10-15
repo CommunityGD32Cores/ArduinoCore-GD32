@@ -341,7 +341,7 @@ i2c_status_enum i2c_master_receive(i2c_t *obj, uint8_t address, uint8_t *data, u
     i2c_flag_clear(obj->i2c, I2C_FLAG_ADDSEND);
 
     for(count = 0; count < length; count++) {
-        if(length > 2 && count == length - 3) {
+        if(length > 2 && count == (uint32_t)length - 3) {
             timeout = FLAG_TIMEOUT;
 
             while((!i2c_flag_get(obj->i2c, I2C_FLAG_BTC)) && (--timeout != 0));
