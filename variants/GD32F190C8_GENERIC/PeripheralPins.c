@@ -86,11 +86,11 @@ const int GD_GPIO_SPEED[] = {
 
 /* ADC PinMap */
 const PinMap PinMap_ADC[] = {
-    {PORTA_0, ADC, GD_PUN_FUNC_ANALOG_CH(0)},    /* ADC_IN0 */
-    {PORTA_1, ADC, GD_PUN_FUNC_ANALOG_CH(1)},    /* ADC_IN1 */
-    {PORTA_2, ADC, GD_PUN_FUNC_ANALOG_CH(2)},    /* ADC_IN2 */
-    {PORTA_3, ADC, GD_PUN_FUNC_ANALOG_CH(3)},    /* ADC_IN3 */
-    {PORTA_4, ADC, GD_PUN_FUNC_ANALOG_CH(4)},    /* ADC_IN4 */
+    {PORTA_0, ADC, GD_PIN_FUNC_ANALOG_CH(0)},    /* ADC_IN0 */
+    {PORTA_1, ADC, GD_PIN_FUNC_ANALOG_CH(1)},    /* ADC_IN1 */
+    {PORTA_2, ADC, GD_PIN_FUNC_ANALOG_CH(2)},    /* ADC_IN2 */
+    {PORTA_3, ADC, GD_PIN_FUNC_ANALOG_CH(3)},    /* ADC_IN3 */
+    {PORTA_4, ADC, GD_PIN_FUNC_ANALOG_CH(4)},    /* ADC_IN4 */
     {PORTA_5, ADC, 0 | (5 << 18)},    /* ADC_IN5 */
     {PORTA_6, ADC, 0 | (6 << 18)},    /* ADC_IN6 */
     {PORTA_7, ADC, 0 | (7 << 18)},    /* ADC_IN7 */
