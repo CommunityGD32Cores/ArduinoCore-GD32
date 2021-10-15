@@ -82,7 +82,8 @@ void pin_function(PinName pin, int function)
 
     gpio_af_set(gpio, GD_GPIO_AF[af], gd_pin);
     gpio_mode_set(gpio, GD_GPIO_MODE[mode], GD_GPIO_PULL_UP_DOWN[pull], gd_pin);
-    gpio_output_options_set(gpio, GD_GPIO_OUTPUT_MODE[output], GD_GPIO_SPEED[speed], gd_pin);
+    if(GD_GPIO_MODE[mode] == GPIO_MODE_OUTPUT || GD_GPIO_MODE[mode] == GPIO_MODE_AF)
+        gpio_output_options_set(gpio, GD_GPIO_OUTPUT_MODE[output], GD_GPIO_SPEED[speed], gd_pin);
 #endif
 }
 

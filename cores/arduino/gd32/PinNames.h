@@ -321,6 +321,9 @@ enum {
                                                   ((CHN & PIN_CHANNEL_MASK) << PIN_CHANNEL_SHIFT) | ((CHON & PIN_CHON_MASK) << PIN_CHON_SHIFT))
 #define GD_PIN_FUNCTION3(MODE, ODPP, AFN) ((int)(MODE & PIN_MODE_MASK) | ((ODPP & PIN_OUTPUT_MODE_MASK) << PIN_OUTPUT_MODE_SHIFT) | ((AFN & PIN_AF_MASK) << PIN_AF_SHIFT))
 #define GD_PIN_FUNCTION4(MODE, ODPP, PUPD, AFN) ((int)(MODE & PIN_MODE_MASK) | ((ODPP & PIN_OUTPUT_MODE_MASK) << PIN_OUTPUT_MODE_SHIFT) | ((PUPD & PIN_PULL_STATE_MASK) << PIN_PULL_STATE_SHIFT )  | ((AFN & PIN_AF_MASK) << PIN_AF_SHIFT))
+#define GD_PUN_FUNC_ANALOG_CH(CHN) ((int)(PIN_MODE_ANALOG & PIN_MODE_MASK) |\
+                                ((CHN & PIN_CHANNEL_MASK) << PIN_CHANNEL_SHIFT) |\
+                                (((int)PIN_PUPD_NONE & PIN_OUTPUT_MODE_MASK) << PIN_OUTPUT_MODE_SHIFT))
 
 #ifdef __cplusplus
 }
