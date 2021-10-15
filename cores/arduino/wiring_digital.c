@@ -40,9 +40,11 @@ void pinMode(pin_size_t ulPin, PinMode ulMode)
         case OUTPUT:
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUT_PP, PIN_OTYPE_PP, 0));
             break;
+#pragma GCC diagnostic ignored "-Wswitch"
         case INPUT_ANALOG: // From PinModeExtension
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_AIN, 0, 0));
             break;
+#pragma GCC diagnostic ignored "-Wswitch"
         case OUTPUT_OPEN_DRAIN: // From PinModeExtension
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUT_OD, PIN_OTYPE_OD, 0));
             break;
