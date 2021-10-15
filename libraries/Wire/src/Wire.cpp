@@ -250,7 +250,7 @@ size_t TwoWire::write(const uint8_t *data, size_t quantity)
             ret = 0;
         }
     }
-    return quantity;
+    return ret;
 }
 
 int TwoWire::available(void)
