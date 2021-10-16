@@ -536,6 +536,9 @@ void Timer_enableCaptureIT(uint32_t instance, uint8_t channel)
             interrupt = TIMER_INT_CH3;
             interrupt_flag = TIMER_INT_FLAG_CH3;
             break;
+        default:
+            //ToDo: better error handling in case of invalid params
+            return;
     }
     timer_interrupt_flag_clear(instance, interrupt_flag);
     timer_interrupt_enable(instance, interrupt);
@@ -569,6 +572,9 @@ void Timer_disableCaptureIT(uint32_t instance, uint8_t channel)
             interrupt = TIMER_INT_CH3;
             interrupt_flag = TIMER_INT_FLAG_CH3;
             break;
+        default:
+            //ToDo: better error handling in case of invalid params
+            return;
     }
     timer_interrupt_flag_clear(instance, interrupt_flag);
     timer_interrupt_disable(instance, interrupt);
@@ -589,7 +595,7 @@ void PWM_init(pwmDevice_t *pwmDevice, pwmPeriodCycle_t *pwmPeriodCycle)
     timer_clock_enable(periph);
     #if defined(GD32F30x)
     rcu_periph_clock_enable(RCU_AF);
-    #elif defined(GD32F3x0)
+    #elif defined(GD32F3x0) || defined(GD32F1x0) || defined(GD32F4xx)
     rcu_periph_clock_enable(RCU_CFGCMP);
     #endif
     /* configure TIMER base function */
@@ -713,7 +719,8 @@ void PWM_writeCyclevalue(pwmDevice_t *pwmDevice, pwmPeriodCycle_t *pwmPeriodCycl
             value = pwmPeriodCycle->cycle / 100.0 * (TIMER_CAR(pwmDevice->timer) + 1);
             break;
         default:
-            break;
+            //ToDo: better error handling in case of invalid params
+            return;
     }
     timer_channel_output_pulse_value_config(pwmDevice->timer, pwmDevice->channel, value - 1);
 }
@@ -746,6 +753,9 @@ void PWM_enablePWMIT(pwmDevice_t *pwmDevice)
             interrupt = TIMER_INT_CH3;
             interrupt_flag = TIMER_INT_FLAG_CH3;
             break;
+        default:
+            //ToDo: better error handling in case of invalid params
+            return;
     }
     timer_interrupt_flag_clear(pwmDevice->timer, interrupt_flag);
     timer_interrupt_enable(pwmDevice->timer, interrupt);
@@ -779,6 +789,9 @@ void PWM_disablePWMIT(pwmDevice_t *pwmDevice)
             interrupt = TIMER_INT_CH3;
             interrupt_flag = TIMER_INT_FLAG_CH3;
             break;
+        default:
+            //ToDo: better error handling in case of invalid params
+            return;
     }
     timer_interrupt_flag_clear(pwmDevice->timer, interrupt_flag);
     timer_interrupt_disable(pwmDevice->timer, interrupt);
