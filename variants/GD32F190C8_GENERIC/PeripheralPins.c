@@ -133,7 +133,7 @@ const PinMap PinMap_I2C_SCL[] = {
 
 /* PWM PinMap */
 const PinMap PinMap_PWM[] = {
-    {PORTA_8,  TIMER0, 7 | (0 << 18)},                      /* TIMER0_CH0 - Default */
+    {PORTA_8,  TIMER0, GD_PIN_FUNC_PWM(0,0)},                      /* TIMER0_CH0 - Default */
     {PORTA_9,  TIMER0, 7 | (1 << 18)},                      /* TIMER0_CH1 - Default */
     {PORTA_10, TIMER0, 7 | (2 << 18)},                      /* TIMER0_CH2 - Default */
     {PORTA_11, TIMER0, 7 | (3 << 18)},                      /* TIMER0_CH3 - Default */

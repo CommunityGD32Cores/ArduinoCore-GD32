@@ -316,6 +316,13 @@ enum {
     PIN_OTYPE_OD           = 1,
 };
 
+/* GPIO output speed type */
+enum {
+    PIN_SPEED_2MHZ            = 0,
+    PIN_SPEED_10MHZ           = 1,
+    PIN_SPEED_50MHZ           = 3,
+};
+
 #define GD_PIN_FUNCTION1(MODE, REMAP) ((int)(MODE & PIN_MODE_MASK) | ((REMAP & PIN_REMAP_MASK) << PIN_REMAP_SHIFT))
 #define GD_PIN_FUNCTION2(MODE, REMAP, CHN, CHON) ((int)(MODE & PIN_MODE_MASK) | ((REMAP & PIN_REMAP_MASK) << PIN_REMAP_SHIFT) |\
                                                   ((CHN & PIN_CHANNEL_MASK) << PIN_CHANNEL_SHIFT) | ((CHON & PIN_CHON_MASK) << PIN_CHON_SHIFT))
@@ -323,7 +330,13 @@ enum {
 #define GD_PIN_FUNCTION4(MODE, ODPP, PUPD, AFN) ((int)(MODE & PIN_MODE_MASK) | ((ODPP & PIN_OUTPUT_MODE_MASK) << PIN_OUTPUT_MODE_SHIFT) | ((PUPD & PIN_PULL_STATE_MASK) << PIN_PULL_STATE_SHIFT )  | ((AFN & PIN_AF_MASK) << PIN_AF_SHIFT))
 #define GD_PIN_FUNC_ANALOG_CH(CHN) ((int)(PIN_MODE_ANALOG & PIN_MODE_MASK) |\
                                 ((CHN & PIN_CHANNEL_MASK) << PIN_CHANNEL_SHIFT) |\
-                                (((int)PIN_PUPD_NONE & PIN_OUTPUT_MODE_MASK) << PIN_OUTPUT_MODE_SHIFT))
+                                (((int)PIN_PUPD_NONE & PIN_PULL_STATE_MASK) << PIN_PULL_STATE_SHIFT))
+#define GD_PIN_FUNC_PWM(CHN, AFN) ((PIN_MODE_AF & PIN_MODE_MASK) |\
+                                ((PIN_OTYPE_PP & PIN_OUTPUT_MODE_MASK) << PIN_OUTPUT_MODE_SHIFT) |\
+                                ((PIN_SPEED_50MHZ & PIN_SPEED_MASK) << PIN_SPEED_SHIFT) |\
+                                ((CHN & PIN_CHANNEL_MASK) << PIN_CHANNEL_SHIFT) |\
+                                ((PIN_PUPD_NONE & PIN_PULL_STATE_MASK) << PIN_PULL_STATE_SHIFT))
+
 
 #ifdef __cplusplus
 }
