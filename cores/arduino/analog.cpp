@@ -32,14 +32,12 @@ OF SUCH DAMAGE.
 #include "analog.h"
 #include "pwm.h"
 
-#if defined(GD32F30x)
+#if defined(DAC0) && defined(DAC1)
 #define DAC_NUMS  2
-#elif defined(GD32F3x0)
-#if defined(GD32F350)
+#elif defined(DAC) || defined(DAC0)
 #define DAC_NUMS  1
-#else
+#else 
 #define DAC_NUMS  0
-#endif
 #endif
 
 #define PWM_NUMS  40
@@ -71,13 +69,15 @@ void set_dac_value(PinName pinname, uint16_t value)
         pinmap_pinout(pinname, PinMap_DAC);
         rcu_periph_clock_enable(RCU_DAC);
         dac_deinit();
-#if defined(GD32F30x)
+#if defined(GD32F30x) || defined(GD32F1x0)
         dac_trigger_disable(dac_periph);
+        #if defined(GD32F30x)
         dac_wave_mode_config(dac_periph, DAC_WAVE_DISABLE);
+        #endif
         dac_output_buffer_enable(dac_periph);
         dac_enable(dac_periph);
         dac_data_set(dac_periph, DAC_ALIGN_12B_R, value);
-#elif defined(GD32F3x0) || defined(GD32F1x0)
+#elif defined(GD32F3x0) 
         /* only has 1 DAC at maximum, no need for a parameter... */
         dac_trigger_disable();
         dac_wave_mode_config(DAC_WAVE_DISABLE);
@@ -88,9 +88,9 @@ void set_dac_value(PinName pinname, uint16_t value)
         DAC_[index].isactive = true;
     } else {
         //set dac value
-#if defined(GD32F30x)
+#if defined(GD32F30x) || defined(GD32F1x0)
         dac_data_set(dac_periph, DAC_ALIGN_12B_R, value);
-#elif defined(GD32F3x0) || defined(GD32F1x0)
+#elif defined(GD32F3x0) 
         dac_data_set(DAC_ALIGN_12B_R, value);
 #endif
     }
