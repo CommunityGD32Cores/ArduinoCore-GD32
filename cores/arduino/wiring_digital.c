@@ -77,6 +77,73 @@ void digitalToggle(pin_size_t ulPin)
     gpio_bit_write(port, pin, (bit_status)(1 - (int)gpio_input_bit_get(port, pin)));
 }
 
+const uint32_t gpio_port[] = {
+#ifdef GPIOA
+    GPIOA,
+#else
+    0,
+#endif
+#ifdef GPIOB
+    GPIOB,
+#else
+    0,
+#endif
+#ifdef GPIOC
+    GPIOC,
+#else
+    0,
+#endif
+#ifdef GPIOD
+    GPIOD,
+#else
+    0,
+#endif
+#ifdef GPIOE
+    GPIOE,
+#else
+    0,
+#endif
+#ifdef GPIOF
+    GPIOF,
+#else
+    0,
+#endif
+#ifdef GPIOG
+    GPIOG,
+#else
+    0,
+#endif
+#ifdef GPIOH
+    GPIOH,
+#else
+    0,
+#endif
+#ifdef GPIOI
+    GPIOI
+#else
+    0
+#endif
+};
+
+const uint32_t gpio_pin[] = {
+    GPIO_PIN_0,
+    GPIO_PIN_1,
+    GPIO_PIN_2,
+    GPIO_PIN_3,
+    GPIO_PIN_4,
+    GPIO_PIN_5,
+    GPIO_PIN_6,
+    GPIO_PIN_7,
+    GPIO_PIN_8,
+    GPIO_PIN_9,
+    GPIO_PIN_10,
+    GPIO_PIN_11,
+    GPIO_PIN_12,
+    GPIO_PIN_13,
+    GPIO_PIN_14,
+    GPIO_PIN_15
+};
+
 #ifdef __cplusplus
 }
 #endif
