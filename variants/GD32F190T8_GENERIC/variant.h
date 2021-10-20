@@ -33,25 +33,25 @@ extern "C" {
 #endif // __cplusplus
 
 /* GPIO pins definitions */
-#define PA6 0
-#define PA8 1
-#define PA9 2
-#define PA10 3
-#define PA11 4
-#define PA12 5
-#define PA13 6
-#define PA14 7
-#define PA15 8
-#define PB2 9
-#define PB3 10
-#define PB4 11
-#define PB5 12
-#define PB6 13
-#define PB7 14
-#define PF6 15
-#define PF7 16
-#define PF0 17
-#define PF1 18
+#define PF0 0
+#define PF1 1
+#define PA6 2
+#define PB2 3
+#define PA8 4
+#define PA9 5
+#define PA10 6
+#define PA11 7
+#define PA12 8
+#define PA13 9
+#define PF6 10
+#define PF7 11
+#define PA14 12
+#define PA15 13
+#define PB3 14
+#define PB4 15
+#define PB5 16
+#define PB6 17
+#define PB7 18
 /* analog pins */
 #define PA0 19
 #define PA1 20
