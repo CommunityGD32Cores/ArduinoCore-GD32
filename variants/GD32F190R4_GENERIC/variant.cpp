@@ -25,54 +25,75 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 OF SUCH DAMAGE.
 */
 
-#ifndef PERIPHERALNAMES_H
-#define PERIPHERALNAMES_H
-
-#include "gd32xxyy.h"
+#include "pins_arduino.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef enum {
-    ADC_0 = (int)ADC
-} ADCName;
+/* digital pins for pinmap list */
+const PinName digital_pins[] = {
+    PORTA_8,
+    PORTA_9,
+    PORTA_10,
+    PORTA_11,
+    PORTA_12,
+    PORTA_13,
+    PORTA_14,
+    PORTA_15,
+    PORTB_2,
+    PORTB_3,
+    PORTB_4,
+    PORTB_5,
+    PORTB_6,
+    PORTB_7,
+    PORTB_8,
+    PORTB_9,
+    PORTB_10,
+    PORTB_11,
+    PORTB_12,
+    PORTB_13,
+    PORTB_14,
+    PORTB_15,
+    PORTC_6,
+    PORTC_7,
+    PORTC_8,
+    PORTC_9,
+    PORTC_10,
+    PORTC_11,
+    PORTC_12,
+    PORTD_2,
+    PORTF_4,
+    PORTF_5,
+    PORTF_6,
+    PORTF_7,
+    PORTC_13,
+    PORTC_14,
+    PORTC_15,
+    PORTF_0,
+    PORTF_1
+};
 
-typedef enum {
-    DAC_0 = (int)DAC0,
-    DAC_1 = (int)DAC1
-} DACName;
-
-typedef enum {
-    UART_0 = (int)USART0,
-    UART_1 = (int)USART1
-} UARTName;
-
-typedef enum {
-    SPI_0 = (int)SPI0,
-    SPI_1 = (int)SPI1,
-    SPI_2 = (int)SPI2
-} SPIName;
-
-typedef enum {
-    I2C_0 = (int)I2C0,
-    I2C_1 = (int)I2C1,
-    I2C_2 = (int)I2C2
-} I2CName;
-
-typedef enum {
-    PWM_0 = (int)TIMER0,
-    PWM_1 = (int)TIMER1,
-    PWM_2 = (int)TIMER2,
-    PWM_13 = (int)TIMER13,
-    PWM_14 = (int)TIMER14,
-    PWM_15 = (int)TIMER15,
-    PWM_16 = (int)TIMER16
-} PWMName;
-
+/* analog pins for pinmap list */
+const uint32_t analog_pins[] = {
+    PA0, //A0
+    PA1, //A1
+    PA2, //A2
+    PA3, //A3
+    PA4, //A4
+    PA5, //A5
+    PA6, //A6
+    PA7, //A7
+    PB0, //A8
+    PB1, //A9
+    PC0, //A10
+    PC1, //A11
+    PC2, //A12
+    PC3, //A13
+    PC4, //A14
+    PC5 //A15
+};
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

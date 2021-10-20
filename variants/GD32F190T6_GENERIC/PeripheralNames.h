@@ -49,15 +49,11 @@ typedef enum {
 } UARTName;
 
 typedef enum {
-    SPI_0 = (int)SPI0,
-    SPI_1 = (int)SPI1,
-    SPI_2 = (int)SPI2
+    SPI_0 = (int)SPI0
 } SPIName;
 
 typedef enum {
-    I2C_0 = (int)I2C0,
-    I2C_1 = (int)I2C1,
-    I2C_2 = (int)I2C2
+    I2C_0 = (int)I2C0
 } I2CName;
 
 typedef enum {

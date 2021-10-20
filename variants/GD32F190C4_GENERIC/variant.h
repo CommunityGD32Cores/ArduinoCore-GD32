@@ -126,10 +126,10 @@ extern "C" {
 /* USART definitions */
 #define SERIAL_HOWMANY              1
 #define USE_USART0_SERIAL           
-#define PIN_SERIAL_RX               PA10
-#define PIN_SERIAL_TX               PA9
-#define SERIAL0_RX                  PA10
-#define SERIAL0_TX                  PA9
+#define PIN_SERIAL_RX               PA3
+#define PIN_SERIAL_TX               PA2
+#define SERIAL0_RX                  PA3
+#define SERIAL0_TX                  PA2
 
 /* ADC definitions */
 #define ADC_RESOLUTION              10
