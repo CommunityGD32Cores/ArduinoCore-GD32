@@ -101,6 +101,7 @@ const PinMap PinMap_ADC[] = {
     {PORTA_3,  ADC, GD_PIN_FUNC_ANALOG_CH(3)},     /* ADC_IN3 */
     {PORTA_4,  ADC, GD_PIN_FUNC_ANALOG_CH(4)},     /* ADC_IN4 */
     {PORTA_5,  ADC, GD_PIN_FUNC_ANALOG_CH(5)},     /* ADC_IN5 */
+    {PORTA_6,  ADC, GD_PIN_FUNC_ANALOG_CH(6)},     /* ADC_IN6 */
     {PORTA_7,  ADC, GD_PIN_FUNC_ANALOG_CH(7)},     /* ADC_IN7 */
     {PORTB_0,  ADC, GD_PIN_FUNC_ANALOG_CH(8)},     /* ADC_IN8 */
     {PORTB_1,  ADC, GD_PIN_FUNC_ANALOG_CH(9)},     /* ADC_IN9 */

@@ -35,7 +35,6 @@ extern "C" {
 const PinName digital_pins[] = {
     PORTF_0,
     PORTF_1,
-    PORTA_6,
     PORTB_2,
     PORTA_8,
     PORTA_9,
@@ -58,6 +57,7 @@ const PinName digital_pins[] = {
     PORTA_3,
     PORTA_4,
     PORTA_5,
+    PORTA_6,
     PORTA_7,
     PORTB_0,
     PORTB_1
@@ -71,9 +71,10 @@ const uint32_t analog_pins[] = {
     PA3, //A3
     PA4, //A4
     PA5, //A5
-    PA7, //A6
-    PB0, //A7
-    PB1 //A8
+    PA6, //A6
+    PA7, //A7
+    PB0, //A8
+    PB1 //A9
 };
 
 #ifdef __cplusplus

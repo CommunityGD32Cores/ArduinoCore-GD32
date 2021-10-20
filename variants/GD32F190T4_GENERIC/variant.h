@@ -35,37 +35,37 @@ extern "C" {
 /* GPIO pins definitions */
 #define PF0 0
 #define PF1 1
-#define PA6 2
-#define PB2 3
-#define PA8 4
-#define PA9 5
-#define PA10 6
-#define PA11 7
-#define PA12 8
-#define PA13 9
-#define PF6 10
-#define PF7 11
-#define PA14 12
-#define PA15 13
-#define PB3 14
-#define PB4 15
-#define PB5 16
-#define PB6 17
-#define PB7 18
+#define PB2 2
+#define PA8 3
+#define PA9 4
+#define PA10 5
+#define PA11 6
+#define PA12 7
+#define PA13 8
+#define PF6 9
+#define PF7 10
+#define PA14 11
+#define PA15 12
+#define PB3 13
+#define PB4 14
+#define PB5 15
+#define PB6 16
+#define PB7 17
 /* analog pins */
-#define PA0 19
-#define PA1 20
-#define PA2 21
-#define PA3 22
-#define PA4 23
-#define PA5 24
+#define PA0 18
+#define PA1 19
+#define PA2 20
+#define PA3 21
+#define PA4 22
+#define PA5 23
+#define PA6 24
 #define PA7 25
 #define PB0 26
 #define PB1 27
 
 /* digital pins and analog pins number definitions */
 #define DIGITAL_PINS_NUM            28
-#define ANALOG_PINS_NUM             9
+#define ANALOG_PINS_NUM             10
 #define ANALOG_PINS_START           PA0
 #define ANALOG_PINS_LAST            PB1
 
