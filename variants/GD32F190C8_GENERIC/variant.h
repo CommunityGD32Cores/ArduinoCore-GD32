@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2021, CommunityGD32Cores
 
     Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -31,95 +31,109 @@ OF SUCH DAMAGE.
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
+
 /* GPIO pins definitions */
-#define PC13 0
-#define PC14 1
-#define PC15 2
-#define PD0 3
-#define PD1 4
-#define PA0 5
-#define PA1 6
-#define PA2 7
-#define PA3 8
-#define PA4 9
-#define PA5 10
-#define PA6 11
-#define PA7 12
-#define PB0 13
-#define PB1 14
-#define PB2 15
+#define PA8 0
+#define PA9 1
+#define PA10 2
+#define PA11 3
+#define PA12 4
+#define PA13 5
+#define PA14 6
+#define PA15 7
+#define PB2 8
+#define PB3 9
+#define PB4 10
+#define PB5 11
+#define PB6 12
+#define PB7 13
+#define PB8 14
+#define PB9 15
 #define PB10 16
 #define PB11 17
 #define PB12 18
 #define PB13 19
 #define PB14 20
 #define PB15 21
-#define PA8 22
-#define PA9 23
-#define PA10 24
-#define PA11 25
-#define PA12 26
-#define PA13 27
-#define PA14 28
-#define PA15 29
-#define PB3 30
-#define PB4 31
-#define PB5 32
-#define PB6 33
-#define PB7 34
-#define PB8 35
-#define PB9 36
+#define PC0 22
+#define PC1 23
+#define PC2 24
+#define PC3 25
+#define PC4 26
+#define PC5 27
+#define PC6 28
+#define PC7 29
+#define PC8 30
+#define PC9 31
+#define PC10 32
+#define PC11 33
+#define PC12 34
+#define PD2 35
+#define PF4 36
+#define PF5 37
+#define PF6 38
+#define PF7 39
+#define PC13 40
+#define PC14 41
+#define PC15 42
+#define PF0 43
+#define PF1 44
+/* analog pins */
+#define PA0 45
+#define PA1 46
+#define PA2 47
+#define PA3 48
+#define PA4 49
+#define PA5 50
+#define PA6 51
+#define PA7 52
+#define PB0 53
+#define PB1 54
 
 /* digital pins and analog pins number definitions */
-#define DIGITAL_PINS_NUM        37
-#define ANALOG_PINS_NUM         10
-#define ANALOG_PINS_START       PA0
-#define ANALOG_PINS_LAST        PB2
+#define DIGITAL_PINS_NUM            55
+#define ANALOG_PINS_NUM             10
+#define ANALOG_PINS_START           PA0
+#define ANALOG_PINS_LAST            PB1
 
 /* LED definitions */
-#define LED_BUILTIN             PC13
-#define LED_GREEN               PC13
+#define LED_BUILTIN                 PC13
 
 /* user keys definitions */
-#define KEY0                    PA0
+#define KEY0                        PA0
 
 /* SPI definitions */
-#define PIN_SPI_SS              PA8
-#define PIN_SPI_MOSI            PB15
-#define PIN_SPI_MISO            PB14
-#define PIN_SPI_SCK             PB13
+#define PIN_SPI_SS                  PA15
+#define PIN_SPI_MOSI                PB5
+#define PIN_SPI_MISO                PB4
+#define PIN_SPI_SCK                 PB3
 
 /* I2C definitions */
-#define PIN_WIRE_SDA            PB7
-#define PIN_WIRE_SCL            PB6
+#define PIN_WIRE_SDA                PB7
+#define PIN_WIRE_SCL                PB6
+#define USE_I2C                     1
 
 /* TIMER or PWM definitions */
-#define TIMER_TONE              TIMER5
-#define TIMER_SERVO             TIMER6
+#define TIMER_TONE                  TIMER5
+#define TIMER_SERVO                 TIMER6
 
-#define PWM0                    PA8
-#define PWM1                    PA9
-#define PWM2                    PA10
-#define PWM3                    PB11
-#define PWM4                    PA15
-#define PWM5                    PB15
+#define PWM0                        PB3
+#define PWM1                        PA4
+#define PWM2                        PB8
+#define PWM3                        PB13
+#define PWM4                        PB6
 
 /* USART definitions */
-
-#define SERIAL_HOWMANY          1
-
-#define USE_USART0_SERIAL	
-#define PIN_SERIAL_RX           PA10
-#define PIN_SERIAL_TX           PA9
-#define SERIAL0_RX          PIN_SERIAL_RX
-#define SERIAL0_TX          PIN_SERIAL_TX
+#define SERIAL_HOWMANY              1
+#define USE_USART0_SERIAL
+#define PIN_SERIAL_RX               PA10
+#define PIN_SERIAL_TX               PA9
+#define SERIAL0_RX                  PA10
+#define SERIAL0_TX                  PA9
 
 /* ADC definitions */
-#define ADC_RESOLUTION          10
-#define DACC_RESOLUTION         12
-
-/* I2C definitions */
-#define USE_I2C       1
+#define ADC_RESOLUTION              10
+#define DAC_RESOLUTION              12
 
 #ifdef __cplusplus
 } // extern "C"
