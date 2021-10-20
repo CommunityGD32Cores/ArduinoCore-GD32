@@ -70,7 +70,7 @@ extern "C" {
 #define ANALOG_PINS_LAST            PB1
 
 /* LED definitions */
-#define LED_BUILTIN                 PC13
+#define LED_BUILTIN                 PB2
 
 /* user keys definitions */
 #define KEY0                        PA0
