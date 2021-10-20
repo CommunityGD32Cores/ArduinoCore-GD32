@@ -71,7 +71,23 @@ const PinName digital_pins[] = {
     PORTC_14,
     PORTC_15,
     PORTF_0,
-    PORTF_1
+    PORTF_1,
+    PORTA_0,
+    PORTA_1,
+    PORTA_2,
+    PORTA_3,
+    PORTA_4,
+    PORTA_5,
+    PORTA_6,
+    PORTA_7,
+    PORTB_0,
+    PORTB_1,
+    PORTC_0,
+    PORTC_1,
+    PORTC_2,
+    PORTC_3,
+    PORTC_4,
+    PORTC_5
 };
 
 /* analog pins for pinmap list */
