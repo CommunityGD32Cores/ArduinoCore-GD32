@@ -19,8 +19,7 @@
  */
 #include "pinmap.h"
 #include "PortNames.h"
-#include <stdio.h> /* for some debug printfs() below */
-//#define GD32F30x_CL
+#include <fatal.h>
 
 extern const int GD_GPIO_MODE[];
 extern const int GD_GPIO_SPEED[];
@@ -57,7 +56,7 @@ bool pin_in_pinmap(PinName pin, const PinMap *map)
 void pin_function(PinName pin, int function)
 {
     if((PinName)NC == pin) {
-        printf("pin name does not exist");
+        fatal("pin name does not exist");
         while(1);
     }
 
@@ -308,7 +307,7 @@ uint32_t gpio_clock_enable(uint32_t port_idx) {
             break;
         #endif
         default:
-            printf("port number not exist");
+            fatal("port number does not exist");
             break;
     }
     return gpio_add;
