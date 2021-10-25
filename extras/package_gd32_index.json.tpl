@@ -1,0 +1,202 @@
+{
+  "packages": [
+    {
+      "email": "",
+      "help": {
+        "online": "https://github.com/CommunityGD32Cores/ArduinoCore-GD32"
+      },
+      "maintainer": "Some random folks",
+      "name": "GD32Community",
+      "platforms": [
+        {
+          "architecture": "gd32",
+          "boards": [
+            {
+              "name": "GD32F303ZE EVAL"
+            },
+            {
+              "name": "GD32F307VG MBED"
+            },
+            {
+              "name": "GD32F303CC Generic"
+            }
+          ],
+          "category": "Contributed",
+          "help": {
+            "online": ""
+          },
+          "name": "GigaDevice GD32",
+          "toolsDependencies": [
+            {
+              "packager": "GD32Community",
+              "name": "xpack-arm-none-eabi-gcc",
+              "version": "9.3.1-1.3"
+            },
+            {
+              "packager": "GD32Community",
+              "name": "xpack-openocd",
+              "version": "0.11.0-1"
+            },
+            {
+              "packager": "GD32Community",
+              "version": "0.10.0-arduino1",
+              "name": "dfu-util"
+            }
+          ],
+          "url": "$url",
+          "archiveFilename": "$archiveFilename",
+          "size": "$size",
+          "checksum": "$checksum",
+          "version": "0.0.1"
+        }
+      ],
+      "tools": [
+        {
+          "name": "xpack-arm-none-eabi-gcc",
+          "version": "9.3.1-1.3",
+          "systems": [
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/releases/download/v9.3.1-1.3/xpack-arm-none-eabi-gcc-9.3.1-1.3-linux-arm.tar.gz",
+              "archiveFileName": "xpack-arm-none-eabi-gcc-9.3.1-1.3-linux-arm.tar.gz",
+              "checksum": "SHA-256:0e6720296f291141cd757d90e6bf60867a1232de9abc52b0cde28af12eeb94f2",
+              "size": "147111321"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/releases/download/v9.3.1-1.3/xpack-arm-none-eabi-gcc-9.3.1-1.3-linux-arm64.tar.gz",
+              "archiveFileName": "xpack-arm-none-eabi-gcc-9.3.1-1.3-linux-arm64.tar.gz",
+              "checksum": "SHA-256:9a9e96b9ac3634d7632d35aa0d8138f8468d4f3f4d752374a95420ff7c8e4476",
+              "size": "150584175"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/releases/download/v9.3.1-1.3/xpack-arm-none-eabi-gcc-9.3.1-1.3-win32-x32.zip",
+              "archiveFileName": "xpack-arm-none-eabi-gcc-9.3.1-1.3-win32-x32.zip",
+              "checksum": "SHA-256:7432cfff045dc421d2ba177c3777ec1e82d4febe5f5f51fb2e90ff07d27cd466",
+              "size": "148593506"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/releases/download/v9.3.1-1.3/xpack-arm-none-eabi-gcc-9.3.1-1.3-darwin-x64.tar.gz",
+              "archiveFileName": "xpack-arm-none-eabi-gcc-9.3.1-1.3-darwin-x64.tar.gz",
+              "checksum": "SHA-256:f22f0d49c27f844dcfe629a6a33878d767b6945acd7508d9578b20b17b106f4c",
+              "size": "148641073"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/releases/download/v9.3.1-1.3/xpack-arm-none-eabi-gcc-9.3.1-1.3-linux-x64.tar.gz",
+              "archiveFileName": "xpack-arm-none-eabi-gcc-9.3.1-1.3-linux-x64.tar.gz",
+              "checksum": "SHA-256:9045d261b000d921887fc801427542eed2df1616f63a2969a2640f8be2593686",
+              "size": "151422620"
+            },
+            {
+              "host": "i686-pc-linux-gnu",
+              "url": "https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/releases/download/v9.3.1-1.3/xpack-arm-none-eabi-gcc-9.3.1-1.3-linux-x32.tar.gz",
+              "archiveFileName": "xpack-arm-none-eabi-gcc-9.3.1-1.3-linux-x32.tar.gz",
+              "checksum": "SHA-256:1950c7b0b4e35bacec32450158ec192ac469189a5fb27c2fd7c01e9603e50e64",
+              "size": "154309058"
+            }
+          ]
+        },
+        {
+          "name": "xpack-openocd",
+          "version": "0.11.0-1",
+          "systems": [
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.11.0-1/xpack-openocd-0.11.0-1-linux-arm.tar.gz",
+              "archiveFileName": "xpack-openocd-0.11.0-1-linux-arm.tar.gz",
+              "checksum": "SHA-256:24c5de0839b8c5cb3476d6fb7b9f528daba14b434a00d60ef71d4e4da3131262",
+              "size": "3848124"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.11.0-1/xpack-openocd-0.11.0-1-linux-arm64.tar.gz",
+              "archiveFileName": "xpack-openocd-0.11.0-1-linux-arm64.tar.gz",
+              "checksum": "SHA-256:6ffe37f305e117e21ca2b7a82b10ed06758968472aa39a2573911ae74a67da3e",
+              "size": "3853724"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.11.0-1/xpack-openocd-0.11.0-1-win32-ia32.zip",
+              "archiveFileName": "xpack-openocd-0.11.0-1-win32-ia32.zip",
+              "checksum": "SHA-256:b556754ee621962d41f89b229115ecf5e067b6ae76e91e210d7f53d657769296",
+              "size": "3499898"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.11.0-1/xpack-openocd-0.11.0-1-darwin-x64.tar.gz",
+              "archiveFileName": "xpack-openocd-0.11.0-1-darwin-x64.tar.gz",
+              "checksum": "SHA-256:3e3719fd059d87f3433f1f6d8e37b8582e87ae6a168287eb32a85dbc0f2e1708",
+              "size": "3046743"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.11.0-1/xpack-openocd-0.11.0-1-linux-x64.tar.gz",
+              "archiveFileName": "xpack-openocd-0.11.0-1-linux-x64.tar.gz",
+              "checksum": "SHA-256:5972fe70a274f054503dd519b68d3909b83f017b5b8dd2b59e84b3b72c9bc3e1",
+              "size": "3863984"
+            },
+            {
+              "host": "i686-pc-linux-gnu",
+              "url": "https://github.com/xpack-dev-tools/openocd-xpack/releases/download/v0.11.0-1/xpack-openocd-0.11.0-1-linux-ia32.tar.gz",
+              "archiveFileName": "xpack-openocd-0.11.0-1-linux-ia32.tar.gz",
+              "checksum": "SHA-256:fb38cc36c31eccbfcb824684596fb16dde91f9c9a42a954d9c26e678cc1a5fc1",
+              "size": "3934753"
+            }
+          ]
+        },
+	        {
+          "name": "dfu-util",
+          "version": "0.10.0-arduino1",
+          "systems": [
+            {
+              "host": "i386-apple-darwin11",
+              "url": "http://downloads.arduino.cc/tools/dfu-util-0.10.0-arduino1-osx.tar.bz2",
+              "archiveFileName": "dfu-util-0.10.0-arduino1-osx.tar.bz2",
+              "size": "73921",
+              "checksum": "SHA-256:7562d128036759605828d64b8d672d42445a8d95555c4b9ba339f73a1711a640"
+            },
+            {
+              "host": "arm-linux-gnueabihf",
+              "url": "http://downloads.arduino.cc/tools/dfu-util-0.10.0-arduino1-arm.tar.bz2",
+              "archiveFileName": "dfu-util-0.10.0-arduino1-arm.tar.bz2",
+              "size": "272153",
+              "checksum": "SHA-256:f1e550f40c235356b7fde1c59447bfbab28f768915d3c14bd858fe0576bfc5a9"
+            },
+            {
+              "host": "aarch64-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/dfu-util-0.10.0-arduino1-arm64.tar.bz2",
+              "archiveFileName": "dfu-util-0.10.0-arduino1-arm64.tar.bz2",
+              "size": "277886",
+              "checksum": "SHA-256:ebfbd21d3030c500da1f83b9aae5b8c597bee04c3bde1ce0a51b41abeafc9614"
+            },
+            {
+              "host": "x86_64-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/dfu-util-0.10.0-arduino1-linux64.tar.bz2",
+              "archiveFileName": "dfu-util-0.10.0-arduino1-linux64.tar.bz2",
+              "size": "77184",
+              "checksum": "SHA-256:13ef2ec591c1e8b0b7eb0a05da972ecd6695016e7a9607e332c7553899af9b4a"
+            },
+            {
+              "host": "i686-linux-gnu",
+              "url": "http://downloads.arduino.cc/tools/dfu-util-0.10.0-arduino1-linux32.tar.bz2",
+              "archiveFileName": "dfu-util-0.10.0-arduino1-linux32.tar.bz2",
+              "size": "81826",
+              "checksum": "SHA-256:43599ec60c000e9ef016970a496d6ab2cbbe5a8b7df9d06ef3114ecf83f9d123"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "http://downloads.arduino.cc/tools/dfu-util-0.10.0-arduino1-windows.tar.bz2",
+              "archiveFileName": "dfu-util-0.10.0-arduino1-windows.tar.bz2",
+              "size": "464314",
+              "checksum": "SHA-256:90816b669273ae796d734a2459c46bb340d4790783fd7aa01eb40c0443f1a9b1"
+            }
+          ]
+        }
+      ],
+      "websiteURL": "https://github.com/CommunityGD32Cores/ArduinoCore-GD32/"
+    }
+  ]
+}
