@@ -29,6 +29,15 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    
+/* this function is called *before* SystemInit and all constructor functions. */
+/* it gives us a chance to correct mistakes that SystemInit would make (like */
+/* not initializing clocks properly) */
+void first_system_init() {
+    // attempts fixing weird clock init issues if our application is booted from a bootloader
+    rcu_deinit();
+}
+    
 void init(void)
 {
     systick_config();
