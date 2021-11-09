@@ -3,7 +3,7 @@
   .fpu softvfp
   .thumb
   
-.global  g_pfnVectors
+.global  __gVectors
 .global  Default_Handler
 
 /* start address for the initialization values of the .data section.
@@ -83,12 +83,12 @@ Infinite_Loop:
 * 0x0000.0000.
 * 
 *******************************************************************************/
-   .section  .isr_vector,"a",%progbits
-  .type  g_pfnVectors, %object
-  .size  g_pfnVectors, .-g_pfnVectors
+   .section  .vectors,"a",%progbits
+  .type  __gVectors, %object
+  .size  __gVectors, .-__gVectors
 
-g_pfnVectors:
-                .word     _estack                            /* Top of Stack */
+__gVectors:
+                .word     _sp                            /* Top of Stack */
                 .word     Reset_Handler		/* Reset Handler */
                 .word     NMI_Handler		/* NMI Handler */
                 .word     HardFault_Handler		/* Hard Fault Handler */
