@@ -3,6 +3,7 @@
   .fpu softvfp
   .thumb
   
+.global  g_pfnVectors
 .global  Default_Handler
 
 /* start address for the initialization values of the .data section.
@@ -51,6 +52,9 @@ LoopFillZerobss:
   cmp  r2, r3
   bcc  FillZerobss
 
+/* call into Arduino core's low-level first-init function */
+  bl first_system_init
+
 /* Call the clock system initialization function.*/
   bl  SystemInit   
 /* Call into static constructors (C++) */
@@ -79,11 +83,12 @@ Infinite_Loop:
 * 0x0000.0000.
 * 
 *******************************************************************************/
-   .section  .vectors,"a",%progbits
-   .global __gVectors
+   .section  .isr_vector,"a",%progbits
+  .type  g_pfnVectors, %object
+  .size  g_pfnVectors, .-g_pfnVectors
 
-__gVectors:
-                .word     _sp                            /* Top of Stack */
+g_pfnVectors:
+                .word     _estack                            /* Top of Stack */
                 .word     Reset_Handler		/* Reset Handler */
                 .word     NMI_Handler		/* NMI Handler */
                 .word     HardFault_Handler		/* Hard Fault Handler */
