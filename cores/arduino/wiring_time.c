@@ -37,11 +37,11 @@ uint32_t micros(void)
 
 void delay(uint32_t ms)
 {
-    if(ms != 0) {
+    if (ms != 0) {
         uint32_t start = getCurrentMillis();
         do {
             __NOP();
-        } while(getCurrentMillis() - start < ms);
+        } while (getCurrentMillis() - start < ms);
     }
 }
 
@@ -60,7 +60,7 @@ void delayMicroseconds(unsigned int us)
         elapsedTicks += (oldTicks < currentTicks) ? tickPerMs + oldTicks - currentTicks :
                         oldTicks - currentTicks;
         oldTicks = currentTicks;
-    } while(nbTicks > elapsedTicks);
+    } while (nbTicks > elapsedTicks);
 }
 
 #ifdef __cplusplus

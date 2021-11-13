@@ -39,11 +39,12 @@ OF SUCH DAMAGE.
 #endif
 
 #if defined(GD32F3x0) || defined(GD32F1x0)
-/* 
+/*
  * wrapper functions for microcontrollers that have an RTC
  * with an asychronous and synchronous prescaler (A,S)
 */
-void rtc_prescaler_set(uint32_t prescaler) {
+void rtc_prescaler_set(uint32_t prescaler)
+{
     //ignore incoming prescalar for now -- prescale to 1 per sec
     (void) prescaler;
     ErrStatus error_status = ERROR;
@@ -55,15 +56,16 @@ void rtc_prescaler_set(uint32_t prescaler) {
     uint16_t prescaler_a = 0x7F;
 
     error_status = rtc_init_mode_enter();
-    RTC_PSC = (uint32_t)(PSC_FACTOR_A(prescaler_a)| \
-                            PSC_FACTOR_S(prescaler_s));
+    RTC_PSC = (uint32_t)(PSC_FACTOR_A(prescaler_a) | \
+                         PSC_FACTOR_S(prescaler_s));
     rtc_init_mode_exit();
     error_status = rtc_register_sync_wait();
     RTC_WPK = RTC_LOCK_KEY;
 }
 
 /* get RTC counter by getting Unix time and converting to timestamp */
-uint32_t rtc_counter_get() {
+uint32_t rtc_counter_get()
+{
     UTCTimeStruct utcTime;
     rtc_getUTCTime(&utcTime);
     struct tm ts;
@@ -88,21 +90,21 @@ void rtc_Init(void)
 {
     nvic_priority_group_set(NVIC_PRIGROUP_PRE2_SUB2);
     nvic_irq_enable(RTC_IRQn, 2, 0);
-    #if defined(GD32F30x)
+#if defined(GD32F30x)
     nvic_irq_enable(RTC_ALARM_IRQn, 2, 0);
     /* enable PMU and BKPI clocks */
     rcu_periph_clock_enable(RCU_BKPI);
-    #endif
+#endif
     rcu_periph_clock_enable(RCU_PMU);
     /* allow access to BKP domain */
     pmu_backup_write_enable();
     /* reset backup domain */
-    #if defined(GD32F30x)
+#if defined(GD32F30x)
     bkp_deinit();
-    #elif defined(GD32F3x0) || defined(GD32F1x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0)
     rcu_bkp_reset_enable();
     rcu_bkp_reset_disable();
-    #endif
+#endif
     /* enable LXTAL */
     rcu_osci_on(RCU_LXTAL);
     /* wait till LXTAL is ready */
@@ -174,12 +176,12 @@ void rtc_getUTCTime(UTCTimeStruct *utcTime)
     {
         uint32_t numDays = timestamp / SECONDS_PER_DAY;
 
-        while(numDays >= YearLength(utcTime->year)) {
+        while (numDays >= YearLength(utcTime->year)) {
             numDays -= YearLength(utcTime->year);
             utcTime->year++;
         }
 
-        while(numDays >= monthLength(IsLeapYear(utcTime->year), utcTime->month)) {
+        while (numDays >= monthLength(IsLeapYear(utcTime->year), utcTime->month)) {
             numDays -= monthLength(IsLeapYear(utcTime->year), utcTime->month);
             utcTime->month++;
         }
@@ -257,10 +259,10 @@ void rtc_setAlarmTime(uint32_t alarmTime)
     rtc_alarm_struct rtc_alarm_time;
     time_t t = (time_t) alarmTime;
     struct tm ts = *localtime(&t);
-    rtc_alarm_time.rtc_alarm_mask = RTC_ALARM_DATE_MASK|RTC_ALARM_HOUR_MASK|RTC_ALARM_MINUTE_MASK|RTC_ALARM_SECOND_MASK;
+    rtc_alarm_time.rtc_alarm_mask = RTC_ALARM_DATE_MASK | RTC_ALARM_HOUR_MASK | RTC_ALARM_MINUTE_MASK | RTC_ALARM_SECOND_MASK;
     rtc_alarm_time.rtc_weekday_or_date = RTC_ALARM_DATE_SELECTED;
     rtc_alarm_time.rtc_alarm_day = ts.tm_mday;
-    if(ts.tm_hour <= 12) {
+    if (ts.tm_hour <= 12) {
         rtc_alarm_time.rtc_am_pm = RTC_AM;
         rtc_alarm_time.rtc_alarm_hour = ts.tm_hour;
     } else {
@@ -285,7 +287,7 @@ void rtc_setAlarmTime(uint32_t alarmTime)
 void rtc_attachInterrupt(INT_MODE mode)
 {
     uint32_t interrupt = 0;
-    switch(mode) {
+    switch (mode) {
 #if defined(GD32F30x)
         case INT_SECOND_MODE:
             interrupt = RTC_INT_SECOND;
@@ -313,7 +315,7 @@ void rtc_attachInterrupt(INT_MODE mode)
 void rtc_detachInterrupt(INT_MODE mode)
 {
     uint32_t interrupt = 0;
-    switch(mode) {
+    switch (mode) {
 #if defined(GD32F30x)
         case INT_SECOND_MODE:
             interrupt = RTC_INT_SECOND;
@@ -340,20 +342,20 @@ void rtc_detachInterrupt(INT_MODE mode)
 void RTC_IRQHandler(void)
 {
 #if defined(GD32F30x)
-    if(rtc_flag_get(RTC_FLAG_SECOND) != RESET) {
+    if (rtc_flag_get(RTC_FLAG_SECOND) != RESET) {
         rtc_flag_clear(RTC_FLAG_SECOND);
         RTC_Handler(INT_SECOND_MODE);
     }
-    if(rtc_flag_get(RTC_FLAG_OVERFLOW) != RESET) {
+    if (rtc_flag_get(RTC_FLAG_OVERFLOW) != RESET) {
         rtc_flag_clear(RTC_FLAG_OVERFLOW);
         RTC_Handler(INT_OVERFLOW_MODE);
     }
 #elif defined(GD32F3x0) || defined(GD32F1x0)
-    if(rtc_flag_get(RTC_FLAG_ALARM0) != RESET){
+    if (rtc_flag_get(RTC_FLAG_ALARM0) != RESET) {
         rtc_flag_clear(RTC_FLAG_ALARM0);
         exti_flag_clear(EXTI_17);
         RTC_Handler(INT_ALARM_MODE);
-    } 
+    }
 #endif
 }
 
@@ -366,7 +368,7 @@ void RTC_IRQHandler(void)
 #if defined(GD32F30x)
 void RTC_Alarm_IRQHandler(void)
 {
-    if(rtc_flag_get(RTC_FLAG_ALARM) != RESET) {
+    if (rtc_flag_get(RTC_FLAG_ALARM) != RESET) {
         rtc_flag_clear(RTC_FLAG_ALARM);
         exti_flag_clear(EXTI_17);
         RTC_Handler(INT_ALARM_MODE);
@@ -385,14 +387,14 @@ uint8_t monthLength(uint8_t lpyr, uint8_t mon)
 {
     uint8_t days = 30;
 
-    if(mon == 2) {  // feb
+    if (mon == 2) { // feb
         days = (28 + lpyr);
     } else {
-        if(mon > 7) {  // aug-dec
+        if (mon > 7) { // aug-dec
             mon--;
         }
 
-        if(mon & 1) {
+        if (mon & 1) {
             days = 31;
         }
     }
@@ -413,14 +415,14 @@ uint32_t mkTimtoStamp(UTCTimeStruct *utcTime)
     uint8_t day = utcTime->day;
     uint32_t numDays = 0;
     uint32_t timestamp = 0;
-    while(1969 != --year) {
-        if(IsLeapYear(year)) {
+    while (1969 != --year) {
+        if (IsLeapYear(year)) {
             numDays += 366;
         } else {
             numDays += 365;
         }
     }
-    while(0 != --mon) {
+    while (0 != --mon) {
         numDays += monthLength(IsLeapYear(utcTime->year), mon);
     }
     numDays = numDays + day - 1;

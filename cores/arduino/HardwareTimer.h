@@ -41,37 +41,38 @@ OF SUCH DAMAGE.
 
 typedef void(*timerCallback_t)(void);
 
-class HardwareTimer {
-public:
-    HardwareTimer(void) {};                                                   //default construct
-    HardwareTimer(uint32_t instance);                                         //HardwareTimer construct
-    void start(void);                                                         //start timer
-    void stop(void);                                                          //stop timer
-    void refresh(
-        void);                                                       //update some registers to restart counters
-    void setPrescaler(uint16_t prescaler);                                    //set prescaler
-    void setCounter(uint16_t count);                                          //set counter
-    void setrRpetitionValue(uint16_t repetition);                             //set rpetition value
-    void setPeriodTime(uint32_t time, enum timeFormat format = FORMAT_MS);    //set timer period
-    void setReloadValue(uint32_t
-                        value);                                      //set timer period with the inital format
-    void attachInterrupt(timerCallback_t callback,
-                         uint8_t channel = 0xff);   //attach callback for period/capture interrupt
-    void detachInterrupt(uint8_t channel =
-                             0xff);                             //detach callback for period/capture interrupt
-    void periodCallback(void);                                                //period callback handler
-    void captureCallback(uint8_t channel);                                    //capture callback handler
-    void setCaptureMode(uint32_t ulpin, uint8_t channel, captureMode mode);   //set timer capture mode
-    uint32_t getCaptureValue(uint8_t
-                             channel);                                //get timer channel capture value
-    uint32_t getTimerClkFre(
-        void);                                            //get timer clock frequency
-private:
-    uint32_t timerDevice;
-    bool isTimerActive;
-    timerPeriod_t timerPeriod;
-    timerCallback_t updateCallback;
-    timerCallback_t captureCallbacks[4] = {0};
+class HardwareTimer
+{
+    public:
+        HardwareTimer(void) {};                                                   //default construct
+        HardwareTimer(uint32_t instance);                                         //HardwareTimer construct
+        void start(void);                                                         //start timer
+        void stop(void);                                                          //stop timer
+        void refresh(
+            void);                                                       //update some registers to restart counters
+        void setPrescaler(uint16_t prescaler);                                    //set prescaler
+        void setCounter(uint16_t count);                                          //set counter
+        void setrRpetitionValue(uint16_t repetition);                             //set rpetition value
+        void setPeriodTime(uint32_t time, enum timeFormat format = FORMAT_MS);    //set timer period
+        void setReloadValue(uint32_t
+                            value);                                      //set timer period with the inital format
+        void attachInterrupt(timerCallback_t callback,
+                             uint8_t channel = 0xff);   //attach callback for period/capture interrupt
+        void detachInterrupt(uint8_t channel =
+                                 0xff);                             //detach callback for period/capture interrupt
+        void periodCallback(void);                                                //period callback handler
+        void captureCallback(uint8_t channel);                                    //capture callback handler
+        void setCaptureMode(uint32_t ulpin, uint8_t channel, captureMode mode);   //set timer capture mode
+        uint32_t getCaptureValue(uint8_t
+                                 channel);                                //get timer channel capture value
+        uint32_t getTimerClkFre(
+            void);                                            //get timer clock frequency
+    private:
+        uint32_t timerDevice;
+        bool isTimerActive;
+        timerPeriod_t timerPeriod;
+        timerCallback_t updateCallback;
+        timerCallback_t captureCallbacks[4] = {0};
 };
 
 extern timerhandle_t timerHandle;

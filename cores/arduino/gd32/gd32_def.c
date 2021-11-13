@@ -12,7 +12,7 @@ extern "C" {
 WEAK void _Error_Handler(const char *msg, int val)
 {
     /* User can add his own implementation to report the HAL error return state */
-    while(1) {
+    while (1) {
     }
 }
 

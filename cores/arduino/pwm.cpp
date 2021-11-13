@@ -134,7 +134,7 @@ void PWM::detachInterrupt(void)
 */
 void PWM::captureCompareCallback(void)
 {
-    if(NULL != this->pwmCallback) {
+    if (NULL != this->pwmCallback) {
         this->pwmCallback();
     }
 }
@@ -153,7 +153,7 @@ extern "C"
         uint32_t index = 0;
         pwmDevice_t pwmDevice = {timer, channel};
         index = getPWMIndex(pwmDevice);
-        if(pwmObj[index]) {
+        if (pwmObj[index]) {
             pwmObj[index]->captureCompareCallback();
         }
     }

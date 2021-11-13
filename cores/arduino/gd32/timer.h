@@ -34,70 +34,70 @@ OF SUCH DAMAGE.
 
 /* ############# Timer interrupt definition ############# */
 #if defined(TIMER0) && !defined(TIMER0_IRQn)
-    #if defined(GD32F30x)
+#if defined(GD32F30x)
 #if defined(GD32F30X_CL) || defined(GD32F30X_XD)
-        #define TIMER0_IRQn TIMER0_UP_TIMER9_IRQn
-        #define TIMER0_IRQHandler TIMER0_UP_TIMER9_IRQHandler
+#define TIMER0_IRQn TIMER0_UP_TIMER9_IRQn
+#define TIMER0_IRQHandler TIMER0_UP_TIMER9_IRQHandler
 #else
-        #define TIMER0_IRQn TIMER0_UP_IRQn
-        #define TIMER0_IRQHandler TIMER0_UP_IRQHandler
+#define TIMER0_IRQn TIMER0_UP_IRQn
+#define TIMER0_IRQHandler TIMER0_UP_IRQHandler
 #endif
-    #endif
+#endif
 #endif
 
 #if defined(TIMER7) && !defined(TIMER7_IRQn)
-    #if defined(GD32F30x)
+#if defined(GD32F30x)
 #if defined(GD32F30X_CL) || defined(GD32F30X_XD)
-        #define TIMER7_IRQn TIMER7_UP_TIMER12_IRQn
-        #define TIMER7_IRQHandler TIMER7_UP_TIMER12_IRQHandler
+#define TIMER7_IRQn TIMER7_UP_TIMER12_IRQn
+#define TIMER7_IRQHandler TIMER7_UP_TIMER12_IRQHandler
 #else
-        #define TIMER7_IRQn TIMER7_UP_IRQn
-        #define TIMER7_IRQHandler TIMER7_UP_IRQHandler
+#define TIMER7_IRQn TIMER7_UP_IRQn
+#define TIMER7_IRQHandler TIMER7_UP_IRQHandler
 #endif
-    #endif
+#endif
 #endif
 
 #if defined(GD32F30X_CL) || defined(GD32F30X_XD)
 #if defined(TIMER8) && !defined(TIMER8_IRQn)
-    #if defined(GD32F30x)
-        #define TIMER8_IRQn TIMER0_BRK_TIMER8_IRQn
-        #define TIMER8_IRQHandler TIMER0_BRK_TIMER8_IRQHandler
-    #endif
+#if defined(GD32F30x)
+#define TIMER8_IRQn TIMER0_BRK_TIMER8_IRQn
+#define TIMER8_IRQHandler TIMER0_BRK_TIMER8_IRQHandler
+#endif
 #endif
 
 #if defined(TIMER9) && !defined(TIMER9_IRQn)
-    #if defined(GD32F30x)
-        #define TIMER9_IRQn TIMER0_UP_TIMER9_IRQn
-        #define TIMER9_IRQHandler TIMER0_UP_TIMER9_IRQHandler
-    #endif
+#if defined(GD32F30x)
+#define TIMER9_IRQn TIMER0_UP_TIMER9_IRQn
+#define TIMER9_IRQHandler TIMER0_UP_TIMER9_IRQHandler
+#endif
 #endif
 
 #if defined(TIMER10) && !defined(TIMER10_IRQn)
-    #if defined(GD32F30x)
-        #define TIMER10_IRQn TIMER0_TRG_CMT_TIMER10_IRQn
-        #define TIMER10_IRQHandler TIMER0_TRG_CMT_TIMER10_IRQHandler
-    #endif
+#if defined(GD32F30x)
+#define TIMER10_IRQn TIMER0_TRG_CMT_TIMER10_IRQn
+#define TIMER10_IRQHandler TIMER0_TRG_CMT_TIMER10_IRQHandler
+#endif
 #endif
 
 #if defined(TIMER11) && !defined(TIMER11_IRQn)
-    #if defined(GD32F30x)
-        #define TIMER11_IRQn TIMER7_BRK_TIMER11_IRQn
-        #define TIMER11_IRQHandler TIMER7_BRK_TIMER11_IRQHandler
-    #endif
+#if defined(GD32F30x)
+#define TIMER11_IRQn TIMER7_BRK_TIMER11_IRQn
+#define TIMER11_IRQHandler TIMER7_BRK_TIMER11_IRQHandler
+#endif
 #endif
 
 #if defined(TIMER12) && !defined(TIMER12_IRQn)
-    #if defined(GD32F30x)
-        #define TIMER12_IRQn TIMER7_UP_TIMER12_IRQn
-        #define TIMER12_IRQHandler TIMER7_UP_TIMER12_IRQHandler
-    #endif
+#if defined(GD32F30x)
+#define TIMER12_IRQn TIMER7_UP_TIMER12_IRQn
+#define TIMER12_IRQHandler TIMER7_UP_TIMER12_IRQHandler
+#endif
 #endif
 
 #if defined(TIMER13) && !defined(TIMER13_IRQn)
-    #if defined(GD32F30x)
-        #define TIMER13_IRQn TIMER7_TRG_CMT_TIMER13_IRQn
-        #define TIMER13_IRQHandler TIMER7_TRG_CMT_TIMER13_IRQHandler
-    #endif
+#if defined(GD32F30x)
+#define TIMER13_IRQn TIMER7_TRG_CMT_TIMER13_IRQn
+#define TIMER13_IRQHandler TIMER7_TRG_CMT_TIMER13_IRQHandler
+#endif
 #endif
 #endif
 

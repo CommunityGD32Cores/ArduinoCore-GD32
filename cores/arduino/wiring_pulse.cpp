@@ -37,23 +37,23 @@ uint32_t pulseIn(uint32_t pin, uint32_t state, uint32_t timeout)
     uint32_t startMicros = micros();
 
     // wait for any previous pulse to end
-    while((*portIn & bit) == stateMask) {
-        if(micros() - startMicros > timeout) {
+    while ((*portIn & bit) == stateMask) {
+        if (micros() - startMicros > timeout) {
             return 0;
         }
     }
 
     // wait for the pulse to start
-    while((*portIn & bit) != stateMask) {
-        if(micros() - startMicros > timeout) {
+    while ((*portIn & bit) != stateMask) {
+        if (micros() - startMicros > timeout) {
             return 0;
         }
     }
 
     uint32_t start = micros();
     // wait for the pulse to stop
-    while((*portIn & bit) == stateMask) {
-        if(micros() - startMicros > timeout) {
+    while ((*portIn & bit) == stateMask) {
+        if (micros() - startMicros > timeout) {
             return 0;
         }
     }

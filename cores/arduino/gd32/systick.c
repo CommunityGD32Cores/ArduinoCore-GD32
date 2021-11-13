@@ -49,9 +49,9 @@ volatile uint32_t gd_ticks;
 void systick_config(void)
 {
     /* setup systick timer for 1000Hz interrupts */
-    if(SysTick_Config(SystemCoreClock / 1000U)) {
+    if (SysTick_Config(SystemCoreClock / 1000U)) {
         /* capture error */
-        while(1) {
+        while (1) {
         }
     }
     /* configure the systick handler priority */

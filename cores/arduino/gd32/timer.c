@@ -67,7 +67,7 @@ pwmhandle_t pwmHandle = {
 uint32_t getTimerIndex(uint32_t instance)
 {
     uint32_t index = 0xFF;
-    switch(instance) {
+    switch (instance) {
 #if defined(TIMER0)
         case TIMER0:
             index = 0;
@@ -169,7 +169,7 @@ uint32_t getPWMIndex(pwmDevice_t instance)
     uint8_t timer_index = 0xFF;
     uint8_t channel_index = 0xFF;
     timer_index = getTimerIndex(instance.timer);
-    switch(instance.channel) {
+    switch (instance.channel) {
         case TIMER_CH_0:
             channel_index = 0;
             break;
@@ -197,7 +197,7 @@ uint32_t getPWMIndex(pwmDevice_t instance)
 void timer_clock_enable(uint32_t instance)
 {
     uint32_t temp = 0;
-    switch(instance) {
+    switch (instance) {
 #if defined(TIMER0) && defined(RCU_TIMER0)
         case TIMER0:
             temp = RCU_TIMER0;
@@ -283,7 +283,7 @@ void timer_clock_enable(uint32_t instance)
 void timer_clock_disable(uint32_t instance)
 {
     uint32_t temp = 0;
-    switch(instance) {
+    switch (instance) {
 #if defined(TIMER0) && defined(RCU_TIMER0)
         case TIMER0:
             temp = RCU_TIMER0;
@@ -375,7 +375,7 @@ void Timer_init(uint32_t instance, timerPeriod_t *timerPeriod)
     nvic_irq_enable(getTimerCCIrq(instance), 2, 2);
     timer_clock_enable(instance);
     timer_deinit(instance);
-    switch(timerPeriod->format) {
+    switch (timerPeriod->format) {
         case FORMAT_US:
             timer_initpara.prescaler = getTimerClkFrequency(instance) / 1000000 - 1;
             timer_initpara.period = timerPeriod->time - 1;
@@ -435,7 +435,7 @@ void Timer_setPeriodTime(uint32_t instance, timerPeriod_t *timerPeriod)
     uint32_t period_cycle = 0;
     timer_parameter_struct timer_initpara;
     //timer_deinit(instance);
-    switch(timerPeriod->format) {
+    switch (timerPeriod->format) {
         case FORMAT_TICK:
             timer_initpara.prescaler = TIMER_PSC(instance);
             timer_initpara.period = timerPeriod->time - 1;
@@ -519,7 +519,7 @@ void Timer_enableCaptureIT(uint32_t instance, uint8_t channel)
 {
     uint32_t interrupt;
     uint32_t interrupt_flag;
-    switch(channel) {
+    switch (channel) {
         case 0:
             interrupt = TIMER_INT_CH0;
             interrupt_flag = TIMER_INT_FLAG_CH0;
@@ -555,7 +555,7 @@ void Timer_disableCaptureIT(uint32_t instance, uint8_t channel)
 {
     uint32_t interrupt;
     uint32_t interrupt_flag;
-    switch(channel) {
+    switch (channel) {
         case 0:
             interrupt = TIMER_INT_CH0;
             interrupt_flag = TIMER_INT_FLAG_CH0;
@@ -593,11 +593,11 @@ void PWM_init(pwmDevice_t *pwmDevice, pwmPeriodCycle_t *pwmPeriodCycle)
     uint32_t periph = pwmDevice->timer;
     nvic_irq_enable(getTimerCCIrq(periph), 2, 2);
     timer_clock_enable(periph);
-    #if defined(GD32F30x)
+#if defined(GD32F30x)
     rcu_periph_clock_enable(RCU_AF);
-    #elif defined(GD32F3x0) || defined(GD32F1x0) || defined(GD32F4xx)
+#elif defined(GD32F3x0) || defined(GD32F1x0) || defined(GD32F4xx)
     rcu_periph_clock_enable(RCU_CFGCMP);
-    #endif
+#endif
     /* configure TIMER base function */
     timer_initpara.prescaler = getTimerClkFrequency(periph) / 1000000 - 1 ;
     timer_initpara.period = 9999;
@@ -657,7 +657,7 @@ void PWM_setPeriodCycle(pwmDevice_t *pwmDevice, pwmPeriodCycle_t *pwmPeriodCycle
     uint32_t prescalerfactor = 0;
     uint32_t period_cycle = 0;
     timer_parameter_struct timer_initpara;
-    switch(pwmPeriodCycle->format) {
+    switch (pwmPeriodCycle->format) {
         case FORMAT_US:
             timer_initpara.prescaler = getTimerClkFrequency(pwmDevice->timer) / 1000000 - 1;
             timer_initpara.period = pwmPeriodCycle->period - 1;
@@ -705,7 +705,7 @@ void PWM_writeCyclevalue(pwmDevice_t *pwmDevice, pwmPeriodCycle_t *pwmPeriodCycl
 {
     uint32_t value ;
 
-    switch(pwmPeriodCycle->format) {
+    switch (pwmPeriodCycle->format) {
         case FORMAT_US:
             value = pwmPeriodCycle->cycle;
             break;
@@ -736,7 +736,7 @@ void PWM_enablePWMIT(pwmDevice_t *pwmDevice)
     uint32_t interrupt;
     uint32_t interrupt_flag;
     uint16_t ch = pwmDevice->channel;
-    switch(ch) {
+    switch (ch) {
         case 0:
             interrupt = TIMER_INT_CH0;
             interrupt_flag = TIMER_INT_FLAG_CH0;
@@ -772,7 +772,7 @@ void PWM_disablePWMIT(pwmDevice_t *pwmDevice)
     uint32_t interrupt;
     uint32_t interrupt_flag;
     uint16_t ch = pwmDevice->channel;
-    switch(ch) {
+    switch (ch) {
         case 0:
             interrupt = TIMER_INT_CH0;
             interrupt_flag = TIMER_INT_FLAG_CH0;
@@ -809,52 +809,52 @@ uint32_t getTimerClkFrequency(uint32_t instance)
     uint32_t APBx_PSC = 0;
     uint32_t clk_src = 0;
 
-    if(instance != (uint32_t) NC) {
-        switch((uint32_t)instance) {
+    if (instance != (uint32_t) NC) {
+        switch ((uint32_t)instance) {
 #if defined(TIMER0)
-            case(uint32_t)TIMER0:
+            case (uint32_t)TIMER0:
 #endif
 #if defined(TIMER7)
-            case(uint32_t)TIMER7:
+            case (uint32_t)TIMER7:
 #endif
 #if defined(TIMER8)
-            case(uint32_t)TIMER8:
+            case (uint32_t)TIMER8:
 #endif
 #if defined(TIMER9)
-            case(uint32_t)TIMER9:
+            case (uint32_t)TIMER9:
 #endif
 #if defined(TIMER10)
-            case(uint32_t)TIMER10:
+            case (uint32_t)TIMER10:
 #endif
                 timerclkSrc = CK_APB2;
                 APBx_PSC = (RCU_CFG0 & RCU_CFG0_APB2PSC) >> 11;
                 break;
 #if defined(TIMER1)
-            case(uint32_t)TIMER1:
+            case (uint32_t)TIMER1:
 #endif
 #if defined(TIMER2)
-            case(uint32_t)TIMER2:
+            case (uint32_t)TIMER2:
 #endif
 #if defined(TIMER3)
-            case(uint32_t)TIMER3:
+            case (uint32_t)TIMER3:
 #endif
 #if defined(TIMER4)
-            case(uint32_t)TIMER4:
+            case (uint32_t)TIMER4:
 #endif
 #if defined(TIMER5)
-            case(uint32_t)TIMER5:
+            case (uint32_t)TIMER5:
 #endif
 #if defined(TIMER6)
-            case(uint32_t)TIMER6:
+            case (uint32_t)TIMER6:
 #endif
 #if defined(TIMER11)
-            case(uint32_t)TIMER11:
+            case (uint32_t)TIMER11:
 #endif
 #if defined(TIMER12)
-            case(uint32_t)TIMER12:
+            case (uint32_t)TIMER12:
 #endif
 #if defined(TIMER13)
-            case(uint32_t)TIMER13:
+            case (uint32_t)TIMER13:
 #endif
                 timerclkSrc = CK_APB1;
                 APBx_PSC = (RCU_CFG0 & RCU_CFG0_APB1PSC) >> 8;
@@ -863,7 +863,7 @@ uint32_t getTimerClkFrequency(uint32_t instance)
                 break;
         }
     }
-    if(0 != (APBx_PSC & 0x04)) {
+    if (0 != (APBx_PSC & 0x04)) {
         clk_src = 2 * rcu_clock_freq_get(timerclkSrc);
     } else {
         clk_src =  rcu_clock_freq_get(timerclkSrc);
@@ -881,75 +881,75 @@ IRQn_Type getTimerUpIrq(uint32_t tim)
 {
     IRQn_Type IRQn = NonMaskableInt_IRQn;
 
-    if(tim != (uint32_t)NC) {
-        switch((uint32_t)tim) {
+    if (tim != (uint32_t)NC) {
+        switch ((uint32_t)tim) {
 #if defined(TIMER0) && defined(TIMER0_IRQn)
-            case(uint32_t)TIMER0:
+            case (uint32_t)TIMER0:
                 IRQn = TIMER0_IRQn;
                 break;
 #endif
 #if defined(TIMER1) && defined(TIMER1_IRQn)
-            case(uint32_t)TIMER1:
+            case (uint32_t)TIMER1:
                 IRQn = TIMER1_IRQn;
                 break;
 #endif
 #if defined(TIMER2) && defined(TIMER2_IRQn)
-            case(uint32_t)TIMER2:
+            case (uint32_t)TIMER2:
                 IRQn = TIMER2_IRQn;
                 break;
 #endif
 #if defined(TIMER3) && defined(TIMER3_IRQn)
-            case(uint32_t)TIMER3:
+            case (uint32_t)TIMER3:
                 IRQn = TIMER3_IRQn;
                 break;
 #endif
 #if defined(TIMER4) && defined(TIMER4_IRQn)
-            case(uint32_t)TIMER4:
+            case (uint32_t)TIMER4:
                 IRQn = TIMER4_IRQn;
                 break;
 #endif
 #if defined(TIMER5) && defined(TIMER5_IRQn)
-            case(uint32_t)TIMER5:
+            case (uint32_t)TIMER5:
                 IRQn = TIMER5_IRQn;
                 break;
 #endif
 #if defined(TIMER6) && defined(TIMER6_IRQn)
-            case(uint32_t)TIMER6:
+            case (uint32_t)TIMER6:
                 IRQn = TIMER6_IRQn;
                 break;
 #endif
 #if defined(TIMER7) && defined(TIMER7_IRQn)
-            case(uint32_t)TIMER7:
+            case (uint32_t)TIMER7:
                 IRQn = TIMER7_IRQn;
                 break;
 #endif
 #if defined(TIMER8) && defined(TIMER8_IRQn)
-            case(uint32_t)TIMER8:
+            case (uint32_t)TIMER8:
                 IRQn = TIMER8_IRQn;
                 break;
 #endif
 #if defined(TIMER9) && defined(TIMER9_IRQn)
-            case(uint32_t)TIMER9:
+            case (uint32_t)TIMER9:
                 IRQn = TIMER9_IRQn;
                 break;
 #endif
 #if defined(TIMER10) && defined(TIMER10_IRQn)
-            case(uint32_t)TIMER10:
+            case (uint32_t)TIMER10:
                 IRQn = TIMER10_IRQn;
                 break;
 #endif
 #if defined(TIMER11) && defined(TIMER11_IRQn)
-            case(uint32_t)TIMER11:
+            case (uint32_t)TIMER11:
                 IRQn = TIMER11_IRQn;
                 break;
 #endif
 #if defined(TIMER12) && defined(TIMER12_IRQn)
-            case(uint32_t)TIMER12:
+            case (uint32_t)TIMER12:
                 IRQn = TIMER12_IRQn;
                 break;
 #endif
 #if defined(TIMER13) && defined(TIMER13_IRQn)
-            case(uint32_t)TIMER13:
+            case (uint32_t)TIMER13:
                 IRQn = TIMER13_IRQn;
                 break;
 #endif
@@ -970,75 +970,75 @@ IRQn_Type getTimerCCIrq(uint32_t tim)
 {
     IRQn_Type IRQn = NonMaskableInt_IRQn;
 
-    if(tim != (uint32_t)NC) {
-        switch((uint32_t)tim) {
+    if (tim != (uint32_t)NC) {
+        switch ((uint32_t)tim) {
 #if defined(TIMER0) && defined(TIMER0_IRQn)
-            case(uint32_t)TIMER0:
+            case (uint32_t)TIMER0:
                 IRQn = TIMER0_Channel_IRQn;
                 break;
 #endif
 #if defined(TIMER1) && defined(TIMER1_IRQn)
-            case(uint32_t)TIMER1:
+            case (uint32_t)TIMER1:
                 IRQn = TIMER1_IRQn;
                 break;
 #endif
 #if defined(TIMER2) && defined(TIMER2_IRQn)
-            case(uint32_t)TIMER2:
+            case (uint32_t)TIMER2:
                 IRQn = TIMER2_IRQn;
                 break;
 #endif
 #if defined(TIMER3) && defined(TIMER3_IRQn)
-            case(uint32_t)TIMER3:
+            case (uint32_t)TIMER3:
                 IRQn = TIMER3_IRQn;
                 break;
 #endif
 #if defined(TIMER4) && defined(TIMER4_IRQn)
-            case(uint32_t)TIMER4:
+            case (uint32_t)TIMER4:
                 IRQn = TIMER4_IRQn;
                 break;
 #endif
 #if defined(TIMER5) && defined(TIMER5_IRQn)
-            case(uint32_t)TIMER5:
+            case (uint32_t)TIMER5:
                 IRQn = TIMER5_IRQn;
                 break;
 #endif
 #if defined(TIMER6) && defined(TIMER6_IRQn)
-            case(uint32_t)TIMER6:
+            case (uint32_t)TIMER6:
                 IRQn = TIMER6_IRQn;
                 break;
 #endif
 #if defined(TIMER7) && defined(TIMER7_IRQn)
-            case(uint32_t)TIMER7:
+            case (uint32_t)TIMER7:
                 IRQn = TIMER7_Channel_IRQn;
                 break;
 #endif
 #if defined(TIMER8) && defined(TIMER8_IRQn)
-            case(uint32_t)TIMER8:
+            case (uint32_t)TIMER8:
                 IRQn = TIMER8_IRQn;
                 break;
 #endif
 #if defined(TIMER9) && defined(TIMER9_IRQn)
-            case(uint32_t)TIMER9:
+            case (uint32_t)TIMER9:
                 IRQn = TIMER9_IRQn;
                 break;
 #endif
 #if defined(TIMER10) && defined(TIMER10_IRQn)
-            case(uint32_t)TIMER10:
+            case (uint32_t)TIMER10:
                 IRQn = TIMER10_IRQn;
                 break;
 #endif
 #if defined(TIMER11) && defined(TIMER11_IRQn)
-            case(uint32_t)TIMER11:
+            case (uint32_t)TIMER11:
                 IRQn = TIMER11_IRQn;
                 break;
 #endif
 #if defined(TIMER12) && defined(TIMER12_IRQn)
-            case(uint32_t)TIMER12:
+            case (uint32_t)TIMER12:
                 IRQn = TIMER12_IRQn;
                 break;
 #endif
 #if defined(TIMER13) && defined(TIMER13_IRQn)
-            case(uint32_t)TIMER13:
+            case (uint32_t)TIMER13:
                 IRQn = TIMER13_IRQn;
                 break;
 #endif
@@ -1057,41 +1057,41 @@ IRQn_Type getTimerCCIrq(uint32_t tim)
 */
 void timerinterrupthandle(uint32_t timer)
 {
-    if(timer_interrupt_flag_get(timer, TIMER_INT_FLAG_UP) != RESET) {
+    if (timer_interrupt_flag_get(timer, TIMER_INT_FLAG_UP) != RESET) {
         timer_interrupt_flag_clear(timer, TIMER_INT_FLAG_UP);
-        if(timerHandle.interruptHandle) {
+        if (timerHandle.interruptHandle) {
             timerHandle.interruptHandle(timer);
         }
-    } else if(timer_interrupt_flag_get(timer, TIMER_INT_FLAG_CH0) != RESET) {
+    } else if (timer_interrupt_flag_get(timer, TIMER_INT_FLAG_CH0) != RESET) {
         timer_interrupt_flag_clear(timer, TIMER_INT_FLAG_CH0);
-        if(pwmHandle.interruptHandle) {
+        if (pwmHandle.interruptHandle) {
             pwmHandle.interruptHandle(timer, TIMER_CH_0);
         }
-        if(timerHandle.captureInterruptHandle[0]) {
+        if (timerHandle.captureInterruptHandle[0]) {
             timerHandle.captureInterruptHandle[0](timer, 0);
         }
-    } else if(timer_interrupt_flag_get(timer, TIMER_INT_FLAG_CH1) != RESET) {
+    } else if (timer_interrupt_flag_get(timer, TIMER_INT_FLAG_CH1) != RESET) {
         timer_interrupt_flag_clear(timer, TIMER_INT_FLAG_CH1);
-        if(pwmHandle.interruptHandle) {
+        if (pwmHandle.interruptHandle) {
             pwmHandle.interruptHandle(timer, TIMER_CH_1);
         }
-        if(timerHandle.captureInterruptHandle[1]) {
+        if (timerHandle.captureInterruptHandle[1]) {
             timerHandle.captureInterruptHandle[1](timer, 1);
         }
-    } else if(timer_interrupt_flag_get(timer, TIMER_INT_FLAG_CH2) != RESET) {
+    } else if (timer_interrupt_flag_get(timer, TIMER_INT_FLAG_CH2) != RESET) {
         timer_interrupt_flag_clear(timer, TIMER_INT_FLAG_CH2);
-        if(pwmHandle.interruptHandle) {
+        if (pwmHandle.interruptHandle) {
             pwmHandle.interruptHandle(timer, TIMER_CH_2);
         }
-        if(timerHandle.captureInterruptHandle[2]) {
+        if (timerHandle.captureInterruptHandle[2]) {
             timerHandle.captureInterruptHandle[2](timer, 2);
         }
-    } else if(timer_interrupt_flag_get(timer, TIMER_INT_FLAG_CH3) != RESET) {
+    } else if (timer_interrupt_flag_get(timer, TIMER_INT_FLAG_CH3) != RESET) {
         timer_interrupt_flag_clear(timer, TIMER_INT_FLAG_CH3);
-        if(pwmHandle.interruptHandle) {
+        if (pwmHandle.interruptHandle) {
             pwmHandle.interruptHandle(timer, TIMER_CH_3);
         }
-        if(timerHandle.captureInterruptHandle[3]) {
+        if (timerHandle.captureInterruptHandle[3]) {
             timerHandle.captureInterruptHandle[3](timer, 3);
         }
     }

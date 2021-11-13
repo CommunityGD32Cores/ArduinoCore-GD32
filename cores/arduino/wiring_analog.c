@@ -29,18 +29,18 @@ extern "C" {
 static uint32_t analogIn_resolution = 10;
 static uint32_t analogOut_resolution = 8;
 
-void analogReference(uint8_t mode) 
+void analogReference(uint8_t mode)
 {
 
 }
 
 static inline uint32_t mapResolution(uint32_t value, uint32_t from, uint32_t to)
 {
-    if(from != to) {
-        if(from > to) {
+    if (from != to) {
+        if (from > to) {
             value = (value < (uint32_t)(1 << (from - to))) ? 0 : ((value + 1) >> (from - to)) - 1;
         } else {
-            if(value != 0) {
+            if (value != 0) {
                 value = ((value + 1) << (to - from)) - 1;
             }
         }
@@ -55,8 +55,8 @@ int analogRead(pin_size_t ulPin)
     uint32_t value = 0;
     PinName p = DIGITAL_TO_PINNAME(ulPin);
     //set pin mode to analog in before read
-    pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_AIN, 0, 0));    
-    switch(ulPin) {
+    pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_AIN, 0, 0));
+    switch (ulPin) {
         case ADC_TEMP:
             p = ADC_TEMP;
             break;
@@ -66,7 +66,7 @@ int analogRead(pin_size_t ulPin)
         default:
             break;
     }
-    if(p != NC) {
+    if (p != NC) {
         value = get_adc_value(p);
         value = mapResolution(value, 12, analogIn_resolution);
     }
@@ -81,17 +81,17 @@ void analogWrite(pin_size_t ulPin, int ulValue)
 {
     uint32_t value;
     PinName pinname = DIGITAL_TO_PINNAME(ulPin);
-    if(pin_in_pinmap(pinname, PinMap_DAC)) {
+    if (pin_in_pinmap(pinname, PinMap_DAC)) {
         value = mapResolution(ulValue, analogOut_resolution, MAX_ANALOG_OUT_RESOLUTION);
         set_dac_value(pinname, value);
-    } else if(pin_in_pinmap(pinname, PinMap_PWM)) {
+    } else if (pin_in_pinmap(pinname, PinMap_PWM)) {
         value = mapResolution(ulValue, analogOut_resolution, 16);
         set_pwm_value(ulPin, value);
     } else {
         // Defaults to digital write
         pinMode(ulPin, OUTPUT);
         value = mapResolution(ulValue, analogOut_resolution, 8);
-        if(value < 128) {
+        if (value < 128) {
             digitalWrite(ulPin, LOW);
         } else {
             digitalWrite(ulPin, HIGH);
@@ -102,7 +102,7 @@ void analogWrite(pin_size_t ulPin, int ulValue)
 //analog input resolution
 void analogReadResolution(int res)
 {
-    if((res > 0) && (res < 16)) {
+    if ((res > 0) && (res < 16)) {
         analogIn_resolution = res;
     } else {
         analogIn_resolution = 8;
@@ -112,7 +112,7 @@ void analogReadResolution(int res)
 //analog output resolution
 void analogWriteResolution(int res)
 {
-    if((res > 0) && (res < 16)) {
+    if ((res > 0) && (res < 16)) {
         analogOut_resolution = res;
     } else {
         analogOut_resolution = 8;

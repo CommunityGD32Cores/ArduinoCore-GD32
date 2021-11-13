@@ -280,10 +280,10 @@ typedef enum {
 
 
 // This typedef is used to extend the PinMode typedef enum
-// in the ArduinoAPI, since they don't have contants 
+// in the ArduinoAPI, since they don't have contants
 typedef enum {
-	INPUT_ANALOG = 99 , // We assume that the Arduino core will never have 99 PinModes 
-	OUTPUT_OPEN_DRAIN   // It'd be cleaner to be able to count the size of that enum
+    INPUT_ANALOG = 99,  // We assume that the Arduino core will never have 99 PinModes
+    OUTPUT_OPEN_DRAIN   // It'd be cleaner to be able to count the size of that enum
 } PinModeExtension;
 
 
