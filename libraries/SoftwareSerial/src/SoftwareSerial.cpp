@@ -37,31 +37,31 @@ http://arduiniana.org.
 //Default timer13
 
 #if defined (TIMER13)
-    #define TIMER_SERIAL TIMER13
+#define TIMER_SERIAL TIMER13
 #elif defined (TIMER12)
-    #define TIMER_SERIAL TIMER112
+#define TIMER_SERIAL TIMER112
 #elif defined (TIMER11)
-    #define TIMER_SERIAL TIMER111
+#define TIMER_SERIAL TIMER111
 #elif defined (TIMER10)
-    #define TIMER_SERIAL TIMER110
+#define TIMER_SERIAL TIMER110
 #elif defined (TIMER9)
-    #define TIMER_SERIAL TIMER19
+#define TIMER_SERIAL TIMER19
 #elif defined (TIMER8)
-    #define TIMER_SERIAL TIMER18
+#define TIMER_SERIAL TIMER18
 #elif defined (TIMER7)
-    #define TIMER_SERIAL TIMER7
+#define TIMER_SERIAL TIMER7
 #elif defined (TIMER6)
-    #define TIMER_SERIAL TIMER6
+#define TIMER_SERIAL TIMER6
 #elif defined (TIMER5)
-    #define TIMER_SERIAL TIMER5
+#define TIMER_SERIAL TIMER5
 #elif defined (TIMER4)
-    #define TIMER_SERIAL TIMER4
+#define TIMER_SERIAL TIMER4
 #elif defined (TIMER3)
-    #define TIMER_SERIAL TIMER3
+#define TIMER_SERIAL TIMER3
 #elif defined (TIMER2)
-    #define TIMER_SERIAL TIMER2
+#define TIMER_SERIAL TIMER2
 #elif defined (TIMER1)
-    #define TIMER_SERIAL TIMER1
+#define TIMER_SERIAL TIMER1
 #endif
 
 HardwareTimer SoftwareSerial::timer(TIMER_SERIAL);
@@ -93,9 +93,9 @@ SoftwareSerial::SoftwareSerial(uint16_t receivePin, uint16_t transmitPin,
 
 void SoftwareSerial::setSpeed(uint32_t speed)
 {
-    if(speed != cur_speed) {
+    if (speed != cur_speed) {
         timer.stop();
-        if(speed != 0) {
+        if (speed != 0) {
             // Disable the timer
             uint32_t clock_rate, cmp_value;
             // Get timer clock
@@ -104,11 +104,11 @@ void SoftwareSerial::setSpeed(uint32_t speed)
             // Calculate prescale an compare value
             do {
                 cmp_value = clock_rate / (speed * OVERSAMPLE);
-                if(cmp_value >= UINT16_MAX) {
+                if (cmp_value >= UINT16_MAX) {
                     clock_rate = clock_rate / 2;
                     pre *= 2;
                 }
-            } while(cmp_value >= UINT16_MAX);
+            } while (cmp_value >= UINT16_MAX);
             timer.setPrescaler(pre);
             timer.setReloadValue(cmp_value);
             timer.setCounter(0);
@@ -127,9 +127,9 @@ void SoftwareSerial::setSpeed(uint32_t speed)
 // one and returns true if it replaces another
 bool SoftwareSerial::listen()
 {
-    if(active_listener != this) {
+    if (active_listener != this) {
         // wait for any transmit to complete as we may change speed
-        while(active_out);
+        while (active_out);
         active_listener->stopListening();
         rx_tick_cnt =
             1; // 1 : next interrupt will decrease rx_tick_cnt to 0 which means RX pin level will be considered.
@@ -145,9 +145,9 @@ bool SoftwareSerial::listen()
 // Stop listening. Returns true if we were actually listening.
 bool SoftwareSerial::stopListening()
 {
-    if(active_listener == this) {
+    if (active_listener == this) {
         // wait for any output to complete
-        while(active_out);
+        while (active_out);
         active_listener = nullptr;
         active_in = nullptr;
         // turn off ints
@@ -159,12 +159,12 @@ bool SoftwareSerial::stopListening()
 
 inline void SoftwareSerial::send()
 {
-    if(--tx_tick_cnt <=
-            0) {  // if tx_tick_cnt > 0 interrupt is discarded. Only when tx_tick_cnt reach 0 we set TX pin.
-        if(tx_bit_cnt++ <
-                10) {  // tx_bit_cnt < 10 transmission is not finished (10 = 1 start +8 bits + 1 stop)
+    if (--tx_tick_cnt <=
+        0) {  // if tx_tick_cnt > 0 interrupt is discarded. Only when tx_tick_cnt reach 0 we set TX pin.
+        if (tx_bit_cnt++ <
+            10) {  // tx_bit_cnt < 10 transmission is not finished (10 = 1 start +8 bits + 1 stop)
             // send data (including start and stop bits)
-            if(tx_buffer & 1) {
+            if (tx_buffer & 1) {
                 gpio_bit_set(_transmitPinPort, _transmitPinNumber);
             } else {
                 gpio_bit_reset(_transmitPinPort, _transmitPinNumber);
@@ -173,7 +173,7 @@ inline void SoftwareSerial::send()
             tx_tick_cnt = OVERSAMPLE; // Wait OVERSAMPLE tick to send next bit
         } else { // Transmission finished
             tx_tick_cnt = 1;
-            if(_output_pending) {
+            if (_output_pending) {
                 active_out = nullptr;
             }
         }
@@ -182,10 +182,10 @@ inline void SoftwareSerial::send()
 
 inline void SoftwareSerial::handleInterrupt()
 {
-    if(active_in) {
+    if (active_in) {
         active_in->recv();
     }
-    if(active_out) {
+    if (active_out) {
         active_out->send();
     }
 }
@@ -202,11 +202,11 @@ SoftwareSerial::~SoftwareSerial()
 void SoftwareSerial::begin(long speed)
 {
     _speed = speed;
-    if((_receivePin < DIGITAL_PINS_NUM) || (_transmitPin < DIGITAL_PINS_NUM)) {
+    if ((_receivePin < DIGITAL_PINS_NUM) || (_transmitPin < DIGITAL_PINS_NUM)) {
         gpio_clock_enable(GD_PORT_GET(DIGITAL_TO_PINNAME(_transmitPin)));
         gpio_clock_enable(GD_PORT_GET(DIGITAL_TO_PINNAME(_receivePin)));
     }
-    if(_inverse_logic) {
+    if (_inverse_logic) {
         gpio_bit_reset(_transmitPinPort, _transmitPinNumber);
     } else {
         gpio_bit_set(_transmitPinPort, _transmitPinNumber);
@@ -225,10 +225,10 @@ size_t SoftwareSerial::write(uint8_t b)
 {
     // wait for previous transmit to complete
     _output_pending = 1;
-    while(active_out);
+    while (active_out);
     // add start and stop bits.
     tx_buffer = b << 1 | 0x200;
-    if(_inverse_logic) {
+    if (_inverse_logic) {
         tx_buffer = ~tx_buffer;
     }
     tx_bit_cnt = 0;
@@ -244,7 +244,7 @@ size_t SoftwareSerial::write(uint8_t b)
 int SoftwareSerial::read()
 {
     // Empty buffer?
-    if(_receive_buffer.head == _receive_buffer.tail) {
+    if (_receive_buffer.head == _receive_buffer.tail) {
         return -1;
     } else {
         // Read from "head"
@@ -268,7 +268,7 @@ void SoftwareSerial::flush()
 
 int SoftwareSerial::peek(void)
 {
-    if(_receive_buffer.head == _receive_buffer.tail) {
+    if (_receive_buffer.head == _receive_buffer.tail) {
         return -1;
     } else {
         return _receive_buffer.buffer[_receive_buffer.head];
@@ -277,11 +277,11 @@ int SoftwareSerial::peek(void)
 
 inline void SoftwareSerial::recv()
 {
-    if(--rx_tick_cnt <=
-            0) {  // if rx_tick_cnt > 0 interrupt is discarded. Only when rx_tick_cnt reach 0 RX pin is considered
+    if (--rx_tick_cnt <=
+        0) {  // if rx_tick_cnt > 0 interrupt is discarded. Only when rx_tick_cnt reach 0 RX pin is considered
         bool inbit = gpio_input_bit_get(_receivePinPort, _receivePinNumber) ^ _inverse_logic;
-        if(rx_bit_cnt == -1) {   // rx_bit_cnt = -1 :  waiting for start bit
-            if(!inbit) {
+        if (rx_bit_cnt == -1) {  // rx_bit_cnt = -1 :  waiting for start bit
+            if (!inbit) {
                 // got start bit
                 rx_bit_cnt = 0; // rx_bit_cnt == 0 : start bit received
                 rx_tick_cnt = OVERSAMPLE +
@@ -291,11 +291,11 @@ inline void SoftwareSerial::recv()
                 rx_tick_cnt =
                     1; // Waiting for start bit, but we don't get right level. Wait for next Interrupt to check RX pin level
             }
-        } else if(rx_bit_cnt >= 8) {  // rx_bit_cnt >= 8 : waiting for stop bit
-            if(inbit) {
+        } else if (rx_bit_cnt >= 8) { // rx_bit_cnt >= 8 : waiting for stop bit
+            if (inbit) {
                 // stop bit read complete add to buffer
                 uint8_t next = (_receive_buffer.tail + 1) % _SS_MAX_RX_BUFF;
-                if(next != _receive_buffer.head) {
+                if (next != _receive_buffer.head) {
                     // save new data in buffer: tail points to where byte goes
                     _receive_buffer.buffer[_receive_buffer.tail] = rx_buffer; // save new byte
                     _receive_buffer.tail = next;
@@ -309,7 +309,7 @@ inline void SoftwareSerial::recv()
         } else {
             // data bits
             rx_buffer >>= 1;
-            if(inbit) {
+            if (inbit) {
                 rx_buffer |= 0x80;
             }
             rx_bit_cnt++; // Prepare for next bit
