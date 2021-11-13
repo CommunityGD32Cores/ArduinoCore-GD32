@@ -40,22 +40,22 @@ static void Servo_PeriodElapsedCallback()
 {
     timer16_Sequence_t timer_id = _timer1;
 
-    if(timerChannel[timer_id] < 0) {
+    if (timerChannel[timer_id] < 0) {
         CumulativeCountSinceRefresh = 0;
     } else {
-        if(timerChannel[timer_id] < ServoCount && servos[timerChannel[timer_id]].Pin.isActive == true) {
+        if (timerChannel[timer_id] < ServoCount && servos[timerChannel[timer_id]].Pin.isActive == true) {
             digitalWrite(servos[timerChannel[timer_id]].Pin.nbr, LOW);
         }
     }
     timerChannel[timer_id]++;
-    if(timerChannel[timer_id] < ServoCount && timerChannel[timer_id] < SERVOS_PER_TIMER) {
+    if (timerChannel[timer_id] < ServoCount && timerChannel[timer_id] < SERVOS_PER_TIMER) {
         TimerServo.setReloadValue(servos[timerChannel[timer_id]].ticks);
         CumulativeCountSinceRefresh += servos[timerChannel[timer_id]].ticks;
-        if(servos[timerChannel[timer_id]].Pin.isActive == true) {
+        if (servos[timerChannel[timer_id]].Pin.isActive == true) {
             digitalWrite(servos[timerChannel[timer_id]].Pin.nbr, HIGH);
         }
     } else {
-        if(CumulativeCountSinceRefresh + 4 < REFRESH_INTERVAL) {
+        if (CumulativeCountSinceRefresh + 4 < REFRESH_INTERVAL) {
             TimerServo.setReloadValue(REFRESH_INTERVAL - CumulativeCountSinceRefresh);
         } else {
             TimerServo.refresh();
@@ -77,8 +77,8 @@ static void TimerServoInit()
 // Check Timer  active status
 static bool isTimerActive()
 {
-    for(uint8_t channel = 0; channel < SERVOS_PER_TIMER; channel++) {
-        if(servos[channel].Pin.isActive == true) {
+    for (uint8_t channel = 0; channel < SERVOS_PER_TIMER; channel++) {
+        if (servos[channel].Pin.isActive == true) {
             return true;
         }
     }
@@ -89,7 +89,7 @@ static bool isTimerActive()
 
 Servo::Servo()
 {
-    if(ServoCount < MAX_SERVOS) {
+    if (ServoCount < MAX_SERVOS) {
         this->servoIndex = ServoCount++;
         servos[this->servoIndex].ticks = DEFAULT_PULSE_WIDTH;
     } else {
@@ -105,7 +105,7 @@ Servo::Servo()
 // Servo attach a digital pin
 uint8_t Servo::attach(int pin, int min, int max)
 {
-    if(this->servoIndex < MAX_SERVOS) {
+    if (this->servoIndex < MAX_SERVOS) {
         pinMode(pin, OUTPUT);                      // set servo pin to output
         servos[this->servoIndex].Pin.nbr = pin;
         servos[this->servoIndex].ticks = DEFAULT_PULSE_WIDTH;
@@ -113,7 +113,7 @@ uint8_t Servo::attach(int pin, int min, int max)
         this->min  = (MIN_PULSE_WIDTH - min) / 4; //resolution of min/max is 4 uS
         this->max  = (MAX_PULSE_WIDTH - max) / 4;
         // initialize the timer if it has not already been initialized
-        if(isTimerActive() == false) {
+        if (isTimerActive() == false) {
             TimerServoInit();
         }
         servos[this->servoIndex].Pin.isActive = true;  // this must be set after the check for isTimerActive
@@ -125,7 +125,7 @@ void Servo::detach()
 {
     servos[this->servoIndex].Pin.isActive = false;
 
-    if(isTimerActive() == false) {
+    if (isTimerActive() == false) {
         TimerServo.stop();
     }
 }
@@ -133,10 +133,10 @@ void Servo::detach()
 // write an angle to servo
 void Servo::write(int value)
 {
-    if(value < MIN_PULSE_WIDTH) {
-        if(value < 0) {
+    if (value < MIN_PULSE_WIDTH) {
+        if (value < 0) {
             value = 0;
-        } else if(value > 180) {
+        } else if (value > 180) {
             value = 180;
         }
         value = map(value, 0, 180, SERVO_MIN(), SERVO_MAX());
@@ -148,10 +148,10 @@ void Servo::write(int value)
 void Servo::writeMicroseconds(int value)
 {
     byte channel = this->servoIndex;
-    if((channel < MAX_SERVOS)) {
-        if(value < SERVO_MIN()) {
+    if ((channel < MAX_SERVOS)) {
+        if (value < SERVO_MIN()) {
             value = SERVO_MIN();
-        } else if(value > SERVO_MAX()) {
+        } else if (value > SERVO_MAX()) {
             value = SERVO_MAX();
         }
         servos[channel].ticks = value;
@@ -168,7 +168,7 @@ int Servo::read()
 int Servo::readMicroseconds()
 {
     unsigned int pulsewidth;
-    if(this->servoIndex != INVALID_SERVO) {
+    if (this->servoIndex != INVALID_SERVO) {
         pulsewidth = servos[this->servoIndex].ticks;
     } else {
         pulsewidth  = 0;

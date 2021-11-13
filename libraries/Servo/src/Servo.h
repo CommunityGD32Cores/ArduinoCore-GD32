@@ -14,8 +14,8 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-/* 
- * This header has been adapted from the standard Arduino "Sever" libraries, as it e.g. 
+/*
+ * This header has been adapted from the standard Arduino "Sever" libraries, as it e.g.
  * exists for AVR devices at https://github.com/arduino-libraries/Servo, but adapted for
  * the GigaDevice 32 core.
 */
@@ -52,21 +52,22 @@ typedef struct {
 } servo_t;
 
 /** Class for interfacing with RC servomotors. */
-class Servo {
-public:
-    Servo();
-    //uint8_t attach(int pin);
-    uint8_t attach(int pin, int min = MIN_PULSE_WIDTH, int max = MAX_PULSE_WIDTH);
-    void detach();
-    void write(int value);
-    void writeMicroseconds(int value);
-    int read();
-    int readMicroseconds();
-    bool attached();
-private:
-    uint8_t servoIndex;
-    int8_t min;
-    int8_t max;
+class Servo
+{
+    public:
+        Servo();
+        //uint8_t attach(int pin);
+        uint8_t attach(int pin, int min = MIN_PULSE_WIDTH, int max = MAX_PULSE_WIDTH);
+        void detach();
+        void write(int value);
+        void writeMicroseconds(int value);
+        int read();
+        int readMicroseconds();
+        bool attached();
+    private:
+        uint8_t servoIndex;
+        int8_t min;
+        int8_t max;
 };
 
 #endif  /* _SERVO_H_ */
