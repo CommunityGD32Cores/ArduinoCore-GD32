@@ -31,11 +31,11 @@ void (*TwoWire::user_onRequest)(void);
 void (*TwoWire::user_onReceive)(int);
 
 #if defined(HAVE_I2C)
-    TwoWire Wire(SDA, SCL, 0);
+TwoWire Wire(SDA, SCL, 0);
 #endif
 
 #if defined(HAVE_I2C1)
-    TwoWire Wire1(SDA1, SCL1, 1);
+TwoWire Wire1(SDA1, SCL1, 1);
 #endif
 
 ring_buffer TwoWire::_rx_buffer = {{0}, 0, 0};
@@ -109,7 +109,7 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint32_t iaddres
                              uint8_t sendStop)
 {
 
-    if(isize > 0) {
+    if (isize > 0) {
         // send internal address; this mode allows sending a repeated start to access
         // some devices' internal registers. This function is executed by the hardware
         // TWI module on other processors (for example Due's TWI_IADR and TWI_MMR registers)
@@ -117,25 +117,25 @@ uint8_t TwoWire::requestFrom(uint8_t address, uint8_t quantity, uint32_t iaddres
         beginTransmission(address);
 
         // the maximum size of internal address is 3 bytes
-        if(isize > 3) {
+        if (isize > 3) {
             isize = 3;
         }
 
         // write internal register address - most significant byte first
-        while(isize-- > 0) {
+        while (isize-- > 0) {
             write((uint8_t)(iaddress >> (isize * 8)));
         }
         endTransmission(false);
     }
 
     // clamp to buffer length
-    if(quantity > WIRE_BUFFER_LENGTH) {
+    if (quantity > WIRE_BUFFER_LENGTH) {
         quantity = WIRE_BUFFER_LENGTH;
     }
 
     _rx_buffer.head = 0;
-    if(I2C_OK == i2c_master_receive(&_i2c, address << 1, &_rx_buffer.buffer[_rx_buffer.head], quantity,
-                                    sendStop)) {
+    if (I2C_OK == i2c_master_receive(&_i2c, address << 1, &_rx_buffer.buffer[_rx_buffer.head], quantity,
+                                     sendStop)) {
         _rx_buffer.head = quantity;
     }
     // set rx buffer iterator vars
@@ -213,14 +213,14 @@ uint8_t TwoWire::endTransmission(void)
 size_t TwoWire::write(uint8_t data)
 {
     size_t ret = 1;
-    if(transmitting) {
+    if (transmitting) {
         _tx_buffer.buffer[_tx_buffer.head] = data;
         _tx_buffer.head = (_tx_buffer.head + 1) % WIRE_BUFFER_LENGTH;
         _i2c.tx_count++;
     } else {
         // in slave send mode
         // reply to master
-        if(i2c_slave_write_buffer(&_i2c, &data, 1) != I2C_OK) {
+        if (i2c_slave_write_buffer(&_i2c, &data, 1) != I2C_OK) {
             ret = 0;
         }
     }
@@ -239,14 +239,14 @@ size_t TwoWire::write(const uint8_t *data, size_t quantity)
     size_t i;
     size_t ret = quantity;
 
-    if(transmitting) {
-        for(i = 0; i < quantity; ++i) {
+    if (transmitting) {
+        for (i = 0; i < quantity; ++i) {
             write(data[i]);
         }
     } else {
         // in slave send mode
         // reply to master
-        if(i2c_slave_write_buffer(&_i2c, (uint8_t *)data, quantity) != I2C_OK) {
+        if (i2c_slave_write_buffer(&_i2c, (uint8_t *)data, quantity) != I2C_OK) {
             ret = 0;
         }
     }
@@ -263,7 +263,7 @@ int TwoWire::read(void)
 {
     unsigned char c;
 
-    if(_rx_buffer.head > _rx_buffer.tail) {
+    if (_rx_buffer.head > _rx_buffer.tail) {
 
         c = _rx_buffer.buffer[_rx_buffer.tail];
 
@@ -277,7 +277,7 @@ int TwoWire::read(void)
 
 int TwoWire::peek(void)
 {
-    if(_rx_buffer.head == _rx_buffer.tail) {
+    if (_rx_buffer.head == _rx_buffer.tail) {
         return -1;
     } else {
         return _rx_buffer.buffer[_rx_buffer.tail];
@@ -287,7 +287,7 @@ int TwoWire::peek(void)
 void TwoWire::flush()
 {
     //wait for transmit data to be sent
-    while((_tx_buffer.head != _tx_buffer.tail)) {
+    while ((_tx_buffer.head != _tx_buffer.tail)) {
         // wait for transmit data to be sent
     }
 }
@@ -296,7 +296,7 @@ void TwoWire::flush()
 void TwoWire::onReceiveService(uint8_t *inBytes, int numBytes)
 {
 
-    if(user_onReceive) {
+    if (user_onReceive) {
         _rx_buffer.head = numBytes;
         _rx_buffer.tail = 0;
         // alert user program
@@ -308,7 +308,7 @@ void TwoWire::onReceiveService(uint8_t *inBytes, int numBytes)
 void TwoWire::onRequestService(void)
 {
     // don't bother if user hasn't registered a callback
-    if(user_onRequest) {
+    if (user_onRequest) {
         // reset tx buffer iterator vars
         // !!! this will kill any pending pre-master sendTo() activity
         _tx_buffer.head = 0;
