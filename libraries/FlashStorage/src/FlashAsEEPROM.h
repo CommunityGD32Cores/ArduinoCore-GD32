@@ -31,43 +31,52 @@
 #include "FlashStorage.h"
 
 template <uint32_t _size>
-class EEPROMClass {
- private:
-  FlashStorage<_size> storage_;
+class EEPROMClass
+{
+    private:
+        FlashStorage<_size> storage_;
 
- public:
-  template<typename T>
-  T& get(uint32_t offset, T& t) {
-    storage_.read(offset, (uint8_t *)&t, sizeof(T));
-    return t;
-  }
-  template<typename T>
-  const T& put(uint32_t offset, const T& t) {
-    storage_.write(offset, (const uint8_t *)&t, sizeof(T));
-    return t;
-  }
+    public:
+        template<typename T>
+        T& get(uint32_t offset, T& t)
+        {
+            storage_.read(offset, (uint8_t *)&t, sizeof(T));
+            return t;
+        }
+        template<typename T>
+        const T& put(uint32_t offset, const T& t)
+        {
+            storage_.write(offset, (const uint8_t *)&t, sizeof(T));
+            return t;
+        }
 
-  uint8_t read(uint32_t offset) {
-    uint8_t val;
-    storage_.read(offset, &val, sizeof(val));
-    return val;
-  }
-  void write(uint32_t offset, uint8_t val) {
-    storage_.write(offset, (uint8_t *)&val, sizeof(val));
-  }
-  void update(uint32_t offset, uint8_t val) {
-    write(offset, val);
-  }
+        uint8_t read(uint32_t offset)
+        {
+            uint8_t val;
+            storage_.read(offset, &val, sizeof(val));
+            return val;
+        }
+        void write(uint32_t offset, uint8_t val)
+        {
+            storage_.write(offset, (uint8_t *)&val, sizeof(val));
+        }
+        void update(uint32_t offset, uint8_t val)
+        {
+            write(offset, val);
+        }
 
-  void commit() {
-    storage_.commit();
-  }
+        void commit()
+        {
+            storage_.commit();
+        }
 
-  void begin() {
-    storage_.begin();
-  }
+        void begin()
+        {
+            storage_.begin();
+        }
 
-  uint32_t length() {
-    return _size;
-  }
+        uint32_t length()
+        {
+            return _size;
+        }
 };

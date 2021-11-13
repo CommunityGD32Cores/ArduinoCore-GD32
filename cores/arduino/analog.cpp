@@ -36,22 +36,22 @@ OF SUCH DAMAGE.
 #define DAC_NUMS  2
 #elif defined(DAC) || defined(DAC0)
 #define DAC_NUMS  1
-#else 
+#else
 #define DAC_NUMS  0
 #endif
 
 #define PWM_NUMS  40
 
-#if defined(GD32F30x) 
+#if defined(GD32F30x)
 #if (defined(GD32F30X_HD) || defined(GD32F30X_XD))
-    #define ADC_NUMS  3
+#define ADC_NUMS  3
 #else
-    #define ADC_NUMS  2
+#define ADC_NUMS  2
 #endif
 #elif defined(GD32F3x0)
-    #define ADC_NUMS  1
+#define ADC_NUMS  1
 #elif defined(GD32F1x0)
-    #define ADC_NUMS  1
+#define ADC_NUMS  1
 #endif
 
 #if DAC_NUMS != 0
@@ -65,15 +65,15 @@ void set_dac_value(PinName pinname, uint16_t value)
 #if DAC_NUMS != 0
     uint32_t dac_periph = pinmap_peripheral(pinname, PinMap_DAC);
     uint8_t index = get_dac_index(dac_periph);
-    if(!DAC_[index].isactive) {
+    if (!DAC_[index].isactive) {
         pinmap_pinout(pinname, PinMap_DAC);
         rcu_periph_clock_enable(RCU_DAC);
         dac_deinit();
 #if (defined(GD32F1x0) && defined(GD32F170_190)) || defined(GD32F30x)
         dac_trigger_disable(dac_periph);
-        #if defined(GD32F30x)
+#if defined(GD32F30x)
         dac_wave_mode_config(dac_periph, DAC_WAVE_DISABLE);
-        #endif
+#endif
         dac_output_buffer_enable(dac_periph);
         dac_enable(dac_periph);
         dac_data_set(dac_periph, DAC_ALIGN_12B_R, value);
@@ -82,7 +82,7 @@ void set_dac_value(PinName pinname, uint16_t value)
         dac0_output_buffer_enable();
         dac0_enable();
         dac0_data_set(DAC_ALIGN_12B_R, value);
-#elif defined(GD32F3x0) 
+#elif defined(GD32F3x0)
         /* only has 1 DAC at maximum, no need for a parameter... */
         dac_trigger_disable();
         dac_wave_mode_config(DAC_WAVE_DISABLE);
@@ -97,7 +97,7 @@ void set_dac_value(PinName pinname, uint16_t value)
         dac_data_set(dac_periph, DAC_ALIGN_12B_R, value);
 #elif defined(GD32F10x) && !defined(GD32F170_190)
         dac0_data_set(DAC_ALIGN_12B_R, value);
-#elif defined(GD32F3x0) 
+#elif defined(GD32F3x0)
         dac_data_set(DAC_ALIGN_12B_R, value);
 #endif
     }
@@ -120,7 +120,7 @@ uint16_t get_adc_value(PinName pinname)
     uint32_t adc_periph = pinmap_peripheral(pinname, PinMap_ADC);
     uint8_t index = get_dac_index(adc_periph);
     uint8_t channel = get_adc_channel(pinname);
-    if(!ADC_[index].isactive) {
+    if (!ADC_[index].isactive) {
         pinmap_pinout(pinname, PinMap_ADC);
         adc_clock_enable(adc_periph);
 
@@ -133,9 +133,9 @@ uint16_t get_adc_value(PinName pinname)
 #elif defined(GD32F3x0) || defined(GD32F1x0)
         rcu_adc_clock_config(RCU_ADCCK_APB2_DIV6);
         adc_special_function_config(ADC_CONTINUOUS_MODE, ENABLE);
-        #if defined(GD32F3x0) || defined(GD32F170_190)
+#if defined(GD32F3x0) || defined(GD32F170_190)
         adc_resolution_config(ADC_RESOLUTION_12B);
-        #endif
+#endif
         adc_data_alignment_config(ADC_DATAALIGN_RIGHT);
         adc_channel_length_config(ADC_REGULAR_CHANNEL, 1U);
 #endif
@@ -162,13 +162,13 @@ uint16_t get_adc_value(PinName pinname)
 #if defined(GD32F30x)
     adc_regular_channel_config(adc_periph, 0U, channel, ADC_SAMPLETIME_7POINT5);
     adc_software_trigger_enable(adc_periph, ADC_REGULAR_CHANNEL);
-    while(!adc_flag_get(adc_periph, ADC_FLAG_EOC));
+    while (!adc_flag_get(adc_periph, ADC_FLAG_EOC));
     adc_flag_clear(adc_periph, ADC_FLAG_EOC);
     value = adc_regular_data_read(adc_periph);
 #elif defined(GD32F3x0) || defined(GD32F1x0)
     adc_regular_channel_config(0U, channel, ADC_SAMPLETIME_7POINT5);
     adc_software_trigger_enable(ADC_REGULAR_CHANNEL);
-    while(!adc_flag_get(ADC_FLAG_EOC));
+    while (!adc_flag_get(ADC_FLAG_EOC));
     adc_flag_clear(ADC_FLAG_EOC);
     value = adc_regular_data_read();
 #endif
@@ -179,7 +179,7 @@ uint16_t get_adc_value(PinName pinname)
 uint8_t get_adc_index(uint32_t instance)
 {
     uint8_t index;
-    switch(instance) {
+    switch (instance) {
 #ifdef ADC
         case ADC:
             index = 0;
@@ -211,7 +211,7 @@ uint8_t get_adc_index(uint32_t instance)
 uint8_t get_dac_index(uint32_t instance)
 {
     uint8_t index;
-    switch(instance) {
+    switch (instance) {
 #ifdef DAC /* GD32F350 series */
         case DAC:
             index = 0;
@@ -240,7 +240,7 @@ uint8_t get_adc_channel(PinName pinname)
     uint32_t function = pinmap_function(pinname, PinMap_ADC);
     uint32_t channel = GD_PIN_CHANNEL_GET(function);
     uint32_t gd_channel = 0;
-    switch(channel) {
+    switch (channel) {
         case 0:
             gd_channel = ADC_CHANNEL_0;
             break;
@@ -306,7 +306,7 @@ uint8_t get_adc_channel(PinName pinname)
 void adc_clock_enable(uint32_t instance)
 {
     rcu_periph_enum temp;
-    switch(instance) {
+    switch (instance) {
 #if defined(GD32F30x)
         case ADC0:
             temp = RCU_ADC0;

@@ -33,74 +33,81 @@
 
 template <uint32_t _storage_size,
           uint32_t _fmc_end = ARDUINO_UPLOAD_MAXIMUM_SIZE>
-class FlashStorage {
- private:
-  uint8_t buffer_[_storage_size];
-  static constexpr uint32_t fmc_base_address = 0x08000000;
-  static constexpr uint32_t bank0_end = fmc_base_address + 512 * 1024 - 1;
-  static constexpr uint32_t fmc_end_address = fmc_base_address + _fmc_end;
-  static constexpr uint32_t data_area_start = fmc_end_address - _storage_size;
+class FlashStorage
+{
+    private:
+        uint8_t buffer_[_storage_size];
+        static constexpr uint32_t fmc_base_address = 0x08000000;
+        static constexpr uint32_t bank0_end = fmc_base_address + 512 * 1024 - 1;
+        static constexpr uint32_t fmc_end_address = fmc_base_address + _fmc_end;
+        static constexpr uint32_t data_area_start = fmc_end_address - _storage_size;
 
-  uint16_t pageSizeForAddress(uint32_t addr) {
-    if (addr > bank0_end)
-      return 4096;
-    else
-      return 2048;
-  }
+        uint16_t pageSizeForAddress(uint32_t addr)
+        {
+            if (addr > bank0_end)
+                return 4096;
+            else
+                return 2048;
+        }
 
- public:
-  void begin() {
-    fmc_unlock();
+    public:
+        void begin()
+        {
+            fmc_unlock();
 
-    uint8_t *src = (uint8_t *)data_area_start;
-    for (uint32_t i = 0; i < _storage_size; i++) {
-      buffer_[i] = src[i];
-    }
-  }
+            uint8_t *src = (uint8_t *)data_area_start;
+            for (uint32_t i = 0; i < _storage_size; i++) {
+                buffer_[i] = src[i];
+            }
+        }
 
-  uint32_t length() {
-    return _storage_size;
-  }
+        uint32_t length()
+        {
+            return _storage_size;
+        }
 
-  void read(uint32_t offset, uint8_t *data, uint32_t data_size) {
-    // We always read from the buffer, as that's the most up-to-date. Flash is
-    // lagging behind until we commit(), but we may want to read before doing
-    // so.
+        void read(uint32_t offset, uint8_t *data, uint32_t data_size)
+        {
+            // We always read from the buffer, as that's the most up-to-date. Flash is
+            // lagging behind until we commit(), but we may want to read before doing
+            // so.
 
-    // If we're out of bounds, or try to read too much, bail out.
-    if (offset > _storage_size || (data_size > (_storage_size - offset)))
-      return;
+            // If we're out of bounds, or try to read too much, bail out.
+            if (offset > _storage_size || (data_size > (_storage_size - offset)))
+                return;
 
-    for (uint32_t i = 0; i < data_size; i++) {
-      data[i] = buffer_[i + offset];
-    }
-  }
+            for (uint32_t i = 0; i < data_size; i++) {
+                data[i] = buffer_[i + offset];
+            }
+        }
 
-  void write(uint32_t offset, const uint8_t *data, uint32_t data_size) {
-    // If we're out of bounds, or try to write too much, bail out.
-    if (offset > _storage_size || data_size > _storage_size)
-      return;
+        void write(uint32_t offset, const uint8_t *data, uint32_t data_size)
+        {
+            // If we're out of bounds, or try to write too much, bail out.
+            if (offset > _storage_size || data_size > _storage_size)
+                return;
 
-    for (uint32_t i = 0; i < data_size; i++) {
-      buffer_[offset + i] = data[i];
-    }
-  }
+            for (uint32_t i = 0; i < data_size; i++) {
+                buffer_[offset + i] = data[i];
+            }
+        }
 
-  void commit() {
-    uint32_t address = data_area_start;
-    uint32_t *ptrs = (uint32_t *)buffer_;
+        void commit()
+        {
+            uint32_t address = data_area_start;
+            uint32_t *ptrs = (uint32_t *)buffer_;
 
-    do {
-      uint16_t page_size = pageSizeForAddress(address);
-      fmc_page_erase(address);
+            do {
+                uint16_t page_size = pageSizeForAddress(address);
+                fmc_page_erase(address);
 
-      uint32_t word_count = page_size / 4;
-      uint32_t i = 0;
+                uint32_t word_count = page_size / 4;
+                uint32_t i = 0;
 
-      do {
-        fmc_word_program(address, *ptrs++);
-        address += 4U;
-      } while (++i < word_count);
-    } while (address < fmc_end_address);
-  }
+                do {
+                    fmc_word_program(address, *ptrs++);
+                    address += 4U;
+                } while (++i < word_count);
+            } while (address < fmc_end_address);
+        }
 };

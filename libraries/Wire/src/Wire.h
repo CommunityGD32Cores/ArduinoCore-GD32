@@ -29,7 +29,7 @@ extern "C" {
 }
 
 #if !defined(WIRE_BUFFER_LENGTH)
-    #define WIRE_BUFFER_LENGTH 32
+#define WIRE_BUFFER_LENGTH 32
 #endif
 
 #define MASTER_ADDRESS 0x33
@@ -40,78 +40,79 @@ typedef struct {
     int tail;
 } ring_buffer;
 
-class TwoWire : public Stream {
-private:
-    static ring_buffer _rx_buffer;
-    static ring_buffer _tx_buffer;
-    static uint8_t txAddress;
+class TwoWire : public Stream
+{
+    private:
+        static ring_buffer _rx_buffer;
+        static ring_buffer _tx_buffer;
+        static uint8_t txAddress;
 
 
-    uint8_t transmitting;
+        uint8_t transmitting;
 
-    uint8_t ownAddress;
-    i2c_t _i2c;
+        uint8_t ownAddress;
+        i2c_t _i2c;
 
-    static void (*user_onRequest)(void);
-    static void (*user_onReceive)(int);
-    static void onRequestService(void);
-    static void onReceiveService(uint8_t *, int);
+        static void (*user_onRequest)(void);
+        static void (*user_onReceive)(int);
+        static void onRequestService(void);
+        static void onReceiveService(uint8_t *, int);
 
 
 
-public:
-    TwoWire(uint8_t sda, uint8_t scl, int i2c_index);
+    public:
+        TwoWire(uint8_t sda, uint8_t scl, int i2c_index);
 
-    void begin();
-    void begin(uint8_t address);
-    void begin(int);
-    void end();
-    void setClock(uint32_t);
-    void beginTransmission(uint8_t);
-    void beginTransmission(int);
-    uint8_t endTransmission(void);
-    uint8_t endTransmission(uint8_t);
-    uint8_t requestFrom(uint8_t, uint8_t);
-    uint8_t requestFrom(uint8_t, uint8_t, uint8_t);
-    uint8_t requestFrom(uint8_t, uint8_t, uint32_t, uint8_t, uint8_t);
-    uint8_t requestFrom(int, int);
-    uint8_t requestFrom(int, int, int);
-    virtual size_t write(uint8_t);
-    virtual size_t write(const uint8_t *, size_t);
-    virtual int available(void);
-    virtual int read(void);
-    virtual int peek(void);
-    virtual void flush(void);
-    void onReceive(void (*)(int));
-    void onRequest(void (*)(void));
+        void begin();
+        void begin(uint8_t address);
+        void begin(int);
+        void end();
+        void setClock(uint32_t);
+        void beginTransmission(uint8_t);
+        void beginTransmission(int);
+        uint8_t endTransmission(void);
+        uint8_t endTransmission(uint8_t);
+        uint8_t requestFrom(uint8_t, uint8_t);
+        uint8_t requestFrom(uint8_t, uint8_t, uint8_t);
+        uint8_t requestFrom(uint8_t, uint8_t, uint32_t, uint8_t, uint8_t);
+        uint8_t requestFrom(int, int);
+        uint8_t requestFrom(int, int, int);
+        virtual size_t write(uint8_t);
+        virtual size_t write(const uint8_t *, size_t);
+        virtual int available(void);
+        virtual int read(void);
+        virtual int peek(void);
+        virtual void flush(void);
+        void onReceive(void (*)(int));
+        void onRequest(void (*)(void));
 
-    inline size_t write(unsigned long n)
-    {
-        return write((uint8_t)n);
-    }
-    inline size_t write(long n)
-    {
-        return write((uint8_t)n);
-    }
-    inline size_t write(unsigned int n)
-    {
-        return write((uint8_t)n);
-    }
-    inline size_t write(int n)
-    {
-        return write((uint8_t)n);
-    }
-    using Print::write;
+        inline size_t write(unsigned long n)
+        {
+            return write((uint8_t)n);
+        }
+        inline size_t write(long n)
+        {
+            return write((uint8_t)n);
+        }
+        inline size_t write(unsigned int n)
+        {
+            return write((uint8_t)n);
+        }
+        inline size_t write(int n)
+        {
+            return write((uint8_t)n);
+        }
+        using Print::write;
 };
 
 #if defined(USE_I2C)
-    extern TwoWire Wire;
-    #define HAVE_I2C
+extern TwoWire Wire;
+#define HAVE_I2C
 #endif
 
 #if defined(USE_I2C1)
-    extern TwoWire Wire1;
-    #define HAVE_I2C1
+extern TwoWire Wire1;
+#define HAVE_I2C1
 #endif
 
 #endif

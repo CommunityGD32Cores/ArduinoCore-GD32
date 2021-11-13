@@ -77,52 +77,52 @@ static const uint8_t TX1 = SERIAL1_TX;
 
 /* configure analog pins */
 #ifndef ANALOG_PINS_NUM
-    #define ANALOG_PINS_NUM 0
+#define ANALOG_PINS_NUM 0
 #endif
 
 #if ANALOG_PINS_NUM > 0
 
-    #define ANALOG_INTERNAL_START      (DIGITAL_PINS_NUM + 1)
+#define ANALOG_INTERNAL_START      (DIGITAL_PINS_NUM + 1)
 
-    #if ANALOG_PINS_NUM > 0
-        static const uint8_t A0 = ANALOG_PINS_START;
-    #endif
-    #if ANALOG_PINS_NUM > 1
-        static const uint8_t A1 = ANALOG_PINS_START + 1;
-    #endif
-    #if ANALOG_PINS_NUM > 2
-        static const uint8_t A2 = ANALOG_PINS_START + 2;
-    #endif
-    #if ANALOG_PINS_NUM > 3
-        static const uint8_t A3 = ANALOG_PINS_START + 3;
-    #endif
-    #if ANALOG_PINS_NUM > 4
-        static const uint8_t A4 = ANALOG_PINS_START + 4;
-    #endif
-    #if ANALOG_PINS_NUM > 5
-        static const uint8_t A5 = ANALOG_PINS_START + 5;
-    #endif
-    #if ANALOG_PINS_NUM > 6
-        static const uint8_t A6 = ANALOG_PINS_START + 6;
-    #endif
-    #if ANALOG_PINS_NUM > 7
-        static const uint8_t A7 = ANALOG_PINS_START + 7;
-    #endif
-    #if ANALOG_PINS_NUM > 8
-        static const uint8_t A8 = ANALOG_PINS_START + 8;
-    #endif
-    #if ANALOG_PINS_NUM > 9
-        static const uint8_t A9 = ANALOG_PINS_START + 9;
-    #endif
+#if ANALOG_PINS_NUM > 0
+static const uint8_t A0 = ANALOG_PINS_START;
+#endif
+#if ANALOG_PINS_NUM > 1
+static const uint8_t A1 = ANALOG_PINS_START + 1;
+#endif
+#if ANALOG_PINS_NUM > 2
+static const uint8_t A2 = ANALOG_PINS_START + 2;
+#endif
+#if ANALOG_PINS_NUM > 3
+static const uint8_t A3 = ANALOG_PINS_START + 3;
+#endif
+#if ANALOG_PINS_NUM > 4
+static const uint8_t A4 = ANALOG_PINS_START + 4;
+#endif
+#if ANALOG_PINS_NUM > 5
+static const uint8_t A5 = ANALOG_PINS_START + 5;
+#endif
+#if ANALOG_PINS_NUM > 6
+static const uint8_t A6 = ANALOG_PINS_START + 6;
+#endif
+#if ANALOG_PINS_NUM > 7
+static const uint8_t A7 = ANALOG_PINS_START + 7;
+#endif
+#if ANALOG_PINS_NUM > 8
+static const uint8_t A8 = ANALOG_PINS_START + 8;
+#endif
+#if ANALOG_PINS_NUM > 9
+static const uint8_t A9 = ANALOG_PINS_START + 9;
+#endif
 #endif /* ANALOG_PINS_NUM > 0 */
 
 
 /* ADC internal channels */
 #if defined(ADC_CHANNEL_TEMPSENSOR) || defined(ADC_CHANNEL_TEMPSENSOR_ADC1)
-    #define ATEMP        (ANALOG_INTERNAL_START)
+#define ATEMP        (ANALOG_INTERNAL_START)
 #endif
 #ifdef ADC_CHANNEL_VREFINT
-    #define AVREF        (ANALOG_INTERNAL_START + 2)
+#define AVREF        (ANALOG_INTERNAL_START + 2)
 #endif
 
 #ifdef __cplusplus

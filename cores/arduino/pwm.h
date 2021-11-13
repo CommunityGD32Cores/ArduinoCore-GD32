@@ -32,31 +32,32 @@ OF SUCH DAMAGE.
 
 typedef void(*pwmCallback_t)(void);
 
-class PWM {
-public:
-    PWM(uint32_t
-        pin);                                                                          //PWM object construct
-    void start(
-        void);                                                                           //start pwm output
-    void stop(
-        void);                                                                            //stop pwm output
-    void setPeriodCycle(uint32_t time, uint16_t cycle,
-                        enum timeFormat format = FORMAT_US);     //set pwm period and cyclye
-    void writeCycleValue(uint32_t cycle,
-                         enum timeFormat format = FORMAT_US);                   //set pwm cycle time with the inital format
-    void attachInterrupt(pwmCallback_t
-                         callback);                                               //attach callback for capture/compare interrupt
-    void detachInterrupt(
-        void);                                                                 //detach callback for capture/compare interrupt
-    void captureCompareCallback(
-        void);                                                          //capture/compare callback handler
+class PWM
+{
+    public:
+        PWM(uint32_t
+            pin);                                                                          //PWM object construct
+        void start(
+            void);                                                                           //start pwm output
+        void stop(
+            void);                                                                            //stop pwm output
+        void setPeriodCycle(uint32_t time, uint16_t cycle,
+                            enum timeFormat format = FORMAT_US);     //set pwm period and cyclye
+        void writeCycleValue(uint32_t cycle,
+                             enum timeFormat format = FORMAT_US);                   //set pwm cycle time with the inital format
+        void attachInterrupt(pwmCallback_t
+                             callback);                                               //attach callback for capture/compare interrupt
+        void detachInterrupt(
+            void);                                                                 //detach callback for capture/compare interrupt
+        void captureCompareCallback(
+            void);                                                          //capture/compare callback handler
 
-private:
-    uint32_t index;
-    bool ispwmActive;
-    pwmPeriodCycle_t pwmPeriodCycle;
-    pwmDevice_t pwmDevice;
-    pwmCallback_t pwmCallback;
+    private:
+        uint32_t index;
+        bool ispwmActive;
+        pwmPeriodCycle_t pwmPeriodCycle;
+        pwmDevice_t pwmDevice;
+        pwmCallback_t pwmCallback;
 };
 
 extern pwmhandle_t pwmHandle;

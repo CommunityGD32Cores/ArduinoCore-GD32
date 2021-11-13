@@ -25,7 +25,7 @@ void __cxa_pure_virtual(void)
 {
     // We might want to write some diagnostics to uart in this case
     //std::terminate();
-    while(1)
+    while (1)
         ;
 }
 
@@ -33,7 +33,7 @@ void __cxa_deleted_virtual(void)
 {
     // We might want to write some diagnostics to uart in this case
     //std::terminate();
-    while(1)
+    while (1)
         ;
 }
 

@@ -25,7 +25,7 @@ void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus mode)
     exti_trig_type_enum it_mode;
     PinName pinname = DIGITAL_TO_PINNAME(pin);
 
-    switch(mode) {
+    switch (mode) {
         case CHANGE :
             it_mode = EXTI_TRIG_BOTH;
             break;

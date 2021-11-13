@@ -27,7 +27,7 @@ extern "C" {
 void pinMode(pin_size_t ulPin, PinMode ulMode)
 {
     PinName p = DIGITAL_TO_PINNAME(ulPin);
-    switch(ulMode) {
+    switch (ulMode) {
         case INPUT:
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_IN_FLOATING, 0, 0));
             break;

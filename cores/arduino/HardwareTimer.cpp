@@ -150,10 +150,10 @@ void HardwareTimer::refresh(void)
 */
 void HardwareTimer::attachInterrupt(timerCallback_t callback, uint8_t channel)
 {
-    if(channel < 4) {
+    if (channel < 4) {
         this->captureCallbacks[channel] = callback;
         timerHandle.enableCaptureIT(timerDevice, channel);
-    } else if(0xFF == channel) {
+    } else if (0xFF == channel) {
         this->updateCallback = callback;
         timerHandle.enableUpdateIT(timerDevice);
     }
@@ -167,10 +167,10 @@ void HardwareTimer::attachInterrupt(timerCallback_t callback, uint8_t channel)
 */
 void HardwareTimer::detachInterrupt(uint8_t channel)
 {
-    if(channel < 4) {
+    if (channel < 4) {
         this->captureCallbacks[channel] = NULL;
         timerHandle.disableCaptureIT(timerDevice, channel);
-    } else if(0xFF == channel) {
+    } else if (0xFF == channel) {
         this->updateCallback = NULL;
         timerHandle.disableUpdateIT(timerDevice);
     }
@@ -186,17 +186,17 @@ void HardwareTimer::setCaptureMode(uint32_t ulpin, uint8_t channel, captureMode 
     uint32_t port = gpio_port[GD_PORT_GET(pinname)];
     uint32_t pin = gpio_pin[GD_PIN_GET(pinname)];
     gpio_clock_enable(GD_PORT_GET(pinname));
-    #if defined(GD32F30x)
+#if defined(GD32F30x)
     rcu_periph_clock_enable(RCU_AF);
     gpio_init(port, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, pin);
-    if(0 != remap) {
+    if (0 != remap) {
         gpio_pin_remap_config(GD_GPIO_REMAP[remap], ENABLE);
     }
-    #elif defined(GD32F3x0) || defined(GD32F1x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0)
     /* !!TODO!! */
-    #endif
+#endif
 
-    switch(mode) {
+    switch (mode) {
         case RISING_EDGE:
             timer_icinitpara.icpolarity = TIMER_IC_POLARITY_RISING;
             break;
@@ -240,14 +240,14 @@ uint32_t HardwareTimer::getTimerClkFre(void)
 */
 void HardwareTimer::periodCallback(void)
 {
-    if(NULL != this->updateCallback) {
+    if (NULL != this->updateCallback) {
         this->updateCallback();
     }
 }
 
 void HardwareTimer::captureCallback(uint8_t channel)
 {
-    if(NULL != this->captureCallbacks[channel]) {
+    if (NULL != this->captureCallbacks[channel]) {
         this->captureCallbacks[channel]();
     }
 }
@@ -263,7 +263,7 @@ extern "C"
     void Timer_updateHandle(uint32_t timer)
     {
         uint32_t index = getTimerIndex(timer);
-        if(hardwaretimerObj[index]) {
+        if (hardwaretimerObj[index]) {
             hardwaretimerObj[index]->periodCallback();
         }
     }
@@ -277,7 +277,7 @@ extern "C"
     void Timer_captureHandle(uint32_t timer, uint8_t channel)
     {
         uint32_t index =  getTimerIndex(timer);
-        if(hardwaretimerObj[index]) {
+        if (hardwaretimerObj[index]) {
             hardwaretimerObj[index]->captureCallback(channel);
         }
     }

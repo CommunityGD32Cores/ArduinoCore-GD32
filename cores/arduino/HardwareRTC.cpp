@@ -110,7 +110,7 @@ void HWRTC::setSecTime(uint32_t secTime)
 void HWRTC::setAlarmTime(uint32_t offset, ALARM_OFFSET_FORMAT mode)
 {
     uint32_t seconds = 0;
-    switch(mode) {
+    switch (mode) {
         case RTC_ALARM_S:
             seconds = offset;
             break;
@@ -133,7 +133,7 @@ void HWRTC::setAlarmTime(uint32_t offset, ALARM_OFFSET_FORMAT mode)
 */
 void HWRTC::attachInterrupt(RTCCallback_t callback, INT_MODE mode)
 {
-    switch(mode) {
+    switch (mode) {
         case INT_SECOND_MODE:
             this->callback[0] = callback;
             rtc_attachInterrupt((INT_MODE)0);
@@ -157,7 +157,7 @@ void HWRTC::attachInterrupt(RTCCallback_t callback, INT_MODE mode)
 */
 void HWRTC::detachInterrupt(INT_MODE mode)
 {
-    switch(mode) {
+    switch (mode) {
         case INT_SECOND_MODE:
             rtc_detachInterrupt((INT_MODE)0);
             this->callback[0] = NULL;
@@ -182,19 +182,19 @@ void HWRTC::detachInterrupt(INT_MODE mode)
 void HWRTC::interruptHandler(INT_MODE mode)
 {
     uint8_t i;
-    switch(mode) {
+    switch (mode) {
         case INT_SECOND_MODE:
-            if(NULL != this->callback[0]) {
+            if (NULL != this->callback[0]) {
                 this->callback[0]();
             }
             break;
         case INT_ALARM_MODE:
-            if(NULL != this->callback[1]) {
+            if (NULL != this->callback[1]) {
                 this->callback[1]();
             }
             break;
         case INT_OVERFLOW_MODE:
-            if(NULL != this->callback[2]) {
+            if (NULL != this->callback[2]) {
                 this->callback[2]();
             }
             break;

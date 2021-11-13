@@ -25,9 +25,9 @@ extern "C" {
 uint32_t PinName_to_digital(PinName p)
 {
     uint32_t i = DIGITAL_PINS_NUM;
-    if(GD_PORT_GET(p) <= (PORTEND - 1)) {
-        for(i = 0; i < DIGITAL_PINS_NUM; i++) {
-            if(digital_pins[i] == p) {
+    if (GD_PORT_GET(p) <= (PORTEND - 1)) {
+        for (i = 0; i < DIGITAL_PINS_NUM; i++) {
+            if (digital_pins[i] == p) {
                 break;
             }
         }
@@ -38,8 +38,8 @@ uint32_t PinName_to_digital(PinName p)
 PinName analog_pin_to_PinName(uint32_t pin)
 {
     PinName pn = DIGITAL_TO_PINNAME(ANALOG_PINS_TO_DIGITAL(pin));
-    if(pn == NC) {
-        switch(pin) {
+    if (pn == NC) {
+        switch (pin) {
 #if defined(ADC_CHANNEL_TEMPSENSOR) || defined(ADC_CHANNEL_TEMPSENSOR_ADC1)
             case ATEMP:
                 pn = ADC_TEMP;
@@ -64,8 +64,8 @@ bool  pin_in_analog_pins(uint32_t pin)
 #ifndef ANALOG_PINS_LAST
     ret = (pin >= A0) && (pin < (A0 + ANALOG_PINS_NUM));
 #else
-    for(uint32_t i = 0; i < ANALOG_PINS_NUM; i++) {
-        if(analog_pins[i] == pin) {
+    for (uint32_t i = 0; i < ANALOG_PINS_NUM; i++) {
+        if (analog_pins[i] == pin) {
             ret = true;
             break;
         }
@@ -82,8 +82,8 @@ uint32_t digital_pin_to_analog(uint32_t pin)
 #ifndef ANALOG_PINS_LAST
     ret = pin - A0;
 #else
-    for(uint32_t i = 0; i < ANALOG_PINS_NUM; i++) {
-        if(analog_pins[i] == pin) {
+    for (uint32_t i = 0; i < ANALOG_PINS_NUM; i++) {
+        if (analog_pins[i] == pin) {
             ret = i;
             break;
         }

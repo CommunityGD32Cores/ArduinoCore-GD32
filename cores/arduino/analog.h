@@ -33,7 +33,7 @@ OF SUCH DAMAGE.
 #define __ANALOG_H
 
 #ifdef GD32F30x
-    #include "gd32f30x.h"
+#include "gd32f30x.h"
 #endif
 
 #include "PinNames.h"

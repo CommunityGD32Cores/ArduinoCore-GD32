@@ -20,11 +20,11 @@ static void tonePeriodElapsedCallback()
     uint32_t port = gpio_port[GD_PORT_GET(TimerTone_pinInfo.pin)];
     uint8_t pin =  gpio_pin[GD_PIN_GET(TimerTone_pinInfo.pin)];
 
-    if(port != (uint32_t)NC) {
-        if(TimerTone_pinInfo.count == -1) {
+    if (port != (uint32_t)NC) {
+        if (TimerTone_pinInfo.count == -1) {
             gpio_bit_write(port, pin, (bit_status)(1 - (int)gpio_input_bit_get(port, pin)));
-        } else if(TimerTone_pinInfo.count != 0) {
-            if(TimerTone_pinInfo.count > 0) {
+        } else if (TimerTone_pinInfo.count != 0) {
+            if (TimerTone_pinInfo.count > 0) {
                 TimerTone_pinInfo.count--;
             }
             gpio_bit_write(port, pin, (bit_status)(1 - (int)gpio_input_bit_get(port, pin)));
@@ -38,14 +38,14 @@ static void timerTonePinInit(PinName p, uint32_t frequency, uint32_t duration)
 {
     uint32_t timFreq = 2 * frequency;
 
-    if(frequency <= MAX_FREQ) {
-        if(frequency == 0) {
+    if (frequency <= MAX_FREQ) {
+        if (frequency == 0) {
             TimerTone.stop();
         } else {
             TimerTone_pinInfo.pin = p;
 
             //Calculate the toggle count
-            if(duration > 0) {
+            if (duration > 0) {
                 TimerTone_pinInfo.count = ((timFreq * duration) / 1000);
             } else {
                 TimerTone_pinInfo.count = -1;
@@ -65,8 +65,8 @@ void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
 {
     PinName p = DIGITAL_TO_PINNAME(_pin);
 
-    if(p != NC) {
-        if((TimerTone_pinInfo.pin == NC) || (TimerTone_pinInfo.pin == p)) {
+    if (p != NC) {
+        if ((TimerTone_pinInfo.pin == NC) || (TimerTone_pinInfo.pin == p)) {
             timerTonePinInit(p, frequency, duration);
         }
     }
@@ -75,7 +75,7 @@ void tone(uint8_t _pin, unsigned int frequency, unsigned long duration)
 void noTone(uint8_t _pin)
 {
     PinName p = DIGITAL_TO_PINNAME(_pin);
-    if((p != NC) && (TimerTone_pinInfo.pin == p)) {
+    if ((p != NC) && (TimerTone_pinInfo.pin == p)) {
         TimerTone.stop();
     }
 }

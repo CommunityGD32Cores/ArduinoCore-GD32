@@ -61,7 +61,7 @@ uint32_t dev_spi_clock_source_frequency_get(spi_t *obj)
     uint32_t spi_freq = 0;
     struct spi_s *spiobj = SPI_S(obj);
 
-    switch((int)spiobj->spi) {
+    switch ((int)spiobj->spi) {
         case SPI0:
             /* clock source is APB2 */
             spi_freq = rcu_clock_freq_get(CK_APB2);
@@ -108,13 +108,13 @@ void spi_begin(spi_t *obj, uint32_t speed, uint8_t mode, uint8_t endian)
     spiobj->spi = (SPIName)pinmap_merge(spi_data, spi_cntl);
 
     /* enable SPI clock */
-    if(spiobj->spi == SPI0) {
+    if (spiobj->spi == SPI0) {
         rcu_periph_clock_enable(RCU_SPI0);
     }
-    if(spiobj->spi == SPI1) {
+    if (spiobj->spi == SPI1) {
         rcu_periph_clock_enable(RCU_SPI1);
     }
-    if(spiobj->spi == SPI2) {
+    if (spiobj->spi == SPI2) {
         rcu_periph_clock_enable(RCU_SPI2);
     }
 
@@ -124,7 +124,7 @@ void spi_begin(spi_t *obj, uint32_t speed, uint8_t mode, uint8_t endian)
     pinmap_pinout(spiobj->pin_sclk, PinMap_SPI_SCLK);
 
     /* Configure the SPI pins */
-    if(spiobj->pin_ssel != NC) {
+    if (spiobj->pin_ssel != NC) {
         pinmap_pinout(spiobj->pin_ssel, PinMap_SPI_SSEL);
         spiobj->spi_struct.nss = SPI_NSS_HARD;
         spi_nss_output_enable(spiobj->spi);
@@ -133,19 +133,19 @@ void spi_begin(spi_t *obj, uint32_t speed, uint8_t mode, uint8_t endian)
     }
 
     spi_freq = dev_spi_clock_source_frequency_get(obj);
-    if(speed >= (spi_freq / SPI_CLOCK_DIV2)) {
+    if (speed >= (spi_freq / SPI_CLOCK_DIV2)) {
         spiobj->spi_struct.prescale             = SPI_PSC_2;
-    } else if(speed >= (spi_freq / SPI_CLOCK_DIV4)) {
+    } else if (speed >= (spi_freq / SPI_CLOCK_DIV4)) {
         spiobj->spi_struct.prescale             = SPI_PSC_4;
-    } else if(speed >= (spi_freq / SPI_CLOCK_DIV8)) {
+    } else if (speed >= (spi_freq / SPI_CLOCK_DIV8)) {
         spiobj->spi_struct.prescale             = SPI_PSC_8;
-    } else if(speed >= (spi_freq / SPI_CLOCK_DIV16)) {
+    } else if (speed >= (spi_freq / SPI_CLOCK_DIV16)) {
         spiobj->spi_struct.prescale             = SPI_PSC_16;
-    } else if(speed >= (spi_freq / SPI_CLOCK_DIV32)) {
+    } else if (speed >= (spi_freq / SPI_CLOCK_DIV32)) {
         spiobj->spi_struct.prescale             = SPI_PSC_32;
-    } else if(speed >= (spi_freq / SPI_CLOCK_DIV64)) {
+    } else if (speed >= (spi_freq / SPI_CLOCK_DIV64)) {
         spiobj->spi_struct.prescale             = SPI_PSC_64;
-    } else if(speed >= (spi_freq / SPI_CLOCK_DIV128)) {
+    } else if (speed >= (spi_freq / SPI_CLOCK_DIV128)) {
         spiobj->spi_struct.prescale             = SPI_PSC_128;
     } else {
         /*
@@ -155,19 +155,19 @@ void spi_begin(spi_t *obj, uint32_t speed, uint8_t mode, uint8_t endian)
         spiobj->spi_struct.prescale             = SPI_PSC_256;
     }
 
-    if(mode == SPI_MODE0) {
+    if (mode == SPI_MODE0) {
         spiobj->spi_struct.clock_polarity_phase = SPI_CK_PL_LOW_PH_1EDGE;
-    } else if(mode == SPI_MODE1) {
+    } else if (mode == SPI_MODE1) {
         spiobj->spi_struct.clock_polarity_phase = SPI_CK_PL_LOW_PH_2EDGE;
-    } else if(mode == SPI_MODE2) {
+    } else if (mode == SPI_MODE2) {
         spiobj->spi_struct.clock_polarity_phase =  SPI_CK_PL_HIGH_PH_1EDGE;
-    } else if(mode == SPI_MODE3) {
+    } else if (mode == SPI_MODE3) {
         spiobj->spi_struct.clock_polarity_phase = SPI_CK_PL_HIGH_PH_2EDGE;
     } else {
         return;
     }
 
-    if(endian == 0) {
+    if (endian == 0) {
         spiobj->spi_struct.endian               = SPI_ENDIAN_LSB;
     } else {
         spiobj->spi_struct.endian               = SPI_ENDIAN_MSB;
@@ -193,15 +193,15 @@ void spi_free(spi_t *obj)
     spi_disable(spiobj->spi);
 
     /* Disable and deinit SPI */
-    if(spiobj->spi == SPI0) {
+    if (spiobj->spi == SPI0) {
         spi_i2s_deinit(SPI0);
         rcu_periph_clock_disable(RCU_SPI0);
     }
-    if(spiobj->spi == SPI1) {
+    if (spiobj->spi == SPI1) {
         spi_i2s_deinit(SPI1);
         rcu_periph_clock_disable(RCU_SPI1);
     }
-    if(spiobj->spi == SPI2) {
+    if (spiobj->spi == SPI2) {
         spi_i2s_deinit(SPI2);
         rcu_periph_clock_disable(RCU_SPI2);
     }
@@ -209,7 +209,7 @@ void spi_free(spi_t *obj)
     pin_function(spiobj->pin_miso, SPI_PINS_FREE_MODE);
     pin_function(spiobj->pin_mosi, SPI_PINS_FREE_MODE);
     pin_function(spiobj->pin_sclk, SPI_PINS_FREE_MODE);
-    if(spiobj->spi_struct.nss != SPI_NSS_SOFT) {
+    if (spiobj->spi_struct.nss != SPI_NSS_SOFT) {
         pin_function(spiobj->pin_ssel, SPI_PINS_FREE_MODE);
         spi_nss_output_disable(spiobj->spi);
     }
@@ -227,8 +227,8 @@ uint32_t spi_master_write(spi_t *obj, uint8_t value)
     struct spi_s *spiobj = SPI_S(obj);
 
     /* wait the SPI transmit buffer is empty */
-    while((RESET == spi_i2s_flag_get(spiobj->spi, SPI_FLAG_TBE)) && (count++ < 1000));
-    if(count >= 1000) {
+    while ((RESET == spi_i2s_flag_get(spiobj->spi, SPI_FLAG_TBE)) && (count++ < 1000));
+    if (count >= 1000) {
         return -1;
     } else {
         spi_i2s_data_transmit(spiobj->spi, value);
@@ -236,8 +236,8 @@ uint32_t spi_master_write(spi_t *obj, uint8_t value)
 
     count = 0;
     /* wait the SPI receive buffer is not empty */
-    while((RESET == spi_i2s_flag_get(spiobj->spi, SPI_FLAG_RBNE)) && (count++ < 1000));
-    if(count >= 1000) {
+    while ((RESET == spi_i2s_flag_get(spiobj->spi, SPI_FLAG_RBNE)) && (count++ < 1000));
+    if (count >= 1000) {
         return -1;
     } else {
         return spi_i2s_data_receive(spiobj->spi);
@@ -255,7 +255,7 @@ uint32_t spi_master_write(spi_t *obj, uint8_t value)
   */
 void spi_master_block_write(spi_t *obj, uint8_t *tx_buffer, uint8_t *rx_buffer, uint16_t len)
 {
-    for(int i = 0; i < len; i++) {
+    for (int i = 0; i < len; i++) {
         char in = spi_master_write(obj, tx_buffer[i]);
         rx_buffer[i] = in;
     }

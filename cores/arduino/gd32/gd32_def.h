@@ -42,7 +42,7 @@ OF SUCH DAMAGE.
  * Libc porting layers
  */
 #if defined (  __GNUC__  ) /* GCC CS3 */
-    #define WEAK __attribute__ ((weak))
+#define WEAK __attribute__ ((weak))
 #endif
 
 #endif /*_GD32_DEF_ */
