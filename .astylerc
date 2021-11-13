@@ -1,0 +1,8 @@
+style=linux
+unpad-paren
+pad-header
+pad-oper
+indent-classes
+indent=spaces=4
+max-continuation-indent=80
+indent-switches
