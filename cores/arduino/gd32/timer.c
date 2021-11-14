@@ -238,32 +238,32 @@ void timer_clock_enable(uint32_t instance)
             temp = RCU_TIMER7;
             break;
 #endif
-#if defined(TIMER8)
+#if defined(TIMER8) && !defined(GD32F30X_HD) /* ToDO: Fix this so for non-F30x series that also have TIMER8 *and* RCU_TIMER8 */
         case TIMER8:
             temp = RCU_TIMER8;
             break;
 #endif
-#if defined(TIMER9)
+#if defined(TIMER9) && !defined(GD32F30X_HD)
         case TIMER9:
             temp = RCU_TIMER9;
             break;
 #endif
-#if defined(TIMER10)
+#if defined(TIMER10) && !defined(GD32F30X_HD)
         case TIMER10:
             temp = RCU_TIMER10;
             break;
 #endif
-#if defined(TIMER11)
+#if defined(TIMER11) && !defined(GD32F30X_HD)
         case TIMER11:
             temp = RCU_TIMER11;
             break;
 #endif
-#if defined(TIMER12)
+#if defined(TIMER12) && !defined(GD32F30X_HD)
         case TIMER12:
             temp = RCU_TIMER12;
             break;
 #endif
-#if defined(TIMER13)
+#if defined(TIMER13) && !defined(GD32F30X_HD)
         case TIMER13:
             temp = RCU_TIMER13;
             break;
@@ -324,32 +324,32 @@ void timer_clock_disable(uint32_t instance)
             temp = RCU_TIMER7;
             break;
 #endif
-#if defined(TIMER8)
+#if defined(TIMER8) && !defined(GD32F30X_HD) /* ToDO: Fix this so for non-F30x series that also have TIMER8 *and* RCU_TIMER8 */
         case TIMER8:
             temp = RCU_TIMER8;
             break;
 #endif
-#if defined(TIMER9)
+#if defined(TIMER9) && !defined(GD32F30X_HD)
         case TIMER9:
             temp = RCU_TIMER9;
             break;
 #endif
-#if defined(TIMER10)
+#if defined(TIMER10) && !defined(GD32F30X_HD) 
         case TIMER10:
             temp = RCU_TIMER10;
             break;
 #endif
-#if defined(TIMER11)
+#if defined(TIMER11) && !defined(GD32F30X_HD)
         case TIMER11:
             temp = RCU_TIMER11;
             break;
 #endif
-#if defined(TIMER12)
+#if defined(TIMER12) && !defined(GD32F30X_HD)
         case TIMER12:
             temp = RCU_TIMER12;
             break;
 #endif
-#if defined(TIMER13)
+#if defined(TIMER13) && !defined(GD32F30X_HD)
         case TIMER13:
             temp = RCU_TIMER13;
             break;

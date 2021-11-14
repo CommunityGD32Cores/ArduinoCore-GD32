@@ -100,11 +100,11 @@ extern "C" {
 #define TIMER_SERVO             TIMER6
 
 #define PWM0                    PA8
-#define PWM1                    PA9
-#define PWM2                    PA10
-#define PWM3                    PB11
-#define PWM4                    PA15
-#define PWM5                    PB15
+#define PWM1                    PA0
+#define PWM2                    PA1
+#define PWM3                    PA2
+#define PWM4                    PB6
+#define PWM5                    PB7
 
 /* USART definitions */
 
