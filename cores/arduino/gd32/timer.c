@@ -198,72 +198,72 @@ void timer_clock_enable(uint32_t instance)
 {
     uint32_t temp = 0;
     switch (instance) {
-#if defined(TIMER0) && defined(RCU_TIMER0)
+#if defined(TIMER0)
         case TIMER0:
             temp = RCU_TIMER0;
             break;
 #endif
-#if defined(TIMER1) && defined(RCU_TIMER1)
+#if defined(TIMER1)
         case TIMER1:
             temp = RCU_TIMER1;
             break;
 #endif
-#if defined(TIMER2) && defined(RCU_TIMER2)
+#if defined(TIMER2)
         case TIMER2:
             temp = RCU_TIMER2;
             break;
 #endif
-#if defined(TIMER3) && defined(RCU_TIMER3)
+#if defined(TIMER3)
         case TIMER3:
             temp = RCU_TIMER3;
             break;
 #endif
-#if defined(TIMER4) && defined(RCU_TIMER4)
+#if defined(TIMER4)
         case TIMER4:
             temp = RCU_TIMER4;
             break;
 #endif
-#if defined(TIMER5) && defined(RCU_TIMER5)
+#if defined(TIMER5)
         case TIMER5:
             temp = RCU_TIMER5;
             break;
 #endif
-#if defined(TIMER6) && defined(RCU_TIMER6)
+#if defined(TIMER6)
         case TIMER6:
             temp = RCU_TIMER6;
             break;
 #endif
-#if defined(TIMER7) && defined(RCU_TIMER7)
+#if defined(TIMER7)
         case TIMER7:
             temp = RCU_TIMER7;
             break;
 #endif
-#if defined(TIMER8) && defined(RCU_TIMER8)
+#if defined(TIMER8)
         case TIMER8:
             temp = RCU_TIMER8;
             break;
 #endif
-#if defined(TIMER9) && defined(RCU_TIMER9)
+#if defined(TIMER9)
         case TIMER9:
             temp = RCU_TIMER9;
             break;
 #endif
-#if defined(TIMER10) && defined(RCU_TIMER10)
+#if defined(TIMER10)
         case TIMER10:
             temp = RCU_TIMER10;
             break;
 #endif
-#if defined(TIMER11) && defined(RCU_TIMER11)
+#if defined(TIMER11)
         case TIMER11:
             temp = RCU_TIMER11;
             break;
 #endif
-#if defined(TIMER12) && defined(RCU_TIMER12)
+#if defined(TIMER12)
         case TIMER12:
             temp = RCU_TIMER12;
             break;
 #endif
-#if defined(TIMER13) && defined(RCU_TIMER13)
+#if defined(TIMER13)
         case TIMER13:
             temp = RCU_TIMER13;
             break;
@@ -284,72 +284,72 @@ void timer_clock_disable(uint32_t instance)
 {
     uint32_t temp = 0;
     switch (instance) {
-#if defined(TIMER0) && defined(RCU_TIMER0)
+#if defined(TIMER0)
         case TIMER0:
             temp = RCU_TIMER0;
             break;
 #endif
-#if defined(TIMER1) && defined(RCU_TIMER1)
+#if defined(TIMER1)
         case TIMER1:
             temp = RCU_TIMER1;
             break;
 #endif
-#if defined(TIMER2) && defined(RCU_TIMER2)
+#if defined(TIMER2)
         case TIMER2:
             temp = RCU_TIMER2;
             break;
 #endif
-#if defined(TIMER3) && defined(RCU_TIMER3)
+#if defined(TIMER3)
         case TIMER3:
             temp = RCU_TIMER3;
             break;
 #endif
-#if defined(TIMER4) && defined(RCU_TIMER4)
+#if defined(TIMER4)
         case TIMER4:
             temp = RCU_TIMER4;
             break;
 #endif
-#if defined(TIMER5) && defined(RCU_TIMER5)
+#if defined(TIMER5)
         case TIMER5:
             temp = RCU_TIMER5;
             break;
 #endif
-#if defined(TIMER6) && defined(RCU_TIMER6)
+#if defined(TIMER6)
         case TIMER6:
             temp = RCU_TIMER6;
             break;
 #endif
-#if defined(TIMER7) && defined(RCU_TIMER7)
+#if defined(TIMER7)
         case TIMER7:
             temp = RCU_TIMER7;
             break;
 #endif
-#if defined(TIMER8) && defined(RCU_TIMER8)
+#if defined(TIMER8)
         case TIMER8:
             temp = RCU_TIMER8;
             break;
 #endif
-#if defined(TIMER9) && defined(RCU_TIMER9)
+#if defined(TIMER9)
         case TIMER9:
             temp = RCU_TIMER9;
             break;
 #endif
-#if defined(TIMER10) && defined(RCU_TIMER10)
+#if defined(TIMER10)
         case TIMER10:
             temp = RCU_TIMER10;
             break;
 #endif
-#if defined(TIMER11) && defined(RCU_TIMER11)
+#if defined(TIMER11)
         case TIMER11:
             temp = RCU_TIMER11;
             break;
 #endif
-#if defined(TIMER12) && defined(RCU_TIMER12)
+#if defined(TIMER12)
         case TIMER12:
             temp = RCU_TIMER12;
             break;
 #endif
-#if defined(TIMER13) && defined(RCU_TIMER13)
+#if defined(TIMER13)
         case TIMER13:
             temp = RCU_TIMER13;
             break;
