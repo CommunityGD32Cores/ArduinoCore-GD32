@@ -259,8 +259,8 @@ i2c_status_enum i2c_master_transmit(i2c_t *obj, uint8_t address, uint8_t *data, 
         if (0 == timeout) {
             ret = I2C_BUSY;
         }
-        /* generate a START condition */
-        i2c_start_on_bus(obj->i2c);
+    /* generate a START condition */
+    i2c_start_on_bus(obj->i2c);
 
     /* ensure the i2c has been started successfully */
     timeout = WIRE_I2C_FLAG_TIMEOUT_START;
