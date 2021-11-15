@@ -175,11 +175,11 @@ void i2c_slaves_interrupt_enable(i2c_t *obj)
  *
  * @param obj  The I2C object
  * @param data Byte to be written
- * @return 0 if NACK was received, 1 if ACK was received, 2 for timeout.
+ * @return I2C_NACK_DATA if NACK was received, I2C_OK if ACK was received, I2C_TIMEOUT for timeout.
  */
-static int i2c_byte_write(i2c_t *obj, int data)
+i2c_status_enum i2c_byte_write(i2c_t *obj, int data)
 {
-    int timeout;
+    uint32_t timeout;
     struct i2c_s *obj_s = I2C_S(obj);
 
     I2C_DATA(obj_s->i2c) = (uint8_t)data;
@@ -189,17 +189,17 @@ static int i2c_byte_write(i2c_t *obj, int data)
     while (((i2c_flag_get(obj_s->i2c, I2C_FLAG_TBE)) == RESET) &&
            ((i2c_flag_get(obj_s->i2c, I2C_FLAG_BTC)) == RESET)) {
         if ((timeout--) == 0) {
-            return 2;
+            return I2C_TIMEOUT;
         }
     }
-    return 1;
+    return I2C_OK;
 }
 
 /** Send STOP command
  *
  * @param obj The I2C object
  */
-static int i2c_stop(i2c_t *obj)
+i2c_status_enum  i2c_stop(i2c_t *obj)
 {
     struct i2c_s *obj_s = I2C_S(obj);
 
@@ -210,11 +210,11 @@ static int i2c_stop(i2c_t *obj)
     int timeout = WIRE_I2C_FLAG_TIMEOUT_STOP_BIT_RESET;
     while ((I2C_CTL0(obj_s->i2c) & I2C_CTL0_STOP)) {
         if ((timeout--) == 0) {
-            return 2;
+            return I2C_TIMEOUT;
         }
     }
 
-    return 0;
+    return I2C_OK;
 }
 
 /** Write bytes at a given address
@@ -271,10 +271,11 @@ i2c_status_enum i2c_master_transmit(i2c_t *obj, uint8_t address, uint8_t *data, 
     /* clear ADDSEND */
     i2c_flag_clear(obj->i2c, I2C_FLAG_ADDSEND);
 
-        for (count = 0; count < length; count++) {
-            if (1 != i2c_byte_write(obj, data[count])) {
-                ret = I2C_NACK_DATA;
-            }
+
+
+    for (count = 0; count < length; count++) {
+        if (I2C_OK != ret) {
+            break;
         }
         /* if not sequential write, then send stop */
         if (stop) {
