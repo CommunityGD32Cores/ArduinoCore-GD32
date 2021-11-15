@@ -233,8 +233,10 @@ i2c_status_enum i2c_master_transmit(i2c_t *obj, uint8_t address, uint8_t *data, 
     uint32_t timeout = 0;
     uint32_t count = 0;
 
-    if (length > I2C_BUFFER_SIZE) {
-        ret = I2C_DATA_TOO_LONG;
+
+
+    if (I2C_BUSY == _i2c_busy_wait(obj)) {
+        return I2C_BUSY;
     }
 
     /* When size is 0, this is usually an I2C scan / ping to check if device is there and ready */
@@ -326,12 +328,12 @@ i2c_status_enum i2c_master_receive(i2c_t *obj, uint8_t address, uint8_t *data, u
     uint32_t timeout = 0;
     uint32_t count = 0;
 
-    timeout = FLAG_TIMEOUT;
-
-    while ((i2c_flag_get(obj->i2c, I2C_FLAG_I2CBSY)) && (--timeout != 0));
-    if (0 == timeout) {
-        ret = I2C_BUSY;
+    if (I2C_BUSY == _i2c_busy_wait(obj)) {
+        return I2C_BUSY;
     }
+
+
+
     if (1 == length) {
         /* disable acknowledge */
         i2c_ack_config(obj->i2c, I2C_ACK_DISABLE);
@@ -410,11 +412,9 @@ i2c_status_enum i2c_wait_standby_state(i2c_t *obj, uint8_t address)
     i2c_status_enum status = I2C_OK;
     uint32_t timeout;
 
-    /* wait until I2C_FLAG_I2CBSY flag is reset */
-    timeout = FLAG_TIMEOUT;
-    while ((i2c_flag_get(obj->i2c, I2C_FLAG_I2CBSY)) && (--timeout != 0));
-    if (0 == timeout) {
-        status = I2C_BUSY;
+
+    if (I2C_BUSY == _i2c_busy_wait(obj)) {
+        return I2C_BUSY;
     }
 
     /* send a start condition to I2C bus */
