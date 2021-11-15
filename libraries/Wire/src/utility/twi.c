@@ -528,6 +528,26 @@ i2c_status_enum i2c_slave_write_buffer(i2c_t *obj, uint8_t *data, uint16_t lengt
     return ret;
 }
 
+
+/** Check the I2C bus to see if it's busy
+ *
+ * @param obj    The I2C object
+ * @returns I2C_BUSY on timeout and I2C_OK otherwise
+ **/
+
+i2c_status_enum _i2c_busy_wait(i2c_t *obj)
+{
+
+    /* wait until I2C_FLAG_I2CBSY flag is reset */
+    uint32_t timeout = WIRE_I2C_FLAG_TIMEOUT_BUSY;
+    while ((i2c_flag_get(obj->i2c, I2C_FLAG_I2CBSY)) && (--timeout != 0));
+    if (0 == timeout) {
+        return I2C_BUSY;
+    }
+
+    return I2C_OK;
+}
+
 #ifdef I2C0
 /** This function handles I2C interrupt handler
  *
