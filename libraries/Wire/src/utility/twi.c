@@ -397,7 +397,11 @@ i2c_status_enum i2c_master_receive(i2c_t *obj, uint8_t address, uint8_t *data, u
 
         timeout = WIRE_I2C_FLAG_TIMEOUT_BYTE_RECEIVED;
         while ((!i2c_flag_get(obj->i2c, I2C_FLAG_RBNE)) && (--timeout != 0));
-        data[count] = i2c_data_receive(obj->i2c);
+        if (0 == timeout) {
+            ret = I2C_NACK_DATA;
+        } else {
+            data[count] = i2c_data_receive(obj->i2c);
+        };
     }
     /* if not sequential read, then send stop */
     if (stop) {
