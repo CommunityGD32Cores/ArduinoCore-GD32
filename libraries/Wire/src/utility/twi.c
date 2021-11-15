@@ -47,7 +47,6 @@ typedef enum {
 } internal_i2c_index_t;
 
 static struct i2c_s *obj_s_buf[I2C_NUM] = {NULL};
-#define BUSY_TIMEOUT  ((SystemCoreClock / obj_s->freq) * 2 * 10)
 
 #ifndef WIRE_I2C_FLAG_TIMEOUT
 #define FLAG_TIMEOUT  (0xF0000U)
