@@ -250,15 +250,6 @@ i2c_status_enum i2c_master_transmit(i2c_t *obj, uint8_t address, uint8_t *data, 
         return I2C_BUSY;
     }
 
-    /* When size is 0, this is usually an I2C scan / ping to check if device is there and ready */
-    if (length == 0) {
-        ret = i2c_wait_standby_state(obj, address);
-    } else {
-        timeout = FLAG_TIMEOUT;
-        while ((i2c_flag_get(obj->i2c, I2C_FLAG_I2CBSY)) && (--timeout != 0));
-        if (0 == timeout) {
-            ret = I2C_BUSY;
-        }
     /* generate a START condition */
     i2c_start_on_bus(obj->i2c);
 
