@@ -371,6 +371,9 @@ i2c_status_enum i2c_master_receive(i2c_t *obj, uint8_t address, uint8_t *data, u
     i2c_flag_clear(obj->i2c, I2C_FLAG_ADDSEND);
 
     for (count = 0; count < length; count++) {
+        if (ret != I2C_OK) {
+            break;
+        }
         if (length > 2 && count == (uint32_t)length - 3) {
             timeout = WIRE_I2C_FLAG_TIMEOUT_DATA_ACK;
 
