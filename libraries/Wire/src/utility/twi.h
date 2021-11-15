@@ -94,6 +94,8 @@ void i2c_attach_slave_tx_callback(i2c_t *obj, void (*function)(void));
 i2c_status_enum i2c_slave_write_buffer(i2c_t *obj, uint8_t *data, uint16_t size);
 /* set I2C clock speed */
 void i2c_set_clock(i2c_t *obj, uint32_t clock_hz);
+/* Check to see if the I2C bus is busy */
+i2c_status_enum _i2c_busy_wait(i2c_t *obj);
 
 
 
