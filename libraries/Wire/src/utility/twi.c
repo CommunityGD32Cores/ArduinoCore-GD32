@@ -354,7 +354,7 @@ i2c_status_enum i2c_master_receive(i2c_t *obj, uint8_t address, uint8_t *data, u
     i2c_start_on_bus(obj->i2c);
     while ((!i2c_flag_get(obj->i2c, I2C_FLAG_SBSEND)) && (--timeout != 0));
     if (0 == timeout) {
-        ret = I2C_TIMEOUT;
+        return I2C_TIMEOUT;
     }
     /* send slave address */
     i2c_master_addressing(obj->i2c, address, I2C_RECEIVER);
