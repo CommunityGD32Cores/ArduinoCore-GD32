@@ -229,6 +229,17 @@ i2c_status_enum  i2c_stop(i2c_t *obj)
 i2c_status_enum i2c_master_transmit(i2c_t *obj, uint8_t address, uint8_t *data, uint16_t length,
                                     uint8_t stop)
 {
+
+
+    /* When size is 0, this is usually an I2C scan / ping to check if device is there and ready */
+    if (length == 0) {
+        return i2c_wait_standby_state(obj, address);
+    }
+
+    if (length > I2C_BUFFER_SIZE) {
+        return I2C_DATA_TOO_LONG;
+    }
+
     i2c_status_enum ret = I2C_OK;
     uint32_t timeout = 0;
     uint32_t count = 0;
