@@ -52,6 +52,8 @@ OF SUCH DAMAGE.
 #define ADC_NUMS  1
 #elif defined(GD32F1x0)
 #define ADC_NUMS  1
+#elif defined(GD32E23x)
+#define ADC_NUMS  1
 #endif
 
 #if DAC_NUMS != 0
@@ -241,60 +243,96 @@ uint8_t get_adc_channel(PinName pinname)
     uint32_t channel = GD_PIN_CHANNEL_GET(function);
     uint32_t gd_channel = 0;
     switch (channel) {
-        case 0:
-            gd_channel = ADC_CHANNEL_0;
-            break;
-        case 1:
-            gd_channel = ADC_CHANNEL_1;
-            break;
-        case 2:
-            gd_channel = ADC_CHANNEL_2;
-            break;
-        case 3:
-            gd_channel = ADC_CHANNEL_3;
-            break;
-        case 4:
-            gd_channel = ADC_CHANNEL_4;
-            break;
-        case 5:
-            gd_channel = ADC_CHANNEL_5;
-            break;
-        case 6:
-            gd_channel = ADC_CHANNEL_6;
-            break;
-        case 7:
-            gd_channel = ADC_CHANNEL_7;
-            break;
-        case 8:
-            gd_channel = ADC_CHANNEL_8;
-            break;
-        case 9:
-            gd_channel = ADC_CHANNEL_9;
-            break;
-        case 10:
-            gd_channel = ADC_CHANNEL_10;
-            break;
-        case 11:
-            gd_channel = ADC_CHANNEL_11;
-            break;
-        case 12:
-            gd_channel = ADC_CHANNEL_12;
-            break;
-        case 13:
-            gd_channel = ADC_CHANNEL_13;
-            break;
-        case 14:
-            gd_channel = ADC_CHANNEL_14;
-            break;
-        case 15:
-            gd_channel = ADC_CHANNEL_15;
-            break;
-        case 16:
-            gd_channel = ADC_CHANNEL_16;
-            break;
-        case 17:
-            gd_channel = ADC_CHANNEL_17;
-            break;
+        #ifdef ADC_CHANNEL_0
+                case 0:
+                    gd_channel = ADC_CHANNEL_0;
+                    break;
+        #endif
+        #ifdef ADC_CHANNEL_1
+                case 1:
+                    gd_channel = ADC_CHANNEL_1;
+                    break;
+        #endif
+        #ifdef ADC_CHANNEL_2
+                case 2:
+                    gd_channel = ADC_CHANNEL_2;
+                    break;
+        #endif
+        #ifdef ADC_CHANNEL_3
+                case 3:
+                    gd_channel = ADC_CHANNEL_3;
+                    break;
+        #endif
+        #ifdef ADC_CHANNEL_4
+                case 4:
+                    gd_channel = ADC_CHANNEL_4;
+                    break;
+        #endif
+        #ifdef ADC_CHANNEL_5
+                case 5:
+                    gd_channel = ADC_CHANNEL_5;
+                    break;
+        #endif
+        #ifdef ADC_CHANNEL_6
+                case 6:
+                    gd_channel = ADC_CHANNEL_6;
+                    break;
+        #endif
+        #ifdef ADC_CHANNEL_7
+                case 7:
+                    gd_channel = ADC_CHANNEL_7;
+                    break;
+        #endif
+        #ifdef ADC_CHANNEL_8
+                case 8:
+                    gd_channel = ADC_CHANNEL_8;
+                    break;
+        #endif
+        #ifdef ADC_CHANNEL_9
+                case 9:
+                    gd_channel = ADC_CHANNEL_9;
+                    break;
+        #endif
+        #ifdef ADC_CHANNEL_10
+                case 10:
+                    gd_channel = ADC_CHANNEL_10;
+                    break;
+        #endif
+        #ifdef ADC_CHANNEL_11
+                case 11:
+                    gd_channel = ADC_CHANNEL_11;
+                    break;
+        #endif
+        #ifdef ADC_CHANNEL_12
+                case 12:
+                    gd_channel = ADC_CHANNEL_12;
+                    break;
+        #endif
+        #ifdef ADC_CHANNEL_13
+                case 13:
+                    gd_channel = ADC_CHANNEL_13;
+                    break;
+        #endif
+        #ifdef ADC_CHANNEL_14
+                case 14:
+                    gd_channel = ADC_CHANNEL_14;
+                    break;
+        #endif
+        #ifdef ADC_CHANNEL_15
+                case 15:
+                    gd_channel = ADC_CHANNEL_15;
+                    break;
+        #endif
+        #ifdef ADC_CHANNEL_16
+                case 16:
+                    gd_channel = ADC_CHANNEL_16;
+                    break;
+        #endif
+        #ifdef ADC_CHANNEL_17
+                case 17:
+                    gd_channel = ADC_CHANNEL_17;
+                    break;
+        #endif
         default:
             gd_channel = 0xFF;
             break;

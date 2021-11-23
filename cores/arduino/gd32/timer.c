@@ -371,8 +371,14 @@ void Timer_init(uint32_t instance, timerPeriod_t *timerPeriod)
 {
     timer_parameter_struct timer_initpara;
 
+#if defined(GD32E23x)
+    /* no subprio */
+    nvic_irq_enable(getTimerUpIrq(instance), 2);
+    nvic_irq_enable(getTimerCCIrq(instance), 2);
+#else
     nvic_irq_enable(getTimerUpIrq(instance), 2, 2);
     nvic_irq_enable(getTimerCCIrq(instance), 2, 2);
+#endif
     timer_clock_enable(instance);
     timer_deinit(instance);
     switch (timerPeriod->format) {
@@ -591,7 +597,12 @@ void PWM_init(pwmDevice_t *pwmDevice, pwmPeriodCycle_t *pwmPeriodCycle)
     timer_oc_parameter_struct timer_ocintpara;
     timer_parameter_struct timer_initpara;
     uint32_t periph = pwmDevice->timer;
+#if defined(GD32E23x)
+    /* no subprio */
+    nvic_irq_enable(getTimerCCIrq(periph), 2);
+#else 
     nvic_irq_enable(getTimerCCIrq(periph), 2, 2);
+#endif
     timer_clock_enable(periph);
 #if defined(GD32F30x)
     rcu_periph_clock_enable(RCU_AF);

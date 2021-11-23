@@ -12,6 +12,8 @@
 #include "startup_gd32f3x0.S"
 #elif defined(GD32F1x0)
 #include "startup_gd32f1x0.S"
+#elif defined(GD32E23x)
+#include "startup_gd32e23x.S"
 #else 
 #error "Unknown chip series!"
 #endif

@@ -284,10 +284,12 @@ static void gd32_gpio_mode_set(uint32_t gpio_periph, uint32_t mode, uint32_t pin
                 gpio_add = GPIOC;
                 rcu_periph_clock_enable(RCU_GPIOC);
                 break;
+#ifdef GPIOD
             case PORTD:
                 gpio_add = GPIOD;
                 rcu_periph_clock_enable(RCU_GPIOD);
                 break;
+#endif
 #ifdef GPIOE
             case PORTE:
                 gpio_add = GPIOE;

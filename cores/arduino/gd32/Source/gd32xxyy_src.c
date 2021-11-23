@@ -77,6 +77,27 @@
 #include "gd32f1x0_ivref.c"
 #include "gd32f1x0_can.c"
 #endif /* GD32F170_190 */
+#endif /* GD32F1x0 */
+#ifdef GD32E23x
+#include "gd32e23x_adc.c"
+#include "gd32e23x_cmp.c"
+#include "gd32e23x_crc.c"
+#include "gd32e23x_dbg.c"
+#include "gd32e23x_dma.c"
+#include "gd32e23x_exti.c"
+#include "gd32e23x_fmc.c"
+#include "gd32e23x_fwdgt.c"
+#include "gd32e23x_gpio.c"
+#include "gd32e23x_i2c.c"
+#include "gd32e23x_misc.c"
+#include "gd32e23x_pmu.c"
+#include "gd32e23x_rcu.c"
+#include "gd32e23x_rtc.c"
+#include "gd32e23x_spi.c"
+#include "gd32e23x_syscfg.c"
+#include "gd32e23x_timer.c"
+#include "gd32e23x_usart.c"
+#include "gd32e23x_wwdgt.c"
 #else
 #error "Unknown chip series!"
 #endif

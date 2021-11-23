@@ -88,8 +88,13 @@ uint32_t rtc_counter_get()
 */
 void rtc_Init(void)
 {
+#if defined(GD32E23x)
+    /* no prio group */
+    nvic_irq_enable(RTC_IRQn, 2);
+#else
     nvic_priority_group_set(NVIC_PRIGROUP_PRE2_SUB2);
     nvic_irq_enable(RTC_IRQn, 2, 0);
+#endif 
 #if defined(GD32F30x)
     nvic_irq_enable(RTC_ALARM_IRQn, 2, 0);
     /* enable PMU and BKPI clocks */
