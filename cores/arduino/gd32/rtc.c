@@ -38,7 +38,7 @@ OF SUCH DAMAGE.
 #define RTC_ALARM_IRQn RTC_Alarm_IRQn
 #endif
 
-#if defined(GD32F3x0) || defined(GD32F1x0)
+#if defined(GD32F3x0) || defined(GD32F1x0) || defined(GD32E23x)
 /*
  * wrapper functions for microcontrollers that have an RTC
  * with an asychronous and synchronous prescaler (A,S)
