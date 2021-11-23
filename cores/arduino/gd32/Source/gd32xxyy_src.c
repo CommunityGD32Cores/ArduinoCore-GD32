@@ -77,8 +77,7 @@
 #include "gd32f1x0_ivref.c"
 #include "gd32f1x0_can.c"
 #endif /* GD32F170_190 */
-#endif /* GD32F1x0 */
-#ifdef GD32E23x
+#elif defined(GD32E23x)
 #include "gd32e23x_adc.c"
 #include "gd32e23x_cmp.c"
 #include "gd32e23x_crc.c"
