@@ -83,8 +83,8 @@ extern "C" {
 /* LED definitions */
 #define LED1                        PA7
 #define LED2                        PA8
-#define LED2                        PA11
-#define LED3                        PA12
+#define LED3                        PA11
+#define LED4                        PA12
 #define LED_BUILTIN                 LED1
 
 /* user keys definitions */
