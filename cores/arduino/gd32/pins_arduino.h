@@ -147,10 +147,17 @@ uint32_t PinName_to_digital(PinName p);
 
 /* Convert an analog pin to a digital pin */
 #if ANALOG_PINS_NUM > 0
+#ifndef ANALOG_PINS_LAST
+#define ANALOG_PINS_TO_DIGITAL(p)  ( \
+                                     ((uint32_t)p < ANALOG_PINS_NUM) ? analog_pins[p] : \
+                                     ((uint32_t)p >= ANALOG_PINS_START) && ((uint32_t)p < DIGITAL_PINS_NUM) ? \
+                                     analog_pins[p-ANALOG_PINS_START] : p)
+#else
 #define ANALOG_PINS_TO_DIGITAL(p)  ( \
                                      ((uint32_t)p < ANALOG_PINS_NUM) ? analog_pins[p] : \
                                      ((uint32_t)p >= ANALOG_PINS_START) && ((uint32_t)p <= ANALOG_PINS_LAST) ? \
                                      analog_pins[p-ANALOG_PINS_START] : p)
+#endif
 #else
 /* No analog pin defined */
 #define ANALOG_PINS_TO_DIGITAL(p)  (DIGITAL_PINS_NUM)

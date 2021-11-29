@@ -78,7 +78,7 @@ extern "C" {
 #define DIGITAL_PINS_NUM            39
 #define ANALOG_PINS_NUM             10
 #define ANALOG_PINS_START           PA0
-#define ANALOG_PINS_LAST            PB1
+//#define ANALOG_PINS_LAST            PB1
 
 /* LED definitions */
 #define LED1                        PA7
