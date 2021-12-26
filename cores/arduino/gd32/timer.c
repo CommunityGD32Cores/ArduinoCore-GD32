@@ -27,13 +27,13 @@ OF SUCH DAMAGE.
 
 #include "timer.h"
 
-#if defined(GD32F1x0)
+#if defined(GD32F1x0) || defined(GD32F3x0)
 #define TIMER5_IRQ_Name TIMER5_DAC_IRQn
 #else
 #define TIMER5_IRQ_Name TIMER5_IRQn
 #endif 
 
-#if defined(GD32E23x) || defined(GD32F1x0)
+#if defined(GD32E23x) || defined(GD32F1x0) || defined(GD32F3x0)
 #define TIMER0_IRQ_Name TIMER0_Channel_IRQn
 #else
 #define TIMER0_IRQ_Name TIMER0_IRQn
@@ -60,6 +60,10 @@ OF SUCH DAMAGE.
 #define HAS_TIMER_11
 #define HAS_TIMER_12
 #define HAS_TIMER_13
+#endif
+
+#if defined(GD32F3x0) && !defined(GD32F350)
+#define NO_TIMER_5
 #endif
 
 extern timerhandle_t timerHandle;
@@ -128,7 +132,7 @@ uint32_t getTimerIndex(uint32_t instance)
             index = 4;
             break;
 #endif
-#if defined(TIMER5)
+#if defined(TIMER5) && !defined(NO_TIMER_5)
         case TIMER5:
             index = 5;
             break;
@@ -273,7 +277,7 @@ void timer_clock_enable(uint32_t instance)
             temp = RCU_TIMER4;
             break;
 #endif
-#if defined(TIMER5)
+#if defined(TIMER5) && !defined(NO_TIMER_5)
         case TIMER5:
             temp = RCU_TIMER5;
             break;
@@ -374,7 +378,7 @@ void timer_clock_disable(uint32_t instance)
             temp = RCU_TIMER4;
             break;
 #endif
-#if defined(TIMER5)
+#if defined(TIMER5) && !defined(NO_TIMER_5)
         case TIMER5:
             temp = RCU_TIMER5;
             break;
@@ -932,7 +936,7 @@ uint32_t getTimerClkFrequency(uint32_t instance)
 #if defined(TIMER4)
             case (uint32_t)TIMER4:
 #endif
-#if defined(TIMER5)
+#if defined(TIMER5) && !defined(NO_TIMER_5)
             case (uint32_t)TIMER5:
 #endif
 #if defined(TIMER6)
@@ -1008,7 +1012,7 @@ IRQn_Type getTimerUpIrq(uint32_t tim)
                 IRQn = TIMER4_IRQn;
                 break;
 #endif
-#if defined(TIMER5)
+#if defined(TIMER5) && !defined(NO_TIMER_5)
             case (uint32_t)TIMER5:
                 IRQn = TIMER5_IRQ_Name;
                 break;
@@ -1112,7 +1116,7 @@ IRQn_Type getTimerCCIrq(uint32_t tim)
                 IRQn = TIMER4_IRQn;
                 break;
 #endif
-#if defined(TIMER5)
+#if defined(TIMER5) && !defined(NO_TIMER_5)
             case (uint32_t)TIMER5:
                 IRQn = TIMER5_IRQ_Name;
                 break;
@@ -1270,7 +1274,7 @@ void TIMER4_IRQHandler(void)
 }
 #endif /* TIMER4 handler */
 
-#if defined(TIMER5)
+#if defined(TIMER5) && !defined(NO_TIMER_5)
 void TIMER5_IRQHandler(void)
 {
     timerinterrupthandle(TIMER5);
