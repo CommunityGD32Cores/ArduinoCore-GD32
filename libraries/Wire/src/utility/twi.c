@@ -82,7 +82,7 @@ static struct i2c_s *obj_s_buf[I2C_NUM] = {NULL};
 
 #define I2C_S(obj)    (struct i2c_s *) (obj)
 
-#if defined(GD32F1x0) || defined(GD32F3x0) || defined(GD32F4xx)
+#if defined(GD32F1x0) || defined(GD32F3x0) || defined(GD32F4xx) || defined(GD32E23x)
 #define GD32_I2C_FLAG_IS_TRANSMTR_OR_RECVR I2C_FLAG_TR
 #else
 #define GD32_I2C_FLAG_IS_TRANSMTR_OR_RECVR I2C_FLAG_TRS
@@ -154,13 +154,23 @@ void i2c_slaves_interrupt_enable(i2c_t *obj)
     switch (obj_s->i2c) {
         case I2C0:
             /* enable I2C0 interrupt */
+#if !defined(GD32E23x)
             nvic_irq_enable(I2C0_EV_IRQn, 1, 3);
             nvic_irq_enable(I2C0_ER_IRQn, 1, 2);
+#else 
+            nvic_irq_enable(I2C0_EV_IRQn, 1);
+            nvic_irq_enable(I2C0_ER_IRQn, 1);
+#endif           
             break;
         case I2C1:
             /* enable I2C1 interrupt */
+#if !defined(GD32E23x)
             nvic_irq_enable(I2C1_EV_IRQn, 1, 3);
             nvic_irq_enable(I2C1_ER_IRQn, 1, 2);
+#else 
+            nvic_irq_enable(I2C1_EV_IRQn, 1);
+            nvic_irq_enable(I2C1_ER_IRQn, 1);
+#endif           
             break;
         default:
             break;
