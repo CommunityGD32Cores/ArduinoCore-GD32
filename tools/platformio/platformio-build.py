@@ -231,10 +231,7 @@ env.Append(
         join(FRAMEWORK_DIR, "system", spl_series + "_firmware", "CMSIS", "GD", spl_series, "Source"),
         join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_standard_peripheral", "Include"),
         join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_standard_peripheral", "Source"),
-        join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_usbd_driver", "Include"),
-        join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_usbd_driver", "Source"),
-        join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_usbfs_driver", "Include"),
-        join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_usbfs_driver", "Source"),
+        # USB libraries are included conditionally later
         join(FRAMEWORK_DIR, "cores", "arduino"),
     ],
     LINKFLAGS=[
