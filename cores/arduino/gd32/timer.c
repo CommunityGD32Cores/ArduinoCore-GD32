@@ -27,6 +27,41 @@ OF SUCH DAMAGE.
 
 #include "timer.h"
 
+#if defined(GD32F1x0)
+#define TIMER5_IRQ_Name TIMER5_DAC_IRQn
+#else
+#define TIMER5_IRQ_Name TIMER5_IRQn
+#endif 
+
+#if defined(GD32E23x) || defined(GD32F1x0)
+#define TIMER0_IRQ_Name TIMER0_Channel_IRQn
+#else
+#define TIMER0_IRQ_Name TIMER0_IRQn
+#endif
+
+/* availablility of timers despite their macros being defined. */
+/* e.g., for a GD32F303CC, the macro TIMER8 is defined, although */
+/* TIMER8_IRQn is not defined since the timer is not actually available */ 
+/* we have to work around this. */
+#if defined(GD32F30x)
+#if !defined(GD32F30X_HD)
+#define HAS_TIMER_8
+#define HAS_TIMER_9
+#define HAS_TIMER_9
+#define HAS_TIMER_10
+#define HAS_TIMER_11
+#define HAS_TIMER_12
+#define HAS_TIMER_13
+#endif
+#else
+#define HAS_TIMER_9
+#define HAS_TIMER_9
+#define HAS_TIMER_10
+#define HAS_TIMER_11
+#define HAS_TIMER_12
+#define HAS_TIMER_13
+#endif
+
 extern timerhandle_t timerHandle;
 extern pwmhandle_t pwmHandle;
 
@@ -138,6 +173,21 @@ uint32_t getTimerIndex(uint32_t instance)
             index = 13;
             break;
 #endif
+#if defined(TIMER14)
+        case TIMER14:
+            index = 14;
+            break;
+#endif
+#if defined(TIMER15)
+        case TIMER15:
+            index = 15;
+            break;
+#endif
+#if defined(TIMER16)
+        case TIMER16:
+            index = 16;
+            break;
+#endif
     }
     return index;
 }
@@ -238,34 +288,49 @@ void timer_clock_enable(uint32_t instance)
             temp = RCU_TIMER7;
             break;
 #endif
-#if defined(TIMER8) && !defined(GD32F30X_HD) /* ToDO: Fix this so for non-F30x series that also have TIMER8 *and* RCU_TIMER8 */
+#if defined(TIMER8)&& defined(HAS_TIMER_8) /* ToDO: Fix this so for non-F30x series that also have TIMER8 *and* RCU_TIMER8 */
         case TIMER8:
             temp = RCU_TIMER8;
             break;
 #endif
-#if defined(TIMER9) && !defined(GD32F30X_HD)
+#if defined(TIMER9)&& defined(HAS_TIMER_9)
         case TIMER9:
             temp = RCU_TIMER9;
             break;
 #endif
-#if defined(TIMER10) && !defined(GD32F30X_HD)
+#if defined(TIMER10)&& defined(HAS_TIMER_10)
         case TIMER10:
             temp = RCU_TIMER10;
             break;
 #endif
-#if defined(TIMER11) && !defined(GD32F30X_HD)
+#if defined(TIMER11)&& defined(HAS_TIMER_11)
         case TIMER11:
             temp = RCU_TIMER11;
             break;
 #endif
-#if defined(TIMER12) && !defined(GD32F30X_HD)
+#if defined(TIMER12)&& defined(HAS_TIMER_12)
         case TIMER12:
             temp = RCU_TIMER12;
             break;
 #endif
-#if defined(TIMER13) && !defined(GD32F30X_HD)
+#if defined(TIMER13)&& defined(HAS_TIMER_13)
         case TIMER13:
             temp = RCU_TIMER13;
+            break;
+#endif
+#if defined(TIMER14)
+        case TIMER14:
+            temp = RCU_TIMER14;
+            break;
+#endif
+#if defined(TIMER15)
+        case TIMER15:
+            temp = RCU_TIMER15;
+            break;
+#endif
+#if defined(TIMER16)
+        case TIMER16:
+            temp = RCU_TIMER16;
             break;
 #endif
         default:
@@ -324,34 +389,49 @@ void timer_clock_disable(uint32_t instance)
             temp = RCU_TIMER7;
             break;
 #endif
-#if defined(TIMER8) && !defined(GD32F30X_HD) /* ToDO: Fix this so for non-F30x series that also have TIMER8 *and* RCU_TIMER8 */
+#if defined(TIMER8)&& defined(HAS_TIMER_8) /* ToDO: Fix this so for non-F30x series that also have TIMER8 *and* RCU_TIMER8 */
         case TIMER8:
             temp = RCU_TIMER8;
             break;
 #endif
-#if defined(TIMER9) && !defined(GD32F30X_HD)
+#if defined(TIMER9)&& defined(HAS_TIMER_9)
         case TIMER9:
             temp = RCU_TIMER9;
             break;
 #endif
-#if defined(TIMER10) && !defined(GD32F30X_HD) 
+#if defined(TIMER10)&& defined(HAS_TIMER_10) 
         case TIMER10:
             temp = RCU_TIMER10;
             break;
 #endif
-#if defined(TIMER11) && !defined(GD32F30X_HD)
+#if defined(TIMER11)&& defined(HAS_TIMER_11)
         case TIMER11:
             temp = RCU_TIMER11;
             break;
 #endif
-#if defined(TIMER12) && !defined(GD32F30X_HD)
+#if defined(TIMER12)&& defined(HAS_TIMER_12)
         case TIMER12:
             temp = RCU_TIMER12;
             break;
 #endif
-#if defined(TIMER13) && !defined(GD32F30X_HD)
+#if defined(TIMER13)&& defined(HAS_TIMER_13)
         case TIMER13:
             temp = RCU_TIMER13;
+            break;
+#endif
+#if defined(TIMER14)
+        case TIMER14:
+            temp = RCU_TIMER14;
+            break;
+#endif
+#if defined(TIMER15)
+        case TIMER15:
+            temp = RCU_TIMER15;
+            break;
+#endif
+#if defined(TIMER16)
+        case TIMER16:
+            temp = RCU_TIMER16;
             break;
 #endif
         default:
@@ -867,6 +947,15 @@ uint32_t getTimerClkFrequency(uint32_t instance)
 #if defined(TIMER13)
             case (uint32_t)TIMER13:
 #endif
+#if defined(TIMER14)
+            case (uint32_t)TIMER14:
+#endif
+#if defined(TIMER15)
+            case (uint32_t)TIMER15:
+#endif
+#if defined(TIMER16)
+            case (uint32_t)TIMER16:
+#endif
                 timerclkSrc = CK_APB1;
                 APBx_PSC = (RCU_CFG0 & RCU_CFG0_APB1PSC) >> 8;
                 break;
@@ -894,74 +983,89 @@ IRQn_Type getTimerUpIrq(uint32_t tim)
 
     if (tim != (uint32_t)NC) {
         switch ((uint32_t)tim) {
-#if defined(TIMER0) && defined(TIMER0_IRQn)
+#if defined(TIMER0)
             case (uint32_t)TIMER0:
-                IRQn = TIMER0_IRQn;
+                IRQn = TIMER0_IRQ_Name;
                 break;
 #endif
-#if defined(TIMER1) && defined(TIMER1_IRQn)
+#if defined(TIMER1)
             case (uint32_t)TIMER1:
                 IRQn = TIMER1_IRQn;
                 break;
 #endif
-#if defined(TIMER2) && defined(TIMER2_IRQn)
+#if defined(TIMER2)
             case (uint32_t)TIMER2:
                 IRQn = TIMER2_IRQn;
                 break;
 #endif
-#if defined(TIMER3) && defined(TIMER3_IRQn)
+#if defined(TIMER3)
             case (uint32_t)TIMER3:
                 IRQn = TIMER3_IRQn;
                 break;
 #endif
-#if defined(TIMER4) && defined(TIMER4_IRQn)
+#if defined(TIMER4)
             case (uint32_t)TIMER4:
                 IRQn = TIMER4_IRQn;
                 break;
 #endif
-#if defined(TIMER5) && defined(TIMER5_IRQn)
+#if defined(TIMER5)
             case (uint32_t)TIMER5:
-                IRQn = TIMER5_IRQn;
+                IRQn = TIMER5_IRQ_Name;
                 break;
 #endif
-#if defined(TIMER6) && defined(TIMER6_IRQn)
+#if defined(TIMER6)
             case (uint32_t)TIMER6:
                 IRQn = TIMER6_IRQn;
                 break;
 #endif
-#if defined(TIMER7) && defined(TIMER7_IRQn)
+#if defined(TIMER7)
             case (uint32_t)TIMER7:
                 IRQn = TIMER7_IRQn;
                 break;
 #endif
-#if defined(TIMER8) && defined(TIMER8_IRQn)
+#if defined(TIMER8) && defined(HAS_TIMER_8)
             case (uint32_t)TIMER8:
                 IRQn = TIMER8_IRQn;
                 break;
 #endif
-#if defined(TIMER9) && defined(TIMER9_IRQn)
+#if defined(TIMER9) && defined(HAS_TIMER_9)
             case (uint32_t)TIMER9:
                 IRQn = TIMER9_IRQn;
                 break;
 #endif
-#if defined(TIMER10) && defined(TIMER10_IRQn)
+#if defined(TIMER10) && defined(HAS_TIMER_10)
             case (uint32_t)TIMER10:
                 IRQn = TIMER10_IRQn;
                 break;
 #endif
-#if defined(TIMER11) && defined(TIMER11_IRQn)
+#if defined(TIMER11) && defined(HAS_TIMER_11)
             case (uint32_t)TIMER11:
                 IRQn = TIMER11_IRQn;
                 break;
 #endif
-#if defined(TIMER12) && defined(TIMER12_IRQn)
+#if defined(TIMER12) && defined(HAS_TIMER_12)
             case (uint32_t)TIMER12:
                 IRQn = TIMER12_IRQn;
                 break;
 #endif
-#if defined(TIMER13) && defined(TIMER13_IRQn)
+#if defined(TIMER13) && defined(HAS_TIMER_13)
             case (uint32_t)TIMER13:
                 IRQn = TIMER13_IRQn;
+                break;
+#endif
+#if defined(TIMER14)
+            case (uint32_t)TIMER14:
+                IRQn = TIMER14_IRQn;
+                break;
+#endif
+#if defined(TIMER15)
+            case (uint32_t)TIMER15:
+                IRQn = TIMER15_IRQn;
+                break;
+#endif
+#if defined(TIMER16)
+            case (uint32_t)TIMER16:
+                IRQn = TIMER16_IRQn;
                 break;
 #endif
             default:
@@ -983,74 +1087,89 @@ IRQn_Type getTimerCCIrq(uint32_t tim)
 
     if (tim != (uint32_t)NC) {
         switch ((uint32_t)tim) {
-#if defined(TIMER0) && defined(TIMER0_IRQn)
+#if defined(TIMER0)
             case (uint32_t)TIMER0:
                 IRQn = TIMER0_Channel_IRQn;
                 break;
 #endif
-#if defined(TIMER1) && defined(TIMER1_IRQn)
+#if defined(TIMER1)
             case (uint32_t)TIMER1:
                 IRQn = TIMER1_IRQn;
                 break;
 #endif
-#if defined(TIMER2) && defined(TIMER2_IRQn)
+#if defined(TIMER2)
             case (uint32_t)TIMER2:
                 IRQn = TIMER2_IRQn;
                 break;
 #endif
-#if defined(TIMER3) && defined(TIMER3_IRQn)
+#if defined(TIMER3)
             case (uint32_t)TIMER3:
                 IRQn = TIMER3_IRQn;
                 break;
 #endif
-#if defined(TIMER4) && defined(TIMER4_IRQn)
+#if defined(TIMER4)
             case (uint32_t)TIMER4:
                 IRQn = TIMER4_IRQn;
                 break;
 #endif
-#if defined(TIMER5) && defined(TIMER5_IRQn)
+#if defined(TIMER5)
             case (uint32_t)TIMER5:
-                IRQn = TIMER5_IRQn;
+                IRQn = TIMER5_IRQ_Name;
                 break;
 #endif
-#if defined(TIMER6) && defined(TIMER6_IRQn)
+#if defined(TIMER6)
             case (uint32_t)TIMER6:
                 IRQn = TIMER6_IRQn;
                 break;
 #endif
-#if defined(TIMER7) && defined(TIMER7_IRQn)
+#if defined(TIMER7)
             case (uint32_t)TIMER7:
                 IRQn = TIMER7_Channel_IRQn;
                 break;
 #endif
-#if defined(TIMER8) && defined(TIMER8_IRQn)
+#if defined(TIMER8) && defined(HAS_TIMER_8)
             case (uint32_t)TIMER8:
                 IRQn = TIMER8_IRQn;
                 break;
 #endif
-#if defined(TIMER9) && defined(TIMER9_IRQn)
+#if defined(TIMER9) && defined(HAS_TIMER_9)
             case (uint32_t)TIMER9:
                 IRQn = TIMER9_IRQn;
                 break;
 #endif
-#if defined(TIMER10) && defined(TIMER10_IRQn)
+#if defined(TIMER10) && defined(HAS_TIMER_10)
             case (uint32_t)TIMER10:
                 IRQn = TIMER10_IRQn;
                 break;
 #endif
-#if defined(TIMER11) && defined(TIMER11_IRQn)
+#if defined(TIMER11) && defined(HAS_TIMER_11)
             case (uint32_t)TIMER11:
                 IRQn = TIMER11_IRQn;
                 break;
 #endif
-#if defined(TIMER12) && defined(TIMER12_IRQn)
+#if defined(TIMER12) && defined(HAS_TIMER_12)
             case (uint32_t)TIMER12:
                 IRQn = TIMER12_IRQn;
                 break;
 #endif
-#if defined(TIMER13) && defined(TIMER13_IRQn)
+#if defined(TIMER13) && defined(HAS_TIMER_13)
             case (uint32_t)TIMER13:
                 IRQn = TIMER13_IRQn;
+                break;
+#endif
+#if defined(TIMER14)
+            case (uint32_t)TIMER14:
+                IRQn = TIMER14_IRQn;
+                break;
+#endif
+#if defined(TIMER15)
+            case (uint32_t)TIMER15:
+                IRQn = TIMER15_IRQn;
+                break;
+#endif
+#if defined(TIMER16)
+            case (uint32_t)TIMER16:
+                IRQn = TIMER16_IRQn;
                 break;
 #endif
             default:
