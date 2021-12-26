@@ -70,10 +70,12 @@ uint32_t dev_spi_clock_source_frequency_get(spi_t *obj)
             /* clock source is APB1 */
             spi_freq = rcu_clock_freq_get(CK_APB1);
             break;
+#ifdef SPI2
         case SPI2:
             /* clock source is APB1 */
             spi_freq = rcu_clock_freq_get(CK_APB1);
             break;
+#endif
         default:
             //error("SPI clock source frequency get error");
             break;
@@ -114,9 +116,11 @@ void spi_begin(spi_t *obj, uint32_t speed, uint8_t mode, uint8_t endian)
     if (spiobj->spi == SPI1) {
         rcu_periph_clock_enable(RCU_SPI1);
     }
+#ifdef SPI2    
     if (spiobj->spi == SPI2) {
         rcu_periph_clock_enable(RCU_SPI2);
     }
+#endif
 
     /* configure GPIO mode of SPI pins */
     pinmap_pinout(spiobj->pin_mosi, PinMap_SPI_MOSI);
@@ -201,10 +205,12 @@ void spi_free(spi_t *obj)
         spi_i2s_deinit(SPI1);
         rcu_periph_clock_disable(RCU_SPI1);
     }
+#ifdef SPI2
     if (spiobj->spi == SPI2) {
         spi_i2s_deinit(SPI2);
         rcu_periph_clock_disable(RCU_SPI2);
     }
+#endif
     /* Deinit GPIO mode of SPI pins */
     pin_function(spiobj->pin_miso, SPI_PINS_FREE_MODE);
     pin_function(spiobj->pin_mosi, SPI_PINS_FREE_MODE);
