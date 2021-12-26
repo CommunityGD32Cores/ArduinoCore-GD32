@@ -229,7 +229,6 @@ env.Append(
         join(FRAMEWORK_DIR, "system", spl_series + "_firmware", "CMSIS"),
         join(FRAMEWORK_DIR, "system", spl_series + "_firmware", "CMSIS", "GD", spl_series, "Include"),
         join(FRAMEWORK_DIR, "system", spl_series + "_firmware", "CMSIS", "GD", spl_series, "Source"),
-        join(FRAMEWORK_DIR, "system", spl_series + "_firmware", "CMSIS", "GD", spl_series, "Source", "GCC"),
         join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_standard_peripheral", "Include"),
         join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_standard_peripheral", "Source"),
         join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_usbd_driver", "Include"),
@@ -260,6 +259,23 @@ env.Append(
     ],
 #    LIBPATH=[join(CMSIS_DIR, "DSP", "Lib", "GCC")],
 )
+
+# For boards supporting a USB stack: Include it.
+if not board_config.get("build.spl_series").lower().startswith("gd32e23"):
+    if isdir(join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_usbd_driver")):
+        env.Append(
+            CPPPATH=[
+                join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_usbd_driver", "Include"),
+                join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_usbd_driver", "Source"),
+            ]
+        )
+    if isdir(join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_usbfs_driver")):
+        env.Append(
+            CPPPATH=[
+                join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_usbfs_driver", "Include"),
+                join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_usbfs_driver", "Source"),
+            ]
+        )
 
 env.ProcessFlags(board_config.get("build.framework_extra_flags.arduino", ""))
 
