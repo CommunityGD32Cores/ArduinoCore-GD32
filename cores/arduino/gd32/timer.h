@@ -36,11 +36,11 @@ OF SUCH DAMAGE.
 #if defined(TIMER0) && !defined(TIMER0_IRQn)
 #if defined(GD32F30x)
 #if defined(GD32F30X_CL) || defined(GD32F30X_XD)
-#define TIMER0_IRQn TIMER0_UP_TIMER9_IRQn
-#define TIMER0_IRQHandler TIMER0_UP_TIMER9_IRQHandler
+//#define TIMER0_IRQn TIMER0_UP_TIMER9_IRQn
+//#define TIMER0_IRQHandler TIMER0_UP_TIMER9_IRQHandler
 #else
-#define TIMER0_IRQn TIMER0_UP_IRQn
-#define TIMER0_IRQHandler TIMER0_UP_IRQHandler
+//#define TIMER0_IRQn TIMER0_UP_IRQn
+//#define TIMER0_IRQHandler TIMER0_UP_IRQHandler
 #endif
 #endif
 #endif

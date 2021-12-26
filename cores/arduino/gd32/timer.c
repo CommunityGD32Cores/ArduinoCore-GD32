@@ -39,6 +39,16 @@ OF SUCH DAMAGE.
 #define TIMER0_IRQ_Name TIMER0_IRQn
 #endif
 
+#if defined(GD32F30x)
+#if defined(GD32F30X_HD)
+#define  TIMER0_Update_IRQ_Name TIMER0_UP_IRQn
+#else
+#define  TIMER0_Update_IRQ_Name TIMER0_UP_TIMER9_IRQn
+#endif
+#elif defined(GD32E23x) || defined(GD32F3x0) || defined(GD32F1x0)
+#define  TIMER0_Update_IRQ_Name TIMER0_BRK_UP_TRG_COM_IRQn
+#endif
+
 /* availablility of timers despite their macros being defined. */
 /* e.g., for a GD32F303CC, the macro TIMER8 is defined, although */
 /* TIMER8_IRQn is not defined since the timer is not actually available */ 
@@ -989,7 +999,8 @@ IRQn_Type getTimerUpIrq(uint32_t tim)
         switch ((uint32_t)tim) {
 #if defined(TIMER0)
             case (uint32_t)TIMER0:
-                IRQn = TIMER0_IRQ_Name;
+                //differing update interrupt for Timer0 on some devices
+                IRQn = TIMER0_Update_IRQ_Name;
                 break;
 #endif
 #if defined(TIMER1)
@@ -1244,6 +1255,26 @@ void TIMER0_Channel_IRQHandler(void)
 {
     timerinterrupthandle(TIMER0);
 }
+
+/* some devices have this. */
+void TIMER0_BRK_UP_TRG_COM_IRQHandler(void)
+{
+    timerinterrupthandle(TIMER0);
+}
+
+void TIMER0_UP_TIMER9_IRQHandler(void)
+{
+    timerinterrupthandle(TIMER0);
+#if defined(TIMER9)
+    timerinterrupthandle(TIMER9);
+#endif
+}
+
+void TIMER0_UP_IRQHandler(void)
+{
+    timerinterrupthandle(TIMER0);
+}
+
 #endif /* TIMER0/TIMER9 handler */
 
 #if defined(TIMER1)
