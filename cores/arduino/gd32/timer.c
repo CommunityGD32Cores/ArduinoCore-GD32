@@ -27,13 +27,13 @@ OF SUCH DAMAGE.
 
 #include "timer.h"
 
-#if defined(GD32F1x0) || defined(GD32F3x0)
+#if defined(GD32F1x0) || defined(GD32F3x0) || defined(GD32E50X) || defined(GD32EPRT)
 #define TIMER5_IRQ_Name TIMER5_DAC_IRQn
 #else
 #define TIMER5_IRQ_Name TIMER5_IRQn
 #endif 
 
-#if defined(GD32E23x) || defined(GD32F1x0) || defined(GD32F3x0)
+#if defined(GD32E23x) || defined(GD32F1x0) || defined(GD32F3x0) || defined(GD32E50X)
 #define TIMER0_IRQ_Name TIMER0_Channel_IRQn
 #else
 #define TIMER0_IRQ_Name TIMER0_IRQn
@@ -47,8 +47,36 @@ OF SUCH DAMAGE.
 #endif
 #elif defined(GD32E23x) || defined(GD32F3x0) || defined(GD32F1x0)
 #define  TIMER0_Update_IRQ_Name TIMER0_BRK_UP_TRG_COM_IRQn
+#elif defined(GD32E50X)
+#if defined(GD32E50X_HD) || defined(GD32EPRT)
+#define  TIMER0_Update_IRQ_Name TIMER0_UP_IRQn
+#define NO_TIMER_9
+#else
+#define  TIMER0_Update_IRQ_Name TIMER0_UP_TIMER9_IRQn
+#define TIMER9_IRQ_NAME TIMER0_UP_TIMER9_IRQn
+#endif
 #endif
 
+#if defined(GD32E50X)
+#define TIMER7_IRQ_NAME TIMER7_Channel_IRQn
+#if defined(GD32E50X_XD) || defined(GD32E50X_CL) || defined(GD32E508)
+#define TIMER7_UP_IRQ_NAME TIMER7_UP_TIMER12_IRQn
+#define TIMER10_IRQ_NAME TIMER0_TRG_CMT_TIMER10_IRQn
+#define TIMER11_IRQ_NAME TIMER7_BRK_TIMER11_IRQn
+#define TIMER12_IRQ_NAME TIMER7_UP_TIMER12_IRQn
+#define TIMER13_IRQ_NAME TIMER7_TRG_CMT_TIMER13_IRQn
+#define 
+#else 
+#define TIMER7_UP_IRQ_NAME TIMER7_UP_IRQn
+#define NO_TIMER_10
+#define NO_TIMER_11
+#define NO_TIMER_12
+#define NO_TIMER_13
+#endif
+#else 
+#define TIMER7_IRQ_NAME TIMER7_IRQn
+#define TIMER7_UP_IRQ_NAME TIMER7_IRQn
+#endif
 /* availablility of timers despite their macros being defined. */
 /* e.g., for a GD32F303CC, the macro TIMER8 is defined, although */
 /* TIMER8_IRQn is not defined since the timer is not actually available */ 
@@ -64,12 +92,21 @@ OF SUCH DAMAGE.
 #define HAS_TIMER_13
 #endif
 #else
+#ifndef NO_TIMER_9
 #define HAS_TIMER_9
-#define HAS_TIMER_9
+#endif
+#ifndef NO_TIMER_10
 #define HAS_TIMER_10
+#endif
+#ifndef NO_TIMER_11
 #define HAS_TIMER_11
+#endif
+#ifndef NO_TIMER_12
 #define HAS_TIMER_12
+#endif
+#ifndef NO_TIMER_13
 #define HAS_TIMER_13
+#endif
 #endif
 
 #if defined(GD32F3x0) && !defined(GD32F350)
@@ -1035,7 +1072,7 @@ IRQn_Type getTimerUpIrq(uint32_t tim)
 #endif
 #if defined(TIMER7)
             case (uint32_t)TIMER7:
-                IRQn = TIMER7_IRQn;
+                IRQn = TIMER7_UP_IRQ_NAME;
                 break;
 #endif
 #if defined(TIMER8) && defined(HAS_TIMER_8)
@@ -1050,7 +1087,11 @@ IRQn_Type getTimerUpIrq(uint32_t tim)
 #endif
 #if defined(TIMER10) && defined(HAS_TIMER_10)
             case (uint32_t)TIMER10:
+            #ifdef TIMER10_IRQ_NAME //TODO: repeat this for other timers...
+                IRQn = TIMER10_IRQ_NAME;
+            #else
                 IRQn = TIMER10_IRQn;
+            #endif
                 break;
 #endif
 #if defined(TIMER11) && defined(HAS_TIMER_11)
@@ -1139,7 +1180,7 @@ IRQn_Type getTimerCCIrq(uint32_t tim)
 #endif
 #if defined(TIMER7)
             case (uint32_t)TIMER7:
-                IRQn = TIMER7_Channel_IRQn;
+                IRQn = TIMER7_IRQ_NAME;
                 break;
 #endif
 #if defined(TIMER8) && defined(HAS_TIMER_8)

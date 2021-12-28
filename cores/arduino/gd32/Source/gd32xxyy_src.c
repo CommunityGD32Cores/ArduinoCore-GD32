@@ -97,6 +97,68 @@
 #include "gd32e23x_timer.c"
 #include "gd32e23x_usart.c"
 #include "gd32e23x_wwdgt.c"
+#elif defined(GD32EPRT) || defined(GD32E50X)
+#ifndef GD32EPRT
+/* SPL files common to GD32E50X */
+#include "gd32e50x_adc.c"
+#include "gd32e50x_bkp.c"
+#include "gd32e50x_can.c"
+#include "gd32e50x_crc.c"
+#include "gd32e50x_ctc.c"
+#include "gd32e50x_dac.c"
+#include "gd32e50x_dbg.c"
+#include "gd32e50x_dma.c"
+#include "gd32e50x_exmc.c"
+#include "gd32e50x_exti.c"
+#include "gd32e50x_fmc.c"
+#include "gd32e50x_fwdgt.c"
+#include "gd32e50x_gpio.c"
+#include "gd32e50x_shrtimer.c"
+#include "gd32e50x_i2c.c"
+#include "gd32e50x_misc.c"
+#include "gd32e50x_pmu.c"
+#include "gd32e50x_rcu.c"
+#include "gd32e50x_rtc.c"
+#include "gd32e50x_spi.c"
+#include "gd32e50x_timer.c"
+#include "gd32e50x_usart.c"
+#include "gd32e50x_wwdgt.c"
+#include "gd32e50x_sqpi.c"
+
+#if defined (GD32E50X_CL) || defined (GD32E508)
+#include "gd32e50x_enet.c"
+#include "gd32e50x_tmu.c"
+#include "gd32e50x_cmp.c"
+#else /* GD32E50X_CL or GD32E508 */
+#include "gd32e50x_sdio.c"
+#endif /* GD32E50X_CL or GD32E508 */
+
+#else /* GD32EPRT */
+#include "gd32e50x_adc.c"
+#include "gd32e50x_bkp.c"
+#include "gd32e50x_crc.c"
+#include "gd32e50x_ctc.c"
+#include "gd32e50x_dac.c"
+#include "gd32e50x_dbg.c"
+#include "gd32e50x_dma.c"
+#include "gd32e50x_enet.c"
+#include "gd32e50x_exmc.c"
+#include "gd32e50x_exti.c"
+#include "gd32e50x_fmc.c"
+#include "gd32e50x_fwdgt.c"
+#include "gd32e50x_gpio.c"
+#include "gd32e50x_i2c.c"
+#include "gd32e50x_misc.c"
+#include "gd32e50x_pmu.c"
+#include "gd32e50x_rcu.c"
+#include "gd32e50x_rtc.c"
+#include "gd32e50x_spi.c"
+#include "gd32e50x_timer.c"
+#include "gd32e50x_usart.c"
+#include "gd32e50x_wwdgt.c"
+#include "gd32e50x_sqpi.c"
+
+#endif /* GD32EPRT */
 #else
 #error "Unknown chip series!"
 #endif

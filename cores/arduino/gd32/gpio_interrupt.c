@@ -8,7 +8,7 @@ typedef struct {
 } extiConf_t;
 
 extiConf_t gpio_exti_infor[EXTI_NUMS] = {
-#if defined(GD32F30x)
+#if defined(GD32F30x) || defined(GD32E50X) /* TODO: handle other serires!! (E23x etc) */
     {EXTI0_IRQn,      NULL},
     {EXTI1_IRQn,      NULL},
     {EXTI2_IRQn,      NULL},
@@ -53,7 +53,7 @@ void gpio_interrupt_enable(uint32_t portNum, uint32_t pinNum, void (*callback)(v
     gpio_exti_infor[pinNum].callback = callback;
 
     gpio_clock_enable(portNum);
-#if defined(GD32F30x)
+#if defined(GD32F30x) || defined(GD32E50X)
     rcu_periph_clock_enable(RCU_AF);
     gpio_init(gpio_port[portNum], GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, gpio_pin[pinNum]);
 #elif defined(GD32F3x0) || defined(GD32F1x0)
@@ -71,7 +71,7 @@ void gpio_interrupt_enable(uint32_t portNum, uint32_t pinNum, void (*callback)(v
     syscfg_exti_line_config(
         (uint8_t) portNum,
         (uint8_t) pinNum);
-#elif defined(GD32F30x)
+#elif defined(GD32F30x) || defined(GD32E50X)
     gpio_exti_source_select(portNum, pinNum);
 #endif
 
@@ -105,7 +105,7 @@ void exti_callbackHandler(uint32_t pinNum)
     }
 }
 
-#if defined(GD32F30x)
+#if defined(GD32F30x) || defined(GD32E50X)
 void EXTI0_IRQHandler(void)
 {
     exti_callbackHandler(0);
