@@ -113,6 +113,7 @@ void i2c_clock_config(uint32_t i2c_periph, uint32_t clkspeed, uint32_t dutycyc)
             /* the CLKC in standard mode minmum value is 4 */
             clkc = 0x04U;
         }
+        I2C_CKCFG(i2c_periph) &= ~I2C_CKCFG_CLKC; //bugfix: clear out previous CLKC value.
         I2C_CKCFG(i2c_periph) |= (I2C_CKCFG_CLKC & clkc);
 
     }else if(400000U >= clkspeed){
@@ -132,6 +133,7 @@ void i2c_clock_config(uint32_t i2c_periph, uint32_t clkspeed, uint32_t dutycyc)
             clkc |= 0x0001U;  
         }
         I2C_CKCFG(i2c_periph) |= I2C_CKCFG_FAST;
+        I2C_CKCFG(i2c_periph) &= ~I2C_CKCFG_CLKC; //bugfix: clear out previous CLKC value.
         I2C_CKCFG(i2c_periph) |= clkc;
     }else{
         /* fast mode plus, the maximum SCL rise time is 120ns */
@@ -147,6 +149,7 @@ void i2c_clock_config(uint32_t i2c_periph, uint32_t clkspeed, uint32_t dutycyc)
         }
         /* enable fast mode */
         I2C_CKCFG(i2c_periph) |= I2C_CKCFG_FAST;
+        I2C_CKCFG(i2c_periph) &= ~I2C_CKCFG_CLKC; //bugfix: clear out previous CLKC value.
         I2C_CKCFG(i2c_periph) |= clkc;
         /* enable I2C fast mode plus */
         I2C_FMPCFG(i2c_periph) = I2C_FMPCFG_FMPEN;
