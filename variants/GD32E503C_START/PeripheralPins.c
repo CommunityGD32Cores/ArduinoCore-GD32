@@ -65,10 +65,14 @@ const PinMap PinMap_DAC[] = {
 
 /* I2C PinMap */
 const PinMap PinMap_I2C_SDA[] = {
+    {PORTB_7,  I2C0, 6},
+    {PORTB_11, I2C1, 6},
     {NC,    NC,    0}
 };
 
 const PinMap PinMap_I2C_SCL[] = {
+    {PORTB_6,  I2C0, 6},
+    {PORTB_10, I2C1, 6},
     {NC,    NC,    0}
 };
 
