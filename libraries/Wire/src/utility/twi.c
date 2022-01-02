@@ -82,7 +82,7 @@ static struct i2c_s *obj_s_buf[I2C_NUM] = {NULL};
 
 #define I2C_S(obj)    (struct i2c_s *) (obj)
 
-#if defined(GD32F1x0) || defined(GD32F3x0) || defined(GD32F4xx) || defined(GD32E23x)
+#if defined(GD32F1x0) || defined(GD32F3x0) || defined(GD32F4xx) || defined(GD32E23x)|| defined(GD32E50X)
 #define GD32_I2C_FLAG_IS_TRANSMTR_OR_RECVR I2C_FLAG_TR
 #else
 #define GD32_I2C_FLAG_IS_TRANSMTR_OR_RECVR I2C_FLAG_TRS
