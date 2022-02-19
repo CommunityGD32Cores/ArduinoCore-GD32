@@ -35,6 +35,9 @@ template <uint32_t _storage_size,
           uint32_t _fmc_end = ARDUINO_UPLOAD_MAXIMUM_SIZE>
 class FlashStorage
 {
+    static_assert(_storage_size % 4096 == 0,
+                  "Storage must be page aligned, with a size multiple of 4096.");
+
     private:
         uint8_t buffer_[_storage_size];
         static constexpr uint32_t fmc_base_address = 0x08000000;
