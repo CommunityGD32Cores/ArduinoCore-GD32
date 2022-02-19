@@ -1,6 +1,6 @@
 /* -*- mode: c++ -*-
  * Copyright (c) 2020  GigaDevice Semiconductor Inc.
- *               2021  Keyboard.io, Inc.
+ *               2021, 2022  Keyboard.io, Inc.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -38,7 +38,8 @@ class FlashStorage
     private:
         uint8_t buffer_[_storage_size];
         static constexpr uint32_t fmc_base_address = 0x08000000;
-        static constexpr uint32_t bank0_end = fmc_base_address + 512 * 1024 - 1;
+        static constexpr uint32_t bank0_size = 512 * 1024;
+        static constexpr uint32_t bank0_end = fmc_base_address + bank0_size - 1;
         static constexpr uint32_t fmc_end_address = fmc_base_address + _fmc_end;
         static constexpr uint32_t data_area_start = fmc_end_address - _storage_size;
 
