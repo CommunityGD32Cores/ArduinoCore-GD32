@@ -442,13 +442,17 @@ void USBCore_::disconnect()
 // sent, or -1 on error.
 int USBCore_::sendControl(uint8_t flags, const void* data, int len)
 {
-    // TODO: parse out flags like we do for ‘send’.
-    (void)flags;
     uint8_t* d = (uint8_t*)data;
     auto l = min(len, this->maxWrite);
     auto wrote = 0;
     while (wrote < l) {
-        size_t w = EPBuffers().buf(0).push(d, l - wrote);
+        auto w = 0;
+        if (flags & TRANSFER_ZERO) {
+            // TODO: handle writing zeros instead of ‘d’.
+            return -1;
+        } else {
+            w = EPBuffers().buf(0).push(d, l - wrote);
+        }
         d += w;
         wrote += w;
         this->maxWrite -= w;
@@ -457,6 +461,18 @@ int USBCore_::sendControl(uint8_t flags, const void* data, int len)
         }
     }
 
+    if (flags & TRANSFER_RELEASE) {
+        this->flush(0);
+    }
+
+    // Return ‘len’, rather than ‘wrote’, because PluggableUSB
+    // calculates descriptor sizes by first having them write to an
+    // empty buffer (setting ‘this->maxWrite’ to 0). To accomodate
+    // that, we always just pretend we sent the entire buffer.
+    //
+    // TODO: this may cause issues when /actually/ sending buffers
+    // larger than ‘this->maxWrite’, since we will have claimed to
+    // send more data than we did.
     return len;
 }
 
@@ -639,7 +655,11 @@ void USBCore_::transcSetup(usb_dev* usbd, uint8_t ep)
                 this->sendDeviceStringDescriptor();
                 return;
             } else if ((usbd->control.req.bmRequestType & USB_RECPTYPE_MASK) == USB_RECPTYPE_ITF) {
-                ClassCore::reqProcess(usbd, &usbd->control.req);
+                reqstat = (usb_reqsta)ClassCore::reqProcess(usbd, &usbd->control.req);
+                if (reqstat == REQ_SUPP
+                    && (usbd->control.req.bmRequestType & USB_TRX_IN) != USB_TRX_IN) {
+                    this->sendZLP(usbd, 0);
+                }
                 return;
             } else {
                 reqstat = usbd_standard_request(usbd, &usbd->control.req);
@@ -650,7 +670,14 @@ void USBCore_::transcSetup(usb_dev* usbd, uint8_t ep)
         case USB_REQTYPE_CLASS:
             // Calls into class_core->req_process, does nothing else.
             reqstat = usbd_class_request(usbd, &usbd->control.req);
-            break;
+
+            // Respond with a ZLP if the host has sent data,
+            // because we’ve already handled in in the class request.
+            if (reqstat == REQ_SUPP
+                && ((usbd->control.req.bmRequestType & USB_TRX_IN) != USB_TRX_IN)) {
+                this->sendZLP(usbd, 0);
+            }
+            return;
 
         /* vendor defined request */
         case USB_REQTYPE_VENDOR:
