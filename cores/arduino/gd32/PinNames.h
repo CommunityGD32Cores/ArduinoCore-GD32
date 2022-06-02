@@ -335,6 +335,7 @@ enum {
                                 ((PIN_OTYPE_PP & PIN_OUTPUT_MODE_MASK) << PIN_OUTPUT_MODE_SHIFT) |\
                                 ((PIN_SPEED_50MHZ & PIN_SPEED_MASK) << PIN_SPEED_SHIFT) |\
                                 ((CHN & PIN_CHANNEL_MASK) << PIN_CHANNEL_SHIFT) |\
+                                ((AFN & PIN_AF_MASK) << PIN_AF_SHIFT) |\
                                 ((PIN_PUPD_NONE & PIN_PULL_STATE_MASK) << PIN_PULL_STATE_SHIFT))
 
 
