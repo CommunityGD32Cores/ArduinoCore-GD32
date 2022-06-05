@@ -87,7 +87,18 @@ void analogWrite(pin_size_t ulPin, int ulValue)
         set_dac_value(pinname, value);
     } else if (pin_in_pinmap(pinname, PinMap_PWM)) {
         value = mapResolution(ulValue, analogOut_resolution, 16);
-        set_pwm_value_with_base_period(ulPin, analogOut_period_us, value);
+        // handle special cases: 100% off and 100% on
+        if (value == 0) {
+            stop_pwm(ulPin);
+            pinMode(ulPin, OUTPUT);
+            digitalWrite(ulPin, LOW);
+        } else if (value == UINT16_MAX) {
+            stop_pwm(ulPin);
+            pinMode(ulPin, OUTPUT);
+            digitalWrite(ulPin, HIGH);
+        } else {
+            set_pwm_value_with_base_period(ulPin, analogOut_period_us, value);
+        }
     } else {
         // Defaults to digital write
         pinMode(ulPin, OUTPUT);

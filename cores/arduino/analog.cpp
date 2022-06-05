@@ -131,6 +131,13 @@ void set_pwm_value_with_base_period(pin_size_t ulPin, uint32_t base_period_us, u
     pwm.start();
 }
 
+//pwm stop
+void stop_pwm(pin_size_t ulPin)
+{
+    PWM pwm(ulPin);
+    pwm.stop();
+}
+
 //get adc value
 uint16_t get_adc_value(PinName pinname)
 {
