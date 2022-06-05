@@ -112,7 +112,7 @@ void analogReadResolution(int res)
 //analog output resolution
 void analogWriteResolution(int res)
 {
-    if ((res > 0) && (res < 16)) {
+    if ((res > 0) && (res <= 16)) {
         analogOut_resolution = res;
     } else {
         analogOut_resolution = 8;
