@@ -38,6 +38,7 @@ OF SUCH DAMAGE.
 
 #include "PinNames.h"
 #include "PeripheralPins.h"
+#include "api/ArduinoAPI.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,7 +58,7 @@ uint8_t get_dac_index(uint32_t instance);
 void adc_clock_enable(uint32_t instance);
 
 void set_dac_value(PinName pinname, uint16_t value);
-void set_pwm_value(uint32_t ulPin, uint32_t value);
+void set_pwm_value(pin_size_t ulPin, uint32_t value);
 uint16_t get_adc_value(PinName pinname);
 
 #ifdef __cplusplus
