@@ -1351,6 +1351,11 @@ void TIMER5_IRQHandler(void)
 {
     timerinterrupthandle(TIMER5);
 }
+
+/* interrupt handler name for multiple F1x0, E50, F3x0, F4xx,.. chips */
+void TIMER5_DAC_IRQHandler(void) {
+    timerinterrupthandle(TIMER5);
+}
 #endif /* TMER5 handler */
 
 #if defined(TIMER6)
