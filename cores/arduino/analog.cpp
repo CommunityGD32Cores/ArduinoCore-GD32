@@ -122,6 +122,15 @@ void set_pwm_value(pin_size_t ulPin, uint32_t value)
     pwm.start();
 }
 
+//pwm set value
+void set_pwm_value_with_base_period(pin_size_t ulPin, uint32_t base_period_us, uint32_t value)
+{
+    uint16_t ulvalue = base_period_us * value / 65535;
+    PWM pwm(ulPin);
+    pwm.setPeriodCycle(base_period_us, ulvalue, FORMAT_US);
+    pwm.start();
+}
+
 //get adc value
 uint16_t get_adc_value(PinName pinname)
 {

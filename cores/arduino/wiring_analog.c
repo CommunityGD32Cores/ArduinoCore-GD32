@@ -28,6 +28,7 @@ extern "C" {
 
 static uint32_t analogIn_resolution = 10;
 static uint32_t analogOut_resolution = 8;
+static uint32_t analogOut_period_us = 1000; // 1000µS = 1ms = 1kHz
 
 void analogReference(uint8_t mode)
 {
@@ -86,7 +87,7 @@ void analogWrite(pin_size_t ulPin, int ulValue)
         set_dac_value(pinname, value);
     } else if (pin_in_pinmap(pinname, PinMap_PWM)) {
         value = mapResolution(ulValue, analogOut_resolution, 16);
-        set_pwm_value(ulPin, value);
+        set_pwm_value_with_base_period(ulPin, analogOut_period_us, value);
     } else {
         // Defaults to digital write
         pinMode(ulPin, OUTPUT);
@@ -117,6 +118,10 @@ void analogWriteResolution(int res)
     } else {
         analogOut_resolution = 8;
     }
+}
+
+void analogWriteFrequency(uint32_t freq_hz) {
+    analogOut_period_us = 1000000U / freq_hz ;
 }
 
 #ifdef __cplusplus

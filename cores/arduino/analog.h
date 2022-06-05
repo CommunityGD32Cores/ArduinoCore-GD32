@@ -59,6 +59,7 @@ void adc_clock_enable(uint32_t instance);
 
 void set_dac_value(PinName pinname, uint16_t value);
 void set_pwm_value(pin_size_t ulPin, uint32_t value);
+void set_pwm_value_with_base_period(pin_size_t ulPin, uint32_t base_period_us, uint32_t value);
 uint16_t get_adc_value(PinName pinname);
 
 #ifdef __cplusplus
