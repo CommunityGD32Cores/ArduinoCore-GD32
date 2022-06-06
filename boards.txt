@@ -90,9 +90,9 @@ gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.product_line=GD32F30X_HD
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.variant=GD32F303CC_GENERIC
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.upload.openocd_script=target/stm32f1x.cfg
 
-gd_generic_f30x.menu.usb.none=None
-gd_generic_f30x.menu.usb.CDC=USB Serial
-gd_generic_f30x.menu.usb.CDC.build.enable_usb={build.usb_flags} -DUSBCON -DUSBD_USE_CDC
+gd_generic_f30x.menu.usb.off=Off
+gd_generic_f30x.menu.usb.on=On
+gd_generic_f30x.menu.usb.on.build.enable_usb={build.usb_flags} -DUSBCON -DUSBD_USE_CDC
 
 #Upload menu
 gd_generic_f30x.menu.upload_method.serialMethod=gd32flash (Serial)
