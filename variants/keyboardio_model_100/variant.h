@@ -123,6 +123,11 @@ extern "C" {
 #define PIN_WIRE_SDA            PB7
 #define PIN_WIRE_SCL            PB6
 
+/* USB definitions */
+#define USB_PULLUP                GPIOA
+#define USB_PULLUP_PIN            GPIO_PIN_12
+#define RCC_AHBPeriph_GPIO_PULLUP RCU_GPIOA
+
 #ifdef __cplusplus
 } // extern "C"
 #endif
