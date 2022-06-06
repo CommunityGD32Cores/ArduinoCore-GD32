@@ -72,8 +72,13 @@ extern "C" {
 }
 #endif // __cplusplus
 
+// TODO: move this to variant.h or some similar place.
+#define USE_CDC_SERIAL
+//#undef USE_CDC_SERIAL
+
 #include "variant.h"
 #include "HardwareSerial.h"
+#include "CDCACM.h"
 
 #endif
 #endif

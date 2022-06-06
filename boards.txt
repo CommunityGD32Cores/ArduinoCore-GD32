@@ -73,6 +73,12 @@ gd_generic_f30x.build.core=arduino
 gd_generic_f30x.build.board=gd_generic_f30x
 gd_generic_f30x.build.mcu=cortex-m4
 gd_generic_f30x.build.series=GD32F30x
+gd_generic_f30x.build.extra_flags={build.usb_flags} -DUSBCON
+
+gd_generic_f30x.build.vid=0xdead
+gd_generic_f30x.build.pid=0xbeef
+gd_generic_f30x.build.usb_product="USB Test"
+gd_generic_f30x.build.usb_manufacturer="Arduino"
 
 # create a new entry for a new generic GD32F30x board here
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC=GD32F303CC (Generic)
@@ -100,7 +106,7 @@ gd_generic_f30x.menu.upload_method.gdlinkMethod.upload.tool=gdlink_upload
 gd_generic_f30x.menu.upload_method.stlinkMethod=STLink (SWD)
 gd_generic_f30x.menu.upload_method.stlinkMethod.upload.protocol=stlink
 gd_generic_f30x.menu.upload_method.stlinkMethod.upload.options=
-gd_generic_f30x.menu.upload_method.stlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_generic_f30x.menu.upload_method.stlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER -DUSBCON
 gd_generic_f30x.menu.upload_method.stlinkMethod.upload.tool=stlink_upload
 
 
@@ -118,7 +124,6 @@ gd_generic_f30x.menu.upload_method.dfuUtilMethod.build.flash_offset=0x2000
 
 gd_generic_f30x.menu.upload_method.dfuUtilMethod.upload.pid=0x0004
 gd_generic_f30x.menu.upload_method.dfuUtilMethod.upload.vid=0x1209
-
 
 # Optimizations
 gd_generic_f30x.menu.opt.osstd=Smallest (default)
