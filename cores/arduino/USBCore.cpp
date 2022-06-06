@@ -368,7 +368,7 @@ class ClassCore
                     return REQ_NOTSUPP;
                 }
             } else {
-#ifdef USE_CDC_SERIAL
+#ifdef USBD_USE_CDC
                 if (CDCACM().setup(setup))
                     return REQ_SUPP;
 #endif
@@ -739,7 +739,7 @@ void USBCore_::sendDeviceConfigDescriptor()
     this->maxWrite = 0;
     uint8_t interfaceCount = 0;
     uint16_t len = 0;
-#ifdef USE_CDC_SERIAL
+#ifdef USBD_USE_CDC
     interfaceCount += 2;
     len += CDCACM().getInterface();
 #endif
@@ -750,7 +750,7 @@ void USBCore_::sendDeviceConfigDescriptor()
     this->maxWrite = oldMaxWrite;
     this->sendControl(0, &configDesc, sizeof(configDesc));
     interfaceCount = 0;
-#ifdef USE_CDC_SERIAL
+#ifdef USBD_USE_CDC
     interfaceCount += 2;
     CDCACM().getInterface();
 #endif
