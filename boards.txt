@@ -198,6 +198,10 @@ keyboardio_model_100.build.product_line=GD32F30X_XD
 
 keyboardio_model_100.build.variant=keyboardio_model_100
 keyboardio_model_100.upload.openocd_script=target/stm32f1x.cfg
+keyboardio_model_100.build.vid=0xdead
+keyboardio_model_100.build.pid=0xbeef
+keyboardio_model_100.build.usb_product="USB Test"
+keyboardio_model_100.build.usb_manufacturer="Arduino"
 keyboardio_model_100.menu.usb.off=Off
 keyboardio_model_100.menu.usb.on=On
 keyboardio_model_100.menu.usb.on.build.enable_usb={build.usb_flags} -DUSBCON -DUSBD_USE_CDC
