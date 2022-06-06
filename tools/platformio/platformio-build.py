@@ -291,15 +291,22 @@ def process_usb_configuration(cpp_defines):
         )
     ):
         # then add usb flags
+        usb_vid = int(board_config.get("build.hwids", [["0xdead", "0xbeef"]])[0][0], 16)
+        usb_pid = int(board_config.get("build.hwids", [["0xdead", "0xbeef"]])[0][1], 16)
+        # prevent usage of Leaflabs VID/PID, otherwise if people have the DFU
+        # driver installed, it will recognize it as "Maple DFU" and not the 
+        # actual USB device it is :(
+        if usb_vid == 0x1EAF and usb_pid == 0x0003:
+            (usb_vid, usb_pid) = (0xdead, 0xbeef)
         env.Append(
             CPPDEFINES=[
                 "USBCON",
-                ("USB_VID", board_config.get("build.hwids", [[0, 0]])[0][0]),
-                ("USB_PID", board_config.get("build.hwids", [[0, 0]])[0][1]),
+                ("USB_VID", hex(usb_vid)),
+                ("USB_PID", hex(usb_pid)),
                 ("USB_PRODUCT", '\\"%s\\"' %
                     board_config.get("build.usb_product", board_config.get("name", "Undefined USB Product")).replace('"', "")),
                 ("USB_MANUFACTURER", '\\"%s\\"' %
-                    board_config.get("vendor", "Undefined Manufacturer").replace('"', ""))
+                    board_config.get("build.usb_manufacturer",  board_config.get("vendor", "Undefined Manufacturer")).replace('"', ""))
             ]
         )
 

@@ -112,7 +112,7 @@ uint8_t PluggableUSB_::epCount() {
 
 PluggableUSB_& PluggableUSB()
 {
-#ifdef USE_CDC_SERIAL
+#ifdef USBD_USE_CDC
   static PluggableUSB_ obj(2, 4);
 #else
   static PluggableUSB_ obj(0, 1);
