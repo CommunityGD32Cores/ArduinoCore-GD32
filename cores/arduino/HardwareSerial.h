@@ -135,30 +135,34 @@ class HardwareSerial : public Stream
         static ring_buffer_t _tx_buffer;
 };
 
+/*
+ * ‘Serial’ is for the CDC-ACM. Hardware serial peripherals begin at
+ * ‘Serial1’.
+ */
 
 #if defined(USE_USART0_SERIAL)
-extern HardwareSerial Serial;
-#define HAVE_HWSERIAL
-#endif
-
-#if defined(USE_USART1_SERIAL)
-extern HardwareSerial Serial;
+extern HardwareSerial Serial1;
 #define HAVE_HWSERIAL1
 #endif
 
-#if defined(USE_USART2_SERIAL)
+#if defined(USE_USART1_SERIAL)
 extern HardwareSerial Serial2;
 #define HAVE_HWSERIAL2
 #endif
 
-#if defined(USE_USART3_SERIAL)
+#if defined(USE_USART2_SERIAL)
 extern HardwareSerial Serial3;
 #define HAVE_HWSERIAL3
 #endif
 
-#if defined(USE_USART4_SERIAL)
+#if defined(USE_USART3_SERIAL)
 extern HardwareSerial Serial4;
 #define HAVE_HWSERIAL4
+#endif
+
+#if defined(USE_USART4_SERIAL)
+extern HardwareSerial Serial5;
+#define HAVE_HWSERIAL5
 #endif
 
 extern void serialEventRun(void) __attribute__((weak));

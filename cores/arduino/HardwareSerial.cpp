@@ -33,62 +33,57 @@
 // but we can refer to it weakly so we don't pull in the entire
 // HardwareSerial instance if the user doesn't also refer to it.
 
-#if defined(HAVE_HWSERIAL)
-HardwareSerial Serial(RX0, TX0, 0);
-void serialEvent() __attribute__((weak));
-bool Serial0_available()
-{
-    return Serial.available() > 0;
-}
-#endif
-
 #if defined(HAVE_HWSERIAL1)
-HardwareSerial Serial(RX, TX, 1);
-void serialEvent() __attribute__((weak));
-bool Serial_available()
+HardwareSerial Serial1(RX0, TX0, 0);
+void serialEvent1() __attribute__((weak));
+bool Serial1_available()
 {
-    return Serial.available() > 0;
+    return Serial1.available() > 0;
 }
 #endif
 
 #if defined(HAVE_HWSERIAL2)
-HardwareSerial Serial2(RX2, TX2, 2);
+HardwareSerial Serial2(RX1, TX1, 1);
 void serialEvent2() __attribute__((weak));
 bool Serial2_available()
 {
-    return Serial.available() > 0;
+    return Serial2.available() > 0;
 }
 #endif
 
 #if defined(HAVE_HWSERIAL3)
-HardwareSerial Serial3(RX3, TX3, 3);
+HardwareSerial Serial3(RX2, TX2, 2);
 void serialEvent3() __attribute__((weak));
-bool Serial_available()
+bool Serial3_available()
 {
-    return Serial.available() > 0;
+    return Serial3.available() > 0;
 }
 #endif
 
 #if defined(HAVE_HWSERIAL4)
-HardwareSerial Serial4(RX4, TX4, 4);
+HardwareSerial Serial4(RX3, TX3, 3);
 void serialEvent4() __attribute__((weak));
 bool Serial4_available()
 {
-    return Serial.available() > 0;
+    return Serial4.available() > 0;
+}
+#endif
+
+#if defined(HAVE_HWSERIAL5)
+HardwareSerial Serial5(RX4, TX4, 4);
+void serialEvent5() __attribute__((weak));
+bool Serial5_available()
+{
+    return Serial5.available() > 0;
 }
 #endif
 
 
 void serialEventRun(void)
 {
-#if defined(HAVE_HWSERIAL0)
-    if (serialEvent && Serial0_available()) {
-        serialEvent();
-    }
-#endif
 #if defined(HAVE_HWSERIAL1)
-    if (serialEvent && Serial_available()) {
-        serialEvent();
+    if (serialEvent1 && Serial1_available()) {
+        serialEvent1();
     }
 #endif
 #if defined(HAVE_HWSERIAL2)
@@ -104,6 +99,11 @@ void serialEventRun(void)
 #if defined(HAVE_HWSERIAL4)
     if (serialEvent4 && Serial4_available()) {
         serialEvent4();
+    }
+#endif
+#if defined(HAVE_HWSERIAL5)
+    if(serialEvent5 && Serial5_available()) {
+        serialEvent5();
     }
 #endif
 }

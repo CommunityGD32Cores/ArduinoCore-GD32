@@ -111,10 +111,10 @@ extern "C" {
 #define SERIAL_HOWMANY          1
 /* by default now, use PA9 for TX. To get the old behavior for PA3, define the USE_USART1_SERIAL macro. */
 #if !defined(USE_USART0_SERIAL) && !defined(USE_USART1_SERIAL)
-#define USE_USART0_SERIAL	
+#define USE_USART0_SERIAL
 #endif
 
-#ifdef USE_USART0_SERIAL	
+#ifdef USE_USART0_SERIAL
 #define PIN_SERIAL_RX           PA10
 #define PIN_SERIAL_TX           PA9
 #define SERIAL0_RX          PIN_SERIAL_RX
@@ -132,6 +132,11 @@ extern "C" {
 
 /* I2C definitions */
 #define USE_I2C       1
+
+/* USB definitions */
+#define USB_PULLUP                GPIOA
+#define USB_PULLUP_PIN            GPIO_PIN_12
+#define RCC_AHBPeriph_GPIO_PULLUP RCU_GPIOA
 
 #ifdef __cplusplus
 } // extern "C"

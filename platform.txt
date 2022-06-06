@@ -5,7 +5,7 @@ version=1.0.0
 
 #compile variables
 ##compile Include 
-compiler.gd.extra_include= "-I{build.source.path}" "-isystem{build.core.path}/api/deprecated-avr-comp" "-isystem{build.core.path}/api/deprecated" "-I{build.core.path}/gd32" "-isystem{build.system.path}/startup" "-isystem{build.system.path}/{build.series}_firmware/{build.series}_standard_peripheral/Source" "-isystem{build.system.path}/{build.series}_firmware/{build.series}_standard_peripheral/Include"  "-isystem{build.system.path}/{build.series}_firmware/CMSIS" "-isystem{build.system.path}/{build.series}_firmware/CMSIS/GD/{build.series}/Include" "-isystem{build.system.path}/{build.series}_firmware/CMSIS/GD/{build.series}/Source/GCC" "-isystem{build.system.path}/{build.series}_firmware/CMSIS/GD/{build.series}/Source"
+compiler.gd.extra_include= "-I{build.source.path}" "-isystem{build.core.path}/api/deprecated-avr-comp" "-isystem{build.core.path}/api/deprecated" "-I{build.core.path}/gd32" "-isystem{build.system.path}/startup" "-isystem{build.system.path}/{build.series}_firmware/{build.series}_standard_peripheral/Source" "-isystem{build.system.path}/{build.series}_firmware/{build.series}_standard_peripheral/Include"  "-isystem{build.system.path}/{build.series}_firmware/CMSIS" "-isystem{build.system.path}/{build.series}_firmware/CMSIS/GD/{build.series}/Include" "-isystem{build.system.path}/{build.series}_firmware/CMSIS/GD/{build.series}/Source/GCC" "-isystem{build.system.path}/{build.series}_firmware/CMSIS/GD/{build.series}/Source" "-I{build.system.path}/{build.series}_firmware/{build.series}_usbd_library/usbd/Include" "-I{build.system.path}/{build.series}_firmware/{build.series}_usbd_library/usbd/Source" "-I{build.system.path}/{build.series}_firmware/{build.series}_usbd_library/device/Include" "-I{build.system.path}/{build.series}_firmware/{build.series}_usbd_library/device/Source"
 
 ## compile warning
 compiler.warning_flags=-w
@@ -66,6 +66,8 @@ build.startup_file=
 build.flags.fp=
 build.flags.optimize=-O0
 build.flags.ldspecs=--specs=nano.specs
+
+build.usb_flags=-DUSB_VID={build.vid} -DUSB_PID={build.pid} "-DUSB_MANUFACTURER={build.usb_manufacturer}" "-DUSB_PRODUCT={build.usb_product}"
 
 # compile patterns
 ## Compile c files
