@@ -77,7 +77,8 @@ bool CDCACM_::setup(arduino::USBSetup& setup)
         } else if (setup.bRequest == CDC_SET_CONTROL_LINE_STATE) {
             this->lineState = setup.wValueL;
             if (this->lineState > 0) {
-                // usbd_int_fops = &usb_inthandler;
+                // setup a better handler that does automatic flushing
+                usbd_int_fops = &usb_inthandler;
             } else {
                 usbd_int_fops = nullptr;
             }
@@ -150,9 +151,7 @@ size_t CDCACM_::write(const uint8_t* d, size_t len)
         return 0;
     }
 
-    // ToDo: Addded a TRANSFER_RELEASE to cause a flush() of the data
-    // otherwise no output would show at all
-    auto w = USB_Send(this->inEndpoint | TRANSFER_RELEASE, d, len);
+    auto w = USB_Send(this->inEndpoint, d, len);
     if (w <= 0) {
         this->setWriteError();
         return 0;
