@@ -301,6 +301,216 @@ gd_generic_gd32f30x.menu.opt.ogstd.build.flags.optimize=-Og
 gd_generic_gd32f30x.menu.opt.ogstd.build.flags.ldspecs=
 
 ##################################################
+# Generic GD32E23x
+gd_generic_gd32e23x.name=GD32E23x Generic series
+gd_generic_gd32e23x.build.core=arduino
+gd_generic_gd32e23x.build.board=gd_generic_gd32e23x
+gd_generic_gd32e23x.build.mcu=cortex-m23
+gd_generic_gd32e23x.build.series=GD32E23x
+
+gd_generic_gd32e23x.build.vid=0xdead
+gd_generic_gd32e23x.build.pid=0xbeef
+gd_generic_gd32e23x.build.usb_product="USB Test"
+gd_generic_gd32e23x.build.usb_manufacturer="Arduino"
+
+# create a new entry each board here
+gd_generic_gd32e23x.menu.pnum.GD32E230C4_GENERIC=GD32E230C4 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230C4_GENERIC.upload.maximum_size=16384
+gd_generic_gd32e23x.menu.pnum.GD32E230C4_GENERIC.upload.maximum_data_size=4096
+gd_generic_gd32e23x.menu.pnum.GD32E230C4_GENERIC.build.board=GD32E230C4_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230C4_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230C4_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230C4_GENERIC.build.variant=GD32E230C4_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230C4_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.pnum.GD32E230C6_GENERIC=GD32E230C6 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230C6_GENERIC.upload.maximum_size=32768
+gd_generic_gd32e23x.menu.pnum.GD32E230C6_GENERIC.upload.maximum_data_size=6144
+gd_generic_gd32e23x.menu.pnum.GD32E230C6_GENERIC.build.board=GD32E230C6_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230C6_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230C6_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230C6_GENERIC.build.variant=GD32E230C6_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230C6_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.pnum.GD32E230C8_GENERIC=GD32E230C8 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230C8_GENERIC.upload.maximum_size=65536
+gd_generic_gd32e23x.menu.pnum.GD32E230C8_GENERIC.upload.maximum_data_size=8192
+gd_generic_gd32e23x.menu.pnum.GD32E230C8_GENERIC.build.board=GD32E230C8_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230C8_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230C8_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230C8_GENERIC.build.variant=GD32E230C8_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230C8_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC=GD32E230F4 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.upload.maximum_size=16384
+gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.upload.maximum_data_size=4096
+gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.build.board=GD32E230F4_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.build.variant=GD32E230F4_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC=GD32E230F4 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.upload.maximum_size=16384
+gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.upload.maximum_data_size=4096
+gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.build.board=GD32E230F4_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.build.variant=GD32E230F4_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC=GD32E230F6 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.upload.maximum_size=32768
+gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.upload.maximum_data_size=6144
+gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.build.board=GD32E230F6_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.build.variant=GD32E230F6_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC=GD32E230F6 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.upload.maximum_size=32768
+gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.upload.maximum_data_size=6144
+gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.build.board=GD32E230F6_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.build.variant=GD32E230F6_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC=GD32E230F8 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.upload.maximum_size=65536
+gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.upload.maximum_data_size=8192
+gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.build.board=GD32E230F8_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.build.variant=GD32E230F8_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC=GD32E230F8 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.upload.maximum_size=65536
+gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.upload.maximum_data_size=8192
+gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.build.board=GD32E230F8_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.build.variant=GD32E230F8_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.pnum.GD32E230G4_GENERIC=GD32E230G4 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230G4_GENERIC.upload.maximum_size=16384
+gd_generic_gd32e23x.menu.pnum.GD32E230G4_GENERIC.upload.maximum_data_size=4096
+gd_generic_gd32e23x.menu.pnum.GD32E230G4_GENERIC.build.board=GD32E230G4_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230G4_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230G4_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230G4_GENERIC.build.variant=GD32E230G4_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230G4_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.pnum.GD32E230G6_GENERIC=GD32E230G6 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230G6_GENERIC.upload.maximum_size=32768
+gd_generic_gd32e23x.menu.pnum.GD32E230G6_GENERIC.upload.maximum_data_size=6144
+gd_generic_gd32e23x.menu.pnum.GD32E230G6_GENERIC.build.board=GD32E230G6_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230G6_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230G6_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230G6_GENERIC.build.variant=GD32E230G6_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230G6_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.pnum.GD32E230G8_GENERIC=GD32E230G8 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230G8_GENERIC.upload.maximum_size=65536
+gd_generic_gd32e23x.menu.pnum.GD32E230G8_GENERIC.upload.maximum_data_size=8192
+gd_generic_gd32e23x.menu.pnum.GD32E230G8_GENERIC.build.board=GD32E230G8_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230G8_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230G8_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230G8_GENERIC.build.variant=GD32E230G8_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230G8_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC=GD32E230K4 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.upload.maximum_size=16384
+gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.upload.maximum_data_size=4096
+gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.build.board=GD32E230K4_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.build.variant=GD32E230K4_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC=GD32E230K4 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.upload.maximum_size=16384
+gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.upload.maximum_data_size=4096
+gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.build.board=GD32E230K4_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.build.variant=GD32E230K4_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC=GD32E230K6 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.upload.maximum_size=32768
+gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.upload.maximum_data_size=6144
+gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.build.board=GD32E230K6_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.build.variant=GD32E230K6_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC=GD32E230K6 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.upload.maximum_size=32768
+gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.upload.maximum_data_size=6144
+gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.build.board=GD32E230K6_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.build.variant=GD32E230K6_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC=GD32E230K8 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.upload.maximum_size=65536
+gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.upload.maximum_data_size=8192
+gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.build.board=GD32E230K8_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.build.variant=GD32E230K8_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC=GD32E230K8 (Generic)
+gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.upload.maximum_size=65536
+gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.upload.maximum_data_size=8192
+gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.build.board=GD32E230K8_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.build.series=GD32E23x
+gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.build.product_line=GD32E230
+gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.build.variant=GD32E230K8_GENERIC
+gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.upload.openocd_script=target/gd32e23x.cfg
+gd_generic_gd32e23x.menu.usb.off=Off
+
+# Upload menu
+gd_generic_gd32e23x.menu.upload_method.serialMethod=gd32flash (Serial)
+gd_generic_gd32e23x.menu.upload_method.serialMethod.upload.protocol=maple_serial
+gd_generic_gd32e23x.menu.upload_method.serialMethod.upload.options=
+gd_generic_gd32e23x.menu.upload_method.serialMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1
+gd_generic_gd32e23x.menu.upload_method.serialMethod.upload.tool=serial_upload
+
+gd_generic_gd32e23x.menu.upload_method.gdlinkMethod=GDlink (SWD)
+gd_generic_gd32e23x.menu.upload_method.gdlinkMethod.upload.protocol=gdlink
+gd_generic_gd32e23x.menu.upload_method.gdlinkMethod.upload.options=
+gd_generic_gd32e23x.menu.upload_method.gdlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_generic_gd32e23x.menu.upload_method.gdlinkMethod.upload.tool=gdlink_upload
+
+gd_generic_gd32e23x.menu.upload_method.stlinkMethod=STLink (SWD)
+gd_generic_gd32e23x.menu.upload_method.stlinkMethod.upload.protocol=stlink
+gd_generic_gd32e23x.menu.upload_method.stlinkMethod.upload.options=
+gd_generic_gd32e23x.menu.upload_method.stlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_generic_gd32e23x.menu.upload_method.stlinkMethod.upload.tool=stlink_upload
+
+gd_generic_gd32e23x.menu.upload_method.jlinkMethod=JLink (SWD)
+gd_generic_gd32e23x.menu.upload_method.jlinkMethod.upload.protocol=jlink
+gd_generic_gd32e23x.menu.upload_method.jlinkMethod.upload.options=
+gd_generic_gd32e23x.menu.upload_method.jlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_generic_gd32e23x.menu.upload_method.jlinkMethod.upload.tool=jlink_upload
+
+gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod=dfu-util (DFU - STMDuino bootloader)
+gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.upload.protocol=dfu
+gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.upload.options=
+gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.build.upload_flags=
+gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.upload.tool=dfu-util
+
+gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.build.flash_offset=0x0x2000
+gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.upload.pid=0x004
+gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.upload.vid=0x1209
+
+# Optimizations
+gd_generic_gd32e23x.menu.opt.osstd=Smallest (default)
+gd_generic_gd32e23x.menu.opt.o1std=Fast (-O1)
+gd_generic_gd32e23x.menu.opt.o1std.build.flags.optimize=-O1
+gd_generic_gd32e23x.menu.opt.o1std.build.flags.ldspecs=
+gd_generic_gd32e23x.menu.opt.o2std=Faster (-O2)
+gd_generic_gd32e23x.menu.opt.o2std.build.flags.optimize=-O2
+gd_generic_gd32e23x.menu.opt.o2std.build.flags.ldspecs=
+gd_generic_gd32e23x.menu.opt.o3std=Fastest (-O3)
+gd_generic_gd32e23x.menu.opt.o3std.build.flags.optimize=-O3
+gd_generic_gd32e23x.menu.opt.o3std.build.flags.ldspecs=
+gd_generic_gd32e23x.menu.opt.ogstd=Debug (-Og)
+gd_generic_gd32e23x.menu.opt.ogstd.build.flags.optimize=-Og
+gd_generic_gd32e23x.menu.opt.ogstd.build.flags.ldspecs=
+
+##################################################
 # Generic GD32F1x0
 gd_generic_gd32f1x0.name=GD32F1x0 Generic series
 gd_generic_gd32f1x0.build.core=arduino
@@ -693,195 +903,3 @@ gd_generic_gd32f1x0.menu.opt.o3std.build.flags.ldspecs=
 gd_generic_gd32f1x0.menu.opt.ogstd=Debug (-Og)
 gd_generic_gd32f1x0.menu.opt.ogstd.build.flags.optimize=-Og
 gd_generic_gd32f1x0.menu.opt.ogstd.build.flags.ldspecs=
-
-##################################################
-# Generic GD32E23x
-gd_generic_gd32e23x.name=GD32E23x Generic series
-gd_generic_gd32e23x.build.core=arduino
-gd_generic_gd32e23x.build.board=gd_generic_gd32e23x
-gd_generic_gd32e23x.build.mcu=cortex-m23
-gd_generic_gd32e23x.build.series=GD32E23x
-
-gd_generic_gd32e23x.build.vid=0xdead
-gd_generic_gd32e23x.build.pid=0xbeef
-gd_generic_gd32e23x.build.usb_product="USB Test"
-gd_generic_gd32e23x.build.usb_manufacturer="Arduino"
-
-# create a new entry each board here
-gd_generic_gd32e23x.menu.pnum.GD32E230C4_GENERIC=GD32E230C4 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230C4_GENERIC.upload.maximum_size=16384
-gd_generic_gd32e23x.menu.pnum.GD32E230C4_GENERIC.upload.maximum_data_size=4096
-gd_generic_gd32e23x.menu.pnum.GD32E230C4_GENERIC.build.board=GD32E230C4_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230C4_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230C4_GENERIC.build.variant=GD32E230C4_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230C4_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.pnum.GD32E230C6_GENERIC=GD32E230C6 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230C6_GENERIC.upload.maximum_size=32768
-gd_generic_gd32e23x.menu.pnum.GD32E230C6_GENERIC.upload.maximum_data_size=6144
-gd_generic_gd32e23x.menu.pnum.GD32E230C6_GENERIC.build.board=GD32E230C6_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230C6_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230C6_GENERIC.build.variant=GD32E230C6_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230C6_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.pnum.GD32E230C8_GENERIC=GD32E230C8 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230C8_GENERIC.upload.maximum_size=65536
-gd_generic_gd32e23x.menu.pnum.GD32E230C8_GENERIC.upload.maximum_data_size=8192
-gd_generic_gd32e23x.menu.pnum.GD32E230C8_GENERIC.build.board=GD32E230C8_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230C8_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230C8_GENERIC.build.variant=GD32E230C8_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230C8_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC=GD32E230F4 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.upload.maximum_size=16384
-gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.upload.maximum_data_size=4096
-gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.build.board=GD32E230F4_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.build.variant=GD32E230F4_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC=GD32E230F4 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.upload.maximum_size=16384
-gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.upload.maximum_data_size=4096
-gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.build.board=GD32E230F4_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.build.variant=GD32E230F4_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230F4_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC=GD32E230F6 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.upload.maximum_size=32768
-gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.upload.maximum_data_size=6144
-gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.build.board=GD32E230F6_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.build.variant=GD32E230F6_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC=GD32E230F6 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.upload.maximum_size=32768
-gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.upload.maximum_data_size=6144
-gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.build.board=GD32E230F6_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.build.variant=GD32E230F6_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230F6_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC=GD32E230F8 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.upload.maximum_size=65536
-gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.upload.maximum_data_size=8192
-gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.build.board=GD32E230F8_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.build.variant=GD32E230F8_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC=GD32E230F8 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.upload.maximum_size=65536
-gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.upload.maximum_data_size=8192
-gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.build.board=GD32E230F8_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.build.variant=GD32E230F8_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230F8_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.pnum.GD32E230G4_GENERIC=GD32E230G4 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230G4_GENERIC.upload.maximum_size=16384
-gd_generic_gd32e23x.menu.pnum.GD32E230G4_GENERIC.upload.maximum_data_size=4096
-gd_generic_gd32e23x.menu.pnum.GD32E230G4_GENERIC.build.board=GD32E230G4_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230G4_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230G4_GENERIC.build.variant=GD32E230G4_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230G4_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.pnum.GD32E230G6_GENERIC=GD32E230G6 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230G6_GENERIC.upload.maximum_size=32768
-gd_generic_gd32e23x.menu.pnum.GD32E230G6_GENERIC.upload.maximum_data_size=6144
-gd_generic_gd32e23x.menu.pnum.GD32E230G6_GENERIC.build.board=GD32E230G6_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230G6_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230G6_GENERIC.build.variant=GD32E230G6_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230G6_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.pnum.GD32E230G8_GENERIC=GD32E230G8 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230G8_GENERIC.upload.maximum_size=65536
-gd_generic_gd32e23x.menu.pnum.GD32E230G8_GENERIC.upload.maximum_data_size=8192
-gd_generic_gd32e23x.menu.pnum.GD32E230G8_GENERIC.build.board=GD32E230G8_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230G8_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230G8_GENERIC.build.variant=GD32E230G8_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230G8_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC=GD32E230K4 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.upload.maximum_size=16384
-gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.upload.maximum_data_size=4096
-gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.build.board=GD32E230K4_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.build.variant=GD32E230K4_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC=GD32E230K4 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.upload.maximum_size=16384
-gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.upload.maximum_data_size=4096
-gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.build.board=GD32E230K4_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.build.variant=GD32E230K4_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230K4_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC=GD32E230K6 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.upload.maximum_size=32768
-gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.upload.maximum_data_size=6144
-gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.build.board=GD32E230K6_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.build.variant=GD32E230K6_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC=GD32E230K6 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.upload.maximum_size=32768
-gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.upload.maximum_data_size=6144
-gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.build.board=GD32E230K6_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.build.variant=GD32E230K6_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230K6_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC=GD32E230K8 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.upload.maximum_size=65536
-gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.upload.maximum_data_size=8192
-gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.build.board=GD32E230K8_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.build.variant=GD32E230K8_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC=GD32E230K8 (Generic)
-gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.upload.maximum_size=65536
-gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.upload.maximum_data_size=8192
-gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.build.board=GD32E230K8_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.build.series=GD32E23x
-gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.build.variant=GD32E230K8_GENERIC
-gd_generic_gd32e23x.menu.pnum.GD32E230K8_GENERIC.upload.openocd_script=target/gd32e23x.cfg
-gd_generic_gd32e23x.menu.usb.off=Off
-
-# Upload menu
-gd_generic_gd32e23x.menu.upload_method.serialMethod=gd32flash (Serial)
-gd_generic_gd32e23x.menu.upload_method.serialMethod.upload.protocol=maple_serial
-gd_generic_gd32e23x.menu.upload_method.serialMethod.upload.options=
-gd_generic_gd32e23x.menu.upload_method.serialMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1
-gd_generic_gd32e23x.menu.upload_method.serialMethod.upload.tool=serial_upload
-
-gd_generic_gd32e23x.menu.upload_method.gdlinkMethod=GDlink (SWD)
-gd_generic_gd32e23x.menu.upload_method.gdlinkMethod.upload.protocol=gdlink
-gd_generic_gd32e23x.menu.upload_method.gdlinkMethod.upload.options=
-gd_generic_gd32e23x.menu.upload_method.gdlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
-gd_generic_gd32e23x.menu.upload_method.gdlinkMethod.upload.tool=gdlink_upload
-
-gd_generic_gd32e23x.menu.upload_method.stlinkMethod=STLink (SWD)
-gd_generic_gd32e23x.menu.upload_method.stlinkMethod.upload.protocol=stlink
-gd_generic_gd32e23x.menu.upload_method.stlinkMethod.upload.options=
-gd_generic_gd32e23x.menu.upload_method.stlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
-gd_generic_gd32e23x.menu.upload_method.stlinkMethod.upload.tool=stlink_upload
-
-gd_generic_gd32e23x.menu.upload_method.jlinkMethod=JLink (SWD)
-gd_generic_gd32e23x.menu.upload_method.jlinkMethod.upload.protocol=jlink
-gd_generic_gd32e23x.menu.upload_method.jlinkMethod.upload.options=
-gd_generic_gd32e23x.menu.upload_method.jlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
-gd_generic_gd32e23x.menu.upload_method.jlinkMethod.upload.tool=jlink_upload
-
-gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod=dfu-util (DFU - STMDuino bootloader)
-gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.upload.protocol=dfu
-gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.upload.options=
-gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.build.upload_flags=
-gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.upload.tool=dfu-util
-
-gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.build.flash_offset=0x0x2000
-gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.upload.pid=0x004
-gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.upload.vid=0x1209
-
-# Optimizations
-gd_generic_gd32e23x.menu.opt.osstd=Smallest (default)
-gd_generic_gd32e23x.menu.opt.o1std=Fast (-O1)
-gd_generic_gd32e23x.menu.opt.o1std.build.flags.optimize=-O1
-gd_generic_gd32e23x.menu.opt.o1std.build.flags.ldspecs=
-gd_generic_gd32e23x.menu.opt.o2std=Faster (-O2)
-gd_generic_gd32e23x.menu.opt.o2std.build.flags.optimize=-O2
-gd_generic_gd32e23x.menu.opt.o2std.build.flags.ldspecs=
-gd_generic_gd32e23x.menu.opt.o3std=Fastest (-O3)
-gd_generic_gd32e23x.menu.opt.o3std.build.flags.optimize=-O3
-gd_generic_gd32e23x.menu.opt.o3std.build.flags.ldspecs=
-gd_generic_gd32e23x.menu.opt.ogstd=Debug (-Og)
-gd_generic_gd32e23x.menu.opt.ogstd.build.flags.optimize=-Og
-gd_generic_gd32e23x.menu.opt.ogstd.build.flags.ldspecs=
