@@ -3,6 +3,7 @@
 menu.pnum=Board part number
 menu.upload_method=Upload method
 menu.opt=Optimize
+menu.usb=USB support
 
 ################################################################################################
 # GD F30X MBED series
@@ -73,7 +74,6 @@ gd_generic_f30x.build.core=arduino
 gd_generic_f30x.build.board=gd_generic_f30x
 gd_generic_f30x.build.mcu=cortex-m4
 gd_generic_f30x.build.series=GD32F30x
-gd_generic_f30x.build.extra_flags={build.usb_flags} -DUSBCON
 
 gd_generic_f30x.build.vid=0xdead
 gd_generic_f30x.build.pid=0xbeef
@@ -89,6 +89,10 @@ gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.series=GD32F30x
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.product_line=GD32F30X_HD
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.build.variant=GD32F303CC_GENERIC
 gd_generic_f30x.menu.pnum.GD32F303CC_GENERIC.upload.openocd_script=target/stm32f1x.cfg
+
+gd_generic_f30x.menu.usb.none=None
+gd_generic_f30x.menu.usb.CDC=USB Serial
+gd_generic_f30x.menu.usb.CDC.build.enable_usb={build.usb_flags} -DUSBCON -DUSBD_USE_CDC
 
 #Upload menu
 gd_generic_f30x.menu.upload_method.serialMethod=gd32flash (Serial)

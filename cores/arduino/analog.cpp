@@ -30,6 +30,7 @@ OF SUCH DAMAGE.
 
 #include "analog.h"
 #include "pwm.h"
+#include "fatal.h"
 
 #if defined(DAC0) && defined(DAC1)
 #define DAC_NUMS  2
@@ -386,7 +387,8 @@ void adc_clock_enable(uint32_t instance)
             break;
 #endif
         default:
-            break;
+            fatal("cannot enable ADC clock for unknown instance 0x%p", instance);
+            return;
     }
     rcu_periph_clock_enable(temp);
 }

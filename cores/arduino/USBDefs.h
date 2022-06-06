@@ -1,6 +1,8 @@
 #ifndef __USBDEFS_H
 #define __USBDEFS_H
 
+#include <stdint.h>
+
 #define USB_EP_SIZE USBD_EP0_MAX_SIZE
 
 #define USB_ENDPOINT_DIRECTION_MASK 0x80

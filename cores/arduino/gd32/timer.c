@@ -725,6 +725,7 @@ void Timer_disableCaptureIT(uint32_t instance, uint8_t channel)
 */
 void PWM_init(pwmDevice_t *pwmDevice, pwmPeriodCycle_t *pwmPeriodCycle)
 {
+    (void) pwmPeriodCycle; // ToDo remove parameter from API
     timer_oc_parameter_struct timer_ocintpara;
     timer_parameter_struct timer_initpara;
     uint32_t periph = pwmDevice->timer;

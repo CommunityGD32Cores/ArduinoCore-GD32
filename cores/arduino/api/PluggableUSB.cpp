@@ -16,7 +16,7 @@
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-
+#if USBCON
 #include "PluggableUSB.h"
 
 #include "USBCore.h"
@@ -112,10 +112,12 @@ uint8_t PluggableUSB_::epCount() {
 
 PluggableUSB_& PluggableUSB()
 {
-#ifdef USE_CDC_SERIAL
+#ifdef USBD_USE_CDC
   static PluggableUSB_ obj(2, 4);
 #else
   static PluggableUSB_ obj(0, 1);
 #endif
   return obj;
 }
+
+#endif

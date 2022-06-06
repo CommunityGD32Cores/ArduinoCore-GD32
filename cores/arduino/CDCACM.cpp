@@ -1,3 +1,4 @@
+#ifdef USBD_USE_CDC
 #include "CDCACM.h"
 
 #include "USBCore.h"
@@ -149,7 +150,9 @@ size_t CDCACM_::write(const uint8_t* d, size_t len)
         return 0;
     }
 
-    auto w = USB_Send(this->inEndpoint, d, len);
+    // ToDo: Addded a TRANSFER_RELEASE to cause a flush() of the data
+    // otherwise no output would show at all
+    auto w = USB_Send(this->inEndpoint | TRANSFER_RELEASE, d, len);
     if (w <= 0) {
         this->setWriteError();
         return 0;
@@ -167,3 +170,4 @@ CDCACM_& CDCACM()
     static CDCACM_ obj(0, 1);
     return obj;
 }
+#endif

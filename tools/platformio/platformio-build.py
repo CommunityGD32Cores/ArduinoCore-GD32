@@ -268,6 +268,7 @@ if not board_config.get("build.spl_series").lower().startswith("gd32e23"):
                 join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_usbd_library", "usbd", "Source"),
             ]
         )
+    # never activate USB FS driver, although some have it -- we have no core support for it yet
     if isdir(join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_usbfs_driver")) and False:
         env.Append(
             CPPPATH=[
@@ -275,6 +276,37 @@ if not board_config.get("build.spl_series").lower().startswith("gd32e23"):
                 join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_usbfs_driver", "driver", "Source"),
                 join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_usbfs_driver", "core", "Include"),
                 join(FRAMEWORK_DIR, "system", spl_series + "_firmware", spl_series + "_usbfs_driver", "core", "Source"),
+            ]
+        )
+
+def process_usb_configuration(cpp_defines):
+    # support standard way of enabling CDC
+    if "PIO_FRAMEWORK_ARDUINO_ENABLE_CDC" in cpp_defines:
+        env.Append(CPPDEFINES=["USBD_USE_CDC"])
+    # any USB flags enabled? more might be to come 
+    if any(
+        d in cpp_defines
+        for d in (
+            "PIO_FRAMEWORK_ARDUINO_ENABLE_CDC",
+        )
+    ):
+        # then add usb flags
+        usb_vid = int(board_config.get("build.hwids", [["0xdead", "0xbeef"]])[0][0], 16)
+        usb_pid = int(board_config.get("build.hwids", [["0xdead", "0xbeef"]])[0][1], 16)
+        # prevent usage of Leaflabs VID/PID, otherwise if people have the DFU
+        # driver installed, it will recognize it as "Maple DFU" and not the 
+        # actual USB device it is :(
+        if usb_vid == 0x1EAF and usb_pid == 0x0003:
+            (usb_vid, usb_pid) = (0xdead, 0xbeef)
+        env.Append(
+            CPPDEFINES=[
+                "USBCON",
+                ("USB_VID", hex(usb_vid)),
+                ("USB_PID", hex(usb_pid)),
+                ("USB_PRODUCT", '\\"%s\\"' %
+                    board_config.get("build.usb_product", board_config.get("name", "Undefined USB Product")).replace('"', "")),
+                ("USB_MANUFACTURER", '\\"%s\\"' %
+                    board_config.get("build.usb_manufacturer",  board_config.get("vendor", "Undefined Manufacturer")).replace('"', ""))
             ]
         )
 
@@ -312,6 +344,7 @@ process_standard_library_configuration(cpp_defines)
 add_upload_protocol_defines(board_name, upload_protocol)
 # defining HAL_UART_MODULE_ENABLED causes build failure 'uart_debug_write' was not declared in this scope
 #process_usart_configuration(cpp_defines)
+process_usb_configuration(cpp_defines)
 
 # copy CCFLAGS to ASFLAGS (-x assembler-with-cpp mode)
 env.Append(ASFLAGS=env.get("CCFLAGS", [])[:])

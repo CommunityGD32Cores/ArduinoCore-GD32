@@ -32,7 +32,8 @@ static uint32_t analogOut_period_us = 1000; // 1000µS = 1ms = 1kHz
 
 void analogReference(uint8_t mode)
 {
-
+    // ToDo implement this
+    (void) mode;
 }
 
 static inline uint32_t mapResolution(uint32_t value, uint32_t from, uint32_t to)
