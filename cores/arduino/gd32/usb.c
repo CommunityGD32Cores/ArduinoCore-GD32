@@ -1,3 +1,4 @@
+#ifdef USBCON
 #include "usb.h"
 
 #include "usbd_lld_int.h"
@@ -82,3 +83,4 @@ void USBD_WKUP_IRQHandler()
 {
     exti_interrupt_flag_clear(EXTI_18);
 }
+#endif

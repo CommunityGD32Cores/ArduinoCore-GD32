@@ -15,5 +15,7 @@ void fatal(const char *format, ...)
     va_start(arglist, format);
     vprintf(format, arglist);
     va_end(arglist);
+#else
+    (void)(format);
 #endif
 }

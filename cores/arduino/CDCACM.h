@@ -1,5 +1,5 @@
 #pragma once
-
+#ifdef USBD_USE_CDC
 #include "api/ArduinoAPI.h"
 #include "USBDefs.h"
 
@@ -132,7 +132,8 @@ class CDCACM_ : public Stream
         volatile int16_t peekBuffer = -1;
 };
 
-#ifdef USE_CDC_SERIAL
+#ifdef USBD_USE_CDC
 #define Serial CDCACM()
 extern CDCACM_& CDCACM();
+#endif
 #endif

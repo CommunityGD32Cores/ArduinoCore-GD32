@@ -136,9 +136,26 @@ class HardwareSerial : public Stream
 };
 
 /*
- * ‘Serial’ is for the CDC-ACM. Hardware serial peripherals begin at
+ * ‘Serial’ is for the CDC-ACM if enabled. Hardware serial peripherals begin at
  * ‘Serial1’.
  */
+
+/* Macro-define Serial to actual serial instance. We don't yet have a selection mechanism, use the first one. */
+#if !defined(USBD_USE_CDC)
+#if !defined(Serial)
+#if defined(USE_USART0_SERIAL)
+#define Serial Serial1
+#elif defined(USE_USART1_SERIAL)
+#define Serial Serial2
+#elif defined(USE_USART2_SERIAL)
+#define Serial Serial3
+#elif defined(USE_USART3_SERIAL)
+#define Serial Serial4
+#elif defined(USE_USART4_SERIAL)
+#define Serial Serial5
+#endif /* USE_USART1_SERIAL */
+#endif /* Serial */
+#endif /* USBD_USE_CDC */
 
 #if defined(USE_USART0_SERIAL)
 extern HardwareSerial Serial1;

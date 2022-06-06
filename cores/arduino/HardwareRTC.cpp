@@ -181,7 +181,6 @@ void HWRTC::detachInterrupt(INT_MODE mode)
 */
 void HWRTC::interruptHandler(INT_MODE mode)
 {
-    uint8_t i;
     switch (mode) {
         case INT_SECOND_MODE:
             if (NULL != this->callback[0]) {

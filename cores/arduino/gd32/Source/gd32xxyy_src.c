@@ -163,9 +163,11 @@
 #error "Unknown chip series!"
 #endif
 
+#ifdef USBCON
 #include "usbd_pwr.c"
 #include "usbd_enum.c"
 #include "usbd_transc.c"
 #include "usbd_core.c"
 #include "usbd_lld_core.c"
 #include "usbd_lld_int.c"
+#endif

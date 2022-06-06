@@ -1,3 +1,4 @@
+#ifdef USBD_USE_CDC
 #include "CDCACM.h"
 
 #include "USBCore.h"
@@ -167,3 +168,4 @@ CDCACM_& CDCACM()
     static CDCACM_ obj(0, 1);
     return obj;
 }
+#endif

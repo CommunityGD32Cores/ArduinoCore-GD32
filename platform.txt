@@ -50,6 +50,7 @@ compiler.elf2hex.extra_flags=
 # These can be overriden in boards.txt
 
 build.extra_flags=
+build.enable_usb=
 build.flash_offset=0
 build.bootloader_flags=-DVECT_TAB_OFFSET={build.flash_offset}
 build.ldscript=ldscript.ld
@@ -59,7 +60,6 @@ build.info.flags=-D{build.series} -D{build.product_line} -DARDUINO={runtime.ide.
 
 ## Defaults config
 build.xSerial=
-#build.enable_usb=
 #build.usb_speed=
 #build.enable_virtio=
 build.startup_file=
@@ -71,11 +71,11 @@ build.usb_flags=-DUSB_VID={build.vid} -DUSB_PID={build.pid} "-DUSB_MANUFACTURER=
 
 # compile patterns
 ## Compile c files
-recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} {build.info.flags} {compiler.c.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} {build.info.flags} {compiler.c.extra_flags} {build.extra_flags} {build.enable_usb} {includes} "{source_file}" -o "{object_file}"
 ## Compile c++ files
-recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} {build.info.flags} {compiler.cpp.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} {build.info.flags} {compiler.cpp.extra_flags} {build.extra_flags} {build.enable_usb} {includes} "{source_file}" -o "{object_file}"
 ## Compile S files
-recipe.S.o.pattern="{compiler.path}{compiler.S.cmd}" {compiler.S.flags} {build.info.flags} {compiler.S.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+recipe.S.o.pattern="{compiler.path}{compiler.S.cmd}" {compiler.S.flags} {build.info.flags} {compiler.S.extra_flags} {build.extra_flags} {build.enable_usb} {includes} "{source_file}" -o "{object_file}"
 ## Create archives
 recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{archive_file_path}" "{object_file}"
 ## Combine gc-sections, archives, and objects

@@ -1,7 +1,9 @@
 #ifndef __USBD_CONF_H
 #define __USBD_CONF_H
 
-#include "gd32f30x.h"
+#if USBCON
+
+#include "gd32xxyy.h"
 #include "variant.h"
 
 /*
@@ -53,4 +55,5 @@
 #define EP0_TX_ADDR 0x40
 #define EP0_RX_ADDR (EP0_TX_ADDR+USBD_EP0_MAX_SIZE)
 
+#endif
 #endif /* __USBD_CONF_H */

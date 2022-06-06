@@ -1,3 +1,4 @@
+#ifdef USBCON
 #include "USBCore.h"
 
 extern "C" {
@@ -824,3 +825,4 @@ void* epBuffer(unsigned int n)
 {
     return (void*)EPBuffers().desc(n);
 }
+#endif
