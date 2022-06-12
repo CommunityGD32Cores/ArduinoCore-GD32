@@ -32,10 +32,22 @@ void pinMode(pin_size_t ulPin, PinMode ulMode)
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_IN_FLOATING, 0, 0));
             break;
         case INPUT_PULLUP:
+            // different chip series have different APIs and options for pin modes
+            // for one, we have "Input pullup" as a mode, for the other, we have
+            // "Input" as a mode with "Pullup"/"Pulldown" as a "pull mode".
+            // transport the information to the underlying function accordingly. 
+        #if defined(GD32F30x) || defined(GD32F10x)|| defined(GD32E50X)
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_IPU, 0, 0));
+        #else
+            pin_function(p, GD_PIN_FUNCTION4(PIN_MODE_INPUT, 0, PIN_PUPD_PULLUP, 0));
+        #endif
             break;
         case INPUT_PULLDOWN:
+        #if defined(GD32F30x) || defined(GD32F10x)|| defined(GD32E50X)
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_IPD, 0, 0));
+        #else
+            pin_function(p, GD_PIN_FUNCTION4(PIN_MODE_INPUT, 0, PIN_PUPD_PULLDOWN, 0));
+        #endif
             break;
         case OUTPUT:
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUT_PP, PIN_OTYPE_PP, 0));
