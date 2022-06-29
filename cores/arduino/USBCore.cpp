@@ -507,7 +507,6 @@ int USBCore_::recvControl(void* data, int len)
                 rxWaiting = false;
             }
         }
-        rxWaiting = true;
         read += USBCore().usbDev().drv_handler->ep_read((uint8_t *)data+read, 0, (uint8_t)EP_BUF_SNG);
     }
     assert(read == len);
