@@ -183,7 +183,7 @@ void EPBuffer<L>::flush()
     this->waitForWriteComplete();
 
     this->txWaiting = true;
-    usbd.drv_handler->ep_write((uint8_t*)this->buf, this->ep, this->len());
+    USBCore().usbDev().drv_handler->ep_write((uint8_t*)this->buf, this->ep, this->len());
     this->reset();
 }
 
@@ -195,8 +195,9 @@ void EPBuffer<L>::enableOutEndpoint()
     this->rxWaiting = true;
 
     this->reset();
-    usb_transc_config(&usbd.transc_out[this->ep], (uint8_t*)this->buf, sizeof(this->buf), 0);
-    usbd.drv_handler->ep_rx_enable(&usbd, this->ep);
+    usb_transc_config(&USBCore().usbDev().transc_out[this->ep],
+                      (uint8_t*)this->buf, sizeof(this->buf), 0);
+    USBCore().usbDev().drv_handler->ep_rx_enable(&USBCore().usbDev(), this->ep);
 }
 
 template<size_t L>
@@ -208,7 +209,7 @@ void EPBuffer<L>::markComplete()
 template<size_t L>
 void EPBuffer<L>::transcOut()
 {
-    this->tail = this->buf + usbd.transc_out[this->ep].xfer_count;
+    this->tail = this->buf + USBCore().usbDev().transc_out[this->ep].xfer_count;
 
     // We have data, so let the readers in.
     this->rxWaiting = false;
@@ -415,6 +416,10 @@ class ClassCore
 
 USBCore_::USBCore_()
 {
+    /*
+     * Use global ‘usbd’ here, instead of wrapped version, to avoid
+     * initialization loop.
+     */
     usb_init(&desc, ClassCore::structPtr());
     usbd.user_data = this;
 
@@ -486,7 +491,7 @@ int USBCore_::recvControl(void* data, int len)
     uint32_t ep_st;
     auto read = 0;
     while (read < len) {
-        usbd.drv_handler->ep_rx_enable(&usbd, 0);
+        USBCore().usbDev().drv_handler->ep_rx_enable(&USBCore().usbDev(), 0);
         auto rxWaiting = true;
         while (rxWaiting) {
             int_status = (uint16_t)USBD_INTF;
@@ -502,8 +507,8 @@ int USBCore_::recvControl(void* data, int len)
                 rxWaiting = false;
             }
         }
-        read += usbd.drv_handler->ep_read((uint8_t *)data+read, 0, (uint8_t)EP_BUF_SNG);
         rxWaiting = true;
+        read += USBCore().usbDev().drv_handler->ep_read((uint8_t *)data+read, 0, (uint8_t)EP_BUF_SNG);
     }
     assert(read == len);
     return read;
@@ -542,7 +547,7 @@ int USBCore_::send(uint8_t ep, const void* data, int len)
 
     // Make sure any transactions made outside of PluggableUSB are
     // cleaned up.
-    auto transc = &usbd.transc_in[ep];
+    auto transc = &USBCore().usbDev().transc_in[ep];
     usb_transc_config(transc, nullptr, 0, 0);
 
     // TODO: query the endpoint for its max packet length.
@@ -615,6 +620,11 @@ void USBCore_::transcInHelper(usb_dev* usbd, uint8_t ep)
 {
     USBCore_* core = (USBCore_*)usbd->user_data;
     core->transcIn(usbd, ep);
+}
+
+usb_dev& USBCore_::usbDev()
+{
+    return usbd;
 }
 
 /*
@@ -762,7 +772,7 @@ void USBCore_::sendDeviceConfigDescriptor()
 
 void USBCore_::sendDeviceStringDescriptor()
 {
-    switch (lowByte(usbd.control.req.wValue)) {
+    switch (lowByte(USBCore().usbDev().control.req.wValue)) {
         case STR_IDX_LANGID: {
             const usb_desc_LANGID desc = {
                 .header = {
@@ -786,7 +796,7 @@ void USBCore_::sendDeviceStringDescriptor()
             USBCore().flush(0);
             break;
         default:
-            usbd.drv_handler->ep_stall_set(&usbd, 0);
+            USBCore().usbDev().drv_handler->ep_stall_set(&USBCore().usbDev(), 0);
             return;
     }
 }
