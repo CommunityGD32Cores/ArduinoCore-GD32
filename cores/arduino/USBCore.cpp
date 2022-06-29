@@ -240,6 +240,22 @@ void EPBuffer<L>::waitForWriteComplete()
     while (this->txWaiting) {
         uint16_t int_status = (uint16_t)USBD_INTF;
         uint8_t ep_num = int_status & INTF_EPNUM;
+        /*
+         * If the device is reset by the host, while we’re spinning
+         * outside of interrupt context, the control endpoint’s status
+         * will include the ‘EPTX_NAK’ flag (cf.  ‘usbd_ep_reset’ in
+         * usbd_lld_core.c), indicating there’s no outgoing data.
+         *
+         * If whis function is called in interrupt context, check the
+         * reset flag directly.
+         *
+         * In either case, the peripheral is no longer ready to send
+         * data, so just drop it on the floor and mark it as complete.
+         */
+        if ((int_status & INTF_RSTIF) == INTF_RSTIF
+            || (USBD_EPxCS(ep_num) & EPTX_NAK) == EPTX_NAK) {
+            EPBuffers().markComplete(ep_num);
+        }
         if ((int_status & INTF_STIF) == INTF_STIF
             && (int_status & INTF_DIR) == 0
             && (USBD_EPxCS(ep_num) & EPxCS_TX_ST) == EPxCS_TX_ST) {
@@ -335,6 +351,7 @@ class ClassCore
                  * Allow data to come in to OUT buffers immediately, as it
                  * will be copied out as it comes in.
                  */
+                EPBuffers().buf(ep).init(ep);
                 if (desc.dir() == 0) {
                     EPBuffers().buf(ep).enableOutEndpoint();
                 }
