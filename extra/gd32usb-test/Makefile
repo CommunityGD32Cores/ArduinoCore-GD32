@@ -1,4 +1,4 @@
-FQBN = dev:gd32:gd_generic_f30x
+FQBN = dev:gd32:gd_generic_gd32f30x
 GCC_PREFIX = /usr
 # TODO: arduino-cli --upload still doesn’t find openocd for some
 # reason. Maybe the method above is wrong?
