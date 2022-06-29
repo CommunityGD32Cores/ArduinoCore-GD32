@@ -1,4 +1,4 @@
-FQBN = dev:gd32:gd_generic_f30x
+FQBN = dev:gd32:gd_generic_gd32f30x
 GCC_PREFIX = /usr
 # TODO: arduino-cli --upload still doesn’t find openocd for some
 # reason. Maybe the method above is wrong?
@@ -47,4 +47,4 @@ serial:
 #	ssh -t raichu screen $(SERIAL) 115200
 
 etags:
-	cd ../.. && find . -name '*.[ch]' -o \( -name '*.cpp' -o -name '*.ino' \) -print | grep -v usbfs | etags -
+	cd ../.. && find cores libraries extra/gd32usb-test system/startup system/GD32F30x_firmware -name '*.[ch]' -o \( -name '*.cpp' -o -name '*.ino' \) | grep -v usbfs | etags -
