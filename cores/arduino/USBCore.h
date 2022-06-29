@@ -144,6 +144,13 @@ class USBCore_
         static void transcOutHelper(usb_dev* usbd, uint8_t ep);
         static void transcInHelper(usb_dev* usbd, uint8_t ep);
 
+        /*
+         * Shadow the global ‘usbd’, which shouldn't be used directly,
+         * so that all access is mediated by this class, ensuring all
+         * access to it happens after this class is constructed (which
+         * initializes ‘usbd’).
+         */
+        usb_dev& usbDev();
     private:
         // TODO: verify that this only applies to the control endpoint’s use of wLength
         // I think this is only on the setup packet, so it should be fine.
