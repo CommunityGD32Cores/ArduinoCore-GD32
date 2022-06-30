@@ -351,7 +351,6 @@ class ClassCore
                  * Allow data to come in to OUT buffers immediately, as it
                  * will be copied out as it comes in.
                  */
-                EPBuffers().buf(ep).init(ep);
                 if (desc.dir() == 0) {
                     EPBuffers().buf(ep).enableOutEndpoint();
                 }
