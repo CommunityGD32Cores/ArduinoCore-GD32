@@ -180,10 +180,13 @@ void EPBuffer<L>::flush()
     }
 
     // Busy loop until the previous IN transaction completes.
-    this->waitForWriteComplete();
+    if (this->waitForWriteComplete()) {
+        // Only start the next transmission if the device hasn't been
+        // reset.
+        this->txWaiting = true;
+        USBCore().usbDev().drv_handler->ep_write((uint8_t*)this->buf, this->ep, this->len());
+    }
 
-    this->txWaiting = true;
-    USBCore().usbDev().drv_handler->ep_write((uint8_t*)this->buf, this->ep, this->len());
     this->reset();
 }
 
@@ -230,7 +233,7 @@ uint8_t* EPBuffer<L>::ptr()
 // Busy loop until the latest IN packet has been sent from endpoint
 // ‘ep’.
 template<size_t L>
-void EPBuffer<L>::waitForWriteComplete()
+bool EPBuffer<L>::waitForWriteComplete()
 {
     /*
      * I’m not sure how much of this is necessary, but this is the
@@ -255,6 +258,8 @@ void EPBuffer<L>::waitForWriteComplete()
         if ((int_status & INTF_RSTIF) == INTF_RSTIF
             || (USBD_EPxCS(ep_num) & EPTX_NAK) == EPTX_NAK) {
             EPBuffers().markComplete(ep_num);
+            // Indicate the device was reset to callers.
+            return false;
         }
         if ((int_status & INTF_STIF) == INTF_STIF
             && (int_status & INTF_DIR) == 0
@@ -263,6 +268,7 @@ void EPBuffer<L>::waitForWriteComplete()
             USBD_EP_TX_ST_CLEAR(ep_num);
         }
     }
+    return true;
 }
 
 template<size_t L, size_t C>

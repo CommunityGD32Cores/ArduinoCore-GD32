@@ -84,7 +84,7 @@ class EPBuffer
         void transcOut();
 
     private:
-        void waitForWriteComplete();
+        bool waitForWriteComplete();
 
         uint8_t ep;
         volatile uint8_t buf[L];
