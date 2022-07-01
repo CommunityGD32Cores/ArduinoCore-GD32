@@ -1,3 +1,5 @@
+// -*- mode: c++ -*-
+
 #include "KeyboardioHID.h"
 
 void setup()
