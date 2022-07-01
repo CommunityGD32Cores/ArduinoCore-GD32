@@ -101,6 +101,7 @@ class EPBuffers_
 {
     public:
         EPBuffers_();
+        void init();
 
         EPBuffer<L>& buf(uint8_t ep);
         void markComplete(uint8_t ep);

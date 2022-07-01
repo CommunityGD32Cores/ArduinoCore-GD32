@@ -107,6 +107,9 @@ template<size_t L>
 void EPBuffer<L>::init(uint8_t ep)
 {
     this->ep = ep;
+    this->reset();
+    this->txWaiting = false;
+    this->rxWaiting = true;
 }
 
 template<size_t L>
@@ -230,8 +233,8 @@ uint8_t* EPBuffer<L>::ptr()
     return this->buf;
 }
 
-// Busy loop until the latest IN packet has been sent from endpoint
-// ‘ep’.
+// Busy loop until the latest IN packet has been sent. Returns ‘true’
+// if a new packet can be queued when this call completes.
 template<size_t L>
 bool EPBuffer<L>::waitForWriteComplete()
 {
@@ -273,6 +276,12 @@ bool EPBuffer<L>::waitForWriteComplete()
 
 template<size_t L, size_t C>
 EPBuffers_<L, C>::EPBuffers_()
+{
+    this->init();
+}
+
+template<size_t L, size_t C>
+void EPBuffers_<L, C>::init()
 {
     for (uint8_t ep = 0; ep < C; ep++) {
         this->buf(ep).init(ep);
@@ -436,6 +445,13 @@ class ClassCore
         }
 };
 
+void (*oldResetHandler)(usb_dev *usbd);
+void handleReset(usb_dev *usbd)
+{
+    EPBuffers().init();
+    oldResetHandler(usbd);
+}
+
 USBCore_::USBCore_()
 {
     /*
@@ -444,6 +460,9 @@ USBCore_::USBCore_()
      */
     usb_init(&desc, ClassCore::structPtr());
     usbd.user_data = this;
+
+    oldResetHandler = usbd.drv_handler->ep_reset;
+    usbd.drv_handler->ep_reset = handleReset;
 
     this->oldTranscSetup = usbd.ep_transc[0][TRANSC_SETUP];
     usbd.ep_transc[0][TRANSC_SETUP] = USBCore_::transcSetupHelper;
