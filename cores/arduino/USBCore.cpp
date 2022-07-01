@@ -177,8 +177,11 @@ size_t EPBuffer<L>::sendSpace()
 template<size_t L>
 void EPBuffer<L>::flush()
 {
-    // Bounce if there’s no data to send.
-    if (this->len() == 0) {
+    // Bounce if there’s no data to send or the host isn't ready to
+    // accept data yet.
+    if (this->len() == 0
+        || USBCore().usbDev().cur_status < USBD_ADDRESSED
+        || (this->ep > 0 && USBCore().usbDev().cur_status < USBD_CONFIGURED)) {
         return;
     }
 
