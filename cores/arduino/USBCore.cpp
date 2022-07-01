@@ -250,20 +250,16 @@ bool EPBuffer<L>::waitForWriteComplete()
         uint16_t int_status = (uint16_t)USBD_INTF;
         uint8_t ep_num = int_status & INTF_EPNUM;
         /*
-         * If the device is reset by the host, while we’re spinning
-         * outside of interrupt context, the control endpoint’s status
-         * will include the ‘EPTX_NAK’ flag (cf.  ‘usbd_ep_reset’ in
-         * usbd_lld_core.c), indicating there’s no outgoing data.
+         * If we are in interrupt context, we need to check for a
+         * device reset and terminate early so we don't spin forever
+         * waiting to complete a packet the host is no longer paying
+         * attention to.
          *
-         * If whis function is called in interrupt context, check the
-         * reset flag directly.
-         *
-         * In either case, the peripheral is no longer ready to send
-         * data, so just drop it on the floor and mark it as complete.
+         * We /do not/ clear the flag, allowing the ISR to fire as
+         * soon as we've left this call, which will call into the
+         * normal reset routine.
          */
-        if ((int_status & INTF_RSTIF) == INTF_RSTIF
-            || (USBD_EPxCS(ep_num) & EPTX_NAK) == EPTX_NAK) {
-            EPBuffers().markComplete(ep_num);
+        if ((int_status & INTF_RSTIF) == INTF_RSTIF) {
             // Indicate the device was reset to callers.
             return false;
         }
