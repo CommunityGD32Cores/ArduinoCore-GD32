@@ -246,6 +246,7 @@ bool EPBuffer<L>::waitForWriteComplete()
      * series of checks that’s used by ‘usbd_isr’ to verify the IN
      * packet has been sent.
      */
+    auto start = getCurrentMillis();
     while (this->txWaiting) {
         uint16_t int_status = (uint16_t)USBD_INTF;
         uint8_t ep_num = int_status & INTF_EPNUM;
@@ -268,6 +269,9 @@ bool EPBuffer<L>::waitForWriteComplete()
             && (USBD_EPxCS(ep_num) & EPxCS_TX_ST) == EPxCS_TX_ST) {
             EPBuffers().markComplete(ep_num);
             USBD_EP_TX_ST_CLEAR(ep_num);
+        } else if (getCurrentMillis() - start > 5) {
+            EPBuffers().markComplete(ep_num);
+            return false;
         }
     }
     return true;
