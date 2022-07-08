@@ -10,6 +10,8 @@ extern usb_dev usbd;
 void usb_init(usb_desc*, usb_class*);
 void usb_connect();
 void usb_disconnect();
+void usb_enable_interrupts();
+void usb_disable_interrupts();
 
 #endif
 #endif

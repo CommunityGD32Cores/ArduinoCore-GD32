@@ -108,32 +108,28 @@ void EPBuffer<L>::init(uint8_t ep)
 {
     this->ep = ep;
     this->reset();
-    this->txWaiting = false;
     this->rxWaiting = true;
+    this->txWaiting = false;
 }
 
 template<size_t L>
 size_t EPBuffer<L>::push(const void *d, size_t len)
 {
+    usb_disable_interrupts();
     size_t w = min(this->sendSpace(), len);
     const uint8_t* d8 = (const uint8_t*)d;
     for (size_t i = 0; i < w; i++) {
         *this->p++ = *d8++;
     }
     assert(this->p >= this->buf);
+    usb_enable_interrupts();
     return w;
 }
 
 template<size_t L>
 size_t EPBuffer<L>::pop(void* d, size_t len)
 {
-    // If there’s nothing ready yet, bounce out. Otherwise the buffer
-    // and its pointers may change underneath us from interrupt
-    // context.
-    if (this->rxWaiting) {
-        return 0;
-    }
-
+    usb_disable_interrupts();
     size_t r = min(this->available(), len);
     uint8_t* d8 = (uint8_t*)d;
     for (size_t i = 0; i < r; i++) {
@@ -144,6 +140,7 @@ size_t EPBuffer<L>::pop(void* d, size_t len)
     if (this->available() == 0) {
         this->enableOutEndpoint();
     }
+    usb_enable_interrupts();
     return r;
 }
 
@@ -177,23 +174,34 @@ size_t EPBuffer<L>::sendSpace()
 template<size_t L>
 void EPBuffer<L>::flush()
 {
-    // Bounce if there’s no data to send or the host isn't ready to
-    // accept data yet.
-    if (this->len() == 0
-        || USBCore().usbDev().cur_status < USBD_ADDRESSED
-        || (this->ep > 0 && USBCore().usbDev().cur_status < USBD_CONFIGURED)) {
+    /*
+     * Bounce out if a flush is already occurring. This is only
+     * possible when ‘flush’ is called from an interrupt, so the
+     * check-and-set must be done with interrupts disabled.
+     */
+    usb_disable_interrupts();
+    if (this->currentlyFlushing) {
+        usb_enable_interrupts();
         return;
     }
+    this->currentlyFlushing = true;
+    usb_enable_interrupts();
 
-    // Busy loop until the previous IN transaction completes.
-    if (this->waitForWriteComplete()) {
-        // Only start the next transmission if the device hasn't been
-        // reset.
-        this->txWaiting = true;
-        USBCore().usbDev().drv_handler->ep_write((uint8_t*)this->buf, this->ep, this->len());
+    // Only attempt to send if there's data and the device is
+    // configured enough to send it.
+    if (this->len() > 0
+        && (USBCore().usbDev().cur_status >= USBD_CONFIGURED
+            || (this->ep == 0 && USBCore().usbDev().cur_status >= USBD_ADDRESSED))) {
+        auto canWrite = this->waitForWriteComplete();
+        if (canWrite) {
+            // Only start the next transmission if the device hasn't been
+            // reset.
+            this->txWaiting = true;
+            USBCore().usbDev().drv_handler->ep_write((uint8_t*)this->buf, this->ep, this->len());
+        }
+        this->reset();
     }
-
-    this->reset();
+    this->currentlyFlushing = false;
 }
 
 template<size_t L>
@@ -210,24 +218,16 @@ void EPBuffer<L>::enableOutEndpoint()
 }
 
 template<size_t L>
-void EPBuffer<L>::markComplete()
-{
-    this->txWaiting = false;
-}
-
-template<size_t L>
 void EPBuffer<L>::transcOut()
 {
-    this->tail = this->buf + USBCore().usbDev().transc_out[this->ep].xfer_count;
-
-    // We have data, so let the readers in.
+    this->tail = this->buf + USBCore().usbDev().transc_out[this->ep].xfer_count;;
     this->rxWaiting = false;
 }
 
 template<size_t L>
 void EPBuffer<L>::transcIn()
 {
-    this->markComplete();
+    this->txWaiting = false;
 }
 
 template<size_t L>
@@ -236,45 +236,38 @@ uint8_t* EPBuffer<L>::ptr()
     return this->buf;
 }
 
+// Busy loop until an OUT packet has been received. Returns ‘false’ if
+// the device has been reset.
+template<size_t L>
+bool EPBuffer<L>::waitForReadComplete()
+{
+    // auto start = getCurrentMillis();
+    auto ok = true;
+    while (ok && this->rxWaiting) {
+        ok = EPBuffers().pollEPStatus();
+        // if (getCurrentMillis() - start > 5) {
+        //     EPBuffers().buf(ep).transcIn();
+        //     return false;
+        // }
+    }
+    return ok;
+}
+
 // Busy loop until the latest IN packet has been sent. Returns ‘true’
 // if a new packet can be queued when this call completes.
 template<size_t L>
 bool EPBuffer<L>::waitForWriteComplete()
 {
-    /*
-     * I’m not sure how much of this is necessary, but this is the
-     * series of checks that’s used by ‘usbd_isr’ to verify the IN
-     * packet has been sent.
-     */
-    auto start = getCurrentMillis();
-    while (this->txWaiting) {
-        uint16_t int_status = (uint16_t)USBD_INTF;
-        uint8_t ep_num = int_status & INTF_EPNUM;
-        /*
-         * If we are in interrupt context, we need to check for a
-         * device reset and terminate early so we don't spin forever
-         * waiting to complete a packet the host is no longer paying
-         * attention to.
-         *
-         * We /do not/ clear the flag, allowing the ISR to fire as
-         * soon as we've left this call, which will call into the
-         * normal reset routine.
-         */
-        if ((int_status & INTF_RSTIF) == INTF_RSTIF) {
-            // Indicate the device was reset to callers.
-            return false;
-        }
-        if ((int_status & INTF_STIF) == INTF_STIF
-            && (int_status & INTF_DIR) == 0
-            && (USBD_EPxCS(ep_num) & EPxCS_TX_ST) == EPxCS_TX_ST) {
-            EPBuffers().markComplete(ep_num);
-            USBD_EP_TX_ST_CLEAR(ep_num);
-        } else if (getCurrentMillis() - start > 5) {
-            EPBuffers().markComplete(ep_num);
-            return false;
-        }
+    // auto start = getCurrentMillis();
+    auto ok = true;
+    while (ok && this->txWaiting) {
+        ok = EPBuffers().pollEPStatus();
+        // if (getCurrentMillis() - start > 5) {
+        //     EPBuffers().buf(ep).transcIn();
+        //     ok = false;
+        // }
     }
-    return true;
+    return ok;
 }
 
 template<size_t L, size_t C>
@@ -298,17 +291,67 @@ EPBuffer<L>& EPBuffers_<L, C>::buf(uint8_t ep)
 }
 
 template<size_t L, size_t C>
-void EPBuffers_<L, C>::markComplete(uint8_t ep)
-{
-    this->buf(ep).markComplete();
-}
-
-template<size_t L, size_t C>
 EPDesc* EPBuffers_<L, C>::desc(uint8_t ep)
 {
     assert(ep < C);
     static EPDesc descs[C];
     return &descs[ep];
+}
+
+// Check if any endpoints have a received data or finished sending
+// data, updating their ‘waiting’ flags as a side-effect.
+//
+// Returns ‘false’ if the host has reset the device.
+template<size_t L, size_t C>
+bool EPBuffers_<L, C>::pollEPStatus()
+{
+    /*
+     * I’m not sure how much of this is necessary, but this is the
+     * series of checks that’s used by ‘usbd_isr’ to verify the IN
+     * packet has been sent.
+     */
+
+    uint16_t int_status = (uint16_t)USBD_INTF;
+    uint8_t ep_num = int_status & INTF_EPNUM;
+    /*
+     * If we are in interrupt context, we need to check for a
+     * device reset and terminate early so we don't spin forever
+     * waiting to complete a packet the host is no longer paying
+     * attention to.
+     *
+     * We /do not/ clear the flag, allowing the ISR to fire as
+     * soon as we've left this call, which will call into the
+     * normal reset routine.
+     */
+    auto ok = true;
+    if ((int_status & INTF_RSTIF) == INTF_RSTIF) {
+        // Indicate the device was reset to callers.
+        ok = false;
+    } else if ((int_status & INTF_STIF) == INTF_STIF) {
+        if ((int_status & INTF_DIR) == INTF_DIR
+            && (USBD_EPxCS(ep_num) & EPxCS_RX_ST) == EPxCS_RX_ST) {
+
+            usb_transc *transc = &USBCore().usbDev().transc_out[ep_num];
+            auto count = 0;
+            if (transc->xfer_buf) {
+                count = USBCore().usbDev().drv_handler->ep_read(transc->xfer_buf, ep_num, (uint8_t)EP_BUF_SNG);
+                user_buffer_free(ep_num, (uint8_t)DBUF_EP_OUT);
+                transc->xfer_buf += count;
+                transc->xfer_count += count;
+                transc->xfer_len -= count;
+            }
+
+            if ((transc->xfer_len == 0) || (count < transc->max_len)) {
+                EPBuffers().buf(ep_num).transcOut();
+            }
+            USBD_EP_RX_ST_CLEAR(ep_num);
+        } else if ((int_status & INTF_DIR) == 0
+                   && (USBD_EPxCS(ep_num) & EPxCS_TX_ST) == EPxCS_TX_ST) {
+            EPBuffers().buf(ep_num).transcIn();
+            USBD_EP_TX_ST_CLEAR(ep_num);
+        }
+    }
+    return ok;
 }
 
 EPBuffers_<USB_EP_SIZE, EP_COUNT>& EPBuffers()
@@ -498,8 +541,8 @@ int USBCore_::sendControl(uint8_t flags, const void* data, int len)
     while (wrote < l) {
         auto w = 0;
         if (flags & TRANSFER_ZERO) {
-            // TODO: handle writing zeros instead of ‘d’.
-            return -1;
+            constexpr uint8_t zero = 0;
+            w = EPBuffers().buf(0).push(&zero, 1);
         } else {
             w = EPBuffers().buf(0).push(d, l - wrote);
         }
@@ -528,33 +571,26 @@ int USBCore_::sendControl(uint8_t flags, const void* data, int len)
 
 // Does not timeout or cross fifo boundaries. Returns the number of
 // octets read.
+//
+// This method reads directly into ‘data’ from the peripheral's
+// endpoint buffer, because the control endpoint is bi-directional,
+// but ‘EPBuffer’ only allows for one direction at a time.
 int USBCore_::recvControl(void* data, int len)
 {
-    uint16_t int_status;
-    uint8_t ep_num;
-    uint32_t ep_st;
+    uint8_t* d = (uint8_t*)data;
     auto read = 0;
     while (read < len) {
+        EPBuffers().buf(0).rxWaiting = true;
+        usb_transc_config(&USBCore().usbDev().transc_out[0], nullptr, 0, 0);
         USBCore().usbDev().drv_handler->ep_rx_enable(&USBCore().usbDev(), 0);
-        auto rxWaiting = true;
-        while (rxWaiting) {
-            int_status = (uint16_t)USBD_INTF;
-            ep_num = int_status & INTF_EPNUM;
-            ep_st = USBD_EPxCS(ep_num);
-            assert(ep_num == 0); // TODO: don’t bail on non-0 ep, but
-                                 // mark them complete while we wait
-                                 // for 0.
-            if ((int_status & INTF_STIF) == INTF_STIF
-                && (int_status & INTF_DIR) == INTF_DIR
-                && (ep_st & EPxCS_RX_ST) == EPxCS_RX_ST) {
-                USBD_EP_RX_ST_CLEAR(ep_num);
-                rxWaiting = false;
-            }
+        if (!EPBuffers().buf(0).waitForReadComplete()) {
+            // Device was reset.
+            return -1;
         }
-        read += USBCore().usbDev().drv_handler->ep_read((uint8_t *)data+read, 0, (uint8_t)EP_BUF_SNG);
+        read += USBCore().usbDev().drv_handler->ep_read(d+read, 0, (uint8_t)EP_BUF_SNG);
     }
     assert(read == len);
-    return read;
+    return len;
 }
 
 // TODO: no idea? this isn’t in the avr 1.8.2 library, although it has
