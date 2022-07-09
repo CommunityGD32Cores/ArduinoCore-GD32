@@ -824,8 +824,7 @@ void USBCore_::sendDeviceStringDescriptor()
                 },
                 .wLANGID = ENG_LANGID
             };
-            USBCore().sendControl(0, &desc, desc.header.bLength);
-            USBCore().flush(0);
+            USBCore().sendControl(0 | TRANSFER_RELEASE, &desc, desc.header.bLength);
             return;
         }
         case STR_IDX_MFC:
@@ -835,8 +834,7 @@ void USBCore_::sendDeviceStringDescriptor()
             this->sendStringDesc(USB_PRODUCT);
             break;
         case STR_IDX_SERIAL:
-            USBCore().sendControl(0, &serialDesc, serialDesc.header.bLength);
-            USBCore().flush(0);
+            USBCore().sendControl(0 | TRANSFER_RELEASE, &serialDesc, serialDesc.header.bLength);
             break;
         default:
             USBCore().usbDev().drv_handler->ep_stall_set(&USBCore().usbDev(), 0);
