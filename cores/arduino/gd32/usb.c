@@ -64,6 +64,18 @@ void usb_connect()
     while (usbd.cur_status != USBD_CONFIGURED) {}
 }
 
+void usb_enable_interrupts()
+{
+    /* enable all interrupts mask bits */
+    USBD_CTL |= CTL_STIE | CTL_WKUPIE | CTL_SPSIE | CTL_SOFIE | CTL_ESOFIE | CTL_RSTIE;
+}
+
+void usb_disable_interrupts()
+{
+    /* enable all interrupts mask bits */
+    USBD_CTL &= ~(CTL_STIE | CTL_WKUPIE | CTL_SPSIE | CTL_SOFIE | CTL_ESOFIE | CTL_RSTIE);
+}
+
 void usb_disconnect()
 {
     usbd_disconnect(&usbd);
