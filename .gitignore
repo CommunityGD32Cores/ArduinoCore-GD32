@@ -1,3 +1,4 @@
 .vscode
 .dir-locals.el
 TAGS
+*.bak
