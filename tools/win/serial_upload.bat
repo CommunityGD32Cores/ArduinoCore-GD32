@@ -17,4 +17,4 @@ rem: the two line below are needed to fix path issues with incorrect slashes bef
 set strBinFile=%4
 set strBinFile=%strBinFile:/=\%
 
-%scriptPath%\GD32_ISP_CLI.exe -c --pn %commportnum% --br 57600 -e --all -d --a 8000000 --fn %strBinFile% --v -r --a 8000000
+%scriptPath%\GD32_ISP_CLI.exe -c --pn %commportnum% --br 57600 --to 1000 -e --all -d --a 8000000 --fn %strBinFile% --v -r --a 8000000
