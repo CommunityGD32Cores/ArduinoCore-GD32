@@ -1,3 +1,5 @@
 .vscode
 .dir-locals.el
 TAGS
+*.bak
+package_gd32_arcayi_index.json

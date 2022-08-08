@@ -144,7 +144,7 @@ uint16_t get_adc_value(PinName pinname)
 {
     uint16_t value;
     uint32_t adc_periph = pinmap_peripheral(pinname, PinMap_ADC);
-    uint8_t index = get_dac_index(adc_periph);
+    uint8_t index = get_adc_index(adc_periph);
     uint8_t channel = get_adc_channel(pinname);
     if (!ADC_[index].isactive) {
         pinmap_pinout(pinname, PinMap_ADC);
@@ -156,10 +156,10 @@ uint16_t get_adc_value(PinName pinname)
         adc_resolution_config(adc_periph, ADC_RESOLUTION_12B);
         adc_data_alignment_config(adc_periph, ADC_DATAALIGN_RIGHT);
         adc_channel_length_config(adc_periph, ADC_REGULAR_CHANNEL, 1U);
-#elif defined(GD32F3x0) || defined(GD32F1x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0) || defined(GD32E23x)
         rcu_adc_clock_config(RCU_ADCCK_APB2_DIV6);
         adc_special_function_config(ADC_CONTINUOUS_MODE, ENABLE);
-#if defined(GD32F3x0) || defined(GD32F170_190)
+#if defined(GD32F3x0) || defined(GD32F170_190) || defined(GD32E23x)
         adc_resolution_config(ADC_RESOLUTION_12B);
 #endif
         adc_data_alignment_config(ADC_DATAALIGN_RIGHT);
@@ -169,7 +169,7 @@ uint16_t get_adc_value(PinName pinname)
         adc_external_trigger_source_config(adc_periph, ADC_REGULAR_CHANNEL, ADC0_1_2_EXTTRIG_REGULAR_NONE);
 #elif defined(GD32VF103) /* what?! Code for a RISC-V MCU here? */
         adc_external_trigger_source_config(adc_periph, ADC_REGULAR_CHANNEL, ADC0_1_EXTTRIG_REGULAR_NONE);
-#elif defined(GD32F3x0) || defined(GD32F1x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0) || defined(GD32E23x)
         adc_external_trigger_source_config(ADC_REGULAR_CHANNEL, ADC_EXTTRIG_REGULAR_NONE);
 #endif
 #if defined(GD32F30x) || defined(GD32E50X)
@@ -177,7 +177,7 @@ uint16_t get_adc_value(PinName pinname)
         adc_enable(adc_periph);
         delay(1U);
         adc_calibration_enable(adc_periph);
-#elif defined(GD32F3x0) || defined(GD32F1x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0) || defined(GD32E23x)
         adc_external_trigger_config(ADC_REGULAR_CHANNEL, ENABLE);
         adc_enable();
         delay(1U);
@@ -191,7 +191,7 @@ uint16_t get_adc_value(PinName pinname)
     while (!adc_flag_get(adc_periph, ADC_FLAG_EOC));
     adc_flag_clear(adc_periph, ADC_FLAG_EOC);
     value = adc_regular_data_read(adc_periph);
-#elif defined(GD32F3x0) || defined(GD32F1x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0) || defined(GD32E23x)
     adc_regular_channel_config(0U, channel, ADC_SAMPLETIME_7POINT5);
     adc_software_trigger_enable(ADC_REGULAR_CHANNEL);
     while (!adc_flag_get(ADC_FLAG_EOC));
@@ -381,7 +381,7 @@ void adc_clock_enable(uint32_t instance)
             temp = RCU_ADC2;
             break;
 #endif
-#elif defined(GD32F3x0) || defined(GD32F1x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0) || defined(GD32E23x)
         case ADC:
             temp = RCU_ADC;
             break;
