@@ -38,6 +38,8 @@ using namespace arduino;
 #include "gd32/pins_arduino.h"
 #include "gd32/PeripheralPins.h"
 
+#define interrupts() __enable_irq()
+#define noInterrupts() __disable_irq()
 
 #ifdef __cplusplus
 /* include outside of extern C block, this is basically a C++ library */
