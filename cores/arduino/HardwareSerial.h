@@ -88,6 +88,11 @@ class HardwareSerial : public Stream
     protected:
         // Has any byte been written to the UART since begin()
         volatile bool _written;
+        // Don't put any members after these buffers, since only the first
+        // 32 bytes of this struct can be accessed quickly using the ldd
+        // instruction.
+        unsigned char _rx_buffer[SERIAL_RX_BUFFER_SIZE];
+        unsigned char _tx_buffer[SERIAL_TX_BUFFER_SIZE];
         serial_t _serial;
 
     public:
@@ -131,8 +136,7 @@ class HardwareSerial : public Stream
         static void _tx_complete_irq(serial_t *obj);
 
     private:
-        static ring_buffer_r _rx_buffer;
-        static ring_buffer_t _tx_buffer;
+
 };
 
 /*

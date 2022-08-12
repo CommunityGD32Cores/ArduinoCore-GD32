@@ -132,6 +132,9 @@ struct serial_s {
     uint16_t        rx_size;
     uint8_t         *tx_buffer_ptr;
     uint8_t         *rx_buffer_ptr;
+    //used in HardwareSerial
+    uint8_t         *rx_buff;
+    uint8_t         *tx_buff;
     uint16_t   tx_count;
     uint16_t   rx_count;
 
