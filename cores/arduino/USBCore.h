@@ -76,24 +76,49 @@ class EPBuffer
         size_t available();
         size_t sendSpace();
         void flush();
-        void markComplete();
         uint8_t* ptr();
         void enableOutEndpoint();
 
         void transcIn();
         void transcOut();
 
-    private:
-        void waitForWriteComplete();
+        /*
+         * Busy loop until the endpoint has a packet available.
+         */
+        bool waitForReadComplete();
+        /*
+         * Busy loop until the endpoint has finished its current
+         * transmission.
+         */
+        bool waitForWriteComplete();
 
-        uint8_t ep;
+        /*
+         * Flag for whether we are waiting for data from the host.
+         *
+         * If this is ‘true’, there is no data available in the
+         * peripheral's SRAM from the host for this endpoint.
+         */
+        volatile bool rxWaiting = true;
+
+        /*
+         * Flag for whether the current transmission is complete.
+         *
+         * If this is ‘true’, the USB peripheral is currently sending
+         * the contents of this endpoint's SRAM to the host, and it is
+         * not safe to start a new transmission.
+         */
+        volatile bool txWaiting = false;
+    private:
         volatile uint8_t buf[L];
         volatile uint8_t* tail = buf;
         volatile uint8_t* p = buf;
 
-        // TODO: this should probably be explicitly atomic.
-        volatile bool rxWaiting = false;
-        volatile bool txWaiting = false;
+        /*
+         * Prevent more than one simultaneous call to ‘flush’.
+         */
+        volatile bool currentlyFlushing = false;
+
+        uint8_t ep;
 };
 
 template<size_t L, size_t C>
@@ -101,11 +126,13 @@ class EPBuffers_
 {
     public:
         EPBuffers_();
+        void init();
 
         EPBuffer<L>& buf(uint8_t ep);
-        void markComplete(uint8_t ep);
 
         static EPDesc* desc(uint8_t ep);
+
+        bool pollEPStatus();
 
     private:
         EPBuffer<L> epBufs[C];
