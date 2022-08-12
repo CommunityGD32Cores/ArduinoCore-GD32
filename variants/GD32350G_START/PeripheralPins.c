@@ -155,42 +155,42 @@ const PinMap PinMap_UART_TX[] = {
     {PORTB_6,  USART0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, GPIO_AF_1)},   /* GPIO_USART0_TX_REMAP */
     {PORTA_2,  USART1, 7},
     //{PORTD_5,  USART1, 7 | (4 << 3)},   /* GPIO_USART1_TX_REMAP */
-    // {PORTB_10, UART_2, 7},
-    // {PORTC_10, UART_2, 7 | (5 << 3)},   /* GPIO_USART2_TX_PARTIAL_REMAP */
-    // {PORTD_8,  UART_2, 7 | (6 << 3)},   /* GPIO_USART2_TX_FULL_REMAP */
-    // {PORTC_10, UART_3, 7},
-    // {PORTC_12, UART_4, 7},
+    // {PORTB_10, USART2, 7},
+    // {PORTC_10, USART2, 7 | (5 << 3)},   /* GPIO_USART2_TX_PARTIAL_REMAP */
+    // {PORTD_8,  USART2, 7 | (6 << 3)},   /* GPIO_USART2_TX_FULL_REMAP */
+    // {PORTC_10, UART3, 7},
+    // {PORTC_12, UART4, 7},
     {NC,    NC,     0}
 };
 
 const PinMap PinMap_UART_RX[] = {
     {PORTA_10, USART0, 1},
     {PORTB_7,  USART0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, GPIO_AF_1)},
-    // {PORTA_3,  UART_1, 1},
-    // {PORTD_6,  UART_1, 1 | (4 << 3)},   /* GPIO_USART1_RX_REMAP */
-    // {PORTB_11, UART_2, 1},
-    // {PORTC_11, UART_2, 1 | (5 << 3)},   /* GPIO_USART2_RX_PARTIAL_REMAP */
-    // {PORTD_9,  UART_2, 1 | (6 << 3)},   /* GPIO_USART2_RX_FULL_REMAP */
-    // {PORTC_11, UART_3, 1},
-    // {PORTD_2,  UART_4, 1},
+    // {PORTA_3,  USART1, 1},
+    // {PORTD_6,  USART1, 1 | (4 << 3)},   /* GPIO_USART1_RX_REMAP */
+    // {PORTB_11, USART2, 1},
+    // {PORTC_11, USART2, 1 | (5 << 3)},   /* GPIO_USART2_RX_PARTIAL_REMAP */
+    // {PORTD_9,  USART2, 1 | (6 << 3)},   /* GPIO_USART2_RX_FULL_REMAP */
+    // {PORTC_11, UART3, 1},
+    // {PORTD_2,  UART4, 1},
     {NC,    NC,     0}
 };
 
 const PinMap PinMap_UART_RTS[] = {
     {PORTA_12, USART0, 7},
     {PORTA_1,  USART1, 7},
-    // {PORTD_4,  UART_1, 7 | (4 << 3)},   /* GPIO_USART1_RTS_REMAP */
-    // {PORTB_14, UART_2, 7},
-    // {PORTD_12, UART_2, 7 | (6 << 3)},   /* GPIO_USART2_RTS_FULL_REMAP */
+    // {PORTD_4,  USART1, 7 | (4 << 3)},   /* GPIO_USART1_RTS_REMAP */
+    // {PORTB_14, USART2, 7},
+    // {PORTD_12, USART2, 7 | (6 << 3)},   /* GPIO_USART2_RTS_FULL_REMAP */
     {NC,    NC,    0}
 };
 
 const PinMap PinMap_UART_CTS[] = {
     {PORTA_11, USART0, 7},
     {PORTA_0,  USART1, 7},
-    // {PORTD_3,  UART_1, 7 | (4 << 3)},   /* GPIO_USART1_CTS_REMAP */
-    // {PORTB_13, UART_2, 7},
-    // {PORTD_11, UART_2, 7 | (6 << 3)},   /* GPIO_USART2_CTS_FULL_REMAP */
+    // {PORTD_3,  USART1, 7 | (4 << 3)},   /* GPIO_USART1_CTS_REMAP */
+    // {PORTB_13, USART2, 7},
+    // {PORTD_11, USART2, 7 | (6 << 3)},   /* GPIO_USART2_CTS_FULL_REMAP */
     {NC,    NC,    0}
 };
 

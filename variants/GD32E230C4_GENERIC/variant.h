@@ -107,13 +107,20 @@ extern "C" {
 #define PWM3                        PA8
 #define PWM4                        PA9
 
-/* USART definitions */
-#define SERIAL_HOWMANY              1
-#define USE_USART0_SERIAL           
-#define PIN_SERIAL_RX               PA3
-#define PIN_SERIAL_TX               PA2
+/* Serial definitions */
+/* "Serial" is by default Serial1 / USART0 */
+#ifndef DEFAULT_HWSERIAL_INSTANCE
+#define DEFAULT_HWSERIAL_INSTANCE   1
+#endif
+
+/* USART0 */
+#define HAVE_HWSERIAL1
+#ifndef SERIAL0_RX
 #define SERIAL0_RX                  PA3
+#endif
+#ifndef SERIAL0_TX
 #define SERIAL0_TX                  PA2
+#endif
 
 /* ADC definitions */
 #define ADC_RESOLUTION              10

@@ -46,26 +46,7 @@ OF SUCH DAMAGE.
 extern "C" {
 #endif
 
-typedef enum {
-#if defined(USART0)
-    UART0_INDEX,
-#endif
-#if defined(USART1)
-    UART1_INDEX,
-#endif
-#if defined(USART2)
-    UART2_INDEX,
-#endif
-#if defined(UART3)
-    UART3_INDEX,
-#endif
-#if defined(UART4)
-    UART4_INDEX,
-#endif
-    UART_NUM
-} int_uart_indexes_t;
-
-static struct serial_s *obj_s_buf[UART_NUM] = {NULL};
+struct serial_s *obj_s_buf[UART_NUM] = {NULL};
 static rcu_periph_enum usart_clk[UART_NUM]  = {
     RCU_USART0,
     RCU_USART1,
@@ -134,6 +115,8 @@ void serial_init(serial_t *obj, PinName tx, PinName rx)
     p_obj->uart = (UARTName)pinmap_merge(uart_tx, uart_rx);
 
     /* enable UART peripheral clock */
+    /* TODO: This code makes no sense. It checks p_obj->index to set p_obj->index to its exact same value as before */
+    /* however, since p_obj->index was already previously set, this is no problem. */
     switch (p_obj->index) {
 #if defined(USART0)
         case UART0_INDEX:
@@ -755,11 +738,29 @@ void UART3_IRQHandler(void)
 }
 #endif
 
+#if defined(USART3)
+void USART3_IRQHandler(void)
+{
+    /* clear pending IRQ */
+    NVIC_ClearPendingIRQ(usart_irq_n[UART3_INDEX]);
+    usart_irq(obj_s_buf[UART3_INDEX]);
+}
+#endif
+
 /** This function handles UART4 interrupt handler
  *
  */
 #if defined(UART4)
 void UART4_IRQHandler(void)
+{
+    /* clear pending IRQ */
+    NVIC_ClearPendingIRQ(usart_irq_n[UART4_INDEX]);
+    usart_irq(obj_s_buf[UART4_INDEX]);
+}
+#endif
+
+#if defined(USART4)
+void USART4_IRQHandler(void)
 {
     /* clear pending IRQ */
     NVIC_ClearPendingIRQ(usart_irq_n[UART4_INDEX]);
