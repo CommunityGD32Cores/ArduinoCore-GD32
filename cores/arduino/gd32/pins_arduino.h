@@ -56,19 +56,19 @@ static const uint8_t SDA = PIN_WIRE_SDA;
 static const uint8_t SCL = PIN_WIRE_SCL;
 
 /* the PIN_SERIAL_TX/RX definitions point to the default Serial's pins */
-#if defined(DEFAULT_HWSERIAL_IS_USART0)
+#if DEFAULT_HWSERIAL_INSTANCE == 1
 #define PIN_SERIAL_RX       SERIAL0_RX
 #define PIN_SERIAL_TX       SERIAL0_TX
-#elif defined(DEFAULT_HWSERIAL_IS_USART1)
+#elif DEFAULT_HWSERIAL_INSTANCE == 2
 #define PIN_SERIAL_RX       SERIAL1_RX
 #define PIN_SERIAL_TX       SERIAL1_TX
-#elif defined(DEFAULT_HWSERIAL_IS_USART2)
+#elif DEFAULT_HWSERIAL_INSTANCE == 3
 #define PIN_SERIAL_RX       SERIAL2_RX
 #define PIN_SERIAL_TX       SERIAL2_TX
-#elif defined(DEFAULT_HWSERIAL_IS_USART3)
+#elif DEFAULT_HWSERIAL_INSTANCE == 4
 #define PIN_SERIAL_RX       SERIAL3_RX
 #define PIN_SERIAL_TX       SERIAL3_TX
-#elif defined(DEFAULT_HWSERIAL_IS_USART4)
+#elif DEFAULT_HWSERIAL_INSTANCE == 5
 #define PIN_SERIAL_RX       SERIAL4_RX
 #define PIN_SERIAL_TX       SERIAL4_TX
 #endif

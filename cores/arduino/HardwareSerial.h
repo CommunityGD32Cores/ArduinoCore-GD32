@@ -164,7 +164,7 @@ class HardwareSerial : public Stream
 #define Serial Serial4
 #elif DEFAULT_HWSERIAL_INSTANCE == 5
 #define Serial Serial5
-#endif /* DEFAULT_HWSERIAL_IS_USART1 */
+#endif /* DEFAULT_HWSERIAL_INSTANCE */
 #endif /* Serial */
 #endif /* USBD_USE_CDC */
 
