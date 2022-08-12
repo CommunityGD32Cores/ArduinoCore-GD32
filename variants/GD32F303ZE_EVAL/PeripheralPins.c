@@ -278,7 +278,7 @@ const PinMap PinMap_UART_TX[] = {
 const PinMap PinMap_UART_RX[] = {
     {PORTA_10, USART0, 1},
     {PORTB_7,  USART0, 1 | (3 << 3)},   /* GPIO_USART0_RX_REMAP */
-    // {PORTA_3,  USART1, 1},
+    {PORTA_3,  USART1, 1},
     // {PORTD_6,  USART1, 1 | (4 << 3)},   /* GPIO_USART1_RX_REMAP */
     // {PORTB_11, USART2, 1},
     // {PORTC_11, USART2, 1 | (5 << 3)},   /* GPIO_USART2_RX_PARTIAL_REMAP */
