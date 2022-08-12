@@ -30,33 +30,43 @@
 // SerialEvent functions are weak, so when the user doesn't define them,
 // the linker just sets their address to 0 (which is checked below).
 // The Serialx_available is just a wrapper around Serialx.available(),
-// but we can refer to it weakly so we don't pull in the entire
+// but implemented more low level so that we don't have a reference to Serialx.
+// also we can refer to it weakly so we don't pull in the entire
 // HardwareSerial instance if the user doesn't also refer to it.
 
+extern struct serial_s *obj_s_buf[UART_NUM];
+
+int HardwareSerial::availableSerialN(unsigned n)
+{
+    // copy of the HardwareSerial::available function but more direct.
+    if (n >= UART_NUM)
+        return 0;
+    auto _serial = obj_s_buf[n];
+    return ((unsigned int)(SERIAL_RX_BUFFER_SIZE + _serial->rx_head - _serial->rx_tail)) %
+           SERIAL_RX_BUFFER_SIZE;
+}
+
 #if defined(HAVE_HWSERIAL1)
-HardwareSerial Serial1(RX0, TX0, 0);
 void serialEvent1() __attribute__((weak));
 bool Serial1_available()
 {
-    return Serial1.available() > 0;
+    return HardwareSerial::availableSerialN(0) > 0;
 }
 #endif
 
 #if defined(HAVE_HWSERIAL2)
-HardwareSerial Serial2(RX1, TX1, 1);
 void serialEvent2() __attribute__((weak));
 bool Serial2_available()
 {
-    return Serial2.available() > 0;
+    return HardwareSerial::availableSerialN(1) > 0;
 }
 #endif
 
 #if defined(HAVE_HWSERIAL3)
-HardwareSerial Serial3(RX2, TX2, 2);
 void serialEvent3() __attribute__((weak));
 bool Serial3_available()
 {
-    return Serial3.available() > 0;
+    return HardwareSerial::availableSerialN(2) > 0;
 }
 #endif
 
@@ -65,7 +75,7 @@ HardwareSerial Serial4(RX3, TX3, 3);
 void serialEvent4() __attribute__((weak));
 bool Serial4_available()
 {
-    return Serial4.available() > 0;
+    return HardwareSerial::availableSerialN(3) > 0;
 }
 #endif
 
@@ -74,7 +84,7 @@ HardwareSerial Serial5(RX4, TX4, 4);
 void serialEvent5() __attribute__((weak));
 bool Serial5_available()
 {
-    return Serial5.available() > 0;
+    return HardwareSerial::availableSerialN(4) > 0;
 }
 #endif
 

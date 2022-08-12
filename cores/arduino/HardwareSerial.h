@@ -135,6 +135,9 @@ class HardwareSerial : public Stream
         static void _rx_complete_irq(serial_t *obj);
         static void _tx_complete_irq(serial_t *obj);
 
+        // helper func for linker
+        static int availableSerialN(unsigned n);
+
     private:
 
 };
@@ -144,46 +147,45 @@ class HardwareSerial : public Stream
  * ‘Serial1’.
  */
 
+#ifndef DEFAULT_HWSERIAL_INSTANCE 
+#define DEFAULT_HWSERIAL_INSTANCE 1
+#endif
+
 /* Macro-define Serial to actual serial instance. We don't yet have a selection mechanism, use the first one. */
 #if !defined(USBD_USE_CDC)
 #if !defined(Serial)
-#if defined(USE_USART0_SERIAL)
+#if DEFAULT_HWSERIAL_INSTANCE == 1
 #define Serial Serial1
-#elif defined(USE_USART1_SERIAL)
+#elif DEFAULT_HWSERIAL_INSTANCE == 2
 #define Serial Serial2
-#elif defined(USE_USART2_SERIAL)
+#elif DEFAULT_HWSERIAL_INSTANCE == 3
 #define Serial Serial3
-#elif defined(USE_USART3_SERIAL)
+#elif DEFAULT_HWSERIAL_INSTANCE == 4
 #define Serial Serial4
-#elif defined(USE_USART4_SERIAL)
+#elif DEFAULT_HWSERIAL_INSTANCE == 5
 #define Serial Serial5
-#endif /* USE_USART1_SERIAL */
+#endif /* DEFAULT_HWSERIAL_IS_USART1 */
 #endif /* Serial */
 #endif /* USBD_USE_CDC */
 
-#if defined(USE_USART0_SERIAL)
+#if defined(HAVE_HWSERIAL1)
 extern HardwareSerial Serial1;
-#define HAVE_HWSERIAL1
 #endif
 
-#if defined(USE_USART1_SERIAL)
+#if defined(HAVE_HWSERIAL2)
 extern HardwareSerial Serial2;
-#define HAVE_HWSERIAL2
 #endif
 
-#if defined(USE_USART2_SERIAL)
+#if defined(HAVE_HWSERIAL3)
 extern HardwareSerial Serial3;
-#define HAVE_HWSERIAL3
 #endif
 
-#if defined(USE_USART3_SERIAL)
+#if defined(HAVE_HWSERIAL4)
 extern HardwareSerial Serial4;
-#define HAVE_HWSERIAL4
 #endif
 
-#if defined(USE_USART4_SERIAL)
+#if defined(HAVE_HWSERIAL5)
 extern HardwareSerial Serial5;
-#define HAVE_HWSERIAL5
 #endif
 
 extern void serialEventRun(void) __attribute__((weak));

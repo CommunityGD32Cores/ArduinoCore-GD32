@@ -56,6 +56,23 @@ static const uint8_t SDA = PIN_WIRE_SDA;
 static const uint8_t SCL = PIN_WIRE_SCL;
 
 /* the PIN_SERIAL_TX/RX definitions point to the default Serial's pins */
+#if defined(DEFAULT_HWSERIAL_IS_USART0)
+#define PIN_SERIAL_RX       SERIAL0_RX
+#define PIN_SERIAL_TX       SERIAL0_TX
+#elif defined(DEFAULT_HWSERIAL_IS_USART1)
+#define PIN_SERIAL_RX       SERIAL1_RX
+#define PIN_SERIAL_TX       SERIAL1_TX
+#elif defined(DEFAULT_HWSERIAL_IS_USART2)
+#define PIN_SERIAL_RX       SERIAL2_RX
+#define PIN_SERIAL_TX       SERIAL2_TX
+#elif defined(DEFAULT_HWSERIAL_IS_USART3)
+#define PIN_SERIAL_RX       SERIAL3_RX
+#define PIN_SERIAL_TX       SERIAL3_TX
+#elif defined(DEFAULT_HWSERIAL_IS_USART4)
+#define PIN_SERIAL_RX       SERIAL4_RX
+#define PIN_SERIAL_TX       SERIAL4_TX
+#endif
+
 static const uint8_t TX = PIN_SERIAL_TX;
 static const uint8_t RX = PIN_SERIAL_RX;
 
@@ -73,6 +90,30 @@ static const uint8_t RX1 = SERIAL1_RX;
 
 #if defined(SERIAL1_TX)
 static const uint8_t TX1 = SERIAL1_TX;
+#endif
+
+#if defined(SERIAL2_RX)
+static const uint8_t RX2 = SERIAL2_RX;
+#endif
+
+#if defined(SERIAL2_TX)
+static const uint8_t TX2 = SERIAL2_TX;
+#endif
+
+#if defined(SERIAL3_RX)
+static const uint8_t RX3 = SERIAL3_RX;
+#endif
+
+#if defined(SERIAL3_TX)
+static const uint8_t TX3 = SERIAL3_TX;
+#endif
+
+#if defined(SERIAL4_RX)
+static const uint8_t RX4 = SERIAL4_RX;
+#endif
+
+#if defined(SERIAL4_TX)
+static const uint8_t TX4 = SERIAL4_TX;
 #endif
 
 /* configure analog pins */

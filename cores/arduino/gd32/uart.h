@@ -151,6 +151,25 @@ struct serial_s {
     void (*rx_callback)(serial_t *obj);
 };
 
+typedef enum {
+#if defined(USART0)
+    UART0_INDEX,
+#endif
+#if defined(USART1)
+    UART1_INDEX,
+#endif
+#if defined(USART2)
+    UART2_INDEX,
+#endif
+#if defined(UART3) || defined(USART3)
+    UART3_INDEX,
+#endif
+#if defined(UART4) || defined(USART4)
+    UART4_INDEX,
+#endif
+    UART_NUM
+} int_uart_indexes_t;
+
 /* Initialize the serial peripheral. It sets the default parameters for serial peripheral, and configures its specifieds pins. */
 void serial_init(serial_t *obj, PinName tx, PinName rx);
 /* Release the serial peripheral, not currently invoked. It requires further resource management. */

@@ -84,8 +84,7 @@ extern "C" {
 #define PWM4                        PA4
 
 /* USART definitions */
-#define SERIAL_HOWMANY              1
-#define USE_USART0_SERIAL           
+#define DEFAULT_HWSERIAL_INSTANCE 1           
 #define PIN_SERIAL_RX               PA3
 #define PIN_SERIAL_TX               PA2
 #define SERIAL0_RX                  PA3
