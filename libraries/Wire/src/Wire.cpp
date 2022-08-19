@@ -26,22 +26,11 @@ extern "C" {
 }
 
 #include "Wire.h"
-
-void (*TwoWire::user_onRequest)(void);
-void (*TwoWire::user_onReceive)(int);
+#include <functional>
 
 #if defined(HAVE_I2C)
 TwoWire Wire(SDA, SCL, 0);
 #endif
-
-#if defined(HAVE_I2C1)
-TwoWire Wire1(SDA1, SCL1, 1);
-#endif
-
-ring_buffer TwoWire::_rx_buffer = {{0}, 0, 0};
-ring_buffer TwoWire::_tx_buffer = {{0}, 0, 0};
-
-uint8_t TwoWire::txAddress = 0;
 
 TwoWire::TwoWire(uint8_t sda, uint8_t scl, int i2c_index)
 {
@@ -87,8 +76,11 @@ void TwoWire::begin(uint8_t address)
 
     i2c_slaves_interrupt_enable(&_i2c);
 
-    i2c_attach_slave_tx_callback(&_i2c, onRequestService);
-    i2c_attach_slave_rx_callback(&_i2c, onReceiveService);
+    i2c_attach_slave_tx_callback(&_i2c, std::bind(&TwoWire::onRequestService, this));
+    i2c_attach_slave_rx_callback(
+        &_i2c, 
+        std::bind(&TwoWire::onReceiveService, this, std::placeholders::_1, std::placeholders::_2)
+    );
 }
 
 void TwoWire::begin(int address)

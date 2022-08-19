@@ -31,11 +31,6 @@ OF SUCH DAMAGE.
 #include "pinmap.h"
 #include "twi.h"
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 typedef enum {
 #if defined(I2C0)
     I2C0_INDEX,
@@ -492,12 +487,13 @@ i2c_status_enum i2c_wait_standby_state(i2c_t *obj, uint8_t address)
     return status;
 }
 
+#include <functional>
 /** sets function called before a slave read operation
  *
  * @param obj      The I2C object
  * @param function Callback function to use
  */
-void i2c_attach_slave_rx_callback(i2c_t *obj, void (*function)(uint8_t *, int))
+void i2c_attach_slave_rx_callback(i2c_t *obj, std::function<void(uint8_t *, int)> function)
 {
     if (obj == NULL) {
         return;
@@ -514,7 +510,7 @@ void i2c_attach_slave_rx_callback(i2c_t *obj, void (*function)(uint8_t *, int))
  * @param obj      The I2C object
  * @param function Callback function to use
  */
-void i2c_attach_slave_tx_callback(i2c_t *obj, void (*function)(void))
+void i2c_attach_slave_tx_callback(i2c_t *obj, std::function<void(void)> function)
 {
     if (obj == NULL) {
         return;
@@ -572,6 +568,11 @@ i2c_status_enum _i2c_busy_wait(i2c_t *obj)
     return I2C_OK;
 }
 
+void i2c_set_clock(i2c_t *obj, uint32_t clock_hz)
+{
+    i2c_clock_config(obj->i2c, clock_hz, I2C_DTCY_2);
+}
+
 #ifdef I2C0
 /** This function handles I2C interrupt handler
  *
@@ -611,7 +612,7 @@ static void i2c_irq(struct i2c_s *obj_s)
 /** Handle I2C0 event interrupt request
  *
  */
-void I2C0_EV_IRQHandler(void)
+extern "C" void I2C0_EV_IRQHandler(void)
 {
     i2c_irq(obj_s_buf[I2C0_INDEX]);
 }
@@ -619,7 +620,7 @@ void I2C0_EV_IRQHandler(void)
 /** handle I2C0 error interrupt request
  *
  */
-void I2C0_ER_IRQHandler(void)
+extern "C" void I2C0_ER_IRQHandler(void)
 {
     /* no acknowledge received */
     if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_AERR)) {
@@ -663,7 +664,7 @@ void I2C0_ER_IRQHandler(void)
 /** Handle I2C1 event interrupt request
  *
  */
-void I2C1_EV_IRQHandler(void)
+extern "C" void I2C1_EV_IRQHandler(void)
 {
     i2c_irq(obj_s_buf[I2C1_INDEX]);
 }
@@ -671,7 +672,7 @@ void I2C1_EV_IRQHandler(void)
 /** handle I2C1 error interrupt request
  *
  */
-void I2C1_ER_IRQHandler(void)
+extern "C" void I2C1_ER_IRQHandler(void)
 {
     /* no acknowledge received */
     if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_AERR)) {
@@ -709,12 +710,4 @@ void I2C1_ER_IRQHandler(void)
     }
 }
 
-void i2c_set_clock(i2c_t *obj, uint32_t clock_hz)
-{
-    i2c_clock_config(obj->i2c, clock_hz, I2C_DTCY_2);
-}
-
-#endif
-#ifdef __cplusplus
-}
 #endif

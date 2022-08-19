@@ -35,6 +35,7 @@ OF SUCH DAMAGE.
 #include "gd32xxyy.h"
 
 #ifdef __cplusplus
+#include <functional>
 extern "C" {
 #endif
 
@@ -59,8 +60,10 @@ struct i2c_s {
     uint16_t   tx_count;
     uint16_t   rx_count;
 
-    void (*slave_transmit_callback)(void);
-    void (*slave_receive_callback)(uint8_t *, int);
+    std::function<void(void)> slave_transmit_callback;
+    //void (*slave_transmit_callback)(void);
+    std::function<void(uint8_t *, int)> slave_receive_callback;
+    //void (*slave_receive_callback)(uint8_t *, int);
 };
 
 typedef enum {
@@ -86,10 +89,6 @@ i2c_status_enum i2c_master_receive(i2c_t *obj, uint8_t address, uint8_t *data, u
                                    int stop);
 /* read bytes in master mode at a given address */
 i2c_status_enum i2c_wait_standby_state(i2c_t *obj, uint8_t address);
-/* sets function called before a slave read operation */
-void i2c_attach_slave_rx_callback(i2c_t *obj, void (*function)(uint8_t *, int));
-/* sets function called before a slave write operation */
-void i2c_attach_slave_tx_callback(i2c_t *obj, void (*function)(void));
 /* Write bytes to master */
 i2c_status_enum i2c_slave_write_buffer(i2c_t *obj, uint8_t *data, uint16_t size);
 /* set I2C clock speed */
@@ -102,5 +101,10 @@ i2c_status_enum _i2c_busy_wait(i2c_t *obj);
 #ifdef __cplusplus
 }
 #endif
+
+/* sets function called before a slave read operation */
+void i2c_attach_slave_rx_callback(i2c_t *obj, std::function<void(uint8_t *, int)> function);
+/* sets function called before a slave write operation */
+void i2c_attach_slave_tx_callback(i2c_t *obj, std::function<void(void)> function);
 
 #endif /* __TWI_H__ */

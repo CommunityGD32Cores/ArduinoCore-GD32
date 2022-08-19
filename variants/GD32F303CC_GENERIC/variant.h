@@ -92,8 +92,12 @@ extern "C" {
 #define PIN_SPI_SCK             PB13
 
 /* I2C definitions */
+#define HAVE_I2C
 #define PIN_WIRE_SDA            PB9
 #define PIN_WIRE_SCL            PB8
+#define HAVE_I2C1
+#define PIN_WIRE1_SDA           PB11
+#define PIN_WIRE1_SCL           PB10
 
 /* TIMER or PWM definitions */
 #define TIMER_TONE              TIMER5
@@ -130,9 +134,6 @@ extern "C" {
 /* ADC definitions */
 #define ADC_RESOLUTION          10
 #define DACC_RESOLUTION         12
-
-/* I2C definitions */
-#define USE_I2C       1
 
 /* USB definitions */
 #define USB_PULLUP                GPIOA
