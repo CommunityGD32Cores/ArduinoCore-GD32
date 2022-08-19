@@ -35,7 +35,6 @@ OF SUCH DAMAGE.
 #include "gd32xxyy.h"
 
 #ifdef __cplusplus
-#include <functional>
 extern "C" {
 #endif
 
@@ -60,10 +59,9 @@ struct i2c_s {
     uint16_t   tx_count;
     uint16_t   rx_count;
 
-    std::function<void(void)> slave_transmit_callback;
-    //void (*slave_transmit_callback)(void);
-    std::function<void(uint8_t *, int)> slave_receive_callback;
-    //void (*slave_receive_callback)(uint8_t *, int);
+    void* pWireObj;
+    void (*slave_transmit_callback)(void* pWireObj);
+    void (*slave_receive_callback)(void* pWireObj, uint8_t *, int);
 };
 
 typedef enum {
@@ -91,6 +89,10 @@ i2c_status_enum i2c_master_receive(i2c_t *obj, uint8_t address, uint8_t *data, u
 i2c_status_enum i2c_wait_standby_state(i2c_t *obj, uint8_t address);
 /* Write bytes to master */
 i2c_status_enum i2c_slave_write_buffer(i2c_t *obj, uint8_t *data, uint16_t size);
+/* sets function called before a slave read operation */
+void i2c_attach_slave_rx_callback(i2c_t *obj, void (*function)(void*, uint8_t*, int), void* pWireObj);
+/* sets function called before a slave write operation */
+void i2c_attach_slave_tx_callback(i2c_t *obj, void (*function)(void*), void* pWireObj);
 /* set I2C clock speed */
 void i2c_set_clock(i2c_t *obj, uint32_t clock_hz);
 /* Check to see if the I2C bus is busy */
@@ -101,10 +103,5 @@ i2c_status_enum _i2c_busy_wait(i2c_t *obj);
 #ifdef __cplusplus
 }
 #endif
-
-/* sets function called before a slave read operation */
-void i2c_attach_slave_rx_callback(i2c_t *obj, std::function<void(uint8_t *, int)> function);
-/* sets function called before a slave write operation */
-void i2c_attach_slave_tx_callback(i2c_t *obj, std::function<void(void)> function);
 
 #endif /* __TWI_H__ */

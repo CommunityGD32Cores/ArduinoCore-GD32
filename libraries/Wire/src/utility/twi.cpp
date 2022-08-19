@@ -487,13 +487,12 @@ i2c_status_enum i2c_wait_standby_state(i2c_t *obj, uint8_t address)
     return status;
 }
 
-#include <functional>
 /** sets function called before a slave read operation
  *
  * @param obj      The I2C object
  * @param function Callback function to use
  */
-void i2c_attach_slave_rx_callback(i2c_t *obj, std::function<void(uint8_t *, int)> function)
+void i2c_attach_slave_rx_callback(i2c_t *obj, void (*function)(void*, uint8_t*, int), void* pWireObj)
 {
     if (obj == NULL) {
         return;
@@ -503,6 +502,7 @@ void i2c_attach_slave_rx_callback(i2c_t *obj, std::function<void(uint8_t *, int)
         return;
     }
     obj->slave_receive_callback = function;
+    obj->pWireObj;
 }
 
 /** sets function called before a slave write operation
@@ -510,7 +510,7 @@ void i2c_attach_slave_rx_callback(i2c_t *obj, std::function<void(uint8_t *, int)
  * @param obj      The I2C object
  * @param function Callback function to use
  */
-void i2c_attach_slave_tx_callback(i2c_t *obj, std::function<void(void)> function)
+void i2c_attach_slave_tx_callback(i2c_t *obj, void (*function)(void*), void* pWireObj)
 {
     if (obj == NULL) {
         return;
@@ -520,6 +520,7 @@ void i2c_attach_slave_tx_callback(i2c_t *obj, std::function<void(void)> function
         return;
     }
     obj->slave_transmit_callback = function;
+    obj->pWireObj = pWireObj;
 }
 
 /** Write bytes to master
@@ -586,7 +587,7 @@ static void i2c_irq(struct i2c_s *obj_s)
         //memset(_rx_Buffer, _rx_count, 0);
         obj_s->rx_count = 0;
         if (i2c_flag_get(I2C0, GD32_I2C_FLAG_IS_TRANSMTR_OR_RECVR)) {
-            obj_s->slave_transmit_callback();
+            obj_s->slave_transmit_callback(obj_s->pWireObj);
         }
     } else if ((i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_TBE)) &&
                (!i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_AERR))) {
@@ -604,7 +605,7 @@ static void i2c_irq(struct i2c_s *obj_s)
         i2c_enable(I2C0);
         if (!i2c_flag_get(I2C0, GD32_I2C_FLAG_IS_TRANSMTR_OR_RECVR)) {
             obj_s->rx_buffer_ptr = obj_s->rx_buffer_ptr - obj_s->rx_count ;
-            obj_s->slave_receive_callback(obj_s->rx_buffer_ptr, obj_s->rx_count);
+            obj_s->slave_receive_callback(obj_s->pWireObj, obj_s->rx_buffer_ptr, obj_s->rx_count);
         }
     }
 }

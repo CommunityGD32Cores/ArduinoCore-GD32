@@ -41,8 +41,6 @@ typedef struct {
 class TwoWire : public Stream
 {
     private:
-        ring_buffer _rx_buffer = {{0}, 0, 0};;
-        ring_buffer _tx_buffer = {{0}, 0, 0};;
         uint8_t txAddress = 0;
 
 
@@ -51,14 +49,17 @@ class TwoWire : public Stream
         uint8_t ownAddress;
         i2c_t _i2c;
 
+        static void onRequestService(void* pWireObj);
+        static void onReceiveService(void* pWireObj, uint8_t *, int);
+
+    protected:
+        ring_buffer _rx_buffer = {{0}, 0, 0};;
+        ring_buffer _tx_buffer = {{0}, 0, 0};;
         void (*user_onRequest)(void);
         void (*user_onReceive)(int);
-        void onRequestService(void);
-        void onReceiveService(uint8_t *, int);
-
-
 
     public:
+
         TwoWire(uint8_t sda, uint8_t scl, int i2c_index);
 
         void begin();

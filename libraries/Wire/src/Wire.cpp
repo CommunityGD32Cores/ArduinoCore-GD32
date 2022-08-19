@@ -26,7 +26,6 @@ extern "C" {
 }
 
 #include "Wire.h"
-#include <functional>
 
 #if defined(HAVE_I2C)
 TwoWire Wire(SDA, SCL, 0);
@@ -76,11 +75,8 @@ void TwoWire::begin(uint8_t address)
 
     i2c_slaves_interrupt_enable(&_i2c);
 
-    i2c_attach_slave_tx_callback(&_i2c, std::bind(&TwoWire::onRequestService, this));
-    i2c_attach_slave_rx_callback(
-        &_i2c, 
-        std::bind(&TwoWire::onReceiveService, this, std::placeholders::_1, std::placeholders::_2)
-    );
+    i2c_attach_slave_tx_callback(&_i2c, &TwoWire::onRequestService, this);
+    i2c_attach_slave_rx_callback(&_i2c, &TwoWire::onReceiveService, this);
 }
 
 void TwoWire::begin(int address)
@@ -285,28 +281,29 @@ void TwoWire::flush()
 }
 
 
-void TwoWire::onReceiveService(uint8_t *inBytes, int numBytes)
+void TwoWire::onReceiveService(void* pWireObj, uint8_t *inBytes, int numBytes)
 {
-
-    if (user_onReceive) {
-        _rx_buffer.head = numBytes;
-        _rx_buffer.tail = 0;
+    TwoWire* pWire = (TwoWire*) pWireObj;
+    if (pWire->user_onReceive) {
+        pWire->_rx_buffer.head = numBytes;
+        pWire->_rx_buffer.tail = 0;
         // alert user program
-        user_onReceive(numBytes);
+        pWire->user_onReceive(numBytes);
     }
 }
 
 // behind the scenes function that is called when data is requested
-void TwoWire::onRequestService(void)
+void TwoWire::onRequestService(void* pWireObj)
 {
+    TwoWire* pWire = (TwoWire*) pWireObj;
     // don't bother if user hasn't registered a callback
-    if (user_onRequest) {
+    if (pWire->user_onRequest) {
         // reset tx buffer iterator vars
         // !!! this will kill any pending pre-master sendTo() activity
-        _tx_buffer.head = 0;
-        _tx_buffer.tail = 0;
+        pWire->_tx_buffer.head = 0;
+        pWire->_tx_buffer.tail = 0;
         // alert user program
-        user_onRequest();
+        pWire->user_onRequest();
     }
 
 }
