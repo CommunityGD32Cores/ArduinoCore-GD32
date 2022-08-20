@@ -112,4 +112,8 @@ extern TwoWire Wire;
 extern TwoWire Wire1;
 #endif
 
+#if defined(HAVE_I2C2)
+extern TwoWire Wire2;
+#endif
+
 #endif

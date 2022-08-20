@@ -69,9 +69,14 @@ extern "C" {
 #define PIN_SPI_SCK                 PA5
 
 /* I2C definitions */
+/* I2C0 */
+#define HAVE_I2C
+#ifndef PIN_WIRE_SDA
 #define PIN_WIRE_SDA                PF0
+#endif
+#ifndef PIN_WIRE_SCL
 #define PIN_WIRE_SCL                PF1
-#define USE_I2C                     1
+#endif
 
 /* TIMER or PWM definitions */
 #define TIMER_TONE                  TIMER5

@@ -93,9 +93,33 @@ extern "C" {
 #define PIN_SPI_SCK                 PB3
 
 /* I2C definitions */
+/* I2C0 */
+#define HAVE_I2C
+#ifndef PIN_WIRE_SDA
 #define PIN_WIRE_SDA                PB7
+#endif
+#ifndef PIN_WIRE_SCL
 #define PIN_WIRE_SCL                PB6
-#define USE_I2C                     1
+#endif
+
+/* I2C1 */
+#define HAVE_I2C1
+#ifndef PIN_WIRE1_SDA
+#define PIN_WIRE1_SDA               PB11
+#endif
+#ifndef PIN_WIRE1_SCL
+#define PIN_WIRE1_SCL               PB10
+#endif
+
+/* I2C2 */
+/* Pins overlap with I2C0. Change I2C0 pins as neeeded. */
+#define HAVE_I2C2
+#ifndef PIN_WIRE2_SDA
+#define PIN_WIRE2_SDA               PB7
+#endif
+#ifndef PIN_WIRE2_SCL
+#define PIN_WIRE2_SCL               PB6
+#endif
 
 /* TIMER or PWM definitions */
 #define TIMER_TONE                  TIMER5

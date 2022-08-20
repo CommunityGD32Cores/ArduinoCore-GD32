@@ -38,6 +38,9 @@ typedef enum {
 #if defined(I2C1)
     I2C1_INDEX,
 #endif
+#if defined(I2C2)
+    I2C2_INDEX,
+#endif
     I2C_NUM
 } internal_i2c_index_t;
 
@@ -108,14 +111,19 @@ void i2c_init(i2c_t *obj, PinName sda, PinName scl, uint8_t address)
             /* enable I2C0 clock and configure the pins of I2C0 */
             obj_s->index = 0;
             rcu_periph_clock_enable(RCU_I2C0);
-
             break;
         case I2C1:
             /* enable I2C1 clock and configure the pins of I2C1 */
             obj_s->index = 1;
             rcu_periph_clock_enable(RCU_I2C1);
-
             break;
+#ifdef I2C2
+        case I2C2:
+            /* enable I2C2 clock and configure the pins of I2C2 */
+            obj_s->index = 2;
+            rcu_periph_clock_enable(RCU_I2C2);
+            break;
+#endif
         default:
             break;
     }
@@ -167,6 +175,13 @@ void i2c_slaves_interrupt_enable(i2c_t *obj)
             nvic_irq_enable(I2C1_ER_IRQn, 1);
 #endif           
             break;
+#ifdef I2C2
+        case I2C2:
+            /* enable I2C2 interrupt */
+            nvic_irq_enable(I2C2_EV_IRQn, 1, 3);
+            nvic_irq_enable(I2C2_ER_IRQn, 1, 2);
+            break;
+#endif
         default:
             break;
     }
@@ -609,13 +624,16 @@ void i2c_err_handler(uint32_t i2c)
 }
 
 
-#ifdef I2C0
 /** This function handles I2C interrupt handler
  *
  * @param i2c_periph The I2C peripheral
  */
 static void i2c_irq(struct i2c_s *obj_s)
 {
+    // unregistered object?
+    if(obj_s == NULL) {
+        return;
+    }
     uint32_t i2c = obj_s->i2c;
     if (i2c_interrupt_flag_get(i2c, I2C_INT_FLAG_ADDSEND)) {
         /* clear the ADDSEND bit */
@@ -651,6 +669,7 @@ static void i2c_irq(struct i2c_s *obj_s)
     }
 }
 
+#ifdef I2C0
 /** Handle I2C0 event interrupt request
  *
  */
@@ -684,6 +703,24 @@ extern "C" void I2C1_EV_IRQHandler(void)
 extern "C" void I2C1_ER_IRQHandler(void)
 {
     i2c_err_handler(I2C1);
+}
+#endif
+
+#ifdef I2C2
+/** Handle I2C2 event interrupt request
+ *
+ */
+extern "C" void I2C2_EV_IRQHandler(void)
+{
+    i2c_irq(obj_s_buf[I2C2_INDEX]);
+}
+
+/** handle I2C1 error interrupt request
+ *
+ */
+extern "C" void I2C2_ER_IRQHandler(void)
+{
+    i2c_err_handler(I2C2);
 }
 
 #endif

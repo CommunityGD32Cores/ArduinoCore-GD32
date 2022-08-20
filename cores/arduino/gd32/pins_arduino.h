@@ -62,6 +62,11 @@ static const uint8_t SDA1 = PIN_WIRE1_SDA;
 static const uint8_t SCL1 = PIN_WIRE1_SCL;
 #endif
 
+#ifdef HAVE_I2C2
+static const uint8_t SDA2 = PIN_WIRE2_SDA;
+static const uint8_t SCL2 = PIN_WIRE2_SCL;
+#endif
+
 /* the PIN_SERIAL_TX/RX definitions point to the default Serial's pins */
 #if DEFAULT_HWSERIAL_INSTANCE == 1
 #define PIN_SERIAL_RX       SERIAL0_RX

@@ -129,10 +129,15 @@ extern "C" {
 #define ADC_RESOLUTION          10
 #define DACC_RESOLUTION         12
 
-/* I2C definitions */
-#define USE_I2C       1
-#define PIN_WIRE_SDA            PB7
-#define PIN_WIRE_SCL            PB6
+/* I2C0 */
+#define HAVE_I2C
+#ifndef PIN_WIRE_SDA
+#define PIN_WIRE_SDA                PB7
+#endif
+#ifndef PIN_WIRE_SCL
+#define PIN_WIRE_SCL                PB6
+#endif
+
 
 /* USB definitions */
 #define USB_PULLUP                GPIOA
