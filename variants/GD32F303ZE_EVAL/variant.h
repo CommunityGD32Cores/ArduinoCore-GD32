@@ -119,10 +119,7 @@ extern "C" {
 
 /* ADC definitions */
 #define ADC_RESOLUTION          10
-#define DACC_RESOLUTION         12
-
-/* I2C definitions */
-#define USE_I2C       1
+#define DAC_RESOLUTION          12
 
 #ifdef __cplusplus
 } // extern "C"

@@ -127,7 +127,7 @@ extern "C" {
 
 /* ADC definitions */
 #define ADC_RESOLUTION          10
-#define DACC_RESOLUTION         12
+#define DAC_RESOLUTION         12
 
 /* I2C0 */
 #define HAVE_I2C

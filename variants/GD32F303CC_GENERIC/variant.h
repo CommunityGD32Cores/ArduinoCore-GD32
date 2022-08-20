@@ -133,7 +133,7 @@ extern "C" {
 
 /* ADC definitions */
 #define ADC_RESOLUTION          10
-#define DACC_RESOLUTION         12
+#define DAC_RESOLUTION         12
 
 /* USB definitions */
 #define USB_PULLUP                GPIOA
