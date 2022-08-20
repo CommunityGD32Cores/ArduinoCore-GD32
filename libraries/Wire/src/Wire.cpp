@@ -40,6 +40,7 @@ TwoWire::TwoWire(uint8_t sda, uint8_t scl, int i2c_index)
 
     _i2c.rx_buffer_ptr = _rx_buffer.buffer;
     _i2c.tx_buffer_ptr = _tx_buffer.buffer;
+    _i2c.tx_rx_buffer_size = (uint16_t) sizeof(_tx_buffer.buffer);
     _i2c.tx_count = 0;
     _i2c.rx_count = 0;
     _i2c.index = i2c_index;

@@ -38,13 +38,6 @@ OF SUCH DAMAGE.
 extern "C" {
 #endif
 
-/* I2C Tx/Rx buffer size */
-#if !defined(I2C_BUFFER_SIZE)
-#define I2C_BUFFER_SIZE    32
-#elif (I2C_BUFFER_SIZE >= 256)
-#error I2C buffer size cannot exceed 255
-#endif
-
 typedef struct i2c_s i2c_t;
 
 struct i2c_s {
@@ -58,6 +51,8 @@ struct i2c_s {
     uint8_t    *rx_buffer_ptr;
     uint16_t   tx_count;
     uint16_t   rx_count;
+    /* TX and RX buffer are expected to be of this size */
+    uint16_t tx_rx_buffer_size;
 
     void* pWireObj;
     void (*slave_transmit_callback)(void* pWireObj);
