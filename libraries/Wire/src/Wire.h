@@ -24,9 +24,7 @@
 
 #include "api/Stream.h"
 #include "Arduino.h"
-extern "C" {
 #include "utility/twi.h"
-}
 
 #if !defined(WIRE_BUFFER_LENGTH)
 #define WIRE_BUFFER_LENGTH 32
@@ -43,9 +41,7 @@ typedef struct {
 class TwoWire : public Stream
 {
     private:
-        static ring_buffer _rx_buffer;
-        static ring_buffer _tx_buffer;
-        static uint8_t txAddress;
+        uint8_t txAddress = 0;
 
 
         uint8_t transmitting;
@@ -53,14 +49,17 @@ class TwoWire : public Stream
         uint8_t ownAddress;
         i2c_t _i2c;
 
-        static void (*user_onRequest)(void);
-        static void (*user_onReceive)(int);
-        static void onRequestService(void);
-        static void onReceiveService(uint8_t *, int);
+        static void onRequestService(void* pWireObj);
+        static void onReceiveService(void* pWireObj, uint8_t *, int);
 
-
+    protected:
+        ring_buffer _rx_buffer = {{0}, 0, 0};;
+        ring_buffer _tx_buffer = {{0}, 0, 0};;
+        void (*user_onRequest)(void);
+        void (*user_onReceive)(int);
 
     public:
+
         TwoWire(uint8_t sda, uint8_t scl, int i2c_index);
 
         void begin();
@@ -105,14 +104,16 @@ class TwoWire : public Stream
         using Print::write;
 };
 
-#if defined(USE_I2C)
+#if defined(HAVE_I2C)
 extern TwoWire Wire;
-#define HAVE_I2C
 #endif
 
-#if defined(USE_I2C1)
+#if defined(HAVE_I2C1)
 extern TwoWire Wire1;
-#define HAVE_I2C1
+#endif
+
+#if defined(HAVE_I2C2)
+extern TwoWire Wire2;
 #endif
 
 #endif

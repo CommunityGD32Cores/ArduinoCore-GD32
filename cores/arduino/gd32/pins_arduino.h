@@ -52,8 +52,20 @@ static const uint8_t MOSI = PIN_SPI_MOSI;
 static const uint8_t MISO = PIN_SPI_MISO;
 static const uint8_t SCK  = PIN_SPI_SCK;
 
+#ifdef HAVE_I2C
 static const uint8_t SDA = PIN_WIRE_SDA;
 static const uint8_t SCL = PIN_WIRE_SCL;
+#endif
+
+#ifdef HAVE_I2C1
+static const uint8_t SDA1 = PIN_WIRE1_SDA;
+static const uint8_t SCL1 = PIN_WIRE1_SCL;
+#endif
+
+#ifdef HAVE_I2C2
+static const uint8_t SDA2 = PIN_WIRE2_SDA;
+static const uint8_t SCL2 = PIN_WIRE2_SCL;
+#endif
 
 /* the PIN_SERIAL_TX/RX definitions point to the default Serial's pins */
 #if DEFAULT_HWSERIAL_INSTANCE == 1

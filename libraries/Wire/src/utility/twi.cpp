@@ -31,17 +31,15 @@ OF SUCH DAMAGE.
 #include "pinmap.h"
 #include "twi.h"
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 typedef enum {
 #if defined(I2C0)
     I2C0_INDEX,
 #endif
 #if defined(I2C1)
     I2C1_INDEX,
+#endif
+#if defined(I2C2)
+    I2C2_INDEX,
 #endif
     I2C_NUM
 } internal_i2c_index_t;
@@ -113,14 +111,19 @@ void i2c_init(i2c_t *obj, PinName sda, PinName scl, uint8_t address)
             /* enable I2C0 clock and configure the pins of I2C0 */
             obj_s->index = 0;
             rcu_periph_clock_enable(RCU_I2C0);
-
             break;
         case I2C1:
             /* enable I2C1 clock and configure the pins of I2C1 */
             obj_s->index = 1;
             rcu_periph_clock_enable(RCU_I2C1);
-
             break;
+#ifdef I2C2
+        case I2C2:
+            /* enable I2C2 clock and configure the pins of I2C2 */
+            obj_s->index = 2;
+            rcu_periph_clock_enable(RCU_I2C2);
+            break;
+#endif
         default:
             break;
     }
@@ -172,6 +175,13 @@ void i2c_slaves_interrupt_enable(i2c_t *obj)
             nvic_irq_enable(I2C1_ER_IRQn, 1);
 #endif           
             break;
+#ifdef I2C2
+        case I2C2:
+            /* enable I2C2 interrupt */
+            nvic_irq_enable(I2C2_EV_IRQn, 1, 3);
+            nvic_irq_enable(I2C2_ER_IRQn, 1, 2);
+            break;
+#endif
         default:
             break;
     }
@@ -244,10 +254,6 @@ i2c_status_enum i2c_master_transmit(i2c_t *obj, uint8_t address, uint8_t *data, 
     /* When size is 0, this is usually an I2C scan / ping to check if device is there and ready */
     if (length == 0) {
         return i2c_wait_standby_state(obj, address);
-    }
-
-    if (length > I2C_BUFFER_SIZE) {
-        return I2C_DATA_TOO_LONG;
     }
 
     i2c_status_enum ret = I2C_OK;
@@ -497,7 +503,7 @@ i2c_status_enum i2c_wait_standby_state(i2c_t *obj, uint8_t address)
  * @param obj      The I2C object
  * @param function Callback function to use
  */
-void i2c_attach_slave_rx_callback(i2c_t *obj, void (*function)(uint8_t *, int))
+void i2c_attach_slave_rx_callback(i2c_t *obj, void (*function)(void*, uint8_t*, int), void* pWireObj)
 {
     if (obj == NULL) {
         return;
@@ -507,6 +513,7 @@ void i2c_attach_slave_rx_callback(i2c_t *obj, void (*function)(uint8_t *, int))
         return;
     }
     obj->slave_receive_callback = function;
+    obj->pWireObj;
 }
 
 /** sets function called before a slave write operation
@@ -514,7 +521,7 @@ void i2c_attach_slave_rx_callback(i2c_t *obj, void (*function)(uint8_t *, int))
  * @param obj      The I2C object
  * @param function Callback function to use
  */
-void i2c_attach_slave_tx_callback(i2c_t *obj, void (*function)(void))
+void i2c_attach_slave_tx_callback(i2c_t *obj, void (*function)(void*), void* pWireObj)
 {
     if (obj == NULL) {
         return;
@@ -524,6 +531,7 @@ void i2c_attach_slave_tx_callback(i2c_t *obj, void (*function)(void))
         return;
     }
     obj->slave_transmit_callback = function;
+    obj->pWireObj = pWireObj;
 }
 
 /** Write bytes to master
@@ -539,7 +547,7 @@ i2c_status_enum i2c_slave_write_buffer(i2c_t *obj, uint8_t *data, uint16_t lengt
     uint8_t i = 0;
     i2c_status_enum ret = I2C_OK;
 
-    if (length > I2C_BUFFER_SIZE) {
+    if (length > obj->tx_rx_buffer_size) {
         ret = I2C_DATA_TOO_LONG;
     } else {
         /* check the communication status */
@@ -572,46 +580,100 @@ i2c_status_enum _i2c_busy_wait(i2c_t *obj)
     return I2C_OK;
 }
 
-#ifdef I2C0
+void i2c_set_clock(i2c_t *obj, uint32_t clock_hz)
+{
+    i2c_clock_config(obj->i2c, clock_hz, I2C_DTCY_2);
+}
+
+void i2c_err_handler(uint32_t i2c) 
+{
+    /* no acknowledge received */
+    if (i2c_interrupt_flag_get(i2c, I2C_INT_FLAG_AERR)) {
+        i2c_interrupt_flag_clear(i2c, I2C_INT_FLAG_AERR);
+    }
+
+    /* SMBus alert */
+    if (i2c_interrupt_flag_get(i2c, I2C_INT_FLAG_SMBALT)) {
+        i2c_interrupt_flag_clear(i2c, I2C_INT_FLAG_SMBALT);
+    }
+
+    /* bus timeout in SMBus mode */
+    if (i2c_interrupt_flag_get(i2c, I2C_INT_FLAG_SMBTO)) {
+        i2c_interrupt_flag_clear(i2c, I2C_INT_FLAG_SMBTO);
+    }
+
+    /* over-run or under-run when SCL stretch is disabled */
+    if (i2c_interrupt_flag_get(i2c, I2C_INT_FLAG_OUERR)) {
+        i2c_interrupt_flag_clear(i2c, I2C_INT_FLAG_OUERR);
+    }
+
+    /* arbitration lost */
+    if (i2c_interrupt_flag_get(i2c, I2C_INT_FLAG_LOSTARB)) {
+        i2c_interrupt_flag_clear(i2c, I2C_INT_FLAG_LOSTARB);
+    }
+
+    /* bus error */
+    if (i2c_interrupt_flag_get(i2c, I2C_INT_FLAG_BERR)) {
+        i2c_interrupt_flag_clear(i2c, I2C_INT_FLAG_BERR);
+    }
+
+    /* CRC value doesn't match */
+    if (i2c_interrupt_flag_get(i2c, I2C_INT_FLAG_PECERR)) {
+        i2c_interrupt_flag_clear(i2c, I2C_INT_FLAG_PECERR);
+    }
+}
+
+
 /** This function handles I2C interrupt handler
  *
  * @param i2c_periph The I2C peripheral
  */
 static void i2c_irq(struct i2c_s *obj_s)
 {
-    if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_ADDSEND)) {
+    // unregistered object?
+    if(obj_s == NULL) {
+        return;
+    }
+    uint32_t i2c = obj_s->i2c;
+    if (i2c_interrupt_flag_get(i2c, I2C_INT_FLAG_ADDSEND)) {
         /* clear the ADDSEND bit */
-        i2c_interrupt_flag_clear(I2C0, I2C_INT_FLAG_ADDSEND);
+        i2c_interrupt_flag_clear(i2c, I2C_INT_FLAG_ADDSEND);
         //memset(_rx_Buffer, _rx_count, 0);
         obj_s->rx_count = 0;
-        if (i2c_flag_get(I2C0, GD32_I2C_FLAG_IS_TRANSMTR_OR_RECVR)) {
-            obj_s->slave_transmit_callback();
+        if (i2c_flag_get(i2c, GD32_I2C_FLAG_IS_TRANSMTR_OR_RECVR)) {
+            obj_s->slave_transmit_callback(obj_s->pWireObj);
         }
-    } else if ((i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_TBE)) &&
-               (!i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_AERR))) {
+    } else if ((i2c_interrupt_flag_get(i2c, I2C_INT_FLAG_TBE)) &&
+               (!i2c_interrupt_flag_get(i2c, I2C_INT_FLAG_AERR))) {
         /* Send a data byte */
         if (obj_s->tx_count > 0) {
-            i2c_data_transmit(I2C0, *obj_s->tx_buffer_ptr++);
+            i2c_data_transmit(i2c, *obj_s->tx_buffer_ptr++);
             obj_s->tx_count--;
         }
-    } else if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_RBNE)) {
-        /* if reception data register is not empty ,I2C1 will read a data from I2C_DATA */
-        *obj_s->rx_buffer_ptr++ = i2c_data_receive(I2C0);
-        obj_s->rx_count++;
-    } else if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_STPDET)) {
+    } else if (i2c_interrupt_flag_get(i2c, I2C_INT_FLAG_RBNE)) {
+        /* if reception data register is not empty, I2C1 will read a data from I2C_DATA */
+        /* also check that our RX buffer has enough space for it */
+        if(obj_s->rx_count < obj_s->tx_rx_buffer_size) {
+            *obj_s->rx_buffer_ptr++ = i2c_data_receive(i2c);
+            obj_s->rx_count++;
+        } else {
+            /* indicate RX buffer too small */
+        }
+    } else if (i2c_interrupt_flag_get(i2c, I2C_INT_FLAG_STPDET)) {
         /* clear the STPDET bit */
-        i2c_enable(I2C0);
-        if (!i2c_flag_get(I2C0, GD32_I2C_FLAG_IS_TRANSMTR_OR_RECVR)) {
+        i2c_enable(i2c);
+        if (!i2c_flag_get(i2c, GD32_I2C_FLAG_IS_TRANSMTR_OR_RECVR)) {
             obj_s->rx_buffer_ptr = obj_s->rx_buffer_ptr - obj_s->rx_count ;
-            obj_s->slave_receive_callback(obj_s->rx_buffer_ptr, obj_s->rx_count);
+            obj_s->slave_receive_callback(obj_s->pWireObj, obj_s->rx_buffer_ptr, obj_s->rx_count);
         }
     }
 }
 
+#ifdef I2C0
 /** Handle I2C0 event interrupt request
  *
  */
-void I2C0_EV_IRQHandler(void)
+extern "C" void I2C0_EV_IRQHandler(void)
 {
     i2c_irq(obj_s_buf[I2C0_INDEX]);
 }
@@ -619,42 +681,9 @@ void I2C0_EV_IRQHandler(void)
 /** handle I2C0 error interrupt request
  *
  */
-void I2C0_ER_IRQHandler(void)
+extern "C" void I2C0_ER_IRQHandler(void)
 {
-    /* no acknowledge received */
-    if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_AERR)) {
-        i2c_interrupt_flag_clear(I2C0, I2C_INT_FLAG_AERR);
-    }
-
-    /* SMBus alert */
-    if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_SMBALT)) {
-        i2c_interrupt_flag_clear(I2C0, I2C_INT_FLAG_SMBALT);
-    }
-
-    /* bus timeout in SMBus mode */
-    if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_SMBTO)) {
-        i2c_interrupt_flag_clear(I2C0, I2C_INT_FLAG_SMBTO);
-    }
-
-    /* over-run or under-run when SCL stretch is disabled */
-    if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_OUERR)) {
-        i2c_interrupt_flag_clear(I2C0, I2C_INT_FLAG_OUERR);
-    }
-
-    /* arbitration lost */
-    if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_LOSTARB)) {
-        i2c_interrupt_flag_clear(I2C0, I2C_INT_FLAG_LOSTARB);
-    }
-
-    /* bus error */
-    if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_BERR)) {
-        i2c_interrupt_flag_clear(I2C0, I2C_INT_FLAG_BERR);
-    }
-
-    /* CRC value doesn't match */
-    if (i2c_interrupt_flag_get(I2C0, I2C_INT_FLAG_PECERR)) {
-        i2c_interrupt_flag_clear(I2C0, I2C_INT_FLAG_PECERR);
-    }
+    i2c_err_handler(I2C0);
 }
 #endif
 
@@ -663,7 +692,7 @@ void I2C0_ER_IRQHandler(void)
 /** Handle I2C1 event interrupt request
  *
  */
-void I2C1_EV_IRQHandler(void)
+extern "C" void I2C1_EV_IRQHandler(void)
 {
     i2c_irq(obj_s_buf[I2C1_INDEX]);
 }
@@ -671,50 +700,27 @@ void I2C1_EV_IRQHandler(void)
 /** handle I2C1 error interrupt request
  *
  */
-void I2C1_ER_IRQHandler(void)
+extern "C" void I2C1_ER_IRQHandler(void)
 {
-    /* no acknowledge received */
-    if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_AERR)) {
-        i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_AERR);
-    }
-
-    /* SMBus alert */
-    if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_SMBALT)) {
-        i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_SMBALT);
-    }
-
-    /* bus timeout in SMBus mode */
-    if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_SMBTO)) {
-        i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_SMBTO);
-    }
-
-    /* over-run or under-run when SCL stretch is disabled */
-    if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_OUERR)) {
-        i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_OUERR);
-    }
-
-    /* arbitration lost */
-    if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_LOSTARB)) {
-        i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_LOSTARB);
-    }
-
-    /* bus error */
-    if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_BERR)) {
-        i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_BERR);
-    }
-
-    /* CRC value doesn't match */
-    if (i2c_interrupt_flag_get(I2C1, I2C_INT_FLAG_PECERR)) {
-        i2c_interrupt_flag_clear(I2C1, I2C_INT_FLAG_PECERR);
-    }
+    i2c_err_handler(I2C1);
 }
-
-void i2c_set_clock(i2c_t *obj, uint32_t clock_hz)
-{
-    i2c_clock_config(obj->i2c, clock_hz, I2C_DTCY_2);
-}
-
 #endif
-#ifdef __cplusplus
+
+#ifdef I2C2
+/** Handle I2C2 event interrupt request
+ *
+ */
+extern "C" void I2C2_EV_IRQHandler(void)
+{
+    i2c_irq(obj_s_buf[I2C2_INDEX]);
 }
+
+/** handle I2C1 error interrupt request
+ *
+ */
+extern "C" void I2C2_ER_IRQHandler(void)
+{
+    i2c_err_handler(I2C2);
+}
+
 #endif

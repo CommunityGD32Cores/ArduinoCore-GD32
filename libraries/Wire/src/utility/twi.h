@@ -38,13 +38,6 @@ OF SUCH DAMAGE.
 extern "C" {
 #endif
 
-/* I2C Tx/Rx buffer size */
-#if !defined(I2C_BUFFER_SIZE)
-#define I2C_BUFFER_SIZE    32
-#elif (I2C_BUFFER_SIZE >= 256)
-#error I2C buffer size cannot exceed 255
-#endif
-
 typedef struct i2c_s i2c_t;
 
 struct i2c_s {
@@ -58,9 +51,12 @@ struct i2c_s {
     uint8_t    *rx_buffer_ptr;
     uint16_t   tx_count;
     uint16_t   rx_count;
+    /* TX and RX buffer are expected to be of this size */
+    uint16_t tx_rx_buffer_size;
 
-    void (*slave_transmit_callback)(void);
-    void (*slave_receive_callback)(uint8_t *, int);
+    void* pWireObj;
+    void (*slave_transmit_callback)(void* pWireObj);
+    void (*slave_receive_callback)(void* pWireObj, uint8_t *, int);
 };
 
 typedef enum {
@@ -86,12 +82,12 @@ i2c_status_enum i2c_master_receive(i2c_t *obj, uint8_t address, uint8_t *data, u
                                    int stop);
 /* read bytes in master mode at a given address */
 i2c_status_enum i2c_wait_standby_state(i2c_t *obj, uint8_t address);
-/* sets function called before a slave read operation */
-void i2c_attach_slave_rx_callback(i2c_t *obj, void (*function)(uint8_t *, int));
-/* sets function called before a slave write operation */
-void i2c_attach_slave_tx_callback(i2c_t *obj, void (*function)(void));
 /* Write bytes to master */
 i2c_status_enum i2c_slave_write_buffer(i2c_t *obj, uint8_t *data, uint16_t size);
+/* sets function called before a slave read operation */
+void i2c_attach_slave_rx_callback(i2c_t *obj, void (*function)(void*, uint8_t*, int), void* pWireObj);
+/* sets function called before a slave write operation */
+void i2c_attach_slave_tx_callback(i2c_t *obj, void (*function)(void*), void* pWireObj);
 /* set I2C clock speed */
 void i2c_set_clock(i2c_t *obj, uint32_t clock_hz);
 /* Check to see if the I2C bus is busy */

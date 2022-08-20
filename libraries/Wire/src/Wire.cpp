@@ -27,21 +27,9 @@ extern "C" {
 
 #include "Wire.h"
 
-void (*TwoWire::user_onRequest)(void);
-void (*TwoWire::user_onReceive)(int);
-
 #if defined(HAVE_I2C)
 TwoWire Wire(SDA, SCL, 0);
 #endif
-
-#if defined(HAVE_I2C1)
-TwoWire Wire1(SDA1, SCL1, 1);
-#endif
-
-ring_buffer TwoWire::_rx_buffer = {{0}, 0, 0};
-ring_buffer TwoWire::_tx_buffer = {{0}, 0, 0};
-
-uint8_t TwoWire::txAddress = 0;
 
 TwoWire::TwoWire(uint8_t sda, uint8_t scl, int i2c_index)
 {
@@ -52,6 +40,7 @@ TwoWire::TwoWire(uint8_t sda, uint8_t scl, int i2c_index)
 
     _i2c.rx_buffer_ptr = _rx_buffer.buffer;
     _i2c.tx_buffer_ptr = _tx_buffer.buffer;
+    _i2c.tx_rx_buffer_size = (uint16_t) sizeof(_tx_buffer.buffer);
     _i2c.tx_count = 0;
     _i2c.rx_count = 0;
     _i2c.index = i2c_index;
@@ -87,8 +76,8 @@ void TwoWire::begin(uint8_t address)
 
     i2c_slaves_interrupt_enable(&_i2c);
 
-    i2c_attach_slave_tx_callback(&_i2c, onRequestService);
-    i2c_attach_slave_rx_callback(&_i2c, onReceiveService);
+    i2c_attach_slave_tx_callback(&_i2c, &TwoWire::onRequestService, this);
+    i2c_attach_slave_rx_callback(&_i2c, &TwoWire::onReceiveService, this);
 }
 
 void TwoWire::begin(int address)
@@ -293,28 +282,29 @@ void TwoWire::flush()
 }
 
 
-void TwoWire::onReceiveService(uint8_t *inBytes, int numBytes)
+void TwoWire::onReceiveService(void* pWireObj, uint8_t *inBytes, int numBytes)
 {
-
-    if (user_onReceive) {
-        _rx_buffer.head = numBytes;
-        _rx_buffer.tail = 0;
+    TwoWire* pWire = (TwoWire*) pWireObj;
+    if (pWire->user_onReceive) {
+        pWire->_rx_buffer.head = numBytes;
+        pWire->_rx_buffer.tail = 0;
         // alert user program
-        user_onReceive(numBytes);
+        pWire->user_onReceive(numBytes);
     }
 }
 
 // behind the scenes function that is called when data is requested
-void TwoWire::onRequestService(void)
+void TwoWire::onRequestService(void* pWireObj)
 {
+    TwoWire* pWire = (TwoWire*) pWireObj;
     // don't bother if user hasn't registered a callback
-    if (user_onRequest) {
+    if (pWire->user_onRequest) {
         // reset tx buffer iterator vars
         // !!! this will kill any pending pre-master sendTo() activity
-        _tx_buffer.head = 0;
-        _tx_buffer.tail = 0;
+        pWire->_tx_buffer.head = 0;
+        pWire->_tx_buffer.tail = 0;
         // alert user program
-        user_onRequest();
+        pWire->user_onRequest();
     }
 
 }
