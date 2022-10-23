@@ -108,7 +108,7 @@ void EPBuffer<L>::init(uint8_t ep)
 {
     this->ep = ep;
     this->reset();
-    this->rxWaiting = true;
+    this->rxWaiting = false;
     this->txWaiting = false;
 }
 
@@ -209,6 +209,9 @@ void EPBuffer<L>::enableOutEndpoint()
 {
     // Don’t attempt to read from the endpoint buffer until it’s
     // ready.
+    if (this->rxWaiting)
+        return;
+
     this->rxWaiting = true;
 
     this->reset();
