@@ -281,21 +281,21 @@ typedef struct
 /* synchronous clock divide ratio */
 #define SNTCFG_CKDIV(regval)              (BITS(20,23) & ((uint32_t)(regval) << 20))
 #define EXMC_SYN_CLOCK_RATIO_DISABLE      SNTCFG_CKDIV(0)               /*!< EXMC_CLK disable */
-#define EXMC_SYN_CLOCK_RATIO_2_CLK        SNTCFG_CKDIV(1)               /*!< EXMC_CLK = 2*HCLK */
-#define EXMC_SYN_CLOCK_RATIO_3_CLK        SNTCFG_CKDIV(2)               /*!< EXMC_CLK = 3*HCLK */
-#define EXMC_SYN_CLOCK_RATIO_4_CLK        SNTCFG_CKDIV(3)               /*!< EXMC_CLK = 4*HCLK */
-#define EXMC_SYN_CLOCK_RATIO_5_CLK        SNTCFG_CKDIV(4)               /*!< EXMC_CLK = 5*HCLK */
-#define EXMC_SYN_CLOCK_RATIO_6_CLK        SNTCFG_CKDIV(5)               /*!< EXMC_CLK = 6*HCLK */
-#define EXMC_SYN_CLOCK_RATIO_7_CLK        SNTCFG_CKDIV(6)               /*!< EXMC_CLK = 7*HCLK */
-#define EXMC_SYN_CLOCK_RATIO_8_CLK        SNTCFG_CKDIV(7)               /*!< EXMC_CLK = 8*HCLK */
-#define EXMC_SYN_CLOCK_RATIO_9_CLK        SNTCFG_CKDIV(8)               /*!< EXMC_CLK = 9*HCLK */
-#define EXMC_SYN_CLOCK_RATIO_10_CLK       SNTCFG_CKDIV(9)               /*!< EXMC_CLK = 10*HCLK */
-#define EXMC_SYN_CLOCK_RATIO_11_CLK       SNTCFG_CKDIV(10)              /*!< EXMC_CLK = 11*HCLK */
-#define EXMC_SYN_CLOCK_RATIO_12_CLK       SNTCFG_CKDIV(11)              /*!< EXMC_CLK = 12*HCLK */
-#define EXMC_SYN_CLOCK_RATIO_13_CLK       SNTCFG_CKDIV(12)              /*!< EXMC_CLK = 13*HCLK */
-#define EXMC_SYN_CLOCK_RATIO_14_CLK       SNTCFG_CKDIV(13)              /*!< EXMC_CLK = 14*HCLK */
-#define EXMC_SYN_CLOCK_RATIO_15_CLK       SNTCFG_CKDIV(14)              /*!< EXMC_CLK = 15*HCLK */
-#define EXMC_SYN_CLOCK_RATIO_16_CLK       SNTCFG_CKDIV(15)              /*!< EXMC_CLK = 16*HCLK */
+#define EXMC_SYN_CLOCK_RATIO_2_CLK        SNTCFG_CKDIV(1)               /*!< EXMC_CLK = HCLK/2 */
+#define EXMC_SYN_CLOCK_RATIO_3_CLK        SNTCFG_CKDIV(2)               /*!< EXMC_CLK = HCLK/3 */
+#define EXMC_SYN_CLOCK_RATIO_4_CLK        SNTCFG_CKDIV(3)               /*!< EXMC_CLK = HCLK/4 */
+#define EXMC_SYN_CLOCK_RATIO_5_CLK        SNTCFG_CKDIV(4)               /*!< EXMC_CLK = HCLK/5 */
+#define EXMC_SYN_CLOCK_RATIO_6_CLK        SNTCFG_CKDIV(5)               /*!< EXMC_CLK = HCLK/6 */
+#define EXMC_SYN_CLOCK_RATIO_7_CLK        SNTCFG_CKDIV(6)               /*!< EXMC_CLK = HCLK/7 */
+#define EXMC_SYN_CLOCK_RATIO_8_CLK        SNTCFG_CKDIV(7)               /*!< EXMC_CLK = HCLK/8 */
+#define EXMC_SYN_CLOCK_RATIO_9_CLK        SNTCFG_CKDIV(8)               /*!< EXMC_CLK = HCLK/9 */
+#define EXMC_SYN_CLOCK_RATIO_10_CLK       SNTCFG_CKDIV(9)               /*!< EXMC_CLK = HCLK/10 */
+#define EXMC_SYN_CLOCK_RATIO_11_CLK       SNTCFG_CKDIV(10)              /*!< EXMC_CLK = HCLK/11 */
+#define EXMC_SYN_CLOCK_RATIO_12_CLK       SNTCFG_CKDIV(11)              /*!< EXMC_CLK = HCLK/12 */
+#define EXMC_SYN_CLOCK_RATIO_13_CLK       SNTCFG_CKDIV(12)              /*!< EXMC_CLK = HCLK/13 */
+#define EXMC_SYN_CLOCK_RATIO_14_CLK       SNTCFG_CKDIV(13)              /*!< EXMC_CLK = HCLK/14 */
+#define EXMC_SYN_CLOCK_RATIO_15_CLK       SNTCFG_CKDIV(14)              /*!< EXMC_CLK = HCLK/15 */
+#define EXMC_SYN_CLOCK_RATIO_16_CLK       SNTCFG_CKDIV(15)              /*!< EXMC_CLK = HCLK/16 */
 
 /* ECC size */
 #define NPCTL_ECCSZ(regval)               (BITS(17,19) & ((uint32_t)(regval) << 17))

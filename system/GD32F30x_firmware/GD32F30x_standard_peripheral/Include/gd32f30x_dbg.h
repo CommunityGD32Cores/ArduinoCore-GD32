@@ -56,7 +56,6 @@ OF SUCH DAMAGE.
 #define DBG_CTL0_DSLP_HOLD       BIT(1)                     /*!< keep debugger connection during deepsleep mode */
 #define DBG_CTL0_STB_HOLD        BIT(2)                     /*!< keep debugger connection during standby mode */
 #define DBG_CTL0_TRACE_IOEN      BIT(5)                     /*!< enable trace pin assignment */
-#define DBG_CTL0_TRACE_MODE      BITS(6,7)                  /*!< trace pin mode selection */
 #define DBG_CTL0_FWDGT_HOLD      BIT(8)                     /*!< debug FWDGT kept when core is halted */
 #define DBG_CTL0_WWDGT_HOLD      BIT(9)                     /*!< debug WWDGT kept when core is halted */
 #define DBG_CTL0_TIMER0_HOLD     BIT(10)                    /*!< hold TIMER0 counter when core is halted */
@@ -126,12 +125,6 @@ typedef enum
 #endif /* GD32F30X_HD */
 }dbg_periph_enum;
 
-#define CTL0_TRACE_MODE(regval)       (BITS(6,7)&((uint32_t)(regval)<<6))
-#define TRACE_MODE_ASYNC              CTL0_TRACE_MODE(0)    /*!< trace pin used for async mode */
-#define TRACE_MODE_SYNC_DATASIZE_1    CTL0_TRACE_MODE(1)    /*!< trace pin used for sync mode and data size is 1 */
-#define TRACE_MODE_SYNC_DATASIZE_2    CTL0_TRACE_MODE(2)    /*!< trace pin used for sync mode and data size is 2 */
-#define TRACE_MODE_SYNC_DATASIZE_4    CTL0_TRACE_MODE(3)    /*!< trace pin used for sync mode and data size is 4 */
-
 /* function declarations */
 /* deinitialize the DBG */
 void dbg_deinit(void);
@@ -152,7 +145,5 @@ void dbg_periph_disable(dbg_periph_enum dbg_periph);
 void dbg_trace_pin_enable(void);
 /* disable trace pin assignment */
 void dbg_trace_pin_disable(void);
-/* set trace pin mode */
-void dbg_trace_pin_mode_set(uint32_t trace_mode);
 
 #endif /* GD32F30X_DBG_H */

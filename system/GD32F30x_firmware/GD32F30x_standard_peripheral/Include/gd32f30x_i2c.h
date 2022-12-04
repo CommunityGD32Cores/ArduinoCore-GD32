@@ -42,20 +42,20 @@ OF SUCH DAMAGE.
 #include "gd32f30x.h"
 
 /* I2Cx(x=0,1) definitions */
-#define I2C0                          I2C_BASE                   /*!< I2C0 base address */
-#define I2C1                          (I2C_BASE + 0x00000400U)   /*!< I2C1 base address */
+#define I2C0                          I2C_BASE                         /*!< I2C0 base address */
+#define I2C1                          (I2C_BASE + 0x00000400U)         /*!< I2C1 base address */
 
 /* registers definitions */
-#define I2C_CTL0(i2cx)                REG32((i2cx) + 0x00U)      /*!< I2C control register 0 */
-#define I2C_CTL1(i2cx)                REG32((i2cx) + 0x04U)      /*!< I2C control register 1 */
-#define I2C_SADDR0(i2cx)              REG32((i2cx) + 0x08U)      /*!< I2C slave address register 0*/
-#define I2C_SADDR1(i2cx)              REG32((i2cx) + 0x0CU)      /*!< I2C slave address register */
-#define I2C_DATA(i2cx)                REG32((i2cx) + 0x10U)      /*!< I2C transfer buffer register */
-#define I2C_STAT0(i2cx)               REG32((i2cx) + 0x14U)      /*!< I2C transfer status register 0 */
-#define I2C_STAT1(i2cx)               REG32((i2cx) + 0x18U)      /*!< I2C transfer status register */
-#define I2C_CKCFG(i2cx)               REG32((i2cx) + 0x1CU)      /*!< I2C clock configure register */
-#define I2C_RT(i2cx)                  REG32((i2cx) + 0x20U)      /*!< I2C rise time register */
-#define I2C_FMPCFG(i2cx)              REG32((i2cx) + 0x90U)      /*!< I2C fast-mode-plus configure register */
+#define I2C_CTL0(i2cx)                REG32((i2cx) + 0x00000000U)      /*!< I2C control register 0 */
+#define I2C_CTL1(i2cx)                REG32((i2cx) + 0x00000004U)      /*!< I2C control register 1 */
+#define I2C_SADDR0(i2cx)              REG32((i2cx) + 0x00000008U)      /*!< I2C slave address register 0*/
+#define I2C_SADDR1(i2cx)              REG32((i2cx) + 0x0000000CU)      /*!< I2C slave address register */
+#define I2C_DATA(i2cx)                REG32((i2cx) + 0x00000010U)      /*!< I2C transfer buffer register */
+#define I2C_STAT0(i2cx)               REG32((i2cx) + 0x00000014U)      /*!< I2C transfer status register 0 */
+#define I2C_STAT1(i2cx)               REG32((i2cx) + 0x00000018U)      /*!< I2C transfer status register */
+#define I2C_CKCFG(i2cx)               REG32((i2cx) + 0x0000001CU)      /*!< I2C clock configure register */
+#define I2C_RT(i2cx)                  REG32((i2cx) + 0x00000020U)      /*!< I2C rise time register */
+#define I2C_FMPCFG(i2cx)              REG32((i2cx) + 0x00000090U)      /*!< I2C fast-mode-plus configure register */
 
 /* bits definitions */
 /* I2Cx_CTL0 */
@@ -218,11 +218,11 @@ typedef enum
 
 /* whether or not to send an ACK */
 #define I2C_ACK_DISABLE               ((uint32_t)0x00000000U)                  /*!< ACK will be not sent */
-#define I2C_ACK_ENABLE                ((uint32_t)0x00000001U)                  /*!< ACK will be sent */
+#define I2C_ACK_ENABLE                I2C_CTL0_ACKEN                           /*!< ACK will be sent */
 
 /* I2C POAP position*/
-#define I2C_ACKPOS_NEXT               ((uint32_t)0x00000000U)                  /*!< ACKEN bit decides whether or not to send ACK for the next byte */
-#define I2C_ACKPOS_CURRENT            ((uint32_t)0x00000001U)                  /*!< ACKEN bit decides whether or not to send ACK or not for the current byte */
+#define I2C_ACKPOS_CURRENT            ((uint32_t)0x00000000U)                  /*!< ACKEN bit decides whether or not to send ACK or not for the current byte */
+#define I2C_ACKPOS_NEXT               I2C_CTL0_POAP                            /*!< ACKEN bit decides whether or not to send ACK for the next byte */
 
 /* I2C dual-address mode switch */
 #define I2C_DUADEN_DISABLE            ((uint32_t)0x00000000U)                  /*!< dual-address mode disabled */
@@ -286,13 +286,16 @@ typedef enum
 #define I2C_ADDFORMAT_10BITS          I2C_SADDR0_ADDFORMAT                     /*!< address:10 bits */
 
 /* function declarations */
+/* initialization functions */
 /* reset I2C */
 void i2c_deinit(uint32_t i2c_periph);
 /* configure I2C clock */
 void i2c_clock_config(uint32_t i2c_periph, uint32_t clkspeed, uint32_t dutycyc);
 /* configure I2C address */
 void i2c_mode_addr_config(uint32_t i2c_periph, uint32_t mode, uint32_t addformat, uint32_t addr);
-/* SMBus type selection */
+
+/* application function declarations */
+/* select SMBus type */
 void i2c_smbus_type_config(uint32_t i2c_periph, uint32_t type);
 /* whether or not to send an ACK */
 void i2c_ack_config(uint32_t i2c_periph, uint32_t ack);
@@ -308,7 +311,6 @@ void i2c_dualaddr_disable(uint32_t i2c_periph);
 void i2c_enable(uint32_t i2c_periph);
 /* disable I2C */
 void i2c_disable(uint32_t i2c_periph);
-
 /* generate a START condition on I2C bus */
 void i2c_start_on_bus(uint32_t i2c_periph);
 /* generate a STOP condition on I2C bus */
@@ -317,39 +319,39 @@ void i2c_stop_on_bus(uint32_t i2c_periph);
 void i2c_data_transmit(uint32_t i2c_periph, uint8_t data);
 /* I2C receive data function */
 uint8_t i2c_data_receive(uint32_t i2c_periph);
-/* enable I2C DMA mode */
-void i2c_dma_enable(uint32_t i2c_periph, uint32_t dmastate);
+/* configure I2C DMA mode */
+void i2c_dma_config(uint32_t i2c_periph, uint32_t dmastate);
 /* configure whether next DMA EOT is DMA last transfer or not */
 void i2c_dma_last_transfer_config(uint32_t i2c_periph, uint32_t dmalast);
 /* whether to stretch SCL low when data is not ready in slave mode */
 void i2c_stretch_scl_low_config(uint32_t i2c_periph, uint32_t stretchpara);
 /* whether or not to response to a general call */
 void i2c_slave_response_to_gcall_config(uint32_t i2c_periph, uint32_t gcallpara);
-/* software reset I2C */
+/* configure software reset of I2C */
 void i2c_software_reset_config(uint32_t i2c_periph, uint32_t sreset);
-
-/* I2C PEC calculation on or off */
-void i2c_pec_enable(uint32_t i2c_periph, uint32_t pecstate);
-/* I2C whether to transfer PEC value */
-void i2c_pec_transfer_enable(uint32_t i2c_periph, uint32_t pecpara);
-/* packet error checking value */
+/* configure I2C PEC calculation */
+void i2c_pec_config(uint32_t i2c_periph, uint32_t pecstate);
+/* configure whether to transfer PEC value */
+void i2c_pec_transfer_config(uint32_t i2c_periph, uint32_t pecpara);
+/* get packet error checking value */
 uint8_t i2c_pec_value_get(uint32_t i2c_periph);
-/* I2C issue alert through SMBA pin */
-void i2c_smbus_issue_alert(uint32_t i2c_periph, uint32_t smbuspara);
-/* I2C ARP protocol in SMBus switch */
-void i2c_smbus_arp_enable(uint32_t i2c_periph, uint32_t arpstate);
+/* configure I2C alert through SMBA pin */
+void i2c_smbus_alert_config(uint32_t i2c_periph, uint32_t smbuspara);
+/* configure I2C ARP protocol in SMBus */
+void i2c_smbus_arp_config(uint32_t i2c_periph, uint32_t arpstate);
 
-/* check I2C flag is set or not */
+/* interrupt & flag functions */
+/* get I2C flag status */
 FlagStatus i2c_flag_get(uint32_t i2c_periph, i2c_flag_enum flag);
-/* clear I2C flag */
+/* clear I2C flag status */
 void i2c_flag_clear(uint32_t i2c_periph, i2c_flag_enum flag);
 /* enable I2C interrupt */
 void i2c_interrupt_enable(uint32_t i2c_periph, i2c_interrupt_enum interrupt);
 /* disable I2C interrupt */
 void i2c_interrupt_disable(uint32_t i2c_periph, i2c_interrupt_enum interrupt);
-/* check I2C interrupt flag */
+/* get I2C interrupt flag status */
 FlagStatus i2c_interrupt_flag_get(uint32_t i2c_periph, i2c_interrupt_flag_enum int_flag);
-/* clear I2C interrupt flag */
+/* clear I2C interrupt flag status */
 void i2c_interrupt_flag_clear(uint32_t i2c_periph, i2c_interrupt_flag_enum int_flag);
 
 #endif /* GD32F30X_I2C_H */

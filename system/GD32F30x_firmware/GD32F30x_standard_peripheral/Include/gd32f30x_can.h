@@ -408,7 +408,7 @@ typedef struct
     ControlStatus time_triggered;                                       /*!< time triggered communication mode */
     ControlStatus auto_bus_off_recovery;                                /*!< automatic bus-off recovery */
     ControlStatus auto_wake_up;                                         /*!< automatic wake-up mode */
-    ControlStatus no_auto_retrans;                                      /*!< automatic retransmission mode disable */
+    ControlStatus auto_retrans;                                         /*!< automatic retransmission mode */
     ControlStatus rec_fifo_overwrite;                                   /*!< receive FIFO overwrite mode */
     ControlStatus trans_fifo_order;                                     /*!< transmit FIFO order */
     uint16_t prescaler;                                                 /*!< baudrate prescaler */

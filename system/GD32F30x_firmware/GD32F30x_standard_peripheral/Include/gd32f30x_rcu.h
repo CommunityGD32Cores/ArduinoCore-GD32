@@ -936,16 +936,17 @@ typedef enum
 
 /* deep-sleep mode voltage */
 #define DSV_DSLPVS(regval)              (BITS(0,2) & ((uint32_t)(regval) << 0))
-#define RCU_DEEPSLEEP_V_1_0             DSV_DSLPVS(0)                       /*!< core voltage is 1.0V in deep-sleep mode */
-#define RCU_DEEPSLEEP_V_0_9             DSV_DSLPVS(1)                       /*!< core voltage is 0.9V in deep-sleep mode */
-#define RCU_DEEPSLEEP_V_0_8             DSV_DSLPVS(2)                       /*!< core voltage is 0.8V in deep-sleep mode */
-#define RCU_DEEPSLEEP_V_0_7             DSV_DSLPVS(3)                       /*!< core voltage is 0.7V in deep-sleep mode */
+#define RCU_DEEPSLEEP_V_0               DSV_DSLPVS(0)                      /*!< core voltage is default value in deep-sleep mode */
+#define RCU_DEEPSLEEP_V_1               DSV_DSLPVS(1)                      /*!< core voltage is (default value-0.1)V in deep-sleep mode(customers are not recommended to use it) */
+#define RCU_DEEPSLEEP_V_2               DSV_DSLPVS(2)                      /*!< core voltage is (default value-0.2)V in deep-sleep mode(customers are not recommended to use it) */
+#define RCU_DEEPSLEEP_V_3               DSV_DSLPVS(3)                      /*!< core voltage is (default value-0.3)V in deep-sleep mode(customers are not recommended to use it) */
 
 /* 48MHz clock selection */
 #define RCU_CK48MSRC_CKPLL              ((uint32_t)0x00000000U)              /*!< use CK_PLL clock */
 #define RCU_CK48MSRC_IRC48M             RCU_ADDCTL_CK48MSEL                 /*!< select IRC48M clock */
 
 /* function declarations */
+/* peripherals clock configure functions */
 /* deinitialize the RCU */
 void rcu_deinit(void);
 /* enable the peripherals clock */
@@ -965,6 +966,7 @@ void rcu_bkp_reset_enable(void);
 /* disable the BKP domain reset */
 void rcu_bkp_reset_disable(void);
 
+/* system and peripherals clock source, system reset configure functions */
 /* configure the system clock source */
 void rcu_system_clock_source_config(uint32_t ck_sys);
 /* get the system clock source */
@@ -1024,6 +1026,7 @@ void rcu_interrupt_enable(rcu_int_enum interrupt);
 /* disable the stabilization interrupt */
 void rcu_interrupt_disable(rcu_int_enum interrupt);
 
+/* LXTAL, IRC8M, PLL and other oscillator configure functions */
 /* configure the LXTAL drive capability */
 void rcu_lxtal_drive_capability_config(uint32_t lxtal_dricap);
 /* wait for oscillator stabilization flags is SET or oscillator startup is timeout */
@@ -1036,18 +1039,32 @@ void rcu_osci_off(rcu_osci_type_enum osci);
 void rcu_osci_bypass_mode_enable(rcu_osci_type_enum osci);
 /* disable the oscillator bypass mode, HXTALEN or LXTALEN must be reset before it */
 void rcu_osci_bypass_mode_disable(rcu_osci_type_enum osci);
+/* set the IRC8M adjust value */
+void rcu_irc8m_adjust_value_set(uint32_t irc8m_adjval);
+
+/* clock monitor configure functions */
 /* enable the HXTAL clock monitor */
 void rcu_hxtal_clock_monitor_enable(void);
 /* disable the HXTAL clock monitor */
 void rcu_hxtal_clock_monitor_disable(void);
 
-/* set the IRC8M adjust value */
-void rcu_irc8m_adjust_value_set(uint32_t irc8m_adjval);
-
+/* voltage configure and clock frequency get functions */
 /* set the deep sleep mode voltage */
 void rcu_deepsleep_voltage_set(uint32_t dsvol);
-
 /* get the system clock, bus and peripheral clock frequency */
 uint32_t rcu_clock_freq_get(rcu_clock_freq_enum clock);
 
+/* flag & interrupt functions */
+/* get the clock stabilization and periphral reset flags */
+FlagStatus rcu_flag_get(rcu_flag_enum flag);
+/* clear the reset flag */
+void rcu_all_reset_flag_clear(void);
+/* get the clock stabilization interrupt and ckm flags */
+FlagStatus rcu_interrupt_flag_get(rcu_int_flag_enum int_flag);
+/* clear the interrupt flags */
+void rcu_interrupt_flag_clear(rcu_int_flag_clear_enum int_flag);
+/* enable the stabilization interrupt */
+void rcu_interrupt_enable(rcu_int_enum interrupt);
+/* disable the stabilization interrupt */
+void rcu_interrupt_disable(rcu_int_enum interrupt);
 #endif /* GD32F30X_RCU_H */

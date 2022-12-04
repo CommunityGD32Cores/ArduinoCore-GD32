@@ -93,7 +93,7 @@ void can_struct_para_init(can_struct_type_enum type, void* p_struct)
         /* used for can_init() */
         case CAN_INIT_STRUCT:
             ((can_parameter_struct*)p_struct)->auto_bus_off_recovery = DISABLE;
-            ((can_parameter_struct*)p_struct)->no_auto_retrans = DISABLE;
+            ((can_parameter_struct*)p_struct)->auto_retrans = DISABLE;
             ((can_parameter_struct*)p_struct)->auto_wake_up = DISABLE;
             ((can_parameter_struct*)p_struct)->prescaler = 0x03FFU; 
             ((can_parameter_struct*)p_struct)->rec_fifo_overwrite = DISABLE; 
@@ -163,7 +163,7 @@ void can_struct_para_init(can_struct_type_enum type, void* p_struct)
       \arg        time_triggered: ENABLE or DISABLE
       \arg        auto_bus_off_recovery: ENABLE or DISABLE
       \arg        auto_wake_up: ENABLE or DISABLE
-      \arg        no_auto_retrans: ENABLE or DISABLE
+      \arg        auto_retrans: ENABLE or DISABLE
       \arg        rec_fifo_overwrite: ENABLE or DISABLE
       \arg        trans_fifo_order: ENABLE or DISABLE
       \arg        prescaler: 0x0001 - 0x0400
@@ -213,16 +213,16 @@ ErrStatus can_init(uint32_t can_periph, can_parameter_struct* can_parameter_init
             CAN_CTL(can_periph) &= ~CAN_CTL_AWU;
         }
         /* automatic retransmission mode disable */
-        if(ENABLE == can_parameter_init->no_auto_retrans){
-            CAN_CTL(can_periph) |= CAN_CTL_ARD;
-        }else{
+        if(ENABLE == can_parameter_init->auto_retrans){
             CAN_CTL(can_periph) &= ~CAN_CTL_ARD;
-        }
-        /* receive fifo overwrite mode */        
-        if(ENABLE == can_parameter_init->rec_fifo_overwrite){
-            CAN_CTL(can_periph) |= CAN_CTL_RFOD;
         }else{
+            CAN_CTL(can_periph) |= CAN_CTL_ARD;
+        }
+        /* receive fifo overwrite mode */
+        if(ENABLE == can_parameter_init->rec_fifo_overwrite){
             CAN_CTL(can_periph) &= ~CAN_CTL_RFOD;
+        }else{
+            CAN_CTL(can_periph) |= CAN_CTL_RFOD;
         } 
         /* transmit fifo order */
         if(ENABLE == can_parameter_init->trans_fifo_order){

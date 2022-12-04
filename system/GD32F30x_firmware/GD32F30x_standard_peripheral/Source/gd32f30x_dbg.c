@@ -146,19 +146,3 @@ void dbg_trace_pin_disable(void)
 {
     DBG_CTL0 &= ~DBG_CTL0_TRACE_IOEN;
 }
-
-/*!
-    \brief      trace pin mode selection 
-    \param[in]  trace_mode:
-      \arg        TRACE_MODE_ASYNC: trace pin used for async mode 
-      \arg        TRACE_MODE_SYNC_DATASIZE_1: trace pin used for sync mode and data size is 1
-      \arg        TRACE_MODE_SYNC_DATASIZE_2: trace pin used for sync mode and data size is 2
-      \arg        TRACE_MODE_SYNC_DATASIZE_4: trace pin used for sync mode and data size is 4
-    \param[out] none
-    \retval     none
-*/
-void dbg_trace_pin_mode_set(uint32_t trace_mode)
-{
-    DBG_CTL0 &= ~DBG_CTL0_TRACE_MODE;
-    DBG_CTL0 |= trace_mode;
-}

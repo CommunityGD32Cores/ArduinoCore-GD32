@@ -120,6 +120,7 @@ void nvic_irq_disable(uint8_t nvic_irq)
 void nvic_vector_table_set(uint32_t nvic_vict_tab, uint32_t offset)
 {
     SCB->VTOR = nvic_vict_tab | (offset & NVIC_VECTTAB_OFFSET_MASK);
+    __DSB();
 }
 
 /*!

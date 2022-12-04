@@ -143,7 +143,6 @@ void ctc_refsource_polarity_config(uint32_t polarity)
                 only one parameter can be selected which is shown as below:
       \arg        CTC_REFSOURCE_GPIO: GPIO is selected
       \arg        CTC_REFSOURCE_LXTAL: LXTAL is selected
-      \arg        CTC_REFSOURCE_USBSOF: USBD_SOF or USBFS_SOF is selected
     \param[out] none
     \retval     none
 */

@@ -261,6 +261,7 @@ OF SUCH DAMAGE.
 #define AFIO_PCF0_SWJ_CFG                BITS(24,26)         /*!< serial wire JTAG configuration */
 #define AFIO_PCF0_SPI2_REMAP             BIT(28)             /*!< SPI2/I2S2 remapping */
 #define AFIO_PCF0_TIMER1ITR0_REMAP       BIT(29)             /*!< TIMER1 internal trigger 0 remapping */
+#define AFIO_PCF0_TIMER1ITI0_REMAP       BIT(29)             /*!< TIMER1 internal trigger 0 remapping */
 #define AFIO_PCF0_PTP_PPS_REMAP          BIT(30)             /*!< ethernet PTP PPS remapping */
 
 #else 

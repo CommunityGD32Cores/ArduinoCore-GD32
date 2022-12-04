@@ -338,17 +338,17 @@ void spi_nssp_mode_disable(uint32_t spi_periph);
 
 /* quad wire SPI functions */
 /* enable quad wire SPI */
-void qspi_enable(uint32_t spi_periph);
+void spi_quad_enable(uint32_t spi_periph);
 /* disable quad wire SPI */
-void qspi_disable(uint32_t spi_periph);
+void spi_quad_disable(uint32_t spi_periph);
 /* enable quad wire SPI write */
-void qspi_write_enable(uint32_t spi_periph);
+void spi_quad_write_enable(uint32_t spi_periph);
 /* enable quad wire SPI read */
-void qspi_read_enable(uint32_t spi_periph);
+void spi_quad_read_enable(uint32_t spi_periph);
 /* enable quad wire SPI_IO2 and SPI_IO3 pin output */
-void qspi_io23_output_enable(uint32_t spi_periph);
+void spi_quad_io23_output_enable(uint32_t spi_periph);
 /* disable quad wire SPI_IO2 and SPI_IO3 pin output */
-void qspi_io23_output_disable(uint32_t spi_periph);
+void spi_quad_io23_output_disable(uint32_t spi_periph);
 
 /* flag and interrupt functions */
 /* enable SPI and I2S interrupt */

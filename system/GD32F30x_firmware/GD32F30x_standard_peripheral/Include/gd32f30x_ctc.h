@@ -97,7 +97,6 @@ OF SUCH DAMAGE.
 #define CTL1_REFSEL(regval)                              (BITS(28,29) & ((uint32_t)(regval) << 28))
 #define CTC_REFSOURCE_GPIO                               CTL1_REFSEL(0)               /*!< GPIO is selected */
 #define CTC_REFSOURCE_LXTAL                              CTL1_REFSEL(1)               /*!< LXTAL is selected */
-#define CTC_REFSOURCE_USB_SOF                            CTL1_REFSEL(2)               /*!< USBD_SOF or USBFS_SOF is selected */
 
 /* reference signal source prescaler definitions */
 #define CTL1_REFPSC(regval)                              (BITS(24,26) & ((uint32_t)(regval) << 24))
