@@ -34,7 +34,7 @@ OF SUCH DAMAGE.
   have no good solution other than getting the official firmware
   library changed. -bjc (2021-Aug-20)
 */
-#if defined(GD32F30X_HD) || defined (GD32F30X_XD) || defined(GD32E50X)
+#if defined(GD32F30X_CL) || defined(GD32F30X_HD) || defined (GD32F30X_XD) || defined(GD32E50X)
 #define RTC_ALARM_IRQn RTC_Alarm_IRQn
 #endif
 
