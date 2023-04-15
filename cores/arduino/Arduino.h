@@ -40,6 +40,7 @@ using namespace arduino;
 
 #define interrupts() __enable_irq()
 #define noInterrupts() __disable_irq()
+#define digitalPinToInterrupt(pin) (pin)
 
 #ifdef __cplusplus
 /* include outside of extern C block, this is basically a C++ library */
