@@ -274,6 +274,176 @@ keyboardio_micro.menu.upload_method.stlinkMethod.upload.tool=stlink_upload
 ## Auto-generated content here
 
 ##################################################
+# Generic GD32F3x0
+gd_generic_gd32f3x0.name=GD32F3x0 Generic series
+gd_generic_gd32f3x0.build.core=arduino
+gd_generic_gd32f3x0.build.board=gd_generic_gd32f3x0
+gd_generic_gd32f3x0.build.mcu=cortex-m4
+gd_generic_gd32f3x0.build.series=GD32F3x0
+
+gd_generic_gd32f3x0.build.vid=0xdead
+gd_generic_gd32f3x0.build.pid=0xbeef
+gd_generic_gd32f3x0.build.usb_product="USB Test"
+gd_generic_gd32f3x0.build.usb_manufacturer="Arduino"
+
+# create a new entry each board here
+gd_generic_gd32f3x0.menu.pnum.GD32F350C4_GENERIC=GD32F350C4 (Generic)
+gd_generic_gd32f3x0.menu.pnum.GD32F350C4_GENERIC.upload.maximum_size=16384
+gd_generic_gd32f3x0.menu.pnum.GD32F350C4_GENERIC.upload.maximum_data_size=4096
+gd_generic_gd32f3x0.menu.pnum.GD32F350C4_GENERIC.build.board=GD32F350C4_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350C4_GENERIC.build.series=GD32F3x0
+gd_generic_gd32f3x0.menu.pnum.GD32F350C4_GENERIC.build.product_line=GD32F350
+gd_generic_gd32f3x0.menu.pnum.GD32F350C4_GENERIC.build.variant=GD32F350C4_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350C4_GENERIC.upload.openocd_script=target/stm32f1x.cfg
+gd_generic_gd32f3x0.menu.pnum.GD32F350C6_GENERIC=GD32F350C6 (Generic)
+gd_generic_gd32f3x0.menu.pnum.GD32F350C6_GENERIC.upload.maximum_size=32768
+gd_generic_gd32f3x0.menu.pnum.GD32F350C6_GENERIC.upload.maximum_data_size=6144
+gd_generic_gd32f3x0.menu.pnum.GD32F350C6_GENERIC.build.board=GD32F350C6_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350C6_GENERIC.build.series=GD32F3x0
+gd_generic_gd32f3x0.menu.pnum.GD32F350C6_GENERIC.build.product_line=GD32F350
+gd_generic_gd32f3x0.menu.pnum.GD32F350C6_GENERIC.build.variant=GD32F350C6_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350C6_GENERIC.upload.openocd_script=target/stm32f1x.cfg
+gd_generic_gd32f3x0.menu.pnum.GD32F350C8_GENERIC=GD32F350C8 (Generic)
+gd_generic_gd32f3x0.menu.pnum.GD32F350C8_GENERIC.upload.maximum_size=65536
+gd_generic_gd32f3x0.menu.pnum.GD32F350C8_GENERIC.upload.maximum_data_size=8192
+gd_generic_gd32f3x0.menu.pnum.GD32F350C8_GENERIC.build.board=GD32F350C8_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350C8_GENERIC.build.series=GD32F3x0
+gd_generic_gd32f3x0.menu.pnum.GD32F350C8_GENERIC.build.product_line=GD32F350
+gd_generic_gd32f3x0.menu.pnum.GD32F350C8_GENERIC.build.variant=GD32F350C8_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350C8_GENERIC.upload.openocd_script=target/stm32f1x.cfg
+gd_generic_gd32f3x0.menu.pnum.GD32F350CB_GENERIC=GD32F350CB (Generic)
+gd_generic_gd32f3x0.menu.pnum.GD32F350CB_GENERIC.upload.maximum_size=131072
+gd_generic_gd32f3x0.menu.pnum.GD32F350CB_GENERIC.upload.maximum_data_size=16384
+gd_generic_gd32f3x0.menu.pnum.GD32F350CB_GENERIC.build.board=GD32F350CB_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350CB_GENERIC.build.series=GD32F3x0
+gd_generic_gd32f3x0.menu.pnum.GD32F350CB_GENERIC.build.product_line=GD32F350
+gd_generic_gd32f3x0.menu.pnum.GD32F350CB_GENERIC.build.variant=GD32F350CB_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350CB_GENERIC.upload.openocd_script=target/stm32f1x.cfg
+gd_generic_gd32f3x0.menu.pnum.GD32F350G4_GENERIC=GD32F350G4 (Generic)
+gd_generic_gd32f3x0.menu.pnum.GD32F350G4_GENERIC.upload.maximum_size=16384
+gd_generic_gd32f3x0.menu.pnum.GD32F350G4_GENERIC.upload.maximum_data_size=4096
+gd_generic_gd32f3x0.menu.pnum.GD32F350G4_GENERIC.build.board=GD32F350G4_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350G4_GENERIC.build.series=GD32F3x0
+gd_generic_gd32f3x0.menu.pnum.GD32F350G4_GENERIC.build.product_line=GD32F350
+gd_generic_gd32f3x0.menu.pnum.GD32F350G4_GENERIC.build.variant=GD32F350G4_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350G4_GENERIC.upload.openocd_script=target/stm32f1x.cfg
+gd_generic_gd32f3x0.menu.pnum.GD32F350G6_GENERIC=GD32F350G6 (Generic)
+gd_generic_gd32f3x0.menu.pnum.GD32F350G6_GENERIC.upload.maximum_size=32768
+gd_generic_gd32f3x0.menu.pnum.GD32F350G6_GENERIC.upload.maximum_data_size=6144
+gd_generic_gd32f3x0.menu.pnum.GD32F350G6_GENERIC.build.board=GD32F350G6_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350G6_GENERIC.build.series=GD32F3x0
+gd_generic_gd32f3x0.menu.pnum.GD32F350G6_GENERIC.build.product_line=GD32F350
+gd_generic_gd32f3x0.menu.pnum.GD32F350G6_GENERIC.build.variant=GD32F350G6_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350G6_GENERIC.upload.openocd_script=target/stm32f1x.cfg
+gd_generic_gd32f3x0.menu.pnum.GD32F350K4_GENERIC=GD32F350K4 (Generic)
+gd_generic_gd32f3x0.menu.pnum.GD32F350K4_GENERIC.upload.maximum_size=16384
+gd_generic_gd32f3x0.menu.pnum.GD32F350K4_GENERIC.upload.maximum_data_size=4096
+gd_generic_gd32f3x0.menu.pnum.GD32F350K4_GENERIC.build.board=GD32F350K4_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350K4_GENERIC.build.series=GD32F3x0
+gd_generic_gd32f3x0.menu.pnum.GD32F350K4_GENERIC.build.product_line=GD32F350
+gd_generic_gd32f3x0.menu.pnum.GD32F350K4_GENERIC.build.variant=GD32F350K4_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350K4_GENERIC.upload.openocd_script=target/stm32f1x.cfg
+gd_generic_gd32f3x0.menu.pnum.GD32F350K6_GENERIC=GD32F350K6 (Generic)
+gd_generic_gd32f3x0.menu.pnum.GD32F350K6_GENERIC.upload.maximum_size=32768
+gd_generic_gd32f3x0.menu.pnum.GD32F350K6_GENERIC.upload.maximum_data_size=6144
+gd_generic_gd32f3x0.menu.pnum.GD32F350K6_GENERIC.build.board=GD32F350K6_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350K6_GENERIC.build.series=GD32F3x0
+gd_generic_gd32f3x0.menu.pnum.GD32F350K6_GENERIC.build.product_line=GD32F350
+gd_generic_gd32f3x0.menu.pnum.GD32F350K6_GENERIC.build.variant=GD32F350K6_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350K6_GENERIC.upload.openocd_script=target/stm32f1x.cfg
+gd_generic_gd32f3x0.menu.pnum.GD32F350K8_GENERIC=GD32F350K8 (Generic)
+gd_generic_gd32f3x0.menu.pnum.GD32F350K8_GENERIC.upload.maximum_size=65536
+gd_generic_gd32f3x0.menu.pnum.GD32F350K8_GENERIC.upload.maximum_data_size=8192
+gd_generic_gd32f3x0.menu.pnum.GD32F350K8_GENERIC.build.board=GD32F350K8_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350K8_GENERIC.build.series=GD32F3x0
+gd_generic_gd32f3x0.menu.pnum.GD32F350K8_GENERIC.build.product_line=GD32F350
+gd_generic_gd32f3x0.menu.pnum.GD32F350K8_GENERIC.build.variant=GD32F350K8_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350K8_GENERIC.upload.openocd_script=target/stm32f1x.cfg
+gd_generic_gd32f3x0.menu.pnum.GD32F350R4_GENERIC=GD32F350R4 (Generic)
+gd_generic_gd32f3x0.menu.pnum.GD32F350R4_GENERIC.upload.maximum_size=16384
+gd_generic_gd32f3x0.menu.pnum.GD32F350R4_GENERIC.upload.maximum_data_size=4096
+gd_generic_gd32f3x0.menu.pnum.GD32F350R4_GENERIC.build.board=GD32F350R4_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350R4_GENERIC.build.series=GD32F3x0
+gd_generic_gd32f3x0.menu.pnum.GD32F350R4_GENERIC.build.product_line=GD32F350
+gd_generic_gd32f3x0.menu.pnum.GD32F350R4_GENERIC.build.variant=GD32F350R4_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350R4_GENERIC.upload.openocd_script=target/stm32f1x.cfg
+gd_generic_gd32f3x0.menu.pnum.GD32F350R6_GENERIC=GD32F350R6 (Generic)
+gd_generic_gd32f3x0.menu.pnum.GD32F350R6_GENERIC.upload.maximum_size=32768
+gd_generic_gd32f3x0.menu.pnum.GD32F350R6_GENERIC.upload.maximum_data_size=16384
+gd_generic_gd32f3x0.menu.pnum.GD32F350R6_GENERIC.build.board=GD32F350R6_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350R6_GENERIC.build.series=GD32F3x0
+gd_generic_gd32f3x0.menu.pnum.GD32F350R6_GENERIC.build.product_line=GD32F350
+gd_generic_gd32f3x0.menu.pnum.GD32F350R6_GENERIC.build.variant=GD32F350R6_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350R6_GENERIC.upload.openocd_script=target/stm32f1x.cfg
+gd_generic_gd32f3x0.menu.pnum.GD32F350R8_GENERIC=GD32F350R8 (Generic)
+gd_generic_gd32f3x0.menu.pnum.GD32F350R8_GENERIC.upload.maximum_size=65536
+gd_generic_gd32f3x0.menu.pnum.GD32F350R8_GENERIC.upload.maximum_data_size=16384
+gd_generic_gd32f3x0.menu.pnum.GD32F350R8_GENERIC.build.board=GD32F350R8_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350R8_GENERIC.build.series=GD32F3x0
+gd_generic_gd32f3x0.menu.pnum.GD32F350R8_GENERIC.build.product_line=GD32F350
+gd_generic_gd32f3x0.menu.pnum.GD32F350R8_GENERIC.build.variant=GD32F350R8_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350R8_GENERIC.upload.openocd_script=target/stm32f1x.cfg
+gd_generic_gd32f3x0.menu.pnum.GD32F350RB_GENERIC=GD32F350RB (Generic)
+gd_generic_gd32f3x0.menu.pnum.GD32F350RB_GENERIC.upload.maximum_size=131072
+gd_generic_gd32f3x0.menu.pnum.GD32F350RB_GENERIC.upload.maximum_data_size=16384
+gd_generic_gd32f3x0.menu.pnum.GD32F350RB_GENERIC.build.board=GD32F350RB_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350RB_GENERIC.build.series=GD32F3x0
+gd_generic_gd32f3x0.menu.pnum.GD32F350RB_GENERIC.build.product_line=GD32F350
+gd_generic_gd32f3x0.menu.pnum.GD32F350RB_GENERIC.build.variant=GD32F350RB_GENERIC
+gd_generic_gd32f3x0.menu.pnum.GD32F350RB_GENERIC.upload.openocd_script=target/stm32f1x.cfg
+gd_generic_gd32f3x0.menu.usb.off=Off
+
+# Upload menu
+gd_generic_gd32f3x0.menu.upload_method.serialMethod=gd32flash (Serial)
+gd_generic_gd32f3x0.menu.upload_method.serialMethod.upload.protocol=maple_serial
+gd_generic_gd32f3x0.menu.upload_method.serialMethod.upload.options=
+gd_generic_gd32f3x0.menu.upload_method.serialMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1
+gd_generic_gd32f3x0.menu.upload_method.serialMethod.upload.tool=serial_upload
+
+gd_generic_gd32f3x0.menu.upload_method.gdlinkMethod=GDlink (SWD)
+gd_generic_gd32f3x0.menu.upload_method.gdlinkMethod.upload.protocol=gdlink
+gd_generic_gd32f3x0.menu.upload_method.gdlinkMethod.upload.options=
+gd_generic_gd32f3x0.menu.upload_method.gdlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_generic_gd32f3x0.menu.upload_method.gdlinkMethod.upload.tool=gdlink_upload
+
+gd_generic_gd32f3x0.menu.upload_method.stlinkMethod=STLink (SWD)
+gd_generic_gd32f3x0.menu.upload_method.stlinkMethod.upload.protocol=stlink
+gd_generic_gd32f3x0.menu.upload_method.stlinkMethod.upload.options=
+gd_generic_gd32f3x0.menu.upload_method.stlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_generic_gd32f3x0.menu.upload_method.stlinkMethod.upload.tool=stlink_upload
+
+gd_generic_gd32f3x0.menu.upload_method.jlinkMethod=JLink (SWD)
+gd_generic_gd32f3x0.menu.upload_method.jlinkMethod.upload.protocol=jlink
+gd_generic_gd32f3x0.menu.upload_method.jlinkMethod.upload.options=
+gd_generic_gd32f3x0.menu.upload_method.jlinkMethod.build.upload_flags=-DCONFIG_MAPLE_MINI_NO_DISABLE_DEBUG=1 -DSERIAL_USB -DGENERIC_BOOTLOADER
+gd_generic_gd32f3x0.menu.upload_method.jlinkMethod.upload.tool=jlink_upload
+
+gd_generic_gd32f3x0.menu.upload_method.dfuUtilMethod=dfu-util (DFU - STMDuino bootloader)
+gd_generic_gd32f3x0.menu.upload_method.dfuUtilMethod.upload.protocol=dfu
+gd_generic_gd32f3x0.menu.upload_method.dfuUtilMethod.upload.options=
+gd_generic_gd32f3x0.menu.upload_method.dfuUtilMethod.build.upload_flags=
+gd_generic_gd32f3x0.menu.upload_method.dfuUtilMethod.upload.tool=dfu-util
+
+gd_generic_gd32f3x0.menu.upload_method.dfuUtilMethod.build.flash_offset=0x0x2000
+gd_generic_gd32f3x0.menu.upload_method.dfuUtilMethod.upload.pid=0x004
+gd_generic_gd32f3x0.menu.upload_method.dfuUtilMethod.upload.vid=0x1209
+
+# Optimizations
+gd_generic_gd32f3x0.menu.opt.osstd=Smallest (default)
+gd_generic_gd32f3x0.menu.opt.o1std=Fast (-O1)
+gd_generic_gd32f3x0.menu.opt.o1std.build.flags.optimize=-O1
+gd_generic_gd32f3x0.menu.opt.o1std.build.flags.ldspecs=
+gd_generic_gd32f3x0.menu.opt.o2std=Faster (-O2)
+gd_generic_gd32f3x0.menu.opt.o2std.build.flags.optimize=-O2
+gd_generic_gd32f3x0.menu.opt.o2std.build.flags.ldspecs=
+gd_generic_gd32f3x0.menu.opt.o3std=Fastest (-O3)
+gd_generic_gd32f3x0.menu.opt.o3std.build.flags.optimize=-O3
+gd_generic_gd32f3x0.menu.opt.o3std.build.flags.ldspecs=
+gd_generic_gd32f3x0.menu.opt.ogstd=Debug (-Og)
+gd_generic_gd32f3x0.menu.opt.ogstd.build.flags.optimize=-Og
+gd_generic_gd32f3x0.menu.opt.ogstd.build.flags.ldspecs=
+
+##################################################
 # Generic GD32F30x
 gd_generic_gd32f30x.name=GD32F30x Generic series
 gd_generic_gd32f30x.build.core=arduino
