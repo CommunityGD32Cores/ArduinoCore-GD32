@@ -1422,3 +1422,23 @@ void TIMER13_IRQHandler(void)
 }
 #endif /* TIMER13 handler */
 
+#if defined(TIMER14)
+void TIMER14_IRQHandler(void)
+{
+    timerinterrupthandle(TIMER14);
+}
+#endif
+
+#if defined(TIMER15)
+void TIMER15_IRQHandler(void)
+{
+    timerinterrupthandle(TIMER15);
+}
+#endif
+
+#if defined(TIMER16)
+void TIMER16_IRQHandler(void)
+{
+    timerinterrupthandle(TIMER16);
+}
+#endif
