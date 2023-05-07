@@ -39,24 +39,38 @@ typedef enum {
     PORTB,
 #if defined GPIOC
     PORTC,
+#else
+    PORTC_NOT_THERE,
 #endif
 #if defined GPIOD
     PORTD,
+#else
+    PORTD_NOT_THERE,
 #endif
 #if defined GPIOE
     PORTE,
+#else
+    PORTE_NOT_THERE,
 #endif
 #if defined GPIOF
     PORTF,
+#else
+    PORTF_NOT_THERE,
 #endif
 #if defined GPIOG
     PORTG,
+#else
+    PORTG_NOT_THERE,
 #endif
 #if defined GPIOH
     PORTH,
+#else
+    PORTH_NOT_THERE,
 #endif
 #if defined GPIOI
     PORTI,
+#else
+    PORTI_NOT_THERE,
 #endif
     PORTEND,
     LastPort = PORTEND - 1
