@@ -40,26 +40,26 @@ const PinName digital_pins[] = {
     PORTA_10,
     PORTA_13,
     PORTA_14,
-    PORTA_2,
-    PORTA_4,
-    PORTA_3,
-    PORTA_7,
     PORTA_0,
+    PORTA_3,
     PORTA_6,
+    PORTA_7,
+    PORTA_1,
     PORTA_5,
-    PORTA_1
+    PORTA_4,
+    PORTA_2
 };
 
 /* analog pins for pinmap list */
 const uint32_t analog_pins[] = {
-    PA2, //A0
-    PA4, //A1
-    PA3, //A2
+    PA0, //A0
+    PA3, //A1
+    PA6, //A2
     PA7, //A3
-    PA0, //A4
-    PA6, //A5
-    PA5, //A6
-    PA1 //A7
+    PA1, //A4
+    PA5, //A5
+    PA4, //A6
+    PA2 //A7
 };
 
 #ifdef __cplusplus

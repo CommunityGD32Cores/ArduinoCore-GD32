@@ -56,8 +56,6 @@ const int GD_GPIO_AF[] = {
     GPIO_AF_5,             /* 5 */
     GPIO_AF_6,             /* 6 */
     GPIO_AF_7,             /* 7 */
-    GPIO_AF_9,             /* 8 */
-    GPIO_AF_11             /* 9 */
 };
 
 /* pin descriptions only reference the index in the array, so
@@ -112,7 +110,7 @@ const PinMap PinMap_ADC[] = {
 
 /* DAC PinMap */
 const PinMap PinMap_DAC[] = {
-    {PORTA_4,  DAC0, GD_PIN_FUNC_ANALOG_CH(0)},    /* DAC0_OUT */
+    {PORTA_4,  DAC, GD_PIN_FUNC_ANALOG_CH(0)},     /* DAC0_OUT */
     {NC,   NC,    0}
 };
 

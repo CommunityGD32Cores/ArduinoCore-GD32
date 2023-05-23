@@ -56,10 +56,6 @@ const int GD_GPIO_AF[] = {
     GPIO_AF_5,             /* 5 */
     GPIO_AF_6,             /* 6 */
     GPIO_AF_7,             /* 7 */
-#if !defined(GD32F330) /* not available on GD32F330 */
-    GPIO_AF_9,             /* 8 */
-    GPIO_AF_11             /* 9 */
-#endif
 };
 
 /* pin descriptions only reference the index in the array, so
