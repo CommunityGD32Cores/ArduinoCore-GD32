@@ -73,28 +73,28 @@ extern "C" {
 #define PB8 37
 #define PB9 38
 /* analog pins */
-#define PA0 39
+#define PA4 39
 #define PA1 40
-#define PA2 41
-#define PA3 42
-#define PA4 43
-#define PA5 44
-#define PA6 45
-#define PA7 46
-#define PB0 47
-#define PB1 48
-#define PC0 49
-#define PC1 50
-#define PC2 51
-#define PC3 52
+#define PA5 41
+#define PC1 42
+#define PA0 43
+#define PC2 44
+#define PB1 45
+#define PA3 46
+#define PC5 47
+#define PA7 48
+#define PA2 49
+#define PA6 50
+#define PB0 51
+#define PC0 52
 #define PC4 53
-#define PC5 54
+#define PC3 54
 
 /* digital pins and analog pins number definitions */
 #define DIGITAL_PINS_NUM            55
 #define ANALOG_PINS_NUM             16
-#define ANALOG_PINS_START           PA0
-#define ANALOG_PINS_LAST            PC5
+#define ANALOG_PINS_START           PA4
+#define ANALOG_PINS_LAST            PC3
 
 /* LED definitions */
 #define LED_BUILTIN                 PC13
@@ -112,10 +112,10 @@ extern "C" {
 /* I2C0 */
 #define HAVE_I2C
 #ifndef PIN_WIRE_SDA
-#define PIN_WIRE_SDA                PB7
+#define PIN_WIRE_SDA                PA10
 #endif
 #ifndef PIN_WIRE_SCL
-#define PIN_WIRE_SCL                PB6
+#define PIN_WIRE_SCL                PA9
 #endif
 
 /* I2C1 */
@@ -131,10 +131,10 @@ extern "C" {
 /* Pins overlap with I2C0. Change I2C0 pins as neeeded. */
 #define HAVE_I2C2
 #ifndef PIN_WIRE2_SDA
-#define PIN_WIRE2_SDA               PC1
+#define PIN_WIRE2_SDA               PC8
 #endif
 #ifndef PIN_WIRE2_SCL
-#define PIN_WIRE2_SCL               PC7
+#define PIN_WIRE2_SCL               PB6
 #endif
 
 /* TIMER or PWM definitions */

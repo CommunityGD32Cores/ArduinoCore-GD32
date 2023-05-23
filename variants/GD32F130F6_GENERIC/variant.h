@@ -40,21 +40,21 @@ extern "C" {
 #define PA13 4
 #define PA14 5
 /* analog pins */
-#define PA0 6
+#define PA4 6
 #define PA1 7
-#define PA2 8
-#define PA3 9
-#define PA4 10
-#define PA5 11
-#define PA6 12
-#define PA7 13
-#define PB1 14
+#define PA5 8
+#define PA0 9
+#define PB1 10
+#define PA3 11
+#define PA7 12
+#define PA2 13
+#define PA6 14
 
 /* digital pins and analog pins number definitions */
 #define DIGITAL_PINS_NUM            15
 #define ANALOG_PINS_NUM             9
-#define ANALOG_PINS_START           PA0
-#define ANALOG_PINS_LAST            PB1
+#define ANALOG_PINS_START           PA4
+#define ANALOG_PINS_LAST            PA6
 
 /* LED definitions */
 #define LED_BUILTIN                 PA4

@@ -52,22 +52,22 @@ extern "C" {
 #define PB6 16
 #define PB7 17
 /* analog pins */
-#define PA0 18
+#define PA4 18
 #define PA1 19
-#define PA2 20
-#define PA3 21
-#define PA4 22
-#define PA5 23
-#define PA6 24
-#define PA7 25
-#define PB0 26
-#define PB1 27
+#define PA5 20
+#define PA0 21
+#define PB1 22
+#define PA3 23
+#define PA7 24
+#define PA2 25
+#define PA6 26
+#define PB0 27
 
 /* digital pins and analog pins number definitions */
 #define DIGITAL_PINS_NUM            28
 #define ANALOG_PINS_NUM             10
-#define ANALOG_PINS_START           PA0
-#define ANALOG_PINS_LAST            PB1
+#define ANALOG_PINS_START           PA4
+#define ANALOG_PINS_LAST            PB0
 
 /* LED definitions */
 #define LED_BUILTIN                 PB2
@@ -85,10 +85,10 @@ extern "C" {
 /* I2C0 */
 #define HAVE_I2C
 #ifndef PIN_WIRE_SDA
-#define PIN_WIRE_SDA                PB7
+#define PIN_WIRE_SDA                PF7
 #endif
 #ifndef PIN_WIRE_SCL
-#define PIN_WIRE_SCL                PB6
+#define PIN_WIRE_SCL                PF6
 #endif
 
 /* TIMER or PWM definitions */
