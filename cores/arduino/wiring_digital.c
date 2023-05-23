@@ -29,7 +29,11 @@ void pinMode(pin_size_t ulPin, PinMode ulMode)
     PinName p = DIGITAL_TO_PINNAME(ulPin);
     switch (ulMode) {
         case INPUT:
+        #if defined(GD32F30x) || defined(GD32F10x)|| defined(GD32E50X)
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_IN_FLOATING, 0, 0));
+        #else
+            pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_INPUT, 0, 0));
+        #endif
             break;
         case INPUT_PULLUP:
             // different chip series have different APIs and options for pin modes
@@ -50,15 +54,27 @@ void pinMode(pin_size_t ulPin, PinMode ulMode)
         #endif
             break;
         case OUTPUT:
+        #if defined(GD32F30x) || defined(GD32F10x)|| defined(GD32E50X)
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUT_PP, PIN_OTYPE_PP, 0));
+        #else
+            pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUTPUT, PIN_OTYPE_PP, 0));
+        #endif
             break;
 #pragma GCC diagnostic ignored "-Wswitch"
         case INPUT_ANALOG: // From PinModeExtension
+        #if defined(GD32F30x) || defined(GD32F10x)|| defined(GD32E50X)
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_AIN, 0, 0));
+        #else
+            pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_ANALOG, 0, 0));
+        #endif
             break;
 #pragma GCC diagnostic ignored "-Wswitch"
         case OUTPUT_OPEN_DRAIN: // From PinModeExtension
+        #if defined(GD32F30x) || defined(GD32F10x)|| defined(GD32E50X)
             pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUT_OD, PIN_OTYPE_OD, 0));
+        #else
+            pin_function(p, GD_PIN_FUNCTION3(PIN_MODE_OUTPUT, PIN_OTYPE_OD, 0));
+        #endif
             break;
         default:
             break;
