@@ -78,7 +78,17 @@ void set_dac_value(PinName pinname, uint16_t value)
     if (!DAC_[index].isactive) {
         pinmap_pinout(pinname, PinMap_DAC);
         rcu_periph_clock_enable(RCU_DAC);
-        dac_deinit();
+        // only do reset of DAC clock domain once when *every* DAC is being inactive.
+        bool do_reset = true;
+        for(uint8_t i = 0; i < DAC_NUMS; i++) {
+            if(DAC_[i].isactive) {
+                do_reset = false;
+                break;
+            }
+        }
+        if(do_reset) {
+            dac_deinit();
+        }
 #if (defined(GD32F1x0) && defined(GD32F170_190)) || defined(GD32F30x) || defined(GD32E50X)
         dac_trigger_disable(dac_periph);
 #if defined(GD32F30x) || defined(GD32E50X)
