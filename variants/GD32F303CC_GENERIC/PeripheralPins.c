@@ -170,7 +170,7 @@ const PinMap PinMap_ADC[] = {
 /* DAC PinMap */
 const PinMap PinMap_DAC[] = {
     {PORTA_4,       DAC0, 0 | (0 << 18)},    /* DAC_OUT0 */
-    {PORTA_5,       DAC0, 0 | (1 << 18)},    /* DAC_OUT1 */
+    {PORTA_5,       DAC1, 0 | (1 << 18)},    /* DAC_OUT1 */
     {NC, NC, 0}
 };
 
