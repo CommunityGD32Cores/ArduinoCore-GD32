@@ -63,10 +63,14 @@ OF SUCH DAMAGE.
 #include "gd32f1x0_misc.h"
 #include "gd32f1x0_tsi.h"
 #ifdef GD32F170_190
-#include "gd32f1x0_slcd.h"
-#include "gd32f1x0_opa.h"
-#include "gd32f1x0_ivref.h"
-#include "gd32f1x0_can.h"
+// CAN BUS LIBRARY WAS REMOVED IN SPL UPDATE BY GIGADEVICE
+// ALONG WITH F170 and F190 SUPPORT.
+// WHY?!??! WHAT'S GOING ON?!
+
+//#include "gd32f1x0_slcd.h"
+//#include "gd32f1x0_opa.h"
+//#include "gd32f1x0_ivref.h"
+//#include "gd32f1x0_can.h"
 #endif /* GD32F170_190 */
 
 #endif /* GD32F1X0_LIBOPT_H */
