@@ -8,10 +8,11 @@
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
+    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -232,9 +233,7 @@ typedef enum
     EXTI_15     = BIT(15),                                   /*!< EXTI line 15 */
     EXTI_16     = BIT(16),                                   /*!< EXTI line 16 */
     EXTI_17     = BIT(17),                                   /*!< EXTI line 17 */
-#ifdef GD32F130_150
     EXTI_18     = BIT(18),                                   /*!< EXTI line 18 */
-#endif /* GD32F130_150 */
     EXTI_19     = BIT(19),                                   /*!< EXTI line 19 */
     EXTI_21     = BIT(21),                                   /*!< EXTI line 21 */
     EXTI_22     = BIT(22),                                   /*!< EXTI line 22 */

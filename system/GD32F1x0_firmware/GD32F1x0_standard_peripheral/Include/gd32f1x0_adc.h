@@ -8,10 +8,11 @@
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
+    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -67,10 +68,6 @@ OF SUCH DAMAGE.
 #define ADC_IDATA3                      REG32(ADC + 0x00000048U)            /*!< ADC inserted data register 3 */
 #define ADC_RDATA                       REG32(ADC + 0x0000004CU)            /*!< ADC regular data register */
 
-#ifdef GD32F170_190
-#define ADC_OVSAMPCTL                   REG32(ADC + 0x00000080U)            /*!< ADC oversampling control register */
-#endif /* GD32F170_190 */
-
 /* bits definitions */
 /* ADC_STAT */
 #define ADC_STAT_WDE                    BIT(0)                              /*!< analog watchdog event flag */
@@ -92,10 +89,6 @@ OF SUCH DAMAGE.
 #define ADC_CTL0_DISNUM                 BITS(13,15)                         /*!< discontinuous mode channel count */
 #define ADC_CTL0_IWDEN                  BIT(22)                             /*!< analog watchdog enable on inserted channels */
 #define ADC_CTL0_RWDEN                  BIT(23)                             /*!< analog watchdog enable on regular channels */
-
-#ifdef GD32F170_190
-#define ADC_CTL0_DRES                   BITS(24,25)                         /*!< ADC data resolution */
-#endif /* GD32F170_190 */
 
 /* ADC_CTL1 */
 #define ADC_CTL1_ADCON                  BIT(0)                              /*!< ADC converter on */
@@ -138,14 +131,6 @@ OF SUCH DAMAGE.
 
 /* ADC_RDATA */
 #define ADC_RDATA_RDATA                 BITS(0,15)                          /*!< regular channel data */
-
-#ifdef GD32F170_190
-/* ADC_OVSAMPCTL */
-#define ADC_OVSAMPCTL_OVSEN             BIT(0)                              /*!< oversampling enable */
-#define ADC_OVSAMPCTL_OVSR              BITS(2,4)                           /*!< oversampling ratio */
-#define ADC_OVSAMPCTL_OVSS              BITS(5,8)                           /*!< oversampling shift */
-#define ADC_OVSAMPCTL_TOVS              BIT(9)                              /*!< triggered oversampling */
-#endif /* GD32F170_190 */
 
 /* constants definitions */
 /* ADC flag definitions */
@@ -221,35 +206,6 @@ OF SUCH DAMAGE.
 #define ADC_RESOLUTION_10B              CTL0_DRES(1)                        /*!< 10-bit ADC resolution */
 #define ADC_RESOLUTION_8B               CTL0_DRES(2)                        /*!< 8-bit ADC resolution */
 #define ADC_RESOLUTION_6B               CTL0_DRES(3)                        /*!< 6-bit ADC resolution */
-
-#ifdef GD32F170_190
-/* ADC oversampling shift */
-#define OVSAMPCTL_OVSS(regval)          (BITS(5,8) & ((uint32_t)(regval) << 5))
-#define ADC_OVERSAMPLING_SHIFT_NONE     OVSAMPCTL_OVSS(0)                   /*!< no oversampling shift */
-#define ADC_OVERSAMPLING_SHIFT_1B       OVSAMPCTL_OVSS(1)                   /*!< 1-bit oversampling shift */
-#define ADC_OVERSAMPLING_SHIFT_2B       OVSAMPCTL_OVSS(2)                   /*!< 2-bit oversampling shift */
-#define ADC_OVERSAMPLING_SHIFT_3B       OVSAMPCTL_OVSS(3)                   /*!< 3-bit oversampling shift */
-#define ADC_OVERSAMPLING_SHIFT_4B       OVSAMPCTL_OVSS(4)                   /*!< 4-bit oversampling shift */
-#define ADC_OVERSAMPLING_SHIFT_5B       OVSAMPCTL_OVSS(5)                   /*!< 5-bit oversampling shift */
-#define ADC_OVERSAMPLING_SHIFT_6B       OVSAMPCTL_OVSS(6)                   /*!< 6-bit oversampling shift */
-#define ADC_OVERSAMPLING_SHIFT_7B       OVSAMPCTL_OVSS(7)                   /*!< 7-bit oversampling shift */
-#define ADC_OVERSAMPLING_SHIFT_8B       OVSAMPCTL_OVSS(8)                   /*!< 8-bit oversampling shift */
-
-/* ADC oversampling ratio */
-#define OVSAMPCTL_OVSR(regval)          (BITS(2,4) & ((uint32_t)(regval) << 2))
-#define ADC_OVERSAMPLING_RATIO_MUL2     OVSAMPCTL_OVSR(0)                   /*!< oversampling ratio multiple 2 */
-#define ADC_OVERSAMPLING_RATIO_MUL4     OVSAMPCTL_OVSR(1)                   /*!< oversampling ratio multiple 4 */
-#define ADC_OVERSAMPLING_RATIO_MUL8     OVSAMPCTL_OVSR(2)                   /*!< oversampling ratio multiple 8 */
-#define ADC_OVERSAMPLING_RATIO_MUL16    OVSAMPCTL_OVSR(3)                   /*!< oversampling ratio multiple 16 */
-#define ADC_OVERSAMPLING_RATIO_MUL32    OVSAMPCTL_OVSR(4)                   /*!< oversampling ratio multiple 32 */
-#define ADC_OVERSAMPLING_RATIO_MUL64    OVSAMPCTL_OVSR(5)                   /*!< oversampling ratio multiple 64 */
-#define ADC_OVERSAMPLING_RATIO_MUL128   OVSAMPCTL_OVSR(6)                   /*!< oversampling ratio multiple 128 */
-#define ADC_OVERSAMPLING_RATIO_MUL256   OVSAMPCTL_OVSR(7)                   /*!< oversampling ratio multiple 256 */
-
-/* ADC triggered oversampling */
-#define ADC_OVERSAMPLING_ALL_CONVERT    (0U)                                /*!< all oversampled conversions for a channel are done consecutively after a trigger */
-#define ADC_OVERSAMPLING_ONE_CONVERT    (1U)                                /*!< each oversampled conversion for a channel needs a trigger */
-#endif /* GD32F170_190 */
 
 /* ADC channel group definitions */
 #define ADC_REGULAR_CHANNEL             ((uint8_t)0x01U)                    /*!< ADC regular channel group */
@@ -365,16 +321,5 @@ void adc_watchdog_group_channel_enable(uint8_t channel_group);
 void adc_watchdog_disable(void);
 /* configure ADC analog watchdog threshold */
 void adc_watchdog_threshold_config(uint16_t low_threshold, uint16_t high_threshold);
-
-#ifdef GD32F170_190
-/* configure ADC resolution */
-void adc_resolution_config(uint32_t resolution);
-/* configure ADC oversample mode */
-void adc_oversample_mode_config(uint8_t mode, uint16_t shift, uint8_t ratio);
-/* enable ADC oversample mode */
-void adc_oversample_mode_enable(void);
-/* disable ADC oversample mode */
-void adc_oversample_mode_disable(void);
-#endif /* GD32F170_190 */
 
 #endif /* GD32F1X0_ADC_H */

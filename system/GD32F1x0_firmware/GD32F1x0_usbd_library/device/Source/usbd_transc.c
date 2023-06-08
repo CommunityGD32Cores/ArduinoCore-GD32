@@ -3,10 +3,11 @@
     \brief   USBD transaction function
 
     \version 2020-07-23, V3.0.0, firmware for GD32F1x0
+    \version 2022-06-30, V3.1.0, firmware for GD32F1x0
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -34,13 +35,6 @@ OF SUCH DAMAGE.
 
 #include "usbd_enum.h"
 #include "usbd_transc.h"
-
-/* local function prototypes ('static') */
-static inline void usb_stall_transc (usb_dev *udev);
-static inline void usb_ctl_status_in (usb_dev *udev);
-static inline void usb_ctl_data_in (usb_dev *udev);
-static inline void usb_ctl_out (usb_dev *udev);
-static inline void usb_0len_packet_send (usb_dev *udev);
 
 /*!
     \brief      USB setup stage processing
@@ -92,7 +86,7 @@ void _usb_setup_transc (usb_dev *udev, uint8_t ep_num)
                 usb_ctl_data_in(udev);
             } else {
                 /* USB control transfer data out stage */
-                usb_ctl_out(udev);
+                usb_ctl_data_out(udev);
             }
         }
     } else {
@@ -114,10 +108,16 @@ void _usb_out0_transc (usb_dev *udev, uint8_t ep_num)
         (void)udev->class_core->ctlx_out(udev);
     }
 
-    usb_transc_config(&udev->transc_out[ep_num], NULL, 0U, 0U);
+    if (USBD_CTL_DATA_OUT == udev->control.ctl_state) {
+        /* enter the control transaction status in stage */
+        usb_ctl_status_in(udev);
+    } else if (USBD_CTL_STATUS_OUT == udev->control.ctl_state) {
+        usb_transc_config(&udev->transc_out[ep_num], NULL, 0U, 0U);
 
-    /* enter the control transaction status in stage */
-    usb_ctl_status_in(udev);
+        udev->control.ctl_state = USBD_CTL_IDLE;
+    } else {
+        /* no operation */
+    }
 }
 
 /*!
@@ -142,67 +142,16 @@ void _usb_in0_transc (usb_dev *udev, uint8_t ep_num)
         (void)udev->class_core->ctlx_in(udev);
     }
 
-    /* USB control transfer status out stage */
-    usb_ctl_out(udev);
+    if (USBD_CTL_DATA_IN == udev->control.ctl_state) {
+        /* USB control transfer status out stage */
+        usb_ctl_status_out(udev);
+    } else if (USBD_CTL_STATUS_IN == udev->control.ctl_state) {
+        udev->control.ctl_state = USBD_CTL_IDLE;
+    }
 
     if (0U != udev->dev_addr) {
         udev->drv_handler->set_addr(udev);
 
         udev->dev_addr = 0U;
     }
-}
-
-/*!
-    \brief      USB stalled transaction
-    \param[in]  udev: pointer to USB device instance
-    \param[out] none
-    \retval     none
-*/
-static inline void usb_stall_transc (usb_dev *udev)
-{
-    usbd_ep_stall(udev, 0x0U);
-}
-
-/*!
-    \brief      USB control transaction status in stage
-    \param[in]  udev: pointer to USB device instance
-    \param[out] none
-    \retval     none
-*/
-static inline void usb_ctl_status_in (usb_dev *udev)
-{
-    udev->drv_handler->ep_write(udev->transc_in[0].xfer_buf, 0U, 0U);
-}
-
-/*!
-    \brief      USB control transaction data in stage
-    \param[in]  udev: pointer to USB device instance
-    \param[out] none
-    \retval     none
-*/
-static inline void usb_ctl_data_in (usb_dev *udev)
-{
-    usbd_ep_send(udev, 0U, udev->transc_in[0].xfer_buf, udev->transc_in[0].xfer_len);
-}
-
-/*!
-    \brief      USB control transaction data out & status out stage
-    \param[in]  udev: pointer to USB device instance
-    \param[out] none
-    \retval     none
-*/
-static inline void usb_ctl_out (usb_dev *udev)
-{
-    udev->drv_handler->ep_rx_enable(udev, 0U);
-}
-
-/*!
-    \brief      USB send 0 length data packet
-    \param[in]  udev: pointer to USB device instance
-    \param[out] none
-    \retval     none
-*/
-static inline void usb_0len_packet_send (usb_dev *udev)
-{
-    udev->drv_handler->ep_write(udev->transc_in[0].xfer_buf, 0U, 0U);
 }

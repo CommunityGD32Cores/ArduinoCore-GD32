@@ -8,10 +8,11 @@
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
+    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -106,54 +107,6 @@ void syscfg_high_current_disable(void)
 {
     SYSCFG_CFG0 &= SYSCFG_HIGH_CURRENT_DISABLE;
 }
-
-#ifdef GD32F170_190
-/*!
-    \brief      configure the VLCD intermediate voltage rail
-    \param[in]  vlcd_bias: specify VLCD bias
-                only one parameter can be selected which is shown as below:
-      \arg        VLCD_BIAS1_2_RAIL1: VLCD bias is 1/2, using rail1
-      \arg        VLCD_BIAS1_2_RAIL2: VLCD bias is 1/2, using rail2
-      \arg        VLCD_BIAS1_2_RAIL3: VLCD bias is 1/2, using rail3
-      \arg        VLCD_BIAS1_3_RAIL1_2: VLCD bias is 1/3, using rail1 and rail2
-      \arg        VLCD_BIAS1_3_RAIL1_3: VLCD bias is 1/3, using rail1 and rail3
-      \arg        VLCD_BIAS1_4_RAILALL: VLCD bias is 1/4, using all rails
-    \param[out] none
-    \retval     none
-*/
-void syscfg_vlcd_rail_config(uint8_t vlcd_bias)
-{
-    uint32_t cfg1 = SYSCFG_CFG1;
-
-    /* Clear system configuration register 1 */
-    SYSCFG_CFG1 = 0U;
-
-    switch(vlcd_bias){
-    /* according to VLCD bias, configure rails combination */
-    case VLCD_BIAS1_2_RAIL1:
-        SYSCFG_CFG1 |= SYSCFG_VLCD_RAIL1;
-        break;
-    case VLCD_BIAS1_2_RAIL2:
-        SYSCFG_CFG1 |= SYSCFG_VLCD_RAIL2;
-        break;
-    case VLCD_BIAS1_2_RAIL3:
-        SYSCFG_CFG1 |= SYSCFG_VLCD_RAIL3;
-        break;
-    case VLCD_BIAS1_3_RAIL1_2:
-        SYSCFG_CFG1 |= SYSCFG_VLCD_RAIL2 | SYSCFG_VLCD_RAIL1;
-        break;
-    case VLCD_BIAS1_3_RAIL1_3:
-        SYSCFG_CFG1 |= SYSCFG_VLCD_RAIL3 | SYSCFG_VLCD_RAIL1;
-        break;
-    case VLCD_BIAS1_4_RAILALL:
-        SYSCFG_CFG1 |= SYSCFG_VLCD_RAIL3 | SYSCFG_VLCD_RAIL2 | SYSCFG_VLCD_RAIL1;
-        break;
-    default:
-        SYSCFG_CFG1 = cfg1;
-        break;
-    }
-}
-#endif /* GD32F170_190 */
 
 /*!
     \brief      configure the GPIO pin as EXTI Line

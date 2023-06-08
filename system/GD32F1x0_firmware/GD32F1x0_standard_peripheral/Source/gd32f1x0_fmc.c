@@ -8,10 +8,11 @@
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
+    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -239,39 +240,6 @@ fmc_state_enum fmc_halfword_program(uint32_t address, uint16_t data)
     /* return the FMC state */
     return fmc_state;
 }
-
-#ifdef GD32F170_190
-/*!
-    \brief      FMC program a word at the corresponding address without erasing
-    \param[in]  address: address to program
-    \param[in]  data: word to program
-    \param[out] none
-    \retval     state of FMC
-      \arg        FMC_READY: the operation has been completed
-      \arg        FMC_WPERR: erase/program protection error
-      \arg        FMC_TOERR: timeout error
-*/
-fmc_state_enum fmc_word_reprogram(uint32_t address, uint32_t data)
-{
-    fmc_state_enum fmc_state = fmc_ready_wait(FMC_TIMEOUT_COUNT);
-    FMC_WSEN |= FMC_WSEN_BPEN;
-
-    if(FMC_READY == fmc_state){
-        /* set the PG bit to start program */
-        FMC_CTL |= FMC_CTL_PG;
-        REG32(address) = data;
-
-        /* wait for the FMC ready */
-        fmc_state = fmc_ready_wait(FMC_TIMEOUT_COUNT);
-
-        /* reset the PG bit */
-        FMC_CTL &= ~FMC_CTL_PG;
-    }
-
-    /* return the FMC state */
-    return fmc_state;
-}
-#endif /* GD32F170_190 */
 
 /* FMC option bytes programming functions */
 

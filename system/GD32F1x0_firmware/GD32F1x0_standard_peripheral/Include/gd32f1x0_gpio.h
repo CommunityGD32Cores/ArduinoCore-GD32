@@ -8,10 +8,11 @@
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
+    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -61,9 +62,6 @@ OF SUCH DAMAGE.
 #define GPIO_AFSEL0(gpiox)         REG32((gpiox) + 0x00000020U)    /*!< GPIO alternate function selected register 0 */
 #define GPIO_AFSEL1(gpiox)         REG32((gpiox) + 0x00000024U)    /*!< GPIO alternate function selected register 1 */
 #define GPIO_BC(gpiox)             REG32((gpiox) + 0x00000028U)    /*!< GPIO bit clear register */
-#ifdef GD32F170_190
-#define GPIO_TG(gpiox)             REG32((gpiox) + 0x0000002CU)    /*!< GPIO port bit toggle register */
-#endif /* GD32F170_190 */
 
 /* bits definitions */
 /* GPIO_CTL */
@@ -265,27 +263,6 @@ OF SUCH DAMAGE.
 #define GPIO_BC_CR14               BIT(14)               /*!< pin 14 clear bit */
 #define GPIO_BC_CR15               BIT(15)               /*!< pin 15 clear bit */
 
-#ifdef GD32F170_190
-/* GPIO_TG */
-#define GPIO_TG_TG0                BIT(0)                /*!< pin 0 toggle bit */
-#define GPIO_TG_TG1                BIT(1)                /*!< pin 1 toggle bit */
-#define GPIO_TG_TG2                BIT(2)                /*!< pin 2 toggle bit */
-#define GPIO_TG_TG3                BIT(3)                /*!< pin 3 toggle bit */
-#define GPIO_TG_TG4                BIT(4)                /*!< pin 4 toggle bit */
-#define GPIO_TG_TG5                BIT(5)                /*!< pin 5 toggle bit */
-#define GPIO_TG_TG6                BIT(6)                /*!< pin 6 toggle bit */
-#define GPIO_TG_TG7                BIT(7)                /*!< pin 7 toggle bit */
-#define GPIO_TG_TG8                BIT(8)                /*!< pin 8 toggle bit */
-#define GPIO_TG_TG9                BIT(9)                /*!< pin 9 toggle bit */
-#define GPIO_TG_TG10               BIT(10)               /*!< pin 10 toggle bit */
-#define GPIO_TG_TG11               BIT(11)               /*!< pin 11 toggle bit */
-#define GPIO_TG_TG12               BIT(12)               /*!< pin 12 toggle bit */
-#define GPIO_TG_TG13               BIT(13)               /*!< pin 13 toggle bit */
-#define GPIO_TG_TG14               BIT(14)               /*!< pin 14 toggle bit */
-#define GPIO_TG_TG15               BIT(15)               /*!< pin 15 toggle bit */
-
-#endif /* GD32F170_190 */
-
 /* constants definitions */
 typedef FlagStatus bit_status;
 
@@ -357,8 +334,6 @@ typedef FlagStatus bit_status;
 #define GPIO_AF_5                  AF(5)                 /*!< alternate function 5 selected (port A,B only) */
 #define GPIO_AF_6                  AF(6)                 /*!< alternate function 6 selected (port A,B only) */
 #define GPIO_AF_7                  AF(7)                 /*!< alternate function 7 selected (port A only) */
-#define GPIO_AF_9                  AF(9)                 /*!< alternate function 9 selected (port A,B only) */
-#define GPIO_AF_11                 AF(11)                /*!< alternate function 11 selected */
 
 /* function declarations */
 /* reset GPIO port */
@@ -390,14 +365,5 @@ uint16_t gpio_output_port_get(uint32_t gpio_periph);
 void gpio_af_set(uint32_t gpio_periph,uint32_t alt_func_num, uint32_t pin);
 /* lock GPIO pin bit */
 void gpio_pin_lock(uint32_t gpio_periph, uint32_t pin);
-
-#ifdef GD32F170_190
-
-/* toggle GPIO pin status */
-void gpio_bit_toggle(uint32_t gpio_periph, uint32_t pin);
-/* toggle GPIO port status */
-void gpio_port_toggle(uint32_t gpio_periph);
-
-#endif /* GD32F170_190 */
 
 #endif /* GD32F1X0_GPIO_H */

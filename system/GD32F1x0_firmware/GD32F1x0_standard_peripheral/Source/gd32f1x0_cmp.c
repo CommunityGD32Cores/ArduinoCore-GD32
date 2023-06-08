@@ -8,10 +8,12 @@
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
+    \version 2021-05-19, V3.3.1, firmware update for GD32F1x0(x=3,5,7,9)
+    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)    
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -66,7 +68,7 @@ void cmp_deinit(void)
       \arg        CMP_3_4VREFINT: VREFINT *3/4 input
       \arg        CMP_VREFINT: VREFINT input
       \arg        CMP_DAC0: PA4 (DAC0) input
-      \arg        CMP_PA5 or CMP_DAC1: PA5 input (for GD32F130_150 series) or PA5 (DAC1) input (for GD32F170_190 series)
+      \arg        CMP_PA5: PA5 input
       \arg        CMP_PA_0_2: PA0 input (CMP0) or PA2 input (CMP1)
     \param[in]  hysteresis
       \arg        CMP_HYSTERESIS_NO: output no hysteresis

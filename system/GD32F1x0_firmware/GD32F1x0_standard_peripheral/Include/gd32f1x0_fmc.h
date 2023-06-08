@@ -8,10 +8,11 @@
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
+    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -106,9 +107,6 @@ OF SUCH DAMAGE.
 
 /* FMC_WSEN */
 #define FMC_WSEN_WSEN           BIT(0)                      /*!< FMC wait state enable bit */
-#ifdef GD32F170_190
-#define FMC_WSEN_BPEN           BIT(1)                      /*!< FMC bit program enable bit */
-#endif /* GD32F170_190 */
 
 /* FMC_PID */
 #define FMC_PID_PID             BITS(0,31)                  /*!< product ID bits */
@@ -240,10 +238,6 @@ fmc_state_enum fmc_mass_erase(void);
 fmc_state_enum fmc_word_program(uint32_t address, uint32_t data);
 /* FMC program a half word at the corresponding address */
 fmc_state_enum fmc_halfword_program(uint32_t address, uint16_t data);
-#ifdef GD32F170_190
-/* FMC program a word at the corresponding address without erasing */
-fmc_state_enum fmc_word_reprogram(uint32_t address, uint32_t data);
-#endif /* GD32F170_190 */
 
 /* FMC option bytes programming functions */
 /* unlock the option byte operation */

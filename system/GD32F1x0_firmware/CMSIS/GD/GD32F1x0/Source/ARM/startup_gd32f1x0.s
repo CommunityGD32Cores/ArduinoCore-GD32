@@ -8,10 +8,11 @@
 ;    2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
 ;    2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
 ;    2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
+;    2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 ;*/
 
 ;/*
-;    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+;    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 ;
 ;    Redistribution and use in source and binary forms, with or without modification, 
 ;are permitted provided that the following conditions are met:
@@ -129,37 +130,15 @@ __Vectors       DCD     __initial_sp                      ; Top of Stack
                 DCD     0                                 ; Reserved
                 DCD     0                                 ; Reserved
                 DCD     USBDWakeUp_IRQHandler             ; 58:USBD Wakeup
-                DCD     CAN0_TX_IRQHandler                ; 59:CAN0 TX
-                DCD     CAN0_RX0_IRQHandler               ; 60:CAN0 RX0
-                DCD     CAN0_RX1_IRQHandler               ; 61:CAN0 RX1
-                DCD     CAN0_SCE_IRQHandler               ; 62:CAN0 SCE
-                DCD     SLCD_IRQHandler                   ; 63:SLCD
+                DCD     0                                 ; Reserved
+                DCD     0                                 ; Reserved
+                DCD     0                                 ; Reserved
+                DCD     0                                 ; Reserved
+                DCD     0                                 ; Reserved
                 DCD     DMA_Channel5_6_IRQHandler         ; 64:DMA Channel5 and Channel6 
                 DCD     0                                 ; Reserved
                 DCD     0                                 ; Reserved
                 DCD     SPI2_IRQHandler                   ; 67:SPI2
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     0                                 ; Reserved
-                DCD     CAN1_TX_IRQHandler                ; 86:CAN1 TX
-                DCD     CAN1_RX0_IRQHandler               ; 87:CAN1 RX0
-                DCD     CAN1_RX1_IRQHandler               ; 88:CAN1 RX1
-                DCD     CAN1_SCE_IRQHandler               ; 89:CAN1 SCE
 __Vectors_End
 
 __Vectors_Size  EQU     __Vectors_End - __Vectors
@@ -260,17 +239,8 @@ Default_Handler PROC
                 EXPORT  USBD_LP_IRQHandler                [WEAK]
                 EXPORT  USBD_HP_IRQHandler                [WEAK]
                 EXPORT  USBDWakeUp_IRQHandler             [WEAK]
-                EXPORT  CAN0_TX_IRQHandler                [WEAK]
-                EXPORT  CAN0_RX0_IRQHandler               [WEAK]
-                EXPORT  CAN0_RX1_IRQHandler               [WEAK]
-                EXPORT  CAN0_SCE_IRQHandler               [WEAK]
-                EXPORT  SLCD_IRQHandler                   [WEAK]
                 EXPORT  DMA_Channel5_6_IRQHandler         [WEAK]
                 EXPORT  SPI2_IRQHandler                   [WEAK]
-                EXPORT  CAN1_TX_IRQHandler                [WEAK]
-                EXPORT  CAN1_RX0_IRQHandler               [WEAK]
-                EXPORT  CAN1_RX1_IRQHandler               [WEAK]
-                EXPORT  CAN1_SCE_IRQHandler               [WEAK]
 
 ;/* external interrupts handler */
 WWDGT_IRQHandler
@@ -309,17 +279,8 @@ I2C2_ER_IRQHandler
 USBD_LP_IRQHandler
 USBD_HP_IRQHandler
 USBDWakeUp_IRQHandler
-CAN0_TX_IRQHandler
-CAN0_RX0_IRQHandler
-CAN0_RX1_IRQHandler
-CAN0_SCE_IRQHandler
-SLCD_IRQHandler
 DMA_Channel5_6_IRQHandler
 SPI2_IRQHandler
-CAN1_TX_IRQHandler
-CAN1_RX0_IRQHandler
-CAN1_RX1_IRQHandler
-CAN1_SCE_IRQHandler
                 B       .
                 ENDP
 

@@ -3,10 +3,11 @@
     \brief   USBD transaction 
 
     \version 2020-07-23, V3.0.0, firmware for GD32F1x0
+    \version 2022-06-30, V3.1.0, firmware for GD32F1x0
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -37,6 +38,8 @@ OF SUCH DAMAGE.
 
 #include "usbd_core.h"
 
+/* static inline function definitions */
+
 /*!
     \brief      USB transaction configure
     \param[in]  transc: pointer to USB device transaction instance
@@ -51,6 +54,80 @@ __STATIC_INLINE void usb_transc_config (usb_transc *transc, uint8_t *buf, uint16
     transc->xfer_buf = buf;
     transc->xfer_len = len;
     transc->xfer_count = count;
+}
+
+/*!
+    \brief      USB stalled transaction
+    \param[in]  udev: pointer to USB device instance
+    \param[out] none
+    \retval     none
+*/
+__STATIC_INLINE void usb_stall_transc (usb_dev *udev)
+{
+    usbd_ep_stall(udev, 0x0U);
+}
+
+/*!
+    \brief      USB control transaction data in stage
+    \param[in]  udev: pointer to USB device instance
+    \param[out] none
+    \retval     none
+*/
+__STATIC_INLINE void usb_ctl_data_in (usb_dev *udev)
+{
+    udev->control.ctl_state = USBD_CTL_DATA_IN;
+
+    usbd_ep_send(udev, 0U, udev->transc_in[0].xfer_buf, udev->transc_in[0].xfer_len);
+}
+
+/*!
+    \brief      USB control transaction status in stage
+    \param[in]  udev: pointer to USB device instance
+    \param[out] none
+    \retval     none
+*/
+__STATIC_INLINE void usb_ctl_status_in (usb_dev *udev)
+{
+    udev->control.ctl_state = USBD_CTL_STATUS_IN;
+
+    udev->drv_handler->ep_write(udev->transc_in[0].xfer_buf, 0U, 0U);
+}
+
+/*!
+    \brief      USB control transaction data out stage
+    \param[in]  udev: pointer to USB device instance
+    \param[out] none
+    \retval     none
+*/
+__STATIC_INLINE void usb_ctl_data_out (usb_dev *udev)
+{
+    udev->control.ctl_state = USBD_CTL_DATA_OUT;
+
+    udev->drv_handler->ep_rx_enable(udev, 0U);
+}
+
+/*!
+    \brief      USB control transaction status out stage
+    \param[in]  udev: pointer to USB device instance
+    \param[out] none
+    \retval     none
+*/
+__STATIC_INLINE void usb_ctl_status_out (usb_dev *udev)
+{
+    udev->control.ctl_state = USBD_CTL_STATUS_OUT;
+
+    udev->drv_handler->ep_rx_enable(udev, 0U);
+}
+
+/*!
+    \brief      USB send 0 length data packet
+    \param[in]  udev: pointer to USB device instance
+    \param[out] none
+    \retval     none
+*/
+__STATIC_INLINE void usb_0len_packet_send (usb_dev *udev)
+{
+    udev->drv_handler->ep_write(udev->transc_in[0].xfer_buf, 0U, 0U);
 }
 
 /* function declarations */

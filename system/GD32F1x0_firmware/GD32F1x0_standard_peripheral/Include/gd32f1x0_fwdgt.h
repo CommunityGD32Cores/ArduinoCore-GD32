@@ -8,10 +8,11 @@
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
+    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -43,7 +44,7 @@ OF SUCH DAMAGE.
 #include "gd32f1x0.h"
 
 /* FWDGT definitions */
-#define FWDGT                       FWDGT_BASE
+#define FWDGT                       FWDGT_BASE                      /*!< FWDGT base address */
 
 /* registers definitions */
 #define FWDGT_CTL                   REG32(FWDGT + 0x00000000U)      /*!< FWDGT control register */
@@ -85,10 +86,9 @@ OF SUCH DAMAGE.
 #define FWDGT_PSC_DIV256            ((uint8_t)PSC_PSC(6))           /*!< FWDGT prescaler set to 256 */
 
 /* FWDGT_RLD register value */
-#define RLD_RLD(regval)             (BITS(0,11) & ((uint32_t)(regval) << 0U))   /*!< write value to FWDGT_RLD_RLD bit field */
-
+#define RLD_RLD(regval)             (BITS(0,11) & ((uint32_t)(regval) << 0U))
 /* FWDGT_WND register value */
-#define WND_WND(regval)             (BITS(0,11) & ((uint32_t)(regval) << 0U))   /*!< write value to FWDGT_WND_WND bit field */
+#define WND_WND(regval)             (BITS(0,11) & ((uint32_t)(regval) << 0U))
 
 /* control value */
 #define FWDGT_WRITEACCESS_ENABLE    ((uint16_t)0x5555U)              /*!< FWDGT_CTL bits write access enable value */

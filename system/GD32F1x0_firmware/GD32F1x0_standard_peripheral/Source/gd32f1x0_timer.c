@@ -8,10 +8,11 @@
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
+    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -41,7 +42,7 @@ OF SUCH DAMAGE.
 
 /*!
     \brief      deinit a TIMER
-    \param[in]  timer_periph: TIMERx(x=0..2,13..16), TIMER5 just for GD32F150/GD32F190
+    \param[in]  timer_periph: TIMERx(x=0..2,13..16), TIMER5 just for GD32F150
     \param[out] none
     \retval     none
 */
@@ -112,7 +113,7 @@ void timer_struct_para_init(timer_parameter_struct* initpara)
 
 /*!
     \brief      initialize TIMER counter
-    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
     \param[in]  timer_initpara: init parameter struct
                 prescaler: prescaler value of the counter clock,0~65535
                 alignedmode: TIMER_COUNTER_EDGE,TIMER_COUNTER_CENTER_DOWN,TIMER_COUNTER_CENTER_UP,TIMER_COUNTER_CENTER_BOTH
@@ -156,7 +157,7 @@ void timer_init(uint32_t timer_periph, timer_parameter_struct* initpara)
 
 /*!
     \brief      enable a TIMER
-    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
     \param[out] none
     \retval     none
 */
@@ -167,7 +168,7 @@ void timer_enable(uint32_t timer_periph)
 
 /*!
     \brief      disable a TIMER
-    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
     \param[out] none
     \retval     none
 */
@@ -178,7 +179,7 @@ void timer_disable(uint32_t timer_periph)
 
 /*!
     \brief      enable the auto reload shadow function
-    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
     \param[out] none
     \retval     none
 */
@@ -189,7 +190,7 @@ void timer_auto_reload_shadow_enable(uint32_t timer_periph)
 
 /*!
     \brief      disable the auto reload shadow function
-    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
     \param[out] none
     \retval     none
 */
@@ -200,7 +201,7 @@ void timer_auto_reload_shadow_disable(uint32_t timer_periph)
 
 /*!
     \brief      enable the update event
-    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
     \param[out] none
     \retval     none
 */
@@ -211,7 +212,7 @@ void timer_update_event_enable(uint32_t timer_periph)
 
 /*!
     \brief      disable the update event
-    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
     \param[out] none
     \retval     none
 */
@@ -262,7 +263,7 @@ void timer_counter_down_direction(uint32_t timer_periph)
 
 /*!
     \brief      configure TIMER prescaler
-    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
     \param[in]  prescaler: prescaler value
     \param[in]  pscreload: prescaler reload mode
                 only one parameter can be selected which is shown as below:
@@ -294,7 +295,7 @@ void timer_repetition_value_config(uint32_t timer_periph, uint16_t repetition)
  
 /*!
     \brief      configure TIMER autoreload register value
-    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
     \param[in]  autoreload: the counter auto-reload value
     \param[out] none
     \retval     none
@@ -306,7 +307,7 @@ void timer_autoreload_value_config(uint32_t timer_periph, uint32_t autoreload)
 
 /*!
     \brief      configure TIMER counter register value
-    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
     \param[in]  counter: the counter value
     \param[out] none
     \retval     none
@@ -318,7 +319,7 @@ void timer_counter_value_config(uint32_t timer_periph, uint32_t counter)
 
 /*!
     \brief      read TIMER counter value
-    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
     \param[out] none
     \retval     counter value
 */         
@@ -331,7 +332,7 @@ uint32_t timer_counter_read(uint32_t timer_periph)
 
 /*!
     \brief      read TIMER prescaler value
-    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
     \param[out] none
     \retval     prescaler register value
 */         
@@ -344,7 +345,7 @@ uint16_t timer_prescaler_read(uint32_t timer_periph)
 
 /*!
     \brief      configure TIMER single pulse mode
-    \param[in]  timer_periph: TIMERx(x=0..2,14..16),TIMER5 just for GD32F150/GD32F190
+    \param[in]  timer_periph: TIMERx(x=0..2,14..16),TIMER5 just for GD32F150
     \param[in]  spmode:
                 only one parameter can be selected which is shown as below:
       \arg        TIMER_SP_MODE_SINGLE: single pulse mode
@@ -365,7 +366,7 @@ void timer_single_pulse_mode_config(uint32_t timer_periph, uint8_t spmode)
 
 /*!
     \brief      configure TIMER update source 
-    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+    \param[in]  timer_periph: TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
     \param[in]  update:
                 only one parameter can be selected which is shown as below:
       \arg        TIMER_UPDATE_SRC_GLOBAL: update generate by setting of UPG bit or the counter overflow/underflow,or the slave mode controller trigger
@@ -410,7 +411,7 @@ void timer_ocpre_clear_source_config(uint32_t timer_periph, uint8_t ocpreclear)
     \param[in]  timer_periph: please refer to the following parameters 
     \param[in]  interrupt: timer interrupt enable source
                 only one parameter can be selected which is shown as below:
-      \arg        TIMER_INT_UP: update interrupt enable, TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+      \arg        TIMER_INT_UP: update interrupt enable, TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
       \arg        TIMER_INT_CH0: channel 0 interrupt enable, TIMERx(x=0..2,13..16)
       \arg        TIMER_INT_CH1: channel 1 interrupt enable, TIMERx(x=0..2,14)
       \arg        TIMER_INT_CH2: channel 2 interrupt enable, TIMERx(x=0..2)
@@ -431,7 +432,7 @@ void timer_interrupt_enable(uint32_t timer_periph, uint32_t interrupt)
     \param[in]  timer_periph: please refer to the following parameters
     \param[in]  interrupt: timer interrupt source disable
                 only one parameter can be selected which is shown as below:
-      \arg        TIMER_INT_UP: update interrupt disable, TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+      \arg        TIMER_INT_UP: update interrupt disable, TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
       \arg        TIMER_INT_CH0: channel 0 interrupt disable, TIMERx(x=0..2,13..16)
       \arg        TIMER_INT_CH1: channel 1 interrupt disable, TIMERx(x=0..2,14)
       \arg        TIMER_INT_CH2: channel 2 interrupt disable, TIMERx(x=0..2)
@@ -452,7 +453,7 @@ void timer_interrupt_disable(uint32_t timer_periph, uint32_t interrupt)
     \param[in]  timer_periph: please refer to the following parameters
     \param[in]  interrupt: the timer interrupt bits
                 only one parameter can be selected which is shown as below:
-      \arg        TIMER_INT_FLAG_UP: update interrupt flag,TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+      \arg        TIMER_INT_FLAG_UP: update interrupt flag,TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
       \arg        TIMER_INT_FLAG_CH0: channel 0 interrupt flag,TIMERx(x=0..2,13..16)
       \arg        TIMER_INT_FLAG_CH1: channel 1 interrupt flag,TIMERx(x=0..2,14)
       \arg        TIMER_INT_FLAG_CH2: channel 2 interrupt flag,TIMERx(x=0..2)
@@ -479,7 +480,7 @@ FlagStatus timer_interrupt_flag_get(uint32_t timer_periph, uint32_t interrupt)
     \param[in]  timer_periph: please refer to the following parameters
     \param[in]  interrupt: the timer interrupt bits
                 only one parameter can be selected which is shown as below:
-      \arg        TIMER_INT_FLAG_UP: update interrupt flag, TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+      \arg        TIMER_INT_FLAG_UP: update interrupt flag, TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
       \arg        TIMER_INT_FLAG_CH0: channel 0 interrupt flag, TIMERx(x=0..2,13..16)
       \arg        TIMER_INT_FLAG_CH1: channel 1 interrupt flag, TIMERx(x=0..2,14)
       \arg        TIMER_INT_FLAG_CH2: channel 2 interrupt flag, TIMERx(x=0..2)
@@ -500,7 +501,7 @@ void timer_interrupt_flag_clear(uint32_t timer_periph, uint32_t interrupt)
     \param[in]  timer_periph: please refer to the following parameters
     \param[in]  flag: the timer interrupt flags
                 only one parameter can be selected which is shown as below:
-      \arg        TIMER_FLAG_UP: update flag, TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+      \arg        TIMER_FLAG_UP: update flag, TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
       \arg        TIMER_FLAG_CH0: channel 0 flag, TIMERx(x=0..2,13..16)
       \arg        TIMER_FLAG_CH1: channel 1 flag, TIMERx(x=0..2,14)
       \arg        TIMER_FLAG_CH2: channel 2 flag, TIMERx(x=0..2)
@@ -529,7 +530,7 @@ FlagStatus timer_flag_get(uint32_t timer_periph, uint32_t flag)
     \param[in]  timer_periph: please refer to the following parameters
     \param[in]  flag: the timer interrupt flags
                 only one parameter can be selected which is shown as below:
-      \arg        TIMER_FLAG_UP: update flag, TIMERx(x=0..2,13..16),TIMER5 just for GD32F150/GD32F190
+      \arg        TIMER_FLAG_UP: update flag, TIMERx(x=0..2,13..16),TIMER5 just for GD32F150
       \arg        TIMER_FLAG_CH0: channel 0 flag, TIMERx(x=0..2,13..16)
       \arg        TIMER_FLAG_CH1: channel 1 flag, TIMERx(x=0..2,14)
       \arg        TIMER_FLAG_CH2: channel 2 flag, TIMERx(x=0..2)
@@ -554,7 +555,7 @@ void timer_flag_clear(uint32_t timer_periph, uint32_t flag)
     \param[in]  timer_periph: please refer to the following parameters
     \param[in]  dma: specify which DMA to enable
                 one or more parameters can be selected which is shown as below:
-      \arg        TIMER_DMA_UPD: update DMA, TIMERx(x=0..2,14..16),TIMER5 just for GD32F150/GD32F190
+      \arg        TIMER_DMA_UPD: update DMA, TIMERx(x=0..2,14..16),TIMER5 just for GD32F150
       \arg        TIMER_DMA_CH0D: channel 0 DMA request, TIMERx(x=0..2,14..16)
       \arg        TIMER_DMA_CH1D: channel 1 DMA request, TIMERx(x=0..2,14)
       \arg        TIMER_DMA_CH2D: channel 2 DMA request, TIMERx(x=0..2)
@@ -574,7 +575,7 @@ void timer_dma_enable(uint32_t timer_periph, uint16_t dma)
     \param[in]  timer_periph: please refer to the following parameters
     \param[in]  dma: specify which DMA to disable
                 one or more parameters can be selected which are shown as below:
-      \arg        TIMER_DMA_UPD: update DMA, TIMERx(x=0..2,14..16),TIMER5 just for GD32F150/GD32F190
+      \arg        TIMER_DMA_UPD: update DMA, TIMERx(x=0..2,14..16),TIMER5 just for GD32F150
       \arg        TIMER_DMA_CH0D: channel 0 DMA request, TIMERx(x=0..2,14..16)
       \arg        TIMER_DMA_CH1D: channel 1 DMA request, TIMERx(x=0..2,14)
       \arg        TIMER_DMA_CH2D: channel 2 DMA request, TIMERx(x=0..2)
@@ -652,7 +653,7 @@ void timer_dma_transfer_config(uint32_t timer_periph, uint32_t dma_baseaddr, uin
     \param[in]  timer_periph: please refer to the following parameters
     \param[in]  event: the timer software event generation sources
                 one or more parameters can be selected which are shown as below:
-      \arg        TIMER_EVENT_SRC_UPG: update event,TIMERx(x=0..2,13..16), TIMER5 just for GD32F150/GD32F190
+      \arg        TIMER_EVENT_SRC_UPG: update event,TIMERx(x=0..2,13..16), TIMER5 just for GD32F150
       \arg        TIMER_EVENT_SRC_CH0G: channel 0 capture or compare event generation, TIMERx(x=0..2,13..16) 
       \arg        TIMER_EVENT_SRC_CH1G: channel 1 capture or compare event generation, TIMERx(x=0..2,14)
       \arg        TIMER_EVENT_SRC_CH2G: channel 2 capture or compare event generation, TIMERx(x=0..2) 
@@ -1722,12 +1723,12 @@ void timer_input_trigger_source_select(uint32_t timer_periph, uint32_t intrigger
 
 /*!
     \brief      select TIMER master mode output trigger source 
-    \param[in]  timer_periph: TIMERx(x=0..2,14),TIMER5 just for GD32F150/GD32F190
+    \param[in]  timer_periph: TIMERx(x=0..2,14),TIMER5 just for GD32F150
     \param[in]  outrigger: 
                 only one parameter can be selected which is shown as below:
-      \arg        TIMER_TRI_OUT_SRC_RESET: the UPG bit as trigger output(TIMERx(x=0..2,14),TIMER5 just for GD32F150/GD32F190)
-      \arg        TIMER_TRI_OUT_SRC_ENABLE: the counter enable signal TIMER_CTL0_CEN as trigger output(TIMERx(x=0..2,14),TIMER5 just for GD32F150/GD32F190)
-      \arg        TIMER_TRI_OUT_SRC_UPDATE: update event as trigger output(TIMERx(x=0..2,14),TIMER5 just for GD32F150/GD32F190)
+      \arg        TIMER_TRI_OUT_SRC_RESET: the UPG bit as trigger output(TIMERx(x=0..2,14),TIMER5 just for GD32F150)
+      \arg        TIMER_TRI_OUT_SRC_ENABLE: the counter enable signal TIMER_CTL0_CEN as trigger output(TIMERx(x=0..2,14),TIMER5 just for GD32F150)
+      \arg        TIMER_TRI_OUT_SRC_UPDATE: update event as trigger output(TIMERx(x=0..2,14),TIMER5 just for GD32F150)
       \arg        TIMER_TRI_OUT_SRC_CH0: a capture or a compare match occurred in channal0 as trigger output TRGO
       \arg        TIMER_TRI_OUT_SRC_O0CPRE: O0CPRE as trigger output(TIMERx(x=0..2,14))
       \arg        TIMER_TRI_OUT_SRC_O1CPRE: O1CPRE as trigger output(TIMERx(x=0..2,14))
@@ -2019,49 +2020,3 @@ void timer_channel_remap_config(uint32_t timer_periph, uint32_t remap)
 {
     TIMER_IRMP(timer_periph) = (uint32_t)remap;
 }
-
-#ifdef GD32F170_190
-
-/*!
-    \brief      configure TIMER write CHxVAL register selection
-    \param[in]  timer_periph: TIMERx(x=0..2,13..16)
-    \param[in]  ccsel: 
-                only one parameter can be selected which is shown as below:
-      \arg        TIMER_CHVSEL_DISABLE: no effect
-      \arg        TIMER_CHVSEL_ENABLE:  when write the CHxVAL register, if the write value is same as the CHxVAL value, the write access is ignored
-    \param[out] none
-    \retval     none
-*/
-void timer_write_chxval_register_config(uint32_t timer_periph, uint16_t ccsel)
-{
-    if(TIMER_CHVSEL_ENABLE == ccsel){
-        TIMER_CFG(timer_periph) |= (uint32_t)TIMER_CFG_CHVSEL;
-    }else if(TIMER_CHVSEL_DISABLE == ccsel){
-        TIMER_CFG(timer_periph) &= ~(uint32_t)TIMER_CFG_CHVSEL;
-    }else{
-        /* illegal parameters */
-    }
-}
-
-/*!
-    \brief      configure TIMER output value selection
-    \param[in]  timer_periph: TIMERx(x=0,14..16)
-    \param[in]  outsel:
-                only one parameter can be selected which is shown as below:
-      \arg        TIMER_OUTSEL_DISABLE: no effect
-      \arg        TIMER_OUTSEL_ENABLE: if POEN and IOS is 0, the output disabled
-    \param[out] none
-    \retval     none
-*/
-void timer_output_value_selection_config(uint32_t timer_periph, uint16_t outsel)
-{
-    if(TIMER_OUTSEL_ENABLE == outsel){
-        TIMER_CFG(timer_periph) |= (uint32_t)TIMER_CFG_OUTSEL;
-    }else if(TIMER_OUTSEL_DISABLE == outsel){
-        TIMER_CFG(timer_periph) &= ~(uint32_t)TIMER_CFG_OUTSEL;
-    }else{
-        /* illegal parameters */
-    }
-}
-
-#endif /* GD32F170_190 */

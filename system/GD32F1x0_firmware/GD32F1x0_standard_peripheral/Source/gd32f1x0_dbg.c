@@ -8,10 +8,12 @@
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
+    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
+    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -100,7 +102,6 @@ void dbg_low_power_disable(uint32_t dbg_low_power)
                 only one parameter can be selected which is shown as below:
       \arg        DBG_FWDGT_HOLD: debug FWDGT kept when core is halted
       \arg        DBG_WWDGT_HOLD: debug WWDGT kept when core is halted
-      \arg        DBG_CANx_HOLD(x=0,1): hold CANx counter when core is halted(170_190 series only)
       \arg        DBG_I2Cx_HOLD(x=0,1,2): hold I2Cx smbus when core is halted
       \arg        DBG_TIMERx_HOLD(x=0,1,2,5,13,14,15,16): hold TIMERx counter when core is halted
       \arg        DBG_RTC_HOLD: hold RTC calendar and wakeup counter when core is halted
@@ -118,7 +119,6 @@ void dbg_periph_enable(dbg_periph_enum dbg_periph)
                 only one parameter can be selected which is shown as below:
       \arg        DBG_FWDGT_HOLD: debug FWDGT kept when core is halted
       \arg        DBG_WWDGT_HOLD: debug WWDGT kept when core is halted
-      \arg        DBG_CANx_HOLD(x=0,1): hold CANx counter when core is halted(170_190 series only)
       \arg        DBG_I2Cx_HOLD(x=0,1,2): hold I2Cx smbus when core is halted
       \arg        DBG_TIMERx_HOLD(x=0,1,2,5,13,14,15,16): hold TIMERx counter when core is halted
       \arg        DBG_RTC_HOLD: hold RTC calendar and wakeup counter when core is halted

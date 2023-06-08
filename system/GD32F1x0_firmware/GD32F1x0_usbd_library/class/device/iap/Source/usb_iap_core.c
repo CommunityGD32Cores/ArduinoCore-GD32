@@ -3,10 +3,11 @@
     \brief   IAP driver
 
     \version 2020-07-23, V3.0.0, firmware for GD32F1x0
+    \version 2022-06-30, V3.1.0, firmware for GD32F1x0
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -407,7 +408,7 @@ static void iap_data_out (usb_dev *udev ,uint8_t ep_num)
 }
 
 /*!
-    \brief      send iap report
+    \brief      send IAP report
     \param[in]  udev: pointer to USB device instance
     \param[in]  report: pointer to HID report
     \param[in]  len: data length
@@ -482,9 +483,9 @@ static void iap_req_erase (usb_dev *udev)
     /* compute last packet size and transfer times */
     iap->lps = iap->file_length % TRANSFER_SIZE;
     if (0U == iap->lps) {
-        iap->transfer_times = (uint16_t)iap->file_length / TRANSFER_SIZE;
+        iap->transfer_times = (uint16_t)(iap->file_length / TRANSFER_SIZE);
     } else {
-        iap->transfer_times = (uint16_t)iap->file_length / TRANSFER_SIZE + 1U;
+        iap->transfer_times = (uint16_t)(iap->file_length / TRANSFER_SIZE + 1U);
     }
 
     /* check if the address is in protected area */

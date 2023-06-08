@@ -4,10 +4,11 @@
 
     \version 2020-07-23, V3.0.0, firmware for GD32F1x0
     \version 2021-02-20, V3.0.1, firmware for GD32F1x0
+    \version 2022-06-30, V3.1.0, firmware for GD32F1x0
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -106,7 +107,6 @@ typedef struct
 
     uint32_t scsi_blk_addr;
     uint32_t scsi_blk_len;
-//    uint32_t scsi_disk_pop;
 
     msc_scsi_sense scsi_sense[SENSE_LIST_DEEPTH];
 } usbd_msc_handler;

@@ -8,10 +8,11 @@
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
+    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -60,16 +61,11 @@ OF SUCH DAMAGE.
 #define RCU_CFG1                    REG32(RCU + 0x0000002CU)  /*!< configuration register 1 */
 #define RCU_CFG2                    REG32(RCU + 0x00000030U)  /*!< configuration register 2 */
 #define RCU_CTL1                    REG32(RCU + 0x00000034U)  /*!< control register 1 */
-#ifdef GD32F170_190
-#define RCU_CFG3                    REG32(RCU + 0x00000080U)  /*!< configuration register 3 */
-#endif /* GD32F170_190 */
 #define RCU_ADDAPB1EN               REG32(RCU + 0x000000F8U)  /*!< APB1 additional enable register */
 #define RCU_ADDAPB1RST              REG32(RCU + 0x000000FCU)  /*!< APB1 additional reset register */
 #define RCU_VKEY                    REG32(RCU + 0x00000100U)  /*!< voltage key register */
 #define RCU_DSV                     REG32(RCU + 0x00000134U)  /*!< deep-sleep mode voltage register */
-#ifdef GD32F130_150
 #define RCU_PDVSEL                  REG32(RCU + 0x00000138U)        /*!< power down voltage select register */
-#endif /* GD32F130_150 */
 
 /* bits definitions */
 /* RCU_CTL0 */
@@ -94,19 +90,11 @@ OF SUCH DAMAGE.
 #define RCU_CFG0_PLLSEL             BIT(16)                   /*!< PLL clock source selection */
 #define RCU_CFG0_PLLPREDV           BIT(17)                   /*!< HXTAL divider for PLL source clock selection */
 #define RCU_CFG0_PLLMF              (BIT(27) | BITS(18,21))   /*!< PLL multiply factor */
-#ifdef GD32F130_150
 #define RCU_CFG0_USBDPSC            BITS(22,23)               /*!< USBD clock prescaler selection */
 #define RCU_CFG0_CKOUTSEL           BITS(24,26)               /*!< CK_OUT clock source selection */
-#elif defined (GD32F170_190)
-#define RCU_CFG0_CKOUT0SEL          BITS(24,26)               /*!< CK_OUT0 clock source selection */
-#endif /* GD32F130_150 */
 #define RCU_CFG0_PLLMF4             BIT(27)                   /*!< bit 4 of PLLMF */
-#ifdef GD32F130_150
 #define RCU_CFG0_CKOUTDIV           BITS(28,30)               /*!< CK_OUT divider which the CK_OUT frequency can be reduced */
-#elif defined (GD32F170_190)
-#define RCU_CFG0_CKOUT0DIV          BITS(28,30)               /*!< CK_OUT0 divider which the CK_OUT0 frequency can be reduced */
-#endif /* GD32F130_150 */
-#define RCU_CFG0_PLLDV              BIT(31)                   /*!< CK_PLL divide by 1 or 2 for CK_OUT(GD32F130_150) or CK_OUT0(GD32F170_190) */
+#define RCU_CFG0_PLLDV              BIT(31)                   /*!< CK_PLL divide by 1 or 2 for CK_OUT */
 
 /* RCU_INT */
 #define RCU_INT_IRC40KSTBIF         BIT(0)                    /*!< IRC40K stabilization interrupt flag */
@@ -114,32 +102,20 @@ OF SUCH DAMAGE.
 #define RCU_INT_IRC8MSTBIF          BIT(2)                    /*!< IRC8M stabilization interrupt flag */
 #define RCU_INT_HXTALSTBIF          BIT(3)                    /*!< HXTAL stabilization interrupt flag */
 #define RCU_INT_PLLSTBIF            BIT(4)                    /*!< PLL stabilization interrupt flag */
-#ifdef GD32F130_150
 #define RCU_INT_IRC14MSTBIF         BIT(5)                    /*!< IRC14M stabilization interrupt flag */
-#elif defined (GD32F170_190)
-#define RCU_INT_IRC28MSTBIF         BIT(5)                    /*!< IRC28M stabilization interrupt flag */
-#endif /* GD32F130_150 */
 #define RCU_INT_CKMIF               BIT(7)                    /*!< HXTAL clock stuck interrupt flag */
 #define RCU_INT_IRC40KSTBIE         BIT(8)                    /*!< IRC40K stabilization interrupt enable */
 #define RCU_INT_LXTALSTBIE          BIT(9)                    /*!< LXTAL stabilization interrupt enable */
 #define RCU_INT_IRC8MSTBIE          BIT(10)                   /*!< IRC8M stabilization interrupt enable */
 #define RCU_INT_HXTALSTBIE          BIT(11)                   /*!< HXTAL stabilization interrupt enable */
 #define RCU_INT_PLLSTBIE            BIT(12)                   /*!< PLL stabilization interrupt enable */
-#ifdef GD32F130_150
 #define RCU_INT_IRC14MSTBIE         BIT(13)                   /*!< IRC14M stabilization interrupt enable */
-#elif defined (GD32F170_190)
-#define RCU_INT_IRC28MSTBIE         BIT(13)                   /*!< IRC28M stabilization interrupt enable */
-#endif /* GD32F130_150 */
 #define RCU_INT_IRC40KSTBIC         BIT(16)                   /*!< IRC40K stabilization interrupt clear */
 #define RCU_INT_LXTALSTBIC          BIT(17)                   /*!< LXTAL stabilization interrupt clear */
 #define RCU_INT_IRC8MSTBIC          BIT(18)                   /*!< IRC8M stabilization interrupt clear */
 #define RCU_INT_HXTALSTBIC          BIT(19)                   /*!< HXTAL stabilization interrupt clear */
 #define RCU_INT_PLLSTBIC            BIT(20)                   /*!< PLL stabilization interrupt clear */
-#ifdef GD32F130_150
 #define RCU_INT_IRC14MSTBIC         BIT(21)                   /*!< IRC14M stabilization interrupt clear */
-#elif defined (GD32F170_190)
-#define RCU_INT_IRC28MSTBIC         BIT(21)                   /*!< IRC28M stabilization interrupt clear */
-#endif /* GD32F130_150 */
 #define RCU_INT_CKMIC               BIT(23)                   /*!< HXTAL clock stuck interrupt clear */
 
 /* RCU_APB2RST */
@@ -157,28 +133,16 @@ OF SUCH DAMAGE.
 #define RCU_APB1RST_TIMER2RST       BIT(1)                    /*!< TIMER2 timer reset */
 #define RCU_APB1RST_TIMER5RST       BIT(4)                    /*!< TIMER5 timer reset */
 #define RCU_APB1RST_TIMER13RST      BIT(8)                    /*!< TIMER13 timer reset */
-#ifdef GD32F170_190
-#define RCU_APB1RST_SLCDRST         BIT(9)                    /*!< SLCD reset */
-#endif /* GD32F170_190 */
 #define RCU_APB1RST_WWDGTRST        BIT(11)                   /*!< window watchdog timer reset */
 #define RCU_APB1RST_SPI1RST         BIT(14)                   /*!< SPI1 reset */
 #define RCU_APB1RST_SPI2RST         BIT(15)                   /*!< SPI2 reset */
 #define RCU_APB1RST_USART1RST       BIT(17)                   /*!< USART1 reset */
 #define RCU_APB1RST_I2C0RST         BIT(21)                   /*!< I2C0 reset */
 #define RCU_APB1RST_I2C1RST         BIT(22)                   /*!< I2C1 reset */
-#ifdef GD32F130_150
 #define RCU_APB1RST_USBDRST         BIT(23)                   /*!< USBD reset */
-#endif /* GD32F130_150 */
-#ifdef GD32F170_190
-#define RCU_APB1RST_CAN0RST         BIT(25)                   /*!< CAN0 reset */
-#define RCU_APB1RST_CAN1RST         BIT(26)                   /*!< CAN1 reset */
-#endif /* GD32F170_190 */
 #define RCU_APB1RST_PMURST          BIT(28)                   /*!< power control reset */
 #define RCU_APB1RST_DACRST          BIT(29)                   /*!< DAC reset */
 #define RCU_APB1RST_CECRST          BIT(30)                   /*!< HDMI CEC reset */
-#ifdef GD32F170_190
-#define RCU_APB1RST_OPAIVREFRST     BIT(31)                   /*!< OPA and IVREF reset */
-#endif /* GD32F170_190 */
 
 /* RCU_AHBEN */
 #define RCU_AHBEN_DMAEN             BIT(0)                    /*!< DMA clock enable */
@@ -207,28 +171,16 @@ OF SUCH DAMAGE.
 #define RCU_APB1EN_TIMER2EN         BIT(1)                    /*!< TIMER2 timer clock enable */
 #define RCU_APB1EN_TIMER5EN         BIT(4)                    /*!< TIMER5 timer clock enable */
 #define RCU_APB1EN_TIMER13EN        BIT(8)                    /*!< TIMER13 timer clock enable */
-#ifdef GD32F170_190
-#define RCU_APB1EN_SLCDEN           BIT(9)                    /*!< SLCD clock enable */
-#endif /* GD32F170_190 */
 #define RCU_APB1EN_WWDGTEN          BIT(11)                   /*!< window watchdog timer clock enable */
 #define RCU_APB1EN_SPI1EN           BIT(14)                   /*!< SPI1 clock enable */
 #define RCU_APB1EN_SPI2EN           BIT(15)                   /*!< SPI2 clock enable */
 #define RCU_APB1EN_USART1EN         BIT(17)                   /*!< USART1 clock enable */
 #define RCU_APB1EN_I2C0EN           BIT(21)                   /*!< I2C0 clock enable */
 #define RCU_APB1EN_I2C1EN           BIT(22)                   /*!< I2C1 clock enable */
-#ifdef GD32F130_150
 #define RCU_APB1EN_USBDEN           BIT(23)                   /*!< USBD clock enable */
-#endif /* GD32F130_150 */
-#ifdef GD32F170_190
-#define RCU_APB1EN_CAN0EN           BIT(25)                   /*!< CAN0 clock enable */
-#define RCU_APB1EN_CAN1EN           BIT(26)                   /*!< CAN1 clock enable */
-#endif /* GD32F170_190 */
 #define RCU_APB1EN_PMUEN            BIT(28)                   /*!< power interface clock enable */
 #define RCU_APB1EN_DACEN            BIT(29)                   /*!< DAC interface clock enable */
 #define RCU_APB1EN_CECEN            BIT(30)                   /*!< HDMI CEC interface clock enable */
-#ifdef GD32F170_190
-#define RCU_APB1EN_OPAIVREFEN       BIT(31)                   /*!< OPA and IVREF clock enable */
-#endif /* GD32F170_190 */
 
 /* RCU_BDCTL */
 #define RCU_BDCTL_LXTALEN           BIT(0)                    /*!< LXTAL enable */
@@ -267,28 +219,12 @@ OF SUCH DAMAGE.
 #define RCU_CFG2_USART0SEL          BITS(0,1)                 /*!< CK_USART0 clock source selection */
 #define RCU_CFG2_CECSEL             BIT(6)                    /*!< CK_CEC clock source selection */
 #define RCU_CFG2_ADCSEL             BIT(8)                    /*!< CK_ADC clock source selection */
-#ifdef GD32F170_190
-#define RCU_CFG2_IRC28MDIV          BIT(16)                   /*!< CK_IRC28M divider 2 or not */
-#endif /* GD32F170_190 */
 
 /* RCU_CTL1 */
-#ifdef GD32F130_150
 #define RCU_CTL1_IRC14MEN           BIT(0)                    /*!< IRC14M internal 14M RC oscillator enable */
 #define RCU_CTL1_IRC14MSTB          BIT(1)                    /*!< IRC14M internal 14M RC oscillator stabilization flag */
 #define RCU_CTL1_IRC14MADJ          BITS(3,7)                 /*!< internal 14M RC oscillator clock trim adjust value */
 #define RCU_CTL1_IRC14MCALIB        BITS(8,15)                /*!< internal 14M RC oscillator calibration value register */
-#elif defined (GD32F170_190)
-#define RCU_CTL1_IRC28MEN           BIT(0)                    /*!< IRC28M internal 28M RC oscillator enable */
-#define RCU_CTL1_IRC28MSTB          BIT(1)                    /*!< IRC28M internal 28M RC oscillator stabilization flag */
-#define RCU_CTL1_IRC28MADJ          BITS(3,7)                 /*!< internal 28M RC oscillator clock trim adjust value */
-#define RCU_CTL1_IRC28MCALIB        BITS(8,15)                /*!< internal 28M RC oscillator calibration value register */
-#endif /* GD32F130_150 */
-
-#ifdef GD32F170_190
-/* RCU_CFG3 */
-#define RCU_CFG3_CKOUT1SEL          BITS(0,2)                 /*!< CKOUT1 clock source selection */
-#define RCU_CFG3_CKOUT1DIV          BITS(8,13)                /*!< CK_OUT1 divider which the CK_OUT1 frequency can be reduced */
-#endif /* GD32F170_190 */
 
 /* RCU_ADDAPB1EN */
 #define RCU_ADDAPB1EN_I2C2EN        BIT(0)                    /*!< I2C2 unit clock enable */
@@ -302,10 +238,8 @@ OF SUCH DAMAGE.
 /* RCU_DSV */
 #define RCU_DSV_DSLPVS              BITS(0,2)                 /*!< deep-sleep mode voltage select */
 
-#ifdef GD32F130_150
 /* RCU_PDVSEL */
 #define RCU_PDVSEL_PDRVS            BIT(0)                    /*!< power down voltage select */
-#endif /* GD32F130_150 */
 
 /* constants definitions */
 /* define the peripheral clock enable bit position and its register index offset */
@@ -370,28 +304,16 @@ typedef enum
     RCU_TIMER2  = RCU_REGIDX_BIT(IDX_APB1EN, 1U),             /*!< TIMER2 clock */
     RCU_TIMER5  = RCU_REGIDX_BIT(IDX_APB1EN, 4U),             /*!< TIMER5 clock */
     RCU_TIMER13 = RCU_REGIDX_BIT(IDX_APB1EN, 8U),             /*!< TIMER13 clock */
-#ifdef GD32F170_190
-    RCU_SLCD    = RCU_REGIDX_BIT(IDX_APB1EN, 9U),             /*!< SLCD clock */
-#endif /* GD32F170_190 */
     RCU_WWDGT   = RCU_REGIDX_BIT(IDX_APB1EN, 11U),            /*!< WWDGT clock */
     RCU_SPI1    = RCU_REGIDX_BIT(IDX_APB1EN, 14U),            /*!< SPI1 clock */
     RCU_SPI2    = RCU_REGIDX_BIT(IDX_APB1EN, 15U),            /*!< SPI2 clock */
     RCU_USART1  = RCU_REGIDX_BIT(IDX_APB1EN, 17U),            /*!< USART1 clock */
     RCU_I2C0    = RCU_REGIDX_BIT(IDX_APB1EN, 21U),            /*!< I2C0 clock */
     RCU_I2C1    = RCU_REGIDX_BIT(IDX_APB1EN, 22U),            /*!< I2C1 clock */
-#ifdef GD32F130_150
     RCU_USBD    = RCU_REGIDX_BIT(IDX_APB1EN, 23U),            /*!< USBD clock */
-#endif /* GD32F130_150 */
-#ifdef GD32F170_190
-    RCU_CAN0    = RCU_REGIDX_BIT(IDX_APB1EN, 25U),            /*!< CAN0 clock */
-    RCU_CAN1    = RCU_REGIDX_BIT(IDX_APB1EN, 26U),            /*!< CAN1 clock */
-#endif /* GD32F170_190 */
     RCU_PMU     = RCU_REGIDX_BIT(IDX_APB1EN, 28U),            /*!< PMU clock */
     RCU_DAC     = RCU_REGIDX_BIT(IDX_APB1EN, 29U),            /*!< DAC clock */
     RCU_CEC     = RCU_REGIDX_BIT(IDX_APB1EN, 30U),            /*!< CEC clock */
-#ifdef GD32F170_190
-    RCU_OPAIVREF = RCU_REGIDX_BIT(IDX_APB1EN, 31U),           /*!< OPAIVREF clock */
-#endif /* GD32F170_190 */
     RCU_RTC     = RCU_REGIDX_BIT(IDX_BDCTL, 15U),             /*!< RTC clock */
     
     /* RCU_ADDAPB1EN */
@@ -432,28 +354,16 @@ typedef enum
     RCU_TIMER2RST  = RCU_REGIDX_BIT(IDX_APB1RST, 1U),         /*!< TIMER2 reset */
     RCU_TIMER5RST  = RCU_REGIDX_BIT(IDX_APB1RST, 4U),         /*!< TIMER5 reset */
     RCU_TIMER13RST = RCU_REGIDX_BIT(IDX_APB1RST, 8U),         /*!< TIMER13 reset */
-#ifdef GD32F170_190
-    RCU_SLCDRST    = RCU_REGIDX_BIT(IDX_APB1RST, 9U),         /*!< SLCD reset */
-#endif /* GD32F170_190 */
     RCU_WWDGTRST   = RCU_REGIDX_BIT(IDX_APB1RST, 11U),        /*!< WWDGT reset */
     RCU_SPI1RST    = RCU_REGIDX_BIT(IDX_APB1RST, 14U),        /*!< SPI1 reset */
     RCU_SPI2RST    = RCU_REGIDX_BIT(IDX_APB1RST, 15U),        /*!< SPI2 reset */
     RCU_USART1RST  = RCU_REGIDX_BIT(IDX_APB1RST, 17U),        /*!< USART1 reset */
     RCU_I2C0RST    = RCU_REGIDX_BIT(IDX_APB1RST, 21U),        /*!< I2C0 reset */
     RCU_I2C1RST    = RCU_REGIDX_BIT(IDX_APB1RST, 22U),        /*!< I2C1 reset */
-#ifdef GD32F130_150
     RCU_USBDRST    = RCU_REGIDX_BIT(IDX_APB1RST, 23U),        /*!< USBD reset */
-#endif /* GD32F130_150 */
-#ifdef GD32F170_190
-    RCU_CAN0RST    = RCU_REGIDX_BIT(IDX_APB1RST, 25U),        /*!< CAN0 reset */
-    RCU_CAN1RST    = RCU_REGIDX_BIT(IDX_APB1RST, 26U),        /*!< CAN1 reset */
-#endif /* GD32F170_190 */
     RCU_PMURST     = RCU_REGIDX_BIT(IDX_APB1RST, 28U),        /*!< PMU reset */
     RCU_DACRST     = RCU_REGIDX_BIT(IDX_APB1RST, 29U),        /*!< DAC reset */
     RCU_CECRST     = RCU_REGIDX_BIT(IDX_APB1RST, 30U),        /*!< CEC reset */
-#ifdef GD32F170_190
-    RCU_OPAIVREFRST = RCU_REGIDX_BIT(IDX_APB1RST, 31U),       /*!< OPAIVREF reset */
-#endif /* GD32F170_190 */
 
     /* RCU_ADDAPB1RST */
     RCU_I2C2RST    = RCU_REGIDX_BIT(IDX_ADDAPB1RST, 0U),      /*!< I2C2 reset */
@@ -467,11 +377,7 @@ typedef enum
     RCU_FLAG_IRC8MSTB     = RCU_REGIDX_BIT(IDX_CTL0, 1U),     /*!< IRC8M stabilization flag */
     RCU_FLAG_HXTALSTB     = RCU_REGIDX_BIT(IDX_CTL0, 17U),    /*!< HXTAL stabilization flag */
     RCU_FLAG_PLLSTB       = RCU_REGIDX_BIT(IDX_CTL0, 25U),    /*!< PLL stabilization flag */
-#ifdef GD32F130_150
     RCU_FLAG_IRC14MSTB    = RCU_REGIDX_BIT(IDX_CTL1, 1U),     /*!< IRC14M stabilization flag */
-#elif defined (GD32F170_190)
-    RCU_FLAG_IRC28MSTB    = RCU_REGIDX_BIT(IDX_CTL1, 1U),     /*!< IRC28M stabilization flag */
-#endif /* GD32F130_150 */
     RCU_FLAG_V12RST       = RCU_REGIDX_BIT(IDX_RSTSCK, 23U),  /*!< 1.2V reset flags */
     RCU_FLAG_OBLRST       = RCU_REGIDX_BIT(IDX_RSTSCK, 25U),  /*!< option byte loader reset flag */
     RCU_FLAG_EPRST        = RCU_REGIDX_BIT(IDX_RSTSCK, 26U),  /*!< external pin reset reset flag */
@@ -490,11 +396,7 @@ typedef enum
     RCU_INT_FLAG_IRC8MSTB  = RCU_INT_IRC8MSTBIF,              /*!< IRC8M stabilization interrupt flag */
     RCU_INT_FLAG_HXTALSTB  = RCU_INT_HXTALSTBIF,              /*!< HXTAL stabilization interrupt flag */
     RCU_INT_FLAG_PLLSTB    = RCU_INT_PLLSTBIF,                /*!< PLL stabilization interrupt flag */
-#ifdef GD32F130_150
     RCU_INT_FLAG_IRC14MSTB = RCU_INT_IRC14MSTBIF,             /*!< IRC14M stabilization interrupt flag */
-#elif defined (GD32F170_190)
-    RCU_INT_FLAG_IRC28MSTB = RCU_INT_IRC28MSTBIF,             /*!< IRC28M stabilization interrupt flag */
-#endif /* GD32F130_150 */
     RCU_INT_FLAG_CKM       = RCU_INT_CKMIF                    /*!< HXTAL clock stuck interrupt flag */
 }rcu_int_flag_enum;
 
@@ -506,11 +408,7 @@ typedef enum
     RCU_INT_FLAG_IRC8MSTB_CLR  = RCU_INT_IRC8MSTBIC,         /*!< IRC8M stabilization interrupt flags clear */
     RCU_INT_FLAG_HXTALSTB_CLR  = RCU_INT_HXTALSTBIC,         /*!< HXTAL stabilization interrupt flags clear */
     RCU_INT_FLAG_PLLSTB_CLR    = RCU_INT_PLLSTBIC,           /*!< PLL stabilization interrupt flags clear */
-#ifdef GD32F130_150
     RCU_INT_FLAG_IRC14MSTB_CLR = RCU_INT_IRC14MSTBIC,        /*!< IRC14M stabilization interrupt flags clear */
-#elif defined (GD32F170_190)
-    RCU_INT_FLAG_IRC28MSTB_CLR = RCU_INT_IRC28MSTBIC,        /*!< IRC28M stabilization interrupt flags clear */
-#endif /* GD32F130_150 */
     RCU_INT_FLAG_CKM_CLR       = RCU_INT_CKMIC               /*!< HXTAL clock stuck interrupt flags clear */
 }rcu_int_flag_clear_enum;
 
@@ -522,22 +420,13 @@ typedef enum
     RCU_INT_IRC8MSTB        = RCU_INT_IRC8MSTBIE,            /*!< IRC8M stabilization interrupt */
     RCU_INT_HXTALSTB        = RCU_INT_HXTALSTBIE,            /*!< HXTAL stabilization interrupt */
     RCU_INT_PLLSTB          = RCU_INT_PLLSTBIE,              /*!< PLL stabilization interrupt */
-#ifdef GD32F130_150
     RCU_INT_IRC14MSTB       = RCU_INT_IRC14MSTBIE            /*!< IRC14M stabilization interrupt */
-#elif defined (GD32F170_190)
-    RCU_INT_IRC28MSTB       = RCU_INT_IRC28MSTBIE            /*!< IRC28M stabilization interrupt */
-#endif /* GD32F130_150 */
 }rcu_int_enum;
 
 /* ADC clock source */
 typedef enum
 {
-#ifdef GD32F130_150
     RCU_ADCCK_IRC14M        = 0U,                            /*!< ADC clock source select IRC14M */
-#elif defined (GD32F170_190)
-    RCU_ADCCK_IRC28M_DIV2   = 0U,                            /*!< ADC clock source select IRC28M/2 */
-    RCU_ADCCK_IRC28M,                                        /*!< ADC clock source select IRC28M */
-#endif /* GD32F130_150 */
     RCU_ADCCK_APB2_DIV2,                                     /*!< ADC clock source select APB2/2 */
     RCU_ADCCK_APB2_DIV4,                                     /*!< ADC clock source select APB2/4 */
     RCU_ADCCK_APB2_DIV6,                                     /*!< ADC clock source select APB2/6 */
@@ -550,11 +439,7 @@ typedef enum
     RCU_HXTAL   = RCU_REGIDX_BIT(IDX_CTL0, 16U),             /*!< HXTAL */
     RCU_LXTAL   = RCU_REGIDX_BIT(IDX_BDCTL, 0U),             /*!< LXTAL */
     RCU_IRC8M   = RCU_REGIDX_BIT(IDX_CTL0, 0U),              /*!< IRC8M */
-#ifdef GD32F130_150
     RCU_IRC14M  = RCU_REGIDX_BIT(IDX_CTL1, 0U),              /*!< IRC14M */
-#elif defined (GD32F170_190)
-    RCU_IRC28M  = RCU_REGIDX_BIT(IDX_CTL1, 0U),              /*!< IRC28M */
-#endif /* GD32F130_150 */
     RCU_IRC40K  = RCU_REGIDX_BIT(IDX_RSTSCK, 0U),            /*!< IRC40K */
     RCU_PLL_CK  = RCU_REGIDX_BIT(IDX_CTL0, 24U)              /*!< PLL */
 }rcu_osci_type_enum;
@@ -660,7 +545,6 @@ typedef enum
 #define RCU_PLL_MUL31               (RCU_CFG0_PLLMF4 | CFG0_PLLMF(14))  /*!< PLL source clock multiply by 31 */
 #define RCU_PLL_MUL32               (RCU_CFG0_PLLMF4 | CFG0_PLLMF(15))  /*!< PLL source clock multiply by 32 */
 
-#ifdef GD32F130_150
 /* USBD clock prescaler selection */
 #define CFG0_USBDPSC(regval)        (BITS(22,23) & ((uint32_t)(regval) << 22))
 #define RCU_USBD_CKPLL_DIV1_5       CFG0_USBDPSC(0)                     /*!< USBD clock prescaler select CK_PLL/1.5 */
@@ -691,31 +575,6 @@ typedef enum
 #define RCU_CKOUT_DIV64             CFG0_CKOUTDIV(6)                    /*!< CK_OUT is divided by 64 */
 #define RCU_CKOUT_DIV128            CFG0_CKOUTDIV(7)                    /*!< CK_OUT is divided by 128 */
 
-#elif defined (GD32F170_190)
-/* CK_OUT0 clock source selection */
-#define CFG0_CKOUT0SEL(regval)      (BITS(24,26) & ((uint32_t)(regval) << 24))
-#define RCU_CKOUT0SRC_NONE          CFG0_CKOUT0SEL(0)                    /*!< no clock selected */
-#define RCU_CKOUT0SRC_IRC28M        CFG0_CKOUT0SEL(1)                    /*!< CK_OUT0 clock source select IRC28M */
-#define RCU_CKOUT0SRC_IRC40K        CFG0_CKOUT0SEL(2)                    /*!< CK_OUT0 clock source select IRC40K */
-#define RCU_CKOUT0SRC_LXTAL         CFG0_CKOUT0SEL(3)                    /*!< CK_OUT0 clock source select LXTAL */
-#define RCU_CKOUT0SRC_CKSYS         CFG0_CKOUT0SEL(4)                    /*!< CK_OUT0 clock source select CKSYS */
-#define RCU_CKOUT0SRC_IRC8M         CFG0_CKOUT0SEL(5)                    /*!< CK_OUT0 clock source select IRC8M */
-#define RCU_CKOUT0SRC_HXTAL         CFG0_CKOUT0SEL(6)                    /*!< CK_OUT0 clock source select HXTAL */
-#define RCU_CKOUT0SRC_CKPLL_DIV1    (RCU_CFG0_PLLDV | CFG0_CKOUT0SEL(7)) /*!< CK_OUT0 clock source select CK_PLL */
-#define RCU_CKOUT0SRC_CKPLL_DIV2    CFG0_CKOUT0SEL(7)                    /*!< CK_OUT0 clock source select CK_PLL/2 */
-
-/* CK_OUT0 divider */
-#define CFG0_CKOUT0DIV(regval)      (BITS(28,30) & ((uint32_t)(regval) << 28))
-#define RCU_CKOUT0_DIV1             CFG0_CKOUT0DIV(0)                   /*!< CK_OUT0 is divided by 1 */
-#define RCU_CKOUT0_DIV2             CFG0_CKOUT0DIV(1)                   /*!< CK_OUT0 is divided by 2 */
-#define RCU_CKOUT0_DIV4             CFG0_CKOUT0DIV(2)                   /*!< CK_OUT0 is divided by 4 */
-#define RCU_CKOUT0_DIV8             CFG0_CKOUT0DIV(3)                   /*!< CK_OUT0 is divided by 8 */
-#define RCU_CKOUT0_DIV16            CFG0_CKOUT0DIV(4)                   /*!< CK_OUT0 is divided by 16 */
-#define RCU_CKOUT0_DIV32            CFG0_CKOUT0DIV(5)                   /*!< CK_OUT0 is divided by 32 */
-#define RCU_CKOUT0_DIV64            CFG0_CKOUT0DIV(6)                   /*!< CK_OUT0 is divided by 64 */
-#define RCU_CKOUT0_DIV128           CFG0_CKOUT0DIV(7)                   /*!< CK_OUT0 is divided by 128 */
-#endif /* GD32F130_150 */
-
 /* CK_PLL divide by 1 or 2 for CK_OUT */
 #define RCU_PLLDV_CKPLL_DIV2        (uint32_t)0x00000000U               /*!< CK_PLL divide by 2 for CK_OUT */
 #define RCU_PLLDV_CKPLL             RCU_CFG0_PLLDV                      /*!< CK_PLL divide by 1 for CK_OUT */
@@ -733,15 +592,6 @@ typedef enum
 #define RCU_RTCSRC_LXTAL            BDCTL_RTCSRC(1)                     /*!< LXTAL selected as RTC source clock */
 #define RCU_RTCSRC_IRC40K           BDCTL_RTCSRC(2)                     /*!< IRC40K selected as RTC source clock */
 #define RCU_RTCSRC_HXTAL_DIV32      BDCTL_RTCSRC(3)                     /*!< HXTAL/32 selected as RTC source clock */
-
-#ifdef GD32F170_190
-/* SLCD clock entry selection */
-#define BDCTL_RTCSRC(regval)        (BITS(8,9) & ((uint32_t)(regval) << 8))
-#define RCU_SLCDSRC_NONE            BDCTL_RTCSRC(0)                     /*!< no clock selected */
-#define RCU_SLCDSRC_LXTAL           BDCTL_RTCSRC(1)                     /*!< LXTAL selected as SLCD source clock */
-#define RCU_SLCDSRC_IRC40K          BDCTL_RTCSRC(2)                     /*!< IRC40K selected as SLCD source clock */
-#define RCU_SLCDSRC_HXTAL_DIV32     BDCTL_RTCSRC(3)                     /*!< HXTAL/32 selected as SLCD source clock */
-#endif /* GD32F170_190 */
 
 /* CK_HXTAL divider previous PLL */
 #define CFG1_HXTALPREDV(regval)     (BITS(0,3) & ((uint32_t)(regval) << 0))
@@ -773,100 +623,10 @@ typedef enum
 #define RCU_CECSRC_IRC8M_DIV244     (uint32_t)0x00000000U               /*!< CK_CEC clock source select IRC8M/244 */
 #define RCU_CECSRC_LXTAL            RCU_CFG2_CECSEL                     /*!< CK_CEC clock source select LXTAL */
 
-#ifdef GD32F130_150
 /* ADC clock source selection */
 #define RCU_ADCSRC_IRC14M           (uint32_t)0x00000000U               /*!< ADC clock source select */
 #define RCU_ADCSRC_APB2DIV          RCU_CFG2_ADCSEL                     /*!< ADC clock source select */
-#elif defined (GD32F170_190)
-/* ADC clock source selection */
-#define RCU_ADCSRC_IRC28M           (uint32_t)0x00000000U               /*!< ADC clock source select */
-#define RCU_ADCSRC_APB2DIV          RCU_CFG2_ADCSEL                     /*!< ADC clock source select */
 
-/* IRC28M clock divider for ADC */
-#define RCU_ADC_IRC28M_DIV2         (uint32_t)0x00000000U               /*!< IRC28M/2 select to ADC clock */
-#define RCU_ADC_IRC28M_DIV1         RCU_CFG2_IRC28MDIV                  /*!< IRC28M select to ADC clock */
-
-/* CK_OUT1 clock source selection */
-#define CFG3_CKOUT1SEL(regval)      (BITS(0,2) & ((uint32_t)(regval) << 0))
-#define RCU_CKOUT1SRC_NONE          CFG3_CKOUT1SEL(0)                   /*!< no clock selected */
-#define RCU_CKOUT1SRC_IRC28M        CFG3_CKOUT1SEL(1)                   /*!< CK_OUT1 clock source select IRC28M */
-#define RCU_CKOUT1SRC_IRC40K        CFG3_CKOUT1SEL(2)                   /*!< CK_OUT1 clock source select IRC40K */
-#define RCU_CKOUT1SRC_LXTAL         CFG3_CKOUT1SEL(3)                   /*!< CK_OUT1 clock source select LXTAL */
-#define RCU_CKOUT1SRC_CKSYS         CFG3_CKOUT1SEL(4)                   /*!< CK_OUT1 clock source select CKSYS */
-#define RCU_CKOUT1SRC_IRC8M         CFG3_CKOUT1SEL(5)                   /*!< CK_OUT1 clock source select IRC8M */
-#define RCU_CKOUT1SRC_HXTAL         CFG3_CKOUT1SEL(6)                   /*!< CK_OUT1 clock source select HXTAL */
-#define RCU_CKOUT1SRC_CKPLL_DIV1    0x00000007U                         /*!< CK_OUT1 clock source select CK_PLL */
-#define RCU_CKOUT1SRC_CKPLL_DIV2    0x00000008U                         /*!< CK_OUT1 clock source select CK_PLL/2 */
-
-/* CK_OUT1 divider */
-#define CFG3_CKOUT1DIV(regval)      (BITS(8,13) & ((uint32_t)(regval) << 8))
-#define RCU_CKOUT1_DIV1             CFG3_CKOUT1DIV(0)                   /*!< CK_OUT1 is divided by 1 */
-#define RCU_CKOUT1_DIV2             CFG3_CKOUT1DIV(1)                   /*!< CK_OUT1 is divided by 2 */
-#define RCU_CKOUT1_DIV3             CFG3_CKOUT1DIV(2)                   /*!< CK_OUT1 is divided by 3 */
-#define RCU_CKOUT1_DIV4             CFG3_CKOUT1DIV(3)                   /*!< CK_OUT1 is divided by 4 */
-#define RCU_CKOUT1_DIV5             CFG3_CKOUT1DIV(4)                   /*!< CK_OUT1 is divided by 5 */
-#define RCU_CKOUT1_DIV6             CFG3_CKOUT1DIV(5)                   /*!< CK_OUT1 is divided by 6 */
-#define RCU_CKOUT1_DIV7             CFG3_CKOUT1DIV(6)                   /*!< CK_OUT1 is divided by 7 */
-#define RCU_CKOUT1_DIV8             CFG3_CKOUT1DIV(7)                   /*!< CK_OUT1 is divided by 8 */
-#define RCU_CKOUT1_DIV9             CFG3_CKOUT1DIV(8)                   /*!< CK_OUT1 is divided by 9 */
-#define RCU_CKOUT1_DIV10            CFG3_CKOUT1DIV(9)                   /*!< CK_OUT1 is divided by 10 */
-#define RCU_CKOUT1_DIV11            CFG3_CKOUT1DIV(10)                  /*!< CK_OUT1 is divided by 11 */
-#define RCU_CKOUT1_DIV12            CFG3_CKOUT1DIV(11)                  /*!< CK_OUT1 is divided by 12 */
-#define RCU_CKOUT1_DIV13            CFG3_CKOUT1DIV(12)                  /*!< CK_OUT1 is divided by 13 */
-#define RCU_CKOUT1_DIV14            CFG3_CKOUT1DIV(13)                  /*!< CK_OUT1 is divided by 14 */
-#define RCU_CKOUT1_DIV15            CFG3_CKOUT1DIV(14)                  /*!< CK_OUT1 is divided by 15 */
-#define RCU_CKOUT1_DIV16            CFG3_CKOUT1DIV(15)                  /*!< CK_OUT1 is divided by 16 */
-#define RCU_CKOUT1_DIV17            CFG3_CKOUT1DIV(16)                  /*!< CK_OUT1 is divided by 17 */
-#define RCU_CKOUT1_DIV18            CFG3_CKOUT1DIV(17)                  /*!< CK_OUT1 is divided by 18 */
-#define RCU_CKOUT1_DIV19            CFG3_CKOUT1DIV(18)                  /*!< CK_OUT1 is divided by 19 */
-#define RCU_CKOUT1_DIV20            CFG3_CKOUT1DIV(19)                  /*!< CK_OUT1 is divided by 20 */
-#define RCU_CKOUT1_DIV21            CFG3_CKOUT1DIV(20)                  /*!< CK_OUT1 is divided by 21 */
-#define RCU_CKOUT1_DIV22            CFG3_CKOUT1DIV(21)                  /*!< CK_OUT1 is divided by 22 */
-#define RCU_CKOUT1_DIV23            CFG3_CKOUT1DIV(22)                  /*!< CK_OUT1 is divided by 23 */
-#define RCU_CKOUT1_DIV24            CFG3_CKOUT1DIV(23)                  /*!< CK_OUT1 is divided by 24 */
-#define RCU_CKOUT1_DIV25            CFG3_CKOUT1DIV(24)                  /*!< CK_OUT1 is divided by 25 */
-#define RCU_CKOUT1_DIV26            CFG3_CKOUT1DIV(25)                  /*!< CK_OUT1 is divided by 26 */
-#define RCU_CKOUT1_DIV27            CFG3_CKOUT1DIV(26)                  /*!< CK_OUT1 is divided by 27 */
-#define RCU_CKOUT1_DIV28            CFG3_CKOUT1DIV(27)                  /*!< CK_OUT1 is divided by 28 */
-#define RCU_CKOUT1_DIV29            CFG3_CKOUT1DIV(28)                  /*!< CK_OUT1 is divided by 29 */
-#define RCU_CKOUT1_DIV30            CFG3_CKOUT1DIV(29)                  /*!< CK_OUT1 is divided by 30 */
-#define RCU_CKOUT1_DIV31            CFG3_CKOUT1DIV(30)                  /*!< CK_OUT1 is divided by 31 */
-#define RCU_CKOUT1_DIV32            CFG3_CKOUT1DIV(31)                  /*!< CK_OUT1 is divided by 32 */
-#define RCU_CKOUT1_DIV33            CFG3_CKOUT1DIV(32)                  /*!< CK_OUT1 is divided by 33 */
-#define RCU_CKOUT1_DIV34            CFG3_CKOUT1DIV(33)                  /*!< CK_OUT1 is divided by 34 */
-#define RCU_CKOUT1_DIV35            CFG3_CKOUT1DIV(34)                  /*!< CK_OUT1 is divided by 35 */
-#define RCU_CKOUT1_DIV36            CFG3_CKOUT1DIV(35)                  /*!< CK_OUT1 is divided by 36 */
-#define RCU_CKOUT1_DIV37            CFG3_CKOUT1DIV(36)                  /*!< CK_OUT1 is divided by 37 */
-#define RCU_CKOUT1_DIV38            CFG3_CKOUT1DIV(37)                  /*!< CK_OUT1 is divided by 38 */
-#define RCU_CKOUT1_DIV39            CFG3_CKOUT1DIV(38)                  /*!< CK_OUT1 is divided by 39 */
-#define RCU_CKOUT1_DIV40            CFG3_CKOUT1DIV(39)                  /*!< CK_OUT1 is divided by 40 */
-#define RCU_CKOUT1_DIV41            CFG3_CKOUT1DIV(40)                  /*!< CK_OUT1 is divided by 41 */
-#define RCU_CKOUT1_DIV42            CFG3_CKOUT1DIV(41)                  /*!< CK_OUT1 is divided by 42 */
-#define RCU_CKOUT1_DIV43            CFG3_CKOUT1DIV(42)                  /*!< CK_OUT1 is divided by 43 */
-#define RCU_CKOUT1_DIV44            CFG3_CKOUT1DIV(43)                  /*!< CK_OUT1 is divided by 44 */
-#define RCU_CKOUT1_DIV45            CFG3_CKOUT1DIV(44)                  /*!< CK_OUT1 is divided by 45 */
-#define RCU_CKOUT1_DIV46            CFG3_CKOUT1DIV(45)                  /*!< CK_OUT1 is divided by 46 */
-#define RCU_CKOUT1_DIV47            CFG3_CKOUT1DIV(46)                  /*!< CK_OUT1 is divided by 47 */
-#define RCU_CKOUT1_DIV48            CFG3_CKOUT1DIV(47)                  /*!< CK_OUT1 is divided by 48 */
-#define RCU_CKOUT1_DIV49            CFG3_CKOUT1DIV(48)                  /*!< CK_OUT1 is divided by 49 */
-#define RCU_CKOUT1_DIV50            CFG3_CKOUT1DIV(49)                  /*!< CK_OUT1 is divided by 50 */
-#define RCU_CKOUT1_DIV51            CFG3_CKOUT1DIV(50)                  /*!< CK_OUT1 is divided by 51 */
-#define RCU_CKOUT1_DIV52            CFG3_CKOUT1DIV(51)                  /*!< CK_OUT1 is divided by 52 */
-#define RCU_CKOUT1_DIV53            CFG3_CKOUT1DIV(52)                  /*!< CK_OUT1 is divided by 53 */
-#define RCU_CKOUT1_DIV54            CFG3_CKOUT1DIV(53)                  /*!< CK_OUT1 is divided by 54 */
-#define RCU_CKOUT1_DIV55            CFG3_CKOUT1DIV(54)                  /*!< CK_OUT1 is divided by 55 */
-#define RCU_CKOUT1_DIV56            CFG3_CKOUT1DIV(55)                  /*!< CK_OUT1 is divided by 56 */
-#define RCU_CKOUT1_DIV57            CFG3_CKOUT1DIV(56)                  /*!< CK_OUT1 is divided by 57 */
-#define RCU_CKOUT1_DIV58            CFG3_CKOUT1DIV(57)                  /*!< CK_OUT1 is divided by 58 */
-#define RCU_CKOUT1_DIV59            CFG3_CKOUT1DIV(58)                  /*!< CK_OUT1 is divided by 59 */
-#define RCU_CKOUT1_DIV60            CFG3_CKOUT1DIV(59)                  /*!< CK_OUT1 is divided by 60 */
-#define RCU_CKOUT1_DIV61            CFG3_CKOUT1DIV(60)                  /*!< CK_OUT1 is divided by 61 */
-#define RCU_CKOUT1_DIV62            CFG3_CKOUT1DIV(61)                  /*!< CK_OUT1 is divided by 62 */
-#define RCU_CKOUT1_DIV63            CFG3_CKOUT1DIV(62)                  /*!< CK_OUT1 is divided by 63 */
-#define RCU_CKOUT1_DIV64            CFG3_CKOUT1DIV(63)                  /*!< CK_OUT1 is divided by 64 */
-#endif /* GD32F130_150 */
-
-#ifdef GD32F130_150
 /* Deep-sleep mode voltage */
 #define DSV_DSLPVS(regval)          (BITS(0,2) & ((uint32_t)(regval) << 0))
 #define RCU_DEEPSLEEP_V_1_2         DSV_DSLPVS(0)                       /*!< core voltage is 1.2V in deep-sleep mode */
@@ -877,15 +637,6 @@ typedef enum
 /*Power down voltage select*/
 #define RCU_PDR_V_2_6               (uint32_t)0x00000000U               /*!< power down voltage is 2.6V */
 #define RCU_PDR_V_1_8               RCU_PDVSEL_PDRVS                    /*!< power down voltage is 1.8V */
-
-#elif defined (GD32F170_190)
-/* Deep-sleep mode voltage */
-#define DSV_DSLPVS(regval)          (BITS(0,2) & ((uint32_t)(regval) << 0))
-#define RCU_DEEPSLEEP_V_1_8         DSV_DSLPVS(0)                       /*!< core voltage is 1.8V in deep-sleep mode */
-#define RCU_DEEPSLEEP_V_1_6         DSV_DSLPVS(1)                       /*!< core voltage is 1.6V in deep-sleep mode */
-#define RCU_DEEPSLEEP_V_1_4         DSV_DSLPVS(2)                       /*!< core voltage is 1.4V in deep-sleep mode */
-#define RCU_DEEPSLEEP_V_1_2         DSV_DSLPVS(3)                       /*!< core voltage is 1.2V in deep-sleep mode */
-#endif /* GD32F130_150 */
 
 /* function declarations */
 /* initialization, peripheral clock and reset configuration functions */
@@ -921,17 +672,10 @@ void rcu_apb1_clock_config(uint32_t ck_apb1);
 void rcu_apb2_clock_config(uint32_t ck_apb2);
 /* configure the ADC clock source and prescaler selection */
 void rcu_adc_clock_config(rcu_adc_clock_enum ck_adc);
-#ifdef GD32F130_150
 /* configure the USBD prescaler selection */
 void rcu_usbd_clock_config(uint32_t ck_usbd);
 /* configure the CK_OUT clock source and divider */
 void rcu_ckout_config(uint32_t ckout_src, uint32_t ckout_div);
-#elif defined (GD32F170_190)
-/* configure the CK_OUT0 clock source and divider */
-void rcu_ckout0_config(uint32_t ckout0_src, uint32_t ckout0_div);
-/* configure the CK_OUT1 clock source and divider */
-void rcu_ckout1_config(uint32_t ckout1_src, uint32_t ckout1_div);
-#endif /* GD32F130_150 */
 /* configure the PLL clock source selection and PLL multiply factor */
 void rcu_pll_config(uint32_t pll_src, uint32_t pll_mul);
 /* configure the USART clock source selection */
@@ -940,28 +684,10 @@ void rcu_usart_clock_config(uint32_t ck_usart);
 void rcu_cec_clock_config(uint32_t ck_cec);
 /* configure the RTC clock source selection */
 void rcu_rtc_clock_config(uint32_t rtc_clock_source);
-#ifdef GD32F170_190
-/* configure the SLCD clock source selection */
-void rcu_slcd_clock_config(uint32_t slcd_clock_source);
-#endif /* GD32F170_190 */
 /* configure the HXTAL divider used as input of PLL */
 void rcu_hxtal_prediv_config(uint32_t hxtal_prediv);
 /* configure the LXTAL drive capability */
 void rcu_lxtal_drive_capability_config(uint32_t lxtal_dricap);
-
-/* flag and interrupt functions */
-/* get the clock stabilization and periphral reset flags */
-FlagStatus rcu_flag_get(rcu_flag_enum flag);
-/* clear the reset flag */
-void rcu_all_reset_flag_clear(void);
-/* get the clock stabilization interrupt and ckm flags */
-FlagStatus rcu_interrupt_flag_get(rcu_int_flag_enum int_flag);
-/* clear the interrupt flags */
-void rcu_interrupt_flag_clear(rcu_int_flag_clear_enum int_flag_clear);
-/* enable the stabilization interrupt */
-void rcu_interrupt_enable(rcu_int_enum stab_int);
-/* disable the stabilization interrupt */
-void rcu_interrupt_disable(rcu_int_enum stab_int);
 
 /* oscillator configuration functions */
 /* wait until oscillator stabilization flags is SET or oscillator startup is timeout */
@@ -981,23 +707,30 @@ void rcu_hxtal_clock_monitor_disable(void);
 
 /* set the IRC8M adjust value */
 void rcu_irc8m_adjust_value_set(uint8_t irc8m_adjval);
-#ifdef GD32F130_150
 /* set the IRC14M adjust value */
 void rcu_irc14m_adjust_value_set(uint8_t irc14m_adjval);
-#elif defined (GD32F170_190)
-/* set the IRC28M adjust value */
-void rcu_irc28m_adjust_value_set(uint8_t irc28m_adjval);
-#endif /* GD32F130_150 */
 /* unlock the voltage key */
 void rcu_voltage_key_unlock(void);
 /* set the deep sleep mode voltage */
 void rcu_deepsleep_voltage_set(uint32_t dsvol);
-#ifdef GD32F130_150
 /* set the power down voltage */
 void rcu_power_down_voltage_set(uint32_t pdvol);
-#endif /* GD32F130_150 */
 
 /* get the system clock, bus and peripheral clock frequency */
 uint32_t rcu_clock_freq_get(rcu_clock_freq_enum clock);
+
+/* flag and interrupt functions */
+/* get the clock stabilization and periphral reset flags */
+FlagStatus rcu_flag_get(rcu_flag_enum flag);
+/* clear the reset flag */
+void rcu_all_reset_flag_clear(void);
+/* get the clock stabilization interrupt and ckm flags */
+FlagStatus rcu_interrupt_flag_get(rcu_int_flag_enum int_flag);
+/* clear the interrupt flags */
+void rcu_interrupt_flag_clear(rcu_int_flag_clear_enum int_flag_clear);
+/* enable the stabilization interrupt */
+void rcu_interrupt_enable(rcu_int_enum stab_int);
+/* disable the stabilization interrupt */
+void rcu_interrupt_disable(rcu_int_enum stab_int);
 
 #endif /* GD32F1X0_RCU_H */

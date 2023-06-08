@@ -8,10 +8,11 @@
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
+    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -277,7 +278,7 @@ void rtc_current_time_get(rtc_parameter_struct* rtc_initpara_struct)
     rtc_initpara_struct->rtc_second = (uint8_t)GET_TIME_SC(temp_tr);
     rtc_initpara_struct->rtc_factor_asyn = (uint16_t)GET_PSC_FACTOR_A(temp_pscr);
     rtc_initpara_struct->rtc_factor_syn = (uint16_t)GET_PSC_FACTOR_S(temp_pscr);
-    rtc_initpara_struct->rtc_am_pm = (uint32_t)(temp_pscr & RTC_TIME_PM); 
+    rtc_initpara_struct->rtc_am_pm = (uint32_t)(temp_tr & RTC_TIME_PM); 
     rtc_initpara_struct->rtc_display_format = (uint32_t)(temp_ctlr & RTC_CTL_CS);
 }
 

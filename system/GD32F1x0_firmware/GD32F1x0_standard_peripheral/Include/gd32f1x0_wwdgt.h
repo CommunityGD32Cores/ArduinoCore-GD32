@@ -8,10 +8,11 @@
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
+    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -43,7 +44,7 @@ OF SUCH DAMAGE.
 #include "gd32f1x0.h"
 
 /* WWDGT definitions */
-#define WWDGT                       WWDGT_BASE
+#define WWDGT                       WWDGT_BASE                      /*!< WWDGT base address */
 
 /* registers definitions */
 #define WWDGT_CTL                   REG32(WWDGT + 0x00000000U)      /*!< WWDGT control register */
@@ -63,12 +64,10 @@ OF SUCH DAMAGE.
 /* WWDGT_STAT */
 #define WWDGT_STAT_EWIF             BIT(0)                          /*!< WWDGT early wakeup interrupt flag */
 
-/* constants definitions */
 /* WWDGT_CTL register value */
-#define CTL_CNT(regval)             (BITS(0,6) & ((uint32_t)(regval) << 0U))   /*!< write value to WWDGT_CTL_CNT bit field */
-
+#define CTL_CNT(regval)             (BITS(0,6) & ((uint32_t)(regval) << 0U))
 /* WWDGT_CFG register value */
-#define CFG_WIN(regval)             (BITS(0,6) & ((uint32_t)(regval) << 0U))   /*!< write value to WWDGT_CFG_WIN bit field */
+#define CFG_WIN(regval)             (BITS(0,6) & ((uint32_t)(regval) << 0U))
 
 #define CFG_PSC(regval)             (BITS(7,8) & ((uint32_t)(regval) << 7U))   /*!< write value to WWDGT_CFG_PSC bit field */
 #define WWDGT_CFG_PSC_DIV1          ((uint32_t)CFG_PSC(0))          /*!< the time base of WWDGT = (PCLK1/4096)/1 */
@@ -87,11 +86,11 @@ void wwdgt_counter_update(uint16_t counter_value);
 /* configure counter value, window value, and prescaler divider value */
 void wwdgt_config(uint16_t counter, uint16_t window, uint32_t prescaler);
 
-/* enable early wakeup interrupt of WWDGT */
-void wwdgt_interrupt_enable(void);
 /* check early wakeup interrupt state of WWDGT */
 FlagStatus wwdgt_flag_get(void);
 /* clear early wakeup interrupt state of WWDGT */
 void wwdgt_flag_clear(void);
+/* enable early wakeup interrupt of WWDGT */
+void wwdgt_interrupt_enable(void);
 
 #endif /* GD32F1X0_WWDGT_H */

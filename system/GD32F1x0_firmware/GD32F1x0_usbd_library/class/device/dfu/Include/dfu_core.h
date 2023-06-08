@@ -3,10 +3,11 @@
     \brief   the header file of USB DFU device class core functions
 
     \version 2020-07-23, V3.0.0, firmware for GD32F1x0
+    \version 2022-06-30, V3.1.0, firmware for GD32F1x0
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -70,18 +71,11 @@ OF SUCH DAMAGE.
 #define _BYTE2(x)                     (uint8_t)(((x) & 0xFF00U) >> 8U)      /*!< addressing cycle 2nd byte */
 #define _BYTE3(x)                     (uint8_t)(((x) & 0xFF0000U) >> 16U)   /*!< addressing cycle 3rd byte */
 
-#define SET_POLLING_TIMEOUT(x)        do { \
-                                      dfu->bwPollTimeout0 = _BYTE1(x);\
-                                      dfu->bwPollTimeout1 = _BYTE2(x);\
-                                      dfu->bwPollTimeout2 = _BYTE3(x);\
-                                      } while(0)
-
 #define FLASH_ERASE_TIMEOUT           60U
 #define FLASH_WRITE_TIMEOUT           80U
 
 /* bit detach capable = bit 3 in bmAttributes field */
 #define DFU_DETACH_MASK               (uint8_t)(0x10U)
-#define USB_DFU_CONFIG_DESC_SIZE      (18U + (9U * USBD_ITF_MAX_NUM))
 #define DFU_DESC_TYPE                 0x21U
 
 /* DFU device state enumeration */
@@ -164,7 +158,7 @@ typedef struct
     uint8_t iString;
 
     uint8_t manifest_state;
-    uint16_t data_len;
+    uint32_t data_len;
     uint16_t block_num;
     uint32_t base_addr;
 

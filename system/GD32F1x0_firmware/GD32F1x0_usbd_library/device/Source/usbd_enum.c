@@ -3,10 +3,12 @@
     \brief   USB enumeration function
 
     \version 2020-07-23, V3.0.0, firmware for GD32F1x0
+    \version 2021-09-27, V3.0.1, firmware for GD32F1x0
+    \version 2022-06-30, V3.1.0, firmware for GD32F1x0
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -172,7 +174,7 @@ static uint8_t* _usb_config_desc_get (usb_dev *udev, uint8_t index, uint16_t *le
 {
     (void)index;
 
-    *len = udev->desc->config_desc[2];
+    *len = udev->desc->config_desc[2] | (udev->desc->config_desc[3] << 8U);
 
     return udev->desc->config_desc;
 }
@@ -193,7 +195,7 @@ static uint8_t* _usb_bos_desc_get (usb_dev *udev, uint8_t index, uint16_t *len)
 
         return udev->desc->bos_desc;
     } else {
-        *len = 0;
+        *len = 0U;
 
         return NULL;
     }
@@ -319,14 +321,16 @@ static usb_reqsta _usb_std_clearfeature (usb_dev *udev, usb_req *req)
         /* get endpoint address */
         ep = BYTE_LOW(req->wIndex);
 
-        if ((uint8_t)USBD_CONFIGURED == udev->cur_status) {
+        if (((uint8_t)USBD_CONFIGURED == udev->cur_status) && (EP_ID(ep) < EP_COUNT)) {
             /* clear endpoint halt feature */
             if (((uint16_t)USB_FEATURE_EP_HALT == req->wValue) && (!CTL_EP(ep))) {
-                usbd_ep_clear_stall(udev, ep);
-                
-                udev->class_core->req_process(udev, req);
+                /* check whether the endpoint status is disabled */
+                if(0U != usbd_ep_status_get(udev, ep)){
+                    usbd_ep_clear_stall(udev, ep);
+                    udev->class_core->req_process(udev, req);
 
-                return REQ_SUPP;
+                    return REQ_SUPP;
+                }
             }
         }
         break;
@@ -374,12 +378,16 @@ static usb_reqsta _usb_std_setfeature (usb_dev *udev, usb_req *req)
         /* get endpoint address */
         ep = BYTE_LOW(req->wIndex);
 
-        if ((uint8_t)USBD_CONFIGURED == udev->cur_status) {
+        if (((uint8_t)USBD_CONFIGURED == udev->cur_status) && (EP_ID(ep) < EP_COUNT)) {
             /* set endpoint halt feature */
-            if (((uint8_t)USB_FEATURE_EP_HALT == req->wValue) && (!CTL_EP(ep))) {
-                usbd_ep_stall(udev, ep);
+            if (((uint16_t)USB_FEATURE_EP_HALT == req->wValue) && (!CTL_EP(ep))) {
+                /* check whether the endpoint status is disabled */
+                if(0U != usbd_ep_status_get(udev, ep)){
+                    usbd_ep_stall(udev, ep);
+                    udev->class_core->req_process(udev, req);
 
-                return REQ_SUPP;
+                    return REQ_SUPP;
+                }
             }
         }
         break;
@@ -661,6 +669,8 @@ static usb_reqsta _usb_std_setinterface (usb_dev *udev, usb_req *req)
     case USBD_CONFIGURED:
         if (BYTE_LOW(req->wIndex) < USBD_ITF_MAX_NUM) {
             udev->class_core->req_altset = (uint8_t)req->wValue;
+
+            udev->class_core->req_process(udev, req);
 
             return REQ_SUPP;
         }

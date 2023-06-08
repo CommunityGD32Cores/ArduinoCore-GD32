@@ -8,10 +8,11 @@
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
+    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -414,45 +415,6 @@ void usart_data_transmit(uint32_t usart_periph, uint32_t data)
 uint16_t usart_data_receive(uint32_t usart_periph)
 {
     return (uint16_t)(GET_BITS(USART_RDATA(usart_periph), 0U, 8U));
-}
-
-/*!
-    \brief      enable auto baud rate detection
-    \param[in]  usart_periph: USARTx(x=0)
-    \param[out] none
-    \retval     none
-*/
-void usart_autobaud_detection_enable(uint32_t usart_periph)
-{
-    USART_CTL1(usart_periph) |= USART_CTL1_ABDEN;
-}
-
-/*!
-    \brief      disable auto baud rate detection
-    \param[in]  usart_periph: USARTx(x=0)
-    \param[out] none
-    \retval     none
-*/
-void usart_autobaud_detection_disable(uint32_t usart_periph)
-{
-    USART_CTL1(usart_periph) &= ~(USART_CTL1_ABDEN);
-}
-
-/*!
-    \brief      configure auto baud rate detection mode
-    \param[in]  usart_periph: USARTx(x=0)
-    \param[in]  abdmod: auto baud rate detection mode
-                only one parameter can be selected which is shown as below:
-      \arg        USART_ABDM_FTOR: falling edge to rising edge measurement
-      \arg        USART_ABDM_FTOF: falling edge to falling edge measurement
-    \param[out] none
-    \retval     none
-*/
-void usart_autobaud_detection_mode_config(uint32_t usart_periph, uint32_t abdmod)
-{
-    /* reset ABDM bits */
-    USART_CTL1(usart_periph) &= ~(USART_CTL1_ABDM);
-    USART_CTL1(usart_periph) |= abdmod;
 }
 
 /*!
@@ -1048,7 +1010,6 @@ void usart_wakeup_mode_config(uint32_t usart_periph, uint32_t wum)
     \param[in]  usart_periph: USARTx(x=0,1)
     \param[in]  cmdtype: command type
                 only one parameter can be selected which is shown as below:
-      \arg        USART_CMD_ABDCMD: auto baudrate detection command
       \arg        USART_CMD_SBKCMD: send break command
       \arg        USART_CMD_MMCMD: mute mode command
       \arg        USART_CMD_RXFCMD: receive data flush command
@@ -1079,8 +1040,6 @@ void usart_command_enable(uint32_t usart_periph, uint32_t cmdtype)
       \arg        USART_FLAG_CTS: CTS level
       \arg        USART_FLAG_RT: receiver timeout flag
       \arg        USART_FLAG_EB: end of block flag
-      \arg        USART_FLAG_ABDE: auto baudrate detection error
-      \arg        USART_FLAG_ABD: auto baudrate detection flag
       \arg        USART_FLAG_BSY: busy flag
       \arg        USART_FLAG_AM: address match flag
       \arg        USART_FLAG_SB: send break flag

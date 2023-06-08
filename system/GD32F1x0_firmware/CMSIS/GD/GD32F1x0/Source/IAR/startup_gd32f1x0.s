@@ -8,10 +8,11 @@
 ;    2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
 ;    2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
 ;    2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
+;    2020-09-21, V3.4.0, firmware update for GD32F1x0(x=3,5)
 ;*/
 
 ;/*
-;    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+;    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 ;
 ;    Redistribution and use in source and binary forms, with or without modification, 
 ;are permitted provided that the following conditions are met:
@@ -112,37 +113,10 @@ __vector_table
         DCD     0                                   ; Reserved 
         DCD     0                                   ; Reserved 
         DCD     USBDWakeUp_IRQHandler               ; Vector Number 58,USBD Wakeup
-        DCD     CAN0_TX_IRQHandler                  ; Vector Number 59,CAN0 TX
-        DCD     CAN0_RX0_IRQHandler                 ; Vector Number 60,CAN0 RX0
-        DCD     CAN0_RX1_IRQHandler                 ; Vector Number 61,CAN0 RX1
-        DCD     CAN0_SCE_IRQHandler                 ; Vector Number 62,CAN0 SCE 
-        DCD     SLCD_IRQHandler                     ; Vector Number 63,SLCD
         DCD     DMA_Channel5_6_IRQHandler           ; Vector Number 64,DMA Channel5 and Channel6 
         DCD     0                                   ; Reserved
         DCD     0                                   ; Reserved
         DCD     SPI2_IRQHandler                     ; Vector Number 67,SPI2
-        DCD     0                                   ; Reserved
-        DCD     0                                   ; Reserved
-        DCD     0                                   ; Reserved
-        DCD     0                                   ; Reserved
-        DCD     0                                   ; Reserved
-        DCD     0                                   ; Reserved
-        DCD     0                                   ; Reserved
-        DCD     0                                   ; Reserved
-        DCD     0                                   ; Reserved
-        DCD     0                                   ; Reserved
-        DCD     0                                   ; Reserved
-        DCD     0                                   ; Reserved
-        DCD     0                                   ; Reserved
-        DCD     0                                   ; Reserved
-        DCD     0                                   ; Reserved
-        DCD     0                                   ; Reserved
-        DCD     0                                   ; Reserved
-        DCD     0                                   ; Reserved
-        DCD     CAN1_TX_IRQHandler                  ; Vector Number 86,CAN1 TX
-        DCD     CAN1_RX0_IRQHandler                 ; Vector Number 87,CAN1 RX0
-        DCD     CAN1_RX1_IRQHandler                 ; Vector Number 88,CAN1 RX1
-        DCD     CAN1_SCE_IRQHandler                 ; Vector Number 89,CAN1 SCE
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
@@ -383,31 +357,6 @@ USBD_HP_IRQHandler
 USBDWakeUp_IRQHandler
         B USBDWakeUp_IRQHandler
 
-        PUBWEAK CAN0_TX_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-CAN0_TX_IRQHandler
-        B CAN0_TX_IRQHandler
-
-        PUBWEAK CAN0_RX0_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-CAN0_RX0_IRQHandler
-        B CAN0_RX0_IRQHandler
-
-        PUBWEAK CAN0_RX1_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-CAN0_RX1_IRQHandler
-        B CAN0_RX1_IRQHandler
-
-        PUBWEAK CAN0_SCE_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-CAN0_SCE_IRQHandler
-        B CAN0_SCE_IRQHandler
-
-        PUBWEAK SLCD_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-SLCD_IRQHandler
-        B SLCD_IRQHandler
-
         PUBWEAK DMA_Channel5_6_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
 DMA_Channel5_6_IRQHandler
@@ -417,24 +366,4 @@ DMA_Channel5_6_IRQHandler
         SECTION .text:CODE:NOROOT:REORDER(1)
 SPI2_IRQHandler
         B SPI2_IRQHandler
-
-        PUBWEAK CAN1_TX_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-CAN1_TX_IRQHandler
-        B CAN1_TX_IRQHandler
-
-        PUBWEAK CAN1_RX0_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-CAN1_RX0_IRQHandler
-        B CAN1_RX0_IRQHandler
-
-        PUBWEAK CAN1_RX1_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-CAN1_RX1_IRQHandler
-        B CAN1_RX1_IRQHandler
-
-        PUBWEAK CAN1_SCE_IRQHandler
-        SECTION .text:CODE:NOROOT:REORDER(1)
-CAN1_SCE_IRQHandler
-        B CAN1_SCE_IRQHandler
         END

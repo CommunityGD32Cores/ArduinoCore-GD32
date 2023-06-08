@@ -3,10 +3,13 @@
     \brief   custom HID class driver
 
     \version 2020-07-23, V3.0.0, firmware for GD32F1x0
+    \version 2021-06-22, V3.0.1, firmware for GD32F1x0
+    \version 2021-11-09, V3.0.2, firmware for GD32F1x0
+    \version 2022-06-30, V3.1.0, firmware for GD32F1x0
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -348,7 +351,7 @@ static uint8_t custom_hid_init (usb_dev *udev, uint8_t config_index)
 }
 
 /*!
-    \brief      deinitialize the HID device
+    \brief      de-initialize the HID device
     \param[in]  udev: pointer to USB device instance
     \param[in]  config_index: configuration index
     \param[out] none
@@ -385,6 +388,11 @@ static uint8_t custom_hid_req_handler (usb_dev *udev, usb_req *req)
                               0U);
 
             status = REQ_SUPP;
+        } else if (USB_DESCTYPE_HID == (req->wValue >> 8U)) {
+            usb_transc_config(&udev->transc_in[0U], 
+                              (uint8_t *)(&(custom_hid_config_desc.hid_vendor)), 
+                              USB_MIN(9U, req->wLength), 
+                              0U);
         }
         break;
 
@@ -490,7 +498,7 @@ static void custom_hid_data_out (usb_dev *udev, uint8_t ep_num)
             }
             break;
         default:
-            /* turn off all LEDs */
+            /* turn off all leds */
             gd_eval_led_off(LED1);
             gd_eval_led_off(LED2);
             gd_eval_led_off(LED3);
@@ -498,6 +506,6 @@ static void custom_hid_data_out (usb_dev *udev, uint8_t ep_num)
             break;
         }
 
-        usbd_ep_recev(udev, CUSTOMHID_IN_EP, hid->data, 2U);
+        usbd_ep_recev(udev, CUSTOMHID_OUT_EP, hid->data, 2U);
     }
 }
