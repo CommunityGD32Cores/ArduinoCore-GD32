@@ -55,10 +55,13 @@ void gpio_interrupt_enable(uint32_t portNum, uint32_t pinNum, void (*callback)(v
     gpio_clock_enable(portNum);
 #if defined(GD32F30x) || defined(GD32E50X)
     rcu_periph_clock_enable(RCU_AF);
-    gpio_init(gpio_port[portNum], GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, gpio_pin[pinNum]);
+    // do not re-init to IN_FLOATING, this might destroy previously set INPUT_PULLUP or INPUT_PULLDOWN modes!
+    // only messes up things if pin was in OUTPUT / OUTPUT_OPENDRAIN mode previously, but, I don't think
+    // anyone expects interrupt to work when they explicitly initialize a pin in OUTPUT mode...
+    //gpio_init(gpio_port[portNum], GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, gpio_pin[pinNum]);
 #elif defined(GD32F3x0) || defined(GD32F1x0)
     rcu_periph_clock_enable(RCU_CFGCMP);
-    gpio_mode_set(gpio_port[portNum], GPIO_MODE_INPUT, GPIO_PUPD_NONE, gpio_pin[pinNum]);
+    //gpio_mode_set(gpio_port[portNum], GPIO_MODE_INPUT, GPIO_PUPD_NONE, gpio_pin[pinNum]);
 #endif
 
     /* some NVIC controllers do not have subprio?!*/
