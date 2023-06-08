@@ -172,7 +172,8 @@ void HardwareSerial::begin(unsigned long baud, uint8_t config)
 
     uart_attach_rx_callback(&_serial, _rx_complete_irq);
     serial_receive(&_serial, &_serial.rx_buff[_serial.rx_head], 1);
-
+    // only enable it after everything has been setup properly
+    serial_enable(&_serial);
 }
 
 void HardwareSerial::end()

@@ -172,6 +172,8 @@ typedef enum {
 
 /* Initialize the serial peripheral. It sets the default parameters for serial peripheral, and configures its specifieds pins. */
 void serial_init(serial_t *obj, PinName tx, PinName rx);
+/* Enable serial peripheral after init or init + format. */
+void serial_enable(struct serial_s *obj_s);
 /* Release the serial peripheral, not currently invoked. It requires further resource management. */
 void serial_free(serial_t *obj);
 /* Configure the baud rate */

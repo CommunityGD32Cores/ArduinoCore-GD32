@@ -92,10 +92,18 @@ static void usart_init(struct serial_s *obj_s)
     usart_baudrate_set(obj_s->uart, obj_s->baudrate);
     usart_stop_bit_set(obj_s->uart, obj_s->stopbits);
     usart_parity_config(obj_s->uart, obj_s->parity);
+    usart_receive_config(obj_s->uart, USART_RECEIVE_DISABLE);
+    usart_transmit_config(obj_s->uart, USART_TRANSMIT_DISABLE);
+}
 
+/**
+ * Enable the serial after it's been initialized / serial formatted with the correct baud etc.
+ * Otherwise, after serial init, the UART is formatted at 9600 baud is turned on immediatelly..
+*/
+void serial_enable(struct serial_s *obj_s) {
+    usart_enable(obj_s->uart);
     usart_receive_config(obj_s->uart, USART_RECEIVE_ENABLE);
     usart_transmit_config(obj_s->uart, USART_TRANSMIT_ENABLE);
-    usart_enable(obj_s->uart);
 }
 
 /** Initialize the serial peripheral. It sets the default parameters for serial
@@ -188,8 +196,13 @@ void serial_free(serial_t *obj)
     rcu_periph_clock_disable(rcu_periph);
 
     /* reset the GPIO state */
+#if defined(GD32F30x) || defined(GD32F10x)|| defined(GD32E50X)
     pin_function(p_obj->pin_tx, PIN_MODE_IN_FLOATING);
     pin_function(p_obj->pin_rx, PIN_MODE_IN_FLOATING);
+#else
+    pin_function(p_obj->pin_tx, PIN_MODE_INPUT);
+    pin_function(p_obj->pin_rx, PIN_MODE_INPUT);
+#endif
 }
 
 /** Configure the baud rate
@@ -672,21 +685,27 @@ static void usart_irq(struct serial_s *obj_s)
     if (usart_interrupt_flag_get(obj_s->uart, USART_INT_FLAG_ERR_ORERR) != RESET) {
         /* clear ORERR error flag by reading USART DATA register */
         GD32_USART_RX_DATA(obj_s->uart);
+        usart_interrupt_flag_clear(obj_s->uart, USART_INT_FLAG_ERR_ORERR);
     }
 
     if (usart_interrupt_flag_get(obj_s->uart, USART_INT_FLAG_ERR_NERR) != RESET) {
         /* clear NERR error flag by reading USART DATA register */
         GD32_USART_RX_DATA(obj_s->uart);
+        usart_interrupt_flag_clear(obj_s->uart, USART_INT_FLAG_ERR_NERR);
     }
 
     if (usart_interrupt_flag_get(obj_s->uart, USART_INT_FLAG_ERR_FERR) != RESET) {
         /* clear FERR error flag by reading USART DATA register */
         GD32_USART_RX_DATA(obj_s->uart);
+        /* also clear it by clearing the interrupt */
+        usart_interrupt_flag_clear(obj_s->uart, USART_INT_FLAG_ERR_FERR);
     }
 
     if (usart_interrupt_flag_get(obj_s->uart, USART_INT_FLAG_PERR) != RESET) {
         /* clear PERR error flag by reading USART DATA register */
         GD32_USART_RX_DATA(obj_s->uart);
+        /* also clear it by clearing the interrupt */
+        usart_interrupt_flag_clear(obj_s->uart, USART_INT_FLAG_PERR);
     }
 }
 
