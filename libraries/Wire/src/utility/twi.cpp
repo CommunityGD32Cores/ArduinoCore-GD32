@@ -547,10 +547,9 @@ i2c_status_enum i2c_slave_write_buffer(i2c_t *obj, uint8_t *data, uint16_t lengt
         return I2C_DATA_TOO_LONG;
 
     uint8_t i = 0;
-    for (i; i < length; i++) {
+    for (i; i < length; i++)
         *obj_s->tx_buffer_ptr++ = *(data + i);
-        obj_s->tx_count += length;
-    }
+    obj_s->tx_count += length;
     return I2C_OK;
 }
 
