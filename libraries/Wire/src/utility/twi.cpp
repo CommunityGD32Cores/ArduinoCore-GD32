@@ -541,17 +541,16 @@ void i2c_attach_slave_tx_callback(i2c_t *obj, void (*function)(void*), void* pWi
  * @param length Number of bytes to read
  * @return status
  */
-ii2c_status_enum i2c_slave_write_buffer(i2c_t *obj, uint8_t *data, uint16_t length)
-{
+i2c_status_enum i2c_slave_write_buffer(i2c_t *obj, uint8_t *data, uint16_t length){
     struct i2c_s *obj_s = I2C_S(obj);
-
-    obj_s->tx_count += length;
-    if (obj_s->tx_count > obj->tx_rx_buffer_size) 
+    if (    (obj_s->tx_count + length) > obj->tx_rx_buffer_size) 
         return I2C_DATA_TOO_LONG;
 
     uint8_t i = 0;
-    for (i; i < length; i++) 
+    for (i; i < length; i++) {
         *obj_s->tx_buffer_ptr++ = *(data + i);
+        obj_s->tx_count += length;
+    }
     return I2C_OK;
 }
 
