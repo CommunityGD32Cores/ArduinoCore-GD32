@@ -299,15 +299,23 @@ void TwoWire::onRequestService(void* pWireObj)
     TwoWire* pWire = (TwoWire*) pWireObj;
     // don't bother if user hasn't registered a callback
     if (pWire->user_onRequest) {
-        // reset tx buffer iterator vars
+        // reset master tx buffer iterator vars
         // !!! this will kill any pending pre-master sendTo() activity
         pWire->_tx_buffer.head = 0;
         pWire->_tx_buffer.tail = 0;
+
+        // reset slave tx buffer iterator vars
+        pWire->_i2c.tx_buffer_ptr = pWire->_tx_buffer.buffer;
+        pWire->_i2c.tx_count = 0;
+
         // alert user program
         pWire->user_onRequest();
-    }
 
+        // reset slave tx buffer iterator to let interrupt transmit the buffer
+        pWire->_i2c.tx_buffer_ptr = pWire->_tx_buffer.buffer;
+    }
 }
+
 // sets function called on slave write
 void TwoWire::onReceive(void (*function)(int))
 {
