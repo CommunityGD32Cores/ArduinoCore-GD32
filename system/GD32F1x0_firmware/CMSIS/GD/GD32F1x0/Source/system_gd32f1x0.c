@@ -47,10 +47,10 @@
 //#define __SYSTEM_CLOCK_8M_IRC8M              (__IRC8M)
 //#define __SYSTEM_CLOCK_48M_PLL_HXTAL         (uint32_t)(48000000)
 //#define __SYSTEM_CLOCK_48M_PLL_IRC8M_DIV2    (uint32_t)(48000000)
+//#define __SYSTEM_CLOCK_72M_PLL_HXTAL         (uint32_t)(72000000)
 #if !defined(__PIO_DONT_SET_CLOCK_SOURCE__) // make this the default unless we tell it not to in the build settings
-#define __SYSTEM_CLOCK_72M_PLL_HXTAL         (uint32_t)(72000000)
+#define __SYSTEM_CLOCK_72M_PLL_IRC8M_DIV2    (uint32_t)(72000000)
 #endif
-//#define __SYSTEM_CLOCK_72M_PLL_IRC8M_DIV2    (uint32_t)(72000000)
 
 #define RCU_MODIFY(__delay)     do{                                     \
                                     volatile uint32_t i;                \
