@@ -58,6 +58,9 @@ void systick_config(void)
     NVIC_SetPriority(SysTick_IRQn, 0x00U);
 }
 
+void noOsSystickHandler() {}
+void osSystickHandler() __attribute__((weak, alias("noOsSystickHandler")));
+
 /*!
     \brief      this function handles SysTick exception
     \param[in]  none
@@ -67,6 +70,7 @@ void systick_config(void)
 void SysTick_Handler(void)
 {
     gd_ticks++;
+    osSystickHandler();
 }
 
 /*!

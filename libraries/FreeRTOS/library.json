@@ -1,0 +1,19 @@
+{
+    "name": "FreeRTOS for GD32",
+    "version": "10.4.4",
+    "keywords": "rtos, timing, thread, task, mutex, semaphore",
+    "description": "Real Time Operating System implemented for GD32",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/FreeRTOS/FreeRTOS-Kernel/"
+    },
+    "frameworks": ["spl", "arduino"],
+    "platforms": "gd32",
+    "build": {
+        "libArchive": false,
+        "flags": [
+            "-I$PROJECT_SRC_DIR",
+            "-I$PROJECT_INCLUDE_DIR"
+        ]
+    }
+}

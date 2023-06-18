@@ -140,6 +140,11 @@ if any(mcu in board_config.get("build.cpu") for mcu in ("cortex-m4", "cortex-m7"
         CCFLAGS=["-mfpu=fpv4-sp-d16", "-mfloat-abi=hard"],
         LINKFLAGS=["-mfpu=fpv4-sp-d16", "-mfloat-abi=hard"],
     )
+if board_config.get("build.cpu") == "cortex-m33":
+    env.Append(
+        CCFLAGS=["-mfpu=fp-armv8", "-mfloat-abi=softfp"],
+        LINKFLAGS=["-mfpu=fp-armv8", "-mfloat-abi=softfp"],
+    )
 
 
 def load_boards_remap():
@@ -210,6 +215,7 @@ env.Append(
         "-nostdlib",
         "--param",
         "max-inline-insns-single=500",
+        "-masm-syntax-unified",
     ],
     CPPDEFINES=[
         series,

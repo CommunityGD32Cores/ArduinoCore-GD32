@@ -25,7 +25,7 @@ compiler.elf2hex.cmd=arm-none-eabi-objcopy
 compiler.size.cmd=arm-none-eabi-size
 ##compile flags
 compiler.libraries.ldflags=
-compiler.extra_flags=-mcpu={build.mcu} {build.flags.fp} -mthumb
+compiler.extra_flags=-mcpu={build.mcu} {build.flags.fp} -mthumb -masm-syntax-unified
 compiler.S.flags={compiler.extra_flags} -c -x assembler-with-cpp {compiler.gd.extra_include}
 compiler.c.flags={compiler.extra_flags} -c {build.flags.optimize} {compiler.warning_flags} -std=gnu11 -ffunction-sections -fdata-sections -g3 -T -nostdlib --param max-inline-insns-single=500 -MMD {compiler.gd.extra_include}
 compiler.cpp.flags={compiler.extra_flags} -c {build.flags.optimize} {compiler.warning_flags} -std={compiler.cpp.std} -ffunction-sections -fdata-sections -g3 -T -nostdlib -fno-threadsafe-statics --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -fno-use-cxa-atexit -MMD {compiler.gd.extra_include}
