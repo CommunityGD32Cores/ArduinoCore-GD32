@@ -25,8 +25,8 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 OF SUCH DAMAGE.
 */
 
-#include "PeripheralPins.h"
 #include "gd32xxyy.h"
+#include "PeripheralPins.h"
 
 /*  void pin_function(PinName pin, int function);
     configure the speed, mode,and remap function of pins
@@ -36,29 +36,6 @@ OF SUCH DAMAGE.
     bit 9:10  gpio speed
     bit 11:15 adc  /timer channel
 */
-const int GD_GPIO_PULL_UP_DOWN[] = {
-    GPIO_PUPD_NONE,             /* 0 */
-    GPIO_PUPD_PULLUP,           /* 1 */
-    GPIO_PUPD_PULLDOWN,         /* 2 */
-};
-
-const int GD_GPIO_OUTPUT_MODE[] = {
-    GPIO_OTYPE_PP,             /* 0 */
-    GPIO_OTYPE_OD,             /* 1 */
-};
-
-const int GD_GPIO_AF[] = {
-    GPIO_AF_0,             /* 0 */
-    GPIO_AF_1,             /* 1 */
-    GPIO_AF_2,             /* 2 */
-    GPIO_AF_3,             /* 3 */
-    GPIO_AF_4,             /* 4 */
-    GPIO_AF_5,             /* 5 */
-    GPIO_AF_6,             /* 6 */
-    GPIO_AF_7,             /* 7 */
-    GPIO_AF_9,             /* 8 */
-    GPIO_AF_11             /* 9 */
-};
 
 /* pin descriptions only reference the index in the array, so
  * to get e.g. AF11 one must give it index = 9. provide 
@@ -66,23 +43,17 @@ const int GD_GPIO_AF[] = {
  * for all other arrays, the value is also equivalent to the index,
  * so there doesn't need to be anything done more.
  */
-#define IND_GPIO_AF_0 0
-#define IND_GPIO_AF_1 1
-#define IND_GPIO_AF_2 2
-#define IND_GPIO_AF_3 3
-#define IND_GPIO_AF_4 4
-#define IND_GPIO_AF_5 5
-#define IND_GPIO_AF_6 6
-#define IND_GPIO_AF_7 7
-#define IND_GPIO_AF_9 8
-#define IND_GPIO_AF_11 9
 
 /* GPIO MODE */
 const int GD_GPIO_MODE[] = {
-    GPIO_MODE_INPUT,             /* 0 */
-    GPIO_MODE_OUTPUT,            /* 1 */
-    GPIO_MODE_AF,                /* 2 */
-    GPIO_MODE_ANALOG,            /* 3 */
+    GPIO_MODE_AIN,               /* 0 INPUT_ANALOG */
+    GPIO_MODE_IN_FLOATING,       /* 1 INPUT */
+    GPIO_MODE_IPD,               /* 2 INPUT_PULLDOWN */
+    GPIO_MODE_IPU,               /* 3 INPUT_PULLUP */
+    GPIO_MODE_OUT_OD,            /* 4 OUTPUT_OPEN_DRAIN */
+    GPIO_MODE_OUT_PP,            /* 5 OUTPUT */
+    0,                           /* 6 (unused) */
+    0,                           /* 7 (unused) */
 };
 
 /* GPIO SPEED */
@@ -135,8 +106,8 @@ const PinMap PinMap_ADC[] = {
     {PORTC_1,  ADC2, GD_PIN_FUNC_ANALOG_CH(11)},   /* ADC2_IN11 */
     {PORTC_2,  ADC2, GD_PIN_FUNC_ANALOG_CH(12)},   /* ADC2_IN12 */
     {PORTC_3,  ADC2, GD_PIN_FUNC_ANALOG_CH(13)},   /* ADC2_IN13 */
-    {ADC_TEMP, ADC, GD_PIN_FUNC_ANALOG_CH(16)},    /* ADC_IN16 */
-    {ADC_VREF, ADC, GD_PIN_FUNC_ANALOG_CH(17)},    /* ADC_IN17 */
+    {ADC_TEMP, ADC0, GD_PIN_FUNC_ANALOG_CH(16)},   /* ADC0_IN16 */
+    {ADC_VREF, ADC0, GD_PIN_FUNC_ANALOG_CH(17)},   /* ADC0_IN17 */
     {NC,   NC,    0}
 };
 
@@ -149,73 +120,73 @@ const PinMap PinMap_DAC[] = {
 
 /* I2C_SDA PinMap */
 const PinMap PinMap_I2C_SDA[] = {
-    {PORTB_11, I2C1, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_OD, PIN_PUPD_PULLUP, IND_GPIO_AF_0)}, /* I2C1_SDA */
-    {PORTB_7,  I2C0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_OD, PIN_PUPD_PULLUP, IND_GPIO_AF_0)}, /* I2C0_SDA */
-    {PORTB_9,  I2C0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_OD, PIN_PUPD_PULLUP, IND_GPIO_AF_0)}, /* I2C0_SDA */
+    {PORTB_11, I2C1, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_OD, PIN_PUPD_PULLUP, 0)}, /* I2C1_SDA */
+    {PORTB_7,  I2C0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_OD, PIN_PUPD_PULLUP, 0)}, /* I2C0_SDA */
+    {PORTB_9,  I2C0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_OD, PIN_PUPD_PULLUP, 0)}, /* I2C0_SDA */
     {NC,   NC,    0}
 };
 
 /* I2C_SCL PinMap */
 const PinMap PinMap_I2C_SCL[] = {
-    {PORTB_10, I2C1, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_OD, PIN_PUPD_PULLUP, IND_GPIO_AF_0)}, /* I2C1_SCL */
-    {PORTB_6,  I2C0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_OD, PIN_PUPD_PULLUP, IND_GPIO_AF_0)}, /* I2C0_SCL */
-    {PORTB_8,  I2C0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_OD, PIN_PUPD_PULLUP, IND_GPIO_AF_0)}, /* I2C0_SCL */
+    {PORTB_10, I2C1, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_OD, PIN_PUPD_PULLUP, 0)}, /* I2C1_SCL */
+    {PORTB_6,  I2C0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_OD, PIN_PUPD_PULLUP, 0)}, /* I2C0_SCL */
+    {PORTB_8,  I2C0, GD_PIN_FUNCTION4(PIN_MODE_AF, PIN_OTYPE_OD, PIN_PUPD_PULLUP, 0)}, /* I2C0_SCL */
     {NC,   NC,    0}
 };
 
 /* PWM PinMap */
 const PinMap PinMap_PWM[] = {
-    {PORTA_0,  TIMER1,  GD_PIN_FUNC_PWM_2(0)},     /* TIMER1_CH0 */
-    {PORTA_0,  TIMER4,  GD_PIN_FUNC_PWM_2(0)},     /* TIMER4_CH0 */
-    {PORTA_1,  TIMER1,  GD_PIN_FUNC_PWM_2(1)},     /* TIMER1_CH1 */
-    {PORTA_1,  TIMER4,  GD_PIN_FUNC_PWM_2(1)},     /* TIMER4_CH1 */
-    {PORTA_2,  TIMER1,  GD_PIN_FUNC_PWM_2(2)},     /* TIMER1_CH2 */
-    {PORTA_2,  TIMER4,  GD_PIN_FUNC_PWM_2(2)},     /* TIMER4_CH2 */
-    {PORTA_2,  TIMER8,  GD_PIN_FUNC_PWM_2(0)},     /* TIMER8_CH0 */
-    {PORTA_3,  TIMER1,  GD_PIN_FUNC_PWM_2(3)},     /* TIMER1_CH3 */
-    {PORTA_3,  TIMER4,  GD_PIN_FUNC_PWM_2(3)},     /* TIMER4_CH3 */
-    {PORTA_3,  TIMER8,  GD_PIN_FUNC_PWM_2(1)},     /* TIMER8_CH1 */
-    {PORTA_6,  TIMER2,  GD_PIN_FUNC_PWM_2(0)},     /* TIMER2_CH0 */
-    {PORTA_6,  TIMER12, GD_PIN_FUNC_PWM_2(0)},     /* TIMER12_CH0 */
-    {PORTA_7,  TIMER2,  GD_PIN_FUNC_PWM_2(1)},     /* TIMER2_CH1 */
-    {PORTA_7,  TIMER7,  GD_PIN_FUNC_PWM_2(0)},     /* TIMER7_CH0_ON */
-    {PORTA_7,  TIMER13, GD_PIN_FUNC_PWM_2(0)},     /* TIMER13_CH0 */
-    {PORTA_7,  TIMER0,  GD_PIN_FUNC_PWM_2(0)},     /* TIMER0_CH0_ON */
-    {PORTB_0,  TIMER2,  GD_PIN_FUNC_PWM_2(2)},     /* TIMER2_CH2 */
-    {PORTB_0,  TIMER7,  GD_PIN_FUNC_PWM_2(1)},     /* TIMER7_CH1_ON */
-    {PORTB_0,  TIMER0,  GD_PIN_FUNC_PWM_2(1)},     /* TIMER0_CH1_ON */
-    {PORTB_1,  TIMER2,  GD_PIN_FUNC_PWM_2(3)},     /* TIMER2_CH3 */
-    {PORTB_1,  TIMER7,  GD_PIN_FUNC_PWM_2(2)},     /* TIMER7_CH2_ON */
-    {PORTB_1,  TIMER0,  GD_PIN_FUNC_PWM_2(2)},     /* TIMER0_CH2_ON */
-    {PORTB_10, TIMER1,  GD_PIN_FUNC_PWM_2(2)},     /* TIMER1_CH2 */
-    {PORTB_11, TIMER1,  GD_PIN_FUNC_PWM_2(3)},     /* TIMER1_CH3 */
-    {PORTB_13, TIMER0,  GD_PIN_FUNC_PWM_2(0)},     /* TIMER0_CH0_ON */
-    {PORTB_14, TIMER0,  GD_PIN_FUNC_PWM_2(1)},     /* TIMER0_CH1_ON */
-    {PORTB_14, TIMER11, GD_PIN_FUNC_PWM_2(0)},     /* TIMER11_CH0 */
-    {PORTB_15, TIMER0,  GD_PIN_FUNC_PWM_2(2)},     /* TIMER0_CH2_ON */
-    {PORTB_15, TIMER11, GD_PIN_FUNC_PWM_2(1)},     /* TIMER11_CH1 */
-    {PORTC_6,  TIMER7,  GD_PIN_FUNC_PWM_2(0)},     /* TIMER7_CH0 */
-    {PORTC_6,  TIMER2,  GD_PIN_FUNC_PWM_2(0)},     /* TIMER2_CH0 */
-    {PORTC_7,  TIMER7,  GD_PIN_FUNC_PWM_2(1)},     /* TIMER7_CH1 */
-    {PORTC_7,  TIMER2,  GD_PIN_FUNC_PWM_2(1)},     /* TIMER2_CH1 */
-    {PORTC_8,  TIMER7,  GD_PIN_FUNC_PWM_2(2)},     /* TIMER7_CH2 */
-    {PORTC_8,  TIMER2,  GD_PIN_FUNC_PWM_2(2)},     /* TIMER2_CH2 */
-    {PORTC_9,  TIMER7,  GD_PIN_FUNC_PWM_2(3)},     /* TIMER7_CH3 */
-    {PORTC_9,  TIMER2,  GD_PIN_FUNC_PWM_2(3)},     /* TIMER2_CH3 */
-    {PORTA_8,  TIMER0,  GD_PIN_FUNC_PWM_2(0)},     /* TIMER0_CH0 */
-    {PORTA_9,  TIMER0,  GD_PIN_FUNC_PWM_2(1)},     /* TIMER0_CH1 */
-    {PORTA_10, TIMER0,  GD_PIN_FUNC_PWM_2(2)},     /* TIMER0_CH2 */
-    {PORTA_11, TIMER0,  GD_PIN_FUNC_PWM_2(3)},     /* TIMER0_CH3 */
-    {PORTA_15, TIMER1,  GD_PIN_FUNC_PWM_2(0)},     /* TIMER1_CH0 */
-    {PORTB_3,  TIMER1,  GD_PIN_FUNC_PWM_2(1)},     /* TIMER1_CH1 */
-    {PORTB_4,  TIMER2,  GD_PIN_FUNC_PWM_2(0)},     /* TIMER2_CH0 */
-    {PORTB_5,  TIMER2,  GD_PIN_FUNC_PWM_2(1)},     /* TIMER2_CH1 */
-    {PORTB_6,  TIMER3,  GD_PIN_FUNC_PWM_2(0)},     /* TIMER3_CH0 */
-    {PORTB_7,  TIMER3,  GD_PIN_FUNC_PWM_2(1)},     /* TIMER3_CH1 */
-    {PORTB_8,  TIMER3,  GD_PIN_FUNC_PWM_2(2)},     /* TIMER3_CH2 */
-    {PORTB_8,  TIMER9,  GD_PIN_FUNC_PWM_2(0)},     /* TIMER9_CH0 */
-    {PORTB_9,  TIMER3,  GD_PIN_FUNC_PWM_2(3)},     /* TIMER3_CH3 */
-    {PORTB_9,  TIMER10, GD_PIN_FUNC_PWM_2(0)},     /* TIMER10_CH0 */
+    {PORTA_0,  TIMER1,  GD_PIN_FUNC_PWM(0, 0)},    /* TIMER1_CH0 */
+    {PORTA_0,  TIMER4,  GD_PIN_FUNC_PWM(0, 0)},    /* TIMER4_CH0 */
+    {PORTA_1,  TIMER1,  GD_PIN_FUNC_PWM(1, 0)},    /* TIMER1_CH1 */
+    {PORTA_1,  TIMER4,  GD_PIN_FUNC_PWM(1, 0)},    /* TIMER4_CH1 */
+    {PORTA_2,  TIMER1,  GD_PIN_FUNC_PWM(2, 0)},    /* TIMER1_CH2 */
+    {PORTA_2,  TIMER4,  GD_PIN_FUNC_PWM(2, 0)},    /* TIMER4_CH2 */
+    {PORTA_2,  TIMER8,  GD_PIN_FUNC_PWM(0, 0)},    /* TIMER8_CH0 */
+    {PORTA_3,  TIMER1,  GD_PIN_FUNC_PWM(3, 0)},    /* TIMER1_CH3 */
+    {PORTA_3,  TIMER4,  GD_PIN_FUNC_PWM(3, 0)},    /* TIMER4_CH3 */
+    {PORTA_3,  TIMER8,  GD_PIN_FUNC_PWM(1, 0)},    /* TIMER8_CH1 */
+    {PORTA_6,  TIMER2,  GD_PIN_FUNC_PWM(0, 0)},    /* TIMER2_CH0 */
+    {PORTA_6,  TIMER12, GD_PIN_FUNC_PWM(0, 0)},    /* TIMER12_CH0 */
+    {PORTA_7,  TIMER2,  GD_PIN_FUNC_PWM(1, 0)},    /* TIMER2_CH1 */
+    {PORTA_7,  TIMER7,  GD_PIN_FUNC_PWM(0, 0)},    /* TIMER7_CH0_ON */
+    {PORTA_7,  TIMER13, GD_PIN_FUNC_PWM(0, 0)},    /* TIMER13_CH0 */
+    {PORTA_7,  TIMER0,  GD_PIN_FUNC_PWM(0, 0)},    /* TIMER0_CH0_ON */
+    {PORTB_0,  TIMER2,  GD_PIN_FUNC_PWM(2, 0)},    /* TIMER2_CH2 */
+    {PORTB_0,  TIMER7,  GD_PIN_FUNC_PWM(1, 0)},    /* TIMER7_CH1_ON */
+    {PORTB_0,  TIMER0,  GD_PIN_FUNC_PWM(1, 0)},    /* TIMER0_CH1_ON */
+    {PORTB_1,  TIMER2,  GD_PIN_FUNC_PWM(3, 0)},    /* TIMER2_CH3 */
+    {PORTB_1,  TIMER7,  GD_PIN_FUNC_PWM(2, 0)},    /* TIMER7_CH2_ON */
+    {PORTB_1,  TIMER0,  GD_PIN_FUNC_PWM(2, 0)},    /* TIMER0_CH2_ON */
+    {PORTB_10, TIMER1,  GD_PIN_FUNC_PWM(2, 0)},    /* TIMER1_CH2 */
+    {PORTB_11, TIMER1,  GD_PIN_FUNC_PWM(3, 0)},    /* TIMER1_CH3 */
+    {PORTB_13, TIMER0,  GD_PIN_FUNC_PWM(0, 0)},    /* TIMER0_CH0_ON */
+    {PORTB_14, TIMER0,  GD_PIN_FUNC_PWM(1, 0)},    /* TIMER0_CH1_ON */
+    {PORTB_14, TIMER11, GD_PIN_FUNC_PWM(0, 0)},    /* TIMER11_CH0 */
+    {PORTB_15, TIMER0,  GD_PIN_FUNC_PWM(2, 0)},    /* TIMER0_CH2_ON */
+    {PORTB_15, TIMER11, GD_PIN_FUNC_PWM(1, 0)},    /* TIMER11_CH1 */
+    {PORTC_6,  TIMER7,  GD_PIN_FUNC_PWM(0, 0)},    /* TIMER7_CH0 */
+    {PORTC_6,  TIMER2,  GD_PIN_FUNC_PWM(0, 0)},    /* TIMER2_CH0 */
+    {PORTC_7,  TIMER7,  GD_PIN_FUNC_PWM(1, 0)},    /* TIMER7_CH1 */
+    {PORTC_7,  TIMER2,  GD_PIN_FUNC_PWM(1, 0)},    /* TIMER2_CH1 */
+    {PORTC_8,  TIMER7,  GD_PIN_FUNC_PWM(2, 0)},    /* TIMER7_CH2 */
+    {PORTC_8,  TIMER2,  GD_PIN_FUNC_PWM(2, 0)},    /* TIMER2_CH2 */
+    {PORTC_9,  TIMER7,  GD_PIN_FUNC_PWM(3, 0)},    /* TIMER7_CH3 */
+    {PORTC_9,  TIMER2,  GD_PIN_FUNC_PWM(3, 0)},    /* TIMER2_CH3 */
+    {PORTA_8,  TIMER0,  GD_PIN_FUNC_PWM(0, 0)},    /* TIMER0_CH0 */
+    {PORTA_9,  TIMER0,  GD_PIN_FUNC_PWM(1, 0)},    /* TIMER0_CH1 */
+    {PORTA_10, TIMER0,  GD_PIN_FUNC_PWM(2, 0)},    /* TIMER0_CH2 */
+    {PORTA_11, TIMER0,  GD_PIN_FUNC_PWM(3, 0)},    /* TIMER0_CH3 */
+    {PORTA_15, TIMER1,  GD_PIN_FUNC_PWM(0, 0)},    /* TIMER1_CH0 */
+    {PORTB_3,  TIMER1,  GD_PIN_FUNC_PWM(1, 0)},    /* TIMER1_CH1 */
+    {PORTB_4,  TIMER2,  GD_PIN_FUNC_PWM(0, 0)},    /* TIMER2_CH0 */
+    {PORTB_5,  TIMER2,  GD_PIN_FUNC_PWM(1, 0)},    /* TIMER2_CH1 */
+    {PORTB_6,  TIMER3,  GD_PIN_FUNC_PWM(0, 0)},    /* TIMER3_CH0 */
+    {PORTB_7,  TIMER3,  GD_PIN_FUNC_PWM(1, 0)},    /* TIMER3_CH1 */
+    {PORTB_8,  TIMER3,  GD_PIN_FUNC_PWM(2, 0)},    /* TIMER3_CH2 */
+    {PORTB_8,  TIMER9,  GD_PIN_FUNC_PWM(0, 0)},    /* TIMER9_CH0 */
+    {PORTB_9,  TIMER3,  GD_PIN_FUNC_PWM(3, 0)},    /* TIMER3_CH3 */
+    {PORTB_9,  TIMER10, GD_PIN_FUNC_PWM(0, 0)},    /* TIMER10_CH0 */
     {NC,   NC,    0}
 };
 
@@ -227,7 +198,7 @@ const PinMap PinMap_UART_TX[] = {
     {PORTC_10, USART2, 7},                         /* USART2_TX */
     {PORTB_6,  USART0, 7},                         /* USART0_TX */
     {PORTC_10, UART3, 7},                          /* UART3_TX */
-    {PORTC_12, UART4, 7},                          /* UART4_TX  */
+    {PORTC_12, UART4, 7},                          /* UART4_TX */
     {NC,   NC,    0}
 };
 
@@ -263,7 +234,7 @@ const PinMap PinMap_UART_CTS[] = {
 const PinMap PinMap_SPI_MOSI[] = {
     {PORTA_7,  SPI0, 7},                           /* SPI0_MOSI */
     {PORTB_15, SPI1, 7},                           /* SPI1_MOSI */
-    {PORTC_12, SPI2, 7},                           /* SPI2_MOSI  */
+    {PORTC_12, SPI2, 7},                           /* SPI2_MOSI */
     {PORTB_5,  SPI2, 7},                           /* SPI2_MOSI */
     {PORTB_5,  SPI0, 7},                           /* SPI0_MOSI */
     {NC,   NC,    0}

@@ -55,6 +55,14 @@ OF SUCH DAMAGE.
 #define  TIMER0_Update_IRQ_Name TIMER0_UP_TIMER9_IRQn
 #define TIMER9_IRQ_NAME TIMER0_UP_TIMER9_IRQn
 #endif
+#elif defined(GD32F10x)
+#define NO_TIMER_0
+#define NO_TIMER_9
+#define NO_TIMER_10
+#define NO_TIMER_11
+#define NO_TIMER_12
+#define NO_TIMER_13
+#define  TIMER0_Update_IRQ_Name TIMER0_UP_IRQn
 #endif
 
 #if defined(GD32E50X)
@@ -72,7 +80,10 @@ OF SUCH DAMAGE.
 #define NO_TIMER_12
 #define NO_TIMER_13
 #endif
-#else 
+#elif defined(GD32F10x)
+#define TIMER7_IRQ_NAME TIMER7_UP_IRQn
+#define TIMER7_UP_IRQ_NAME TIMER7_UP_IRQn
+#else
 #define TIMER7_IRQ_NAME TIMER7_IRQn
 #define TIMER7_UP_IRQ_NAME TIMER7_IRQn
 #endif

@@ -40,7 +40,7 @@ void digitalToggle(pin_size_t ulPin);
 *****************************************************************************/
 typedef enum afio_debug_cfg {
     /** Full Serial Wire and JTAG debug */
-    AFIO_DEBUG_FULL_SWJ          = ((uint32_t)0x00300000U | (PCF0_SWJ_CFG(0) >> 16)),
+    AFIO_DEBUG_FULL_SWJ          = ((uint32_t)0x00300000U | (AFIO_PCF0_SWJ_CFG >> 16)),
     /** Full Serial Wire and JTAG, but no NJTRST. */
     AFIO_DEBUG_FULL_SWJ_NO_NJRST = GPIO_SWJ_NONJTRST_REMAP,
     /** Serial Wire debug only (JTAG-DP disabled, SW-DP enabled) */

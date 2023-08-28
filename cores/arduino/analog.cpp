@@ -54,6 +54,8 @@ OF SUCH DAMAGE.
 #define ADC_NUMS  1
 #elif defined(GD32E23x)
 #define ADC_NUMS  1
+#elif defined(GD32F10x)
+#define ADC_NUMS  3
 #elif defined(GD32E50X)
 #ifdef ADC2
 #define ADC_NUMS  3
@@ -116,7 +118,7 @@ void set_dac_value(PinName pinname, uint16_t value)
 #if defined(GD32F30x) || (defined(GD32F1x0) && defined(GD32F170_190)) || defined(GD32E50X)
         dac_data_set(dac_periph, DAC_ALIGN_12B_R, value);
 #elif defined(GD32F10x) && !defined(GD32F170_190)
-        dac0_data_set(DAC_ALIGN_12B_R, value);
+     //   dac0_data_set(DAC_ALIGN_12B_R, value);
 #elif defined(GD32F3x0)
         dac_data_set(DAC_ALIGN_12B_R, value);
 #endif

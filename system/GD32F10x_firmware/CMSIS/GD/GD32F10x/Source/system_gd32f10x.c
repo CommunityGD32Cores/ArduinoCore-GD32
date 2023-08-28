@@ -42,7 +42,7 @@ OF SUCH DAMAGE.
 #define __HXTAL           (HXTAL_VALUE)            /* high speed crystal oscillator frequency */
 #define __SYS_OSC_CLK     (__IRC8M)                /* main oscillator frequency */
 
-#define VECT_TAB_OFFSET  (uint32_t)0x00            /* vector table base offset */
+//#define VECT_TAB_OFFSET  (uint32_t)0x00            /* vector table base offset */
 
 /* select a system clock by uncommenting the following line */
 /* use IRC8M */
