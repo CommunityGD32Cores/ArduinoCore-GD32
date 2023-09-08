@@ -64,6 +64,33 @@ const int GD_GPIO_SPEED[] = {
     GPIO_OSPEED_50MHZ,            /* 3 */
 };
 
+const int GD_GPIO_REMAP[] = {
+    0x00000000,
+    GPIO_SPI0_REMAP, // SPI0 remapping
+    GPIO_I2C0_REMAP, // I2C0 remapping
+    GPIO_USART0_REMAP, // USART0 remapping
+    GPIO_USART1_REMAP, // USART1 remapping
+    GPIO_USART2_PARTIAL_REMAP, // USART2 partial remapping
+    GPIO_USART2_FULL_REMAP, // USART2 full remapping
+    GPIO_TIMER0_PARTIAL_REMAP, // TIMER0 partial remapping 
+    GPIO_TIMER0_FULL_REMAP, // TIMER0 full remapping
+    GPIO_TIMER1_PARTIAL_REMAP1, // TIMER1 partial remapping
+    GPIO_TIMER1_FULL_REMAP, // TIMER1 full remapping
+    GPIO_TIMER2_PARTIAL_REMAP, // TIMER2 partial remapping
+    GPIO_TIMER2_FULL_REMAP, // TIMER2 full remapping
+    GPIO_TIMER3_REMAP, // TIMER3 remapping
+    GPIO_CAN_PARTIAL_REMAP, // CAN partial remapping(only for GD32F10X_MD, GD32F10X_HD devices and GD32F10X_XD devices)
+    GPIO_CAN_FULL_REMAP, // CAN full remapping(only for GD32F10X_MD, GD32F10X_HD devices and GD32F10X_XD devices)
+    GPIO_PD01_REMAP, // PD01 remapping
+    GPIO_TIMER4CH3_IREMAP, // TIMER4 channel3 internal remapping(only for GD32F10X_CL devices and GD32F10X_HD devices)
+    GPIO_ADC0_ETRGRT_REMAP, // ADC0 external trigger routine conversion remapping(only for GD32F10X_MD, GD32F10X_HD devices and GD32F10X_XD devices)
+    GPIO_ADC1_ETRGRT_REMAP, // ADC1 external trigger routine conversion remapping(only for GD32F10X_MD, GD32F10X_HD devices and GD32F10X_XD devices)
+    GPIO_SWJ_NONJTRST_REMAP, // full SWJ(JTAG-DP + SW-DP),but without NJTRST
+    GPIO_SWJ_SWDPENABLE_REMAP, // JTAG-DP disabled and SW-DP enabled
+    GPIO_SWJ_DISABLE_REMAP, // JTAG-DP disabled and SW-DP disabled
+    GPIO_SPI2_REMAP, // SPI2 remapping(only for GD32F10X_CL, GD32F10X_HD and GD32F10X_XD devices) 
+};
+
 /* ADC PinMap */
 const PinMap PinMap_ADC[] = {
     {PORTA_0,  ADC0, GD_PIN_FUNC_ANALOG_CH(0)},    /* ADC0_IN0 */
@@ -192,41 +219,41 @@ const PinMap PinMap_PWM[] = {
 
 /* UART_TX PinMap */
 const PinMap PinMap_UART_TX[] = {
-    {PORTA_2,  USART1, 7},                         /* USART1_TX */
-    {PORTB_10, USART2, 7},                         /* USART2_TX */
-    {PORTA_9,  USART0, 7},                         /* USART0_TX */
-    {PORTC_10, USART2, 7},                         /* USART2_TX */
-    {PORTB_6,  USART0, 7},                         /* USART0_TX */
-    {PORTC_10, UART3, 7},                          /* UART3_TX */
-    {PORTC_12, UART4, 7},                          /* UART4_TX */
+    {PORTA_2,  USART1, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)}, /* USART1_TX */
+    {PORTB_10, USART2, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)},                         /* USART2_TX */
+    {PORTA_9,  USART0, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)},                         /* USART0_TX */
+    {PORTC_10, USART2, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 6)},                         /* USART2_TX */
+    {PORTB_6,  USART0, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 3)},                         /* USART0_TX */
+    {PORTC_10, UART3, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)},                          /* UART3_TX */
+    {PORTC_12, UART4, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)},                          /* UART4_TX */
     {NC,   NC,    0}
 };
 
 /* UART_RX PinMap */
 const PinMap PinMap_UART_RX[] = {
-    {PORTA_3,  USART1, 1},                         /* USART1_RX */
-    {PORTB_11, USART2, 1},                         /* USART2_RX */
-    {PORTA_10, USART0, 1},                         /* USART0_RX */
-    {PORTC_11, USART2, 1},                         /* USART2_RX */
-    {PORTB_7,  USART0, 1},                         /* USART0_RX */
-    {PORTC_11, UART3, 1},                          /* UART3_RX */
-    {PORTD_2,  UART4, 1},                          /* UART4_RX */
+    {PORTA_3,  USART1, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)},                         /* USART1_RX */
+    {PORTB_11, USART2, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)},                         /* USART2_RX */
+    {PORTA_10, USART0, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)},                         /* USART0_RX */
+    {PORTC_11, USART2, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)},                         /* USART2_RX */
+    {PORTB_7,  USART0, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)},                         /* USART0_RX */
+    {PORTC_11, UART3, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)},                          /* UART3_RX */
+    {PORTD_2,  UART4, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)},                          /* UART4_RX */
     {NC,   NC,    0}
 };
 
 /* UART_RTS PinMap */
 const PinMap PinMap_UART_RTS[] = {
-    {PORTA_1,  USART1, 7},                         /* USART1_RTS */
-    {PORTB_14, USART2, 7},                         /* USART2_RTS */
-    {PORTA_12, USART0, 7},                         /* USART0_RTS */
+    {PORTA_1,  USART1, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)},                         /* USART1_RTS */
+    {PORTB_14, USART2, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)},                         /* USART2_RTS */
+    {PORTA_12, USART0, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)},                         /* USART0_RTS */
     {NC,   NC,    0}
 };
 
 /* UART_CTS PinMap */
 const PinMap PinMap_UART_CTS[] = {
-    {PORTA_0,  USART1, 7},                         /* USART1_CTS */
-    {PORTB_13, USART2, 7},                         /* USART2_CTS */
-    {PORTA_11, USART0, 7},                         /* USART0_CTS */
+    {PORTA_0,  USART1, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)},                         /* USART1_CTS */
+    {PORTB_13, USART2, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)},                         /* USART2_CTS */
+    {PORTA_11, USART0, GD_PIN_FUNCTION1(PIN_MODE_OUTPUT, 0)},                         /* USART0_CTS */
     {NC,   NC,    0}
 };
 

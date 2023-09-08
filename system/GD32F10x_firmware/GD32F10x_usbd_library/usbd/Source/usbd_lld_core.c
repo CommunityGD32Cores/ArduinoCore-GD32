@@ -122,11 +122,13 @@ void user_buffer_free (uint8_t ep_num, uint8_t dir)
 */
 static void usbd_dp_pullup (FlagStatus status)
 {
+#ifdef USB_PULLUP
     if (SET == status) {
         gpio_bit_set(USB_PULLUP, USB_PULLUP_PIN);
     } else {
         gpio_bit_reset(USB_PULLUP, USB_PULLUP_PIN);
     }
+#endif
 }
 
 /*!
