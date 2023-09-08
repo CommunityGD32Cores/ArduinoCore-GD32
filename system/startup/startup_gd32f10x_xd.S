@@ -80,12 +80,12 @@ Infinite_Loop:
 * 0x0000.0000.
 * 
 *******************************************************************************/
-   .section  .isr_vector,"a",%progbits
+   .section  .vectors,"a",%progbits
   .type  g_pfnVectors, %object
   .size  g_pfnVectors, .-g_pfnVectors
 
 g_pfnVectors:
-                .word     _estack                            /* Top of Stack */
+                .word     _sp                            /* Top of Stack */
                 .word     Reset_Handler		/* Reset Handler */
                 .word     NMI_Handler		/* NMI Handler */
                 .word     HardFault_Handler		/* Hard Fault Handler */
