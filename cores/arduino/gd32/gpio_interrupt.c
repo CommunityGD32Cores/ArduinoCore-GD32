@@ -42,6 +42,24 @@ extiConf_t gpio_exti_infor[EXTI_NUMS] = {
     {EXTI4_15_IRQn,  NULL},
     {EXTI4_15_IRQn,  NULL},
     {EXTI4_15_IRQn,  NULL}
+#elif defined(GD32E23x)
+{EXTI0_1_IRQn,      NULL},
+{EXTI0_1_IRQn,      NULL},
+{EXTI2_3_IRQn,      NULL},
+{EXTI2_3_IRQn,      NULL},
+{EXTI4_15_IRQn,      NULL},
+{EXTI4_15_IRQn,    NULL},
+{EXTI4_15_IRQn,    NULL},
+{EXTI4_15_IRQn,    NULL},
+{EXTI4_15_IRQn,    NULL},
+{EXTI4_15_IRQn,    NULL},
+{EXTI4_15_IRQn,  NULL},
+{EXTI4_15_IRQn,  NULL},
+{EXTI4_15_IRQn,  NULL},
+{EXTI4_15_IRQn,  NULL},
+{EXTI4_15_IRQn,  NULL},
+{EXTI4_15_IRQn,  NULL}
+
 #endif
 };
 
@@ -171,6 +189,28 @@ void EXTI4_15_IRQHandler(void)
 {
     uint32_t i;
     for (i = 4; i <= 15; i++) {
+        exti_callbackHandler(i);
+    }
+}
+#elif defined(GD32E23x)
+void EXTI0_1_IRQHandler(void)
+{
+    uint32_t i;
+    for ( i = 0; i < 2; i++) {
+        exti_callbackHandler(i);
+    }
+}
+void EXTI2_3_IRQHandler(void)
+{
+    uint32_t i;
+    for (i = 2; i < 4; i++) {
+        exti_callbackHandler(i);
+    }
+}
+void EXTI4_15_IRQHandler(void)
+{
+    uint32_t i;
+    for (i = 4; i < 16; i++) {
         exti_callbackHandler(i);
     }
 }
