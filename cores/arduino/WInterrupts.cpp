@@ -44,7 +44,7 @@ void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus mode)
     gpio_interrupt_enable(GD_PORT_GET(pinname), GD_PIN_GET(pinname), callback, it_mode);
 }
 
-void detachInterrupt(uint32_t pin)
+void detachInterrupt(pin_size_t pin)
 {
     PinName pinname = DIGITAL_TO_PINNAME(pin);
     gpio_interrupt_disable(GD_PIN_GET(pinname));
