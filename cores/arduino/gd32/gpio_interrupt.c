@@ -77,7 +77,7 @@ void gpio_interrupt_enable(uint32_t portNum, uint32_t pinNum, void (*callback)(v
     // only messes up things if pin was in OUTPUT / OUTPUT_OPENDRAIN mode previously, but, I don't think
     // anyone expects interrupt to work when they explicitly initialize a pin in OUTPUT mode...
     //gpio_init(gpio_port[portNum], GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, gpio_pin[pinNum]);
-#elif defined(GD32F3x0) || defined(GD32F1x0)
+#elif defined(GD32F3x0) || defined(GD32F1x0) || defined(GD32E23x)
     rcu_periph_clock_enable(RCU_CFGCMP);
     //gpio_mode_set(gpio_port[portNum], GPIO_MODE_INPUT, GPIO_PUPD_NONE, gpio_pin[pinNum]);
 #endif
@@ -88,7 +88,7 @@ void gpio_interrupt_enable(uint32_t portNum, uint32_t pinNum, void (*callback)(v
 #else
     nvic_irq_enable(gpio_exti_infor[pinNum].irqNum, EXTI_IRQ_PRIO, EXTI_IRQ_SUBPRIO);
 #endif
-#if defined(GD32F3x0) || defined(GD32F1x0)
+#if defined(GD32F3x0) || defined(GD32F1x0) || defined(GD32E23x)
     syscfg_exti_line_config(
         (uint8_t) portNum,
         (uint8_t) pinNum);
