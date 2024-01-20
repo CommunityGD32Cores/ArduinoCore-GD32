@@ -3,10 +3,11 @@
     \brief   USB transaction core functions
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -177,10 +178,6 @@ uint8_t usbd_out_transc (usb_core_driver *udev, uint8_t ep_num)
             /* update transfer length */
             transc->remain_len -= transc->max_len;
 
-            if ((uint8_t)USB_USE_DMA == udev->bp.transfer_mode) {
-                transc->xfer_buf += transc->max_len;
-            }
-
             (void)usbd_ctl_recev (udev);
             break;
 
@@ -224,10 +221,6 @@ uint8_t usbd_in_transc (usb_core_driver *udev, uint8_t ep_num)
         case USB_CTL_DATA_IN:
             /* update transfer length */
             transc->remain_len -= transc->max_len;
-
-            if ((uint8_t)USB_USE_DMA == udev->bp.transfer_mode) {
-                transc->xfer_buf += transc->max_len;
-            }
 
             (void)usbd_ctl_send (udev);
             break;

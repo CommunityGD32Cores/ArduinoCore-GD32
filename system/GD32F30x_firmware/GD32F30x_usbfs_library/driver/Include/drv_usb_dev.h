@@ -4,10 +4,11 @@
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
     \version 2020-12-07, V3.0.1, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -39,7 +40,8 @@ OF SUCH DAMAGE.
 #include "usbd_conf.h"
 #include "drv_usb_core.h"
 
-enum usb_ctl_status {
+enum usb_ctl_status
+{
     USB_CTL_IDLE = 0U,                                                  /*!< USB control transfer idle state */
     USB_CTL_DATA_IN,                                                    /*!< USB control transfer data in state */
     USB_CTL_LAST_DATA_IN,                                               /*!< USB control transfer last data in state */
@@ -53,7 +55,8 @@ enum usb_ctl_status {
 #define EP_OUT(x)                           ((uint8_t)(x))              /*!< device OUT endpoint */
 
 /* USB descriptor */
-typedef struct _usb_desc {
+typedef struct _usb_desc
+{
     uint8_t *dev_desc;                                                  /*!< device descriptor */
     uint8_t *config_desc;                                               /*!< configure descriptor */
     uint8_t *bos_desc;                                                  /*!< BOS descriptor */
@@ -62,7 +65,8 @@ typedef struct _usb_desc {
 } usb_desc;
 
 /* USB power management */
-typedef struct _usb_pm {
+typedef struct _usb_pm
+{
     uint8_t  power_mode;                                                /*!< power mode */
     uint8_t  power_low;                                                 /*!< power low */
     uint8_t  dev_remote_wakeup;                                         /*!< remote wakeup */
@@ -70,7 +74,8 @@ typedef struct _usb_pm {
 } usb_pm;
 
 /* USB control information */
-typedef struct _usb_control {
+typedef struct _usb_control 
+{
     usb_req    req;                                                     /*!< USB standard device request */
 
     uint8_t    ctl_state;                                               /*!< USB control transfer state */
@@ -97,8 +102,6 @@ typedef struct
     uint32_t       xfer_count;                                          /*!< transmit buffer count */
 
     uint32_t       remain_len;                                          /*!< remain packet length */
-
-    uint32_t       dma_addr;                                            /*!< DMA address */
 } usb_transc;
 
 typedef struct _usb_core_driver usb_dev;

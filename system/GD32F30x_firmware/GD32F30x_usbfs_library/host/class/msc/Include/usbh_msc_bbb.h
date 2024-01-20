@@ -3,10 +3,11 @@
     \brief   header file for usbh_msc_bbb.c
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -38,27 +39,30 @@ OF SUCH DAMAGE.
 #include "usbh_enum.h"
 #include "msc_bbb.h"
 
-typedef union {
+typedef union 
+{
     msc_bbb_cbw field;
 
     uint8_t CBWArray[31];
 }usbh_cbw_pkt;
 
-typedef union {
+typedef union
+{
     msc_bbb_csw field;
 
     uint8_t CSWArray[13];
 }usbh_csw_pkt;
 
-enum usbh_msc_state {
-    USBH_MSC_BOT_INIT_STATE = 0U,
-    USBH_MSC_BOT_RESET,
+enum usbh_msc_state 
+{
+    USBH_MSC_BBB_INIT_STATE = 0U,
+    USBH_MSC_BBB_RESET,
     USBH_MSC_GET_MAX_LUN,
     USBH_MSC_TEST_UNIT_READY,
     USBH_MSC_READ_CAPACITY10,
     USBH_MSC_MODE_SENSE6,
     USBH_MSC_REQUEST_SENSE,
-    USBH_MSC_BOT_USB_TRANSFERS,
+    USBH_MSC_BBB_USB_TRANSFERS,
     USBH_MSC_DEFAULT_APPLI_STATE,
     USBH_MSC_CTRL_ERROR_STATE,
     USBH_MSC_UNRECOVERED_STATE
@@ -66,54 +70,54 @@ enum usbh_msc_state {
 
 typedef enum
 {
-    BOT_OK = 0U,
-    BOT_FAIL,
-    BOT_PHASE_ERROR,
-    BOT_BUSY
-} bot_status;
+    BBB_OK = 0U,
+    BBB_FAIL,
+    BBB_PHASE_ERROR,
+    BBB_BUSY
+} bbb_status;
 
 typedef enum
 {
-    BOT_CMD_IDLE = 0U,
-    BOT_CMD_SEND,
-    BOT_CMD_WAIT,
-} bot_cmd_state;
+    BBB_CMD_IDLE = 0U,
+    BBB_CMD_SEND,
+    BBB_CMD_WAIT,
+} bbb_cmd_state;
 
 /* csw status definitions */
 typedef enum
 {
-    BOT_CSW_CMD_PASSED = 0U,
-    BOT_CSW_CMD_FAILED,
-    BOT_CSW_PHASE_ERROR,
-} bot_csw_status;
+    BBB_CSW_CMD_PASSED = 0U,
+    BBB_CSW_CMD_FAILED,
+    BBB_CSW_PHASE_ERROR,
+} bbb_csw_status;
 
 typedef enum
 {
-    BOT_SEND_CBW = 1U,
-    BOT_SEND_CBW_WAIT,
-    BOT_DATA_IN,
-    BOT_DATA_IN_WAIT,
-    BOT_DATA_OUT,
-    BOT_DATA_OUT_WAIT,
-    BOT_RECEIVE_CSW,
-    BOT_RECEIVE_CSW_WAIT,
-    BOT_ERROR_IN,
-    BOT_ERROR_OUT,
-    BOT_UNRECOVERED_ERROR
-} bot_state;
+    BBB_SEND_CBW = 1U,
+    BBB_SEND_CBW_WAIT,
+    BBB_DATA_IN,
+    BBB_DATA_IN_WAIT,
+    BBB_DATA_OUT,
+    BBB_DATA_OUT_WAIT,
+    BBB_RECEIVE_CSW,
+    BBB_RECEIVE_CSW_WAIT,
+    BBB_ERROR_IN,
+    BBB_ERROR_OUT,
+    BBB_UNRECOVERED_ERROR
+} bbb_state;
 
 typedef struct
 {
     uint8_t                *pbuf;
     uint32_t                data[16];
-    bot_state               state;
-    bot_state               prev_state;
-    bot_cmd_state           cmd_state;
+    bbb_state               state;
+    bbb_state               prev_state;
+    bbb_cmd_state           cmd_state;
     usbh_cbw_pkt            cbw;
     usbh_csw_pkt            csw;
-} bot_handle;
+} bbb_handle;
 
-#define USBH_MSC_BOT_CBW_TAG                0x20304050U
+#define USBH_MSC_BBB_CBW_TAG                0x20304050U
 
 #define USBH_MSC_CSW_MAX_LENGTH             63U
 
@@ -137,14 +141,14 @@ typedef struct
 
 /* function declarations */
 /* initialize the mass storage parameters */
-void usbh_msc_bot_init (usbh_host *puhost);
+void usbh_msc_bbb_init (usbh_host *puhost);
 /* manage the different states of BOT transfer and updates the status to upper layer */
-usbh_status usbh_msc_bot_process (usbh_host *puhost, uint8_t lun);
+usbh_status usbh_msc_bbb_process (usbh_host *puhost, uint8_t lun);
 /* manages the different error handling for stall */
-usbh_status usbh_msc_bot_abort (usbh_host *puhost, uint8_t direction);
-/* reset msc bot request struct */
-usbh_status usbh_msc_bot_reset (usbh_host *puhost);
+usbh_status usbh_msc_bbb_abort (usbh_host *puhost, uint8_t direction);
+/* reset MSC bot request structure */
+usbh_status usbh_msc_bbb_reset (usbh_host *puhost);
 /* decode the CSW received by the device and updates the same to upper layer */
-bot_csw_status usbh_msc_csw_decode (usbh_host *puhost);
+bbb_csw_status usbh_msc_csw_decode (usbh_host *puhost);
 
 #endif /* __USBH_MSC_BBB_H */

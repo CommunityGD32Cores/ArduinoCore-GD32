@@ -3,10 +3,11 @@
     \brief   USB device driver
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -42,9 +43,8 @@ usbd_int_cb_struct *usbd_int_fops = NULL;
 /*!
     \brief      configure USB device initialization
     \param[in]  udev: pointer to USB core instance
-    \param[in]  core: endpoint address
+    \param[in]  desc: pointer to USB descriptor
     \param[in]  usbc: USB class
-    \param[in]  usbha: USB handler
     \param[out] none
     \retval     none
 */
@@ -60,6 +60,8 @@ void usbd_init (usb_dev *udev, usb_desc *desc, usb_class *usbc)
     udev->desc = desc;
     udev->class_core = usbc;
     udev->drv_handler = &usbd_drv_handler;
+
+    udev->control.ctl_state = USBD_CTL_IDLE;
 
     udev->ep_transc[0][TRANSC_SETUP] = _usb_setup_transc;
     udev->ep_transc[0][TRANSC_OUT] = _usb_out0_transc;

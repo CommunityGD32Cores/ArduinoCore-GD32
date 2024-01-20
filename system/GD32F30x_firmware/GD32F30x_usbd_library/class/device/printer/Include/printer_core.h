@@ -3,10 +3,11 @@
     \brief   the header file of USB printer device class core functions
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -37,13 +38,13 @@ OF SUCH DAMAGE.
 
 #include "usbd_enum.h"
 
-/* USB printing device class code */
+/* USB printer device class code */
 #define USB_CLASS_PRINTER               0x07U
 
-/* printing device subclass code */
+/* printer device subclass code */
 #define USB_SUBCLASS_PRINTER            0x01U
 
-/* printing device protocol code */
+/* printer device protocol code */
 #define PROTOCOL_UNIDIRECTIONAL_ITF     0x01U
 #define PROTOCOL_BI_DIRECTIONAL_ITF     0x02U
 #define PROTOCOL_1284_4_ITF             0x03U
@@ -53,7 +54,7 @@ OF SUCH DAMAGE.
 
 #define USB_PRINTER_CONFIG_DESC_LEN     32U
 
-/* printing device specific-class request */
+/* printer device specific-class request */
 #define GET_DEVICE_ID                   0x00U
 #define GET_PORT_STATUS                 0x01U
 #define SOFT_RESET                      0x02U

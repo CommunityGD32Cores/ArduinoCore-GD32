@@ -500,6 +500,20 @@ void spi_bidirectional_transfer_config(uint32_t spi_periph, uint32_t transfer_di
 }
 
 /*!
+    \brief      clear SPI/I2S format error flag status
+    \param[in]  spi_periph: SPIx(x=0,1,2)
+    \param[in]  flag: SPI/I2S frame format error flag 
+      \arg        SPI_FLAG_FERR: only for SPI work in TI mode
+      \arg        I2S_FLAG_FERR: for I2S
+    \param[out] none
+    \retval     none
+*/
+void spi_i2s_format_error_clear(uint32_t spi_periph, uint32_t flag)
+{
+    SPI_STAT(spi_periph) = (uint32_t)(~flag);
+}
+
+/*!
     \brief      set SPI CRC polynomial 
     \param[in]  spi_periph: SPIx(x=0,1,2)
     \param[in]  crc_poly: CRC polynomial value
@@ -573,6 +587,17 @@ uint16_t spi_crc_get(uint32_t spi_periph,uint8_t crc)
     }else{
         return ((uint16_t)(SPI_RCRC(spi_periph)));
     }
+}
+
+/*!
+    \brief      clear SPI CRC error flag status
+    \param[in]  spi_periph: SPIx(x=0,1,2)
+    \param[out] none
+    \retval     none
+*/
+void spi_crc_error_clear(uint32_t spi_periph)
+{
+    SPI_STAT(spi_periph) = (uint32_t)(~SPI_FLAG_CRCERR);
 }
 
 /*!
@@ -845,15 +870,4 @@ FlagStatus spi_i2s_flag_get(uint32_t spi_periph, uint32_t flag)
     }else{
         return RESET;
     }
-}
-
-/*!
-    \brief      clear SPI CRC error flag status
-    \param[in]  spi_periph: SPIx(x=0,1,2)
-    \param[out] none
-    \retval     none
-*/
-void spi_crc_error_clear(uint32_t spi_periph)
-{
-    SPI_STAT(spi_periph) &= (uint32_t)(~SPI_FLAG_CRCERR);
 }

@@ -3,10 +3,11 @@
     \brief   audio OUT (playback) interface header file
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -37,38 +38,10 @@ OF SUCH DAMAGE.
 
 #include "usbd_conf.h"
 
-/* audio commands enumeration */
-typedef enum
-{
-    AUDIO_CMD_PLAY = 1U,
-    AUDIO_CMD_PAUSE,
-    AUDIO_CMD_STOP,
-}audio_cmd_enum;
-
-/* mute commands */
-#define AUDIO_MUTE                      0x01U
-#define AUDIO_UNMUTE                    0x00U
-
-/* functions return value */
-#define AUDIO_OK                        0x00U
-#define AUDIO_FAIL                      0xFFU
-
-/* audio machine states */
-#define AUDIO_STATE_INACTIVE            0x00U
-#define AUDIO_STATE_ACTIVE              0x01U
-#define AUDIO_STATE_PLAYING             0x02U
-#define AUDIO_STATE_PAUSED              0x03U
-#define AUDIO_STATE_STOPPED             0x04U
-#define AUDIO_STATE_ERROR               0x05U
-
 typedef struct {
-    uint8_t  (*audio_init)        (uint32_t audio_freq, uint32_t volume, uint32_t options);
+    uint8_t  (*audio_init)        (uint32_t audio_freq, uint32_t volume);
     uint8_t  (*audio_deinit)      (uint32_t options);
     uint8_t  (*audio_cmd)         (uint8_t* pbuf, uint32_t size, uint8_t cmd);
-    uint8_t  (*audio_volume_ctl)  (uint8_t vol);
-    uint8_t  (*audio_mute_ctl)    (uint8_t cmd);
-    uint8_t  (*audio_periodic_tc) (uint8_t cmd);
-    uint8_t  (*audio_state_get)   (void);
 } audio_fops_struct;
 
 extern audio_fops_struct audio_out_fops;

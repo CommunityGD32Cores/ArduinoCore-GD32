@@ -3,10 +3,11 @@
     \brief   definitions for HID core
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -43,15 +44,16 @@ OF SUCH DAMAGE.
 
 #define NO_CMD                           0xFFU
 
-typedef struct {
+typedef struct 
+{
     uint32_t protocol;
     uint32_t idle_state;
-
     uint8_t data[HID_IN_PACKET];
     __IO uint8_t prev_transfer_complete;
 } standard_hid_handler;
 
-typedef struct {
+typedef struct 
+{
     void (*hid_itf_config) (void);
     void (*hid_itf_data_process) (usb_dev *udev);
 } hid_fop_handler;
@@ -63,6 +65,6 @@ extern usb_class_core usbd_hid_cb;
 /* register HID interface operation functions */
 uint8_t hid_itfop_register (usb_dev *udev, hid_fop_handler *hid_fop);
 /* send keyboard report */
-uint8_t hid_report_send (usb_dev *pudev, uint8_t *report, uint32_t len);
+uint8_t hid_report_send (usb_dev *udev, uint8_t *report, uint32_t len);
 
 #endif /* __STANDARD_HID_CORE_H */

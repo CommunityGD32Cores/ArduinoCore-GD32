@@ -3,10 +3,11 @@
     \brief   the header file of IAP driver
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -61,13 +62,10 @@ typedef struct
     /* state machine variables */
     uint8_t dev_status[IAP_IN_PACKET];
     uint8_t bin_addr[IAP_IN_PACKET];
-
     uint8_t reportID;
     uint8_t flag;
-
     uint32_t protocol;
     uint32_t idlestate;
-
     uint16_t transfer_times;
     uint16_t page_count;
     uint16_t lps;           /* last packet size */

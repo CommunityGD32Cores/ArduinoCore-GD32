@@ -3,10 +3,11 @@
     \brief   audio OUT (playback) interface functions
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -36,70 +37,63 @@ OF SUCH DAMAGE.
 #include "audio_out_itf.h"
 
 /* local function prototypes ('static') */
-static uint8_t init         (uint32_t audio_freq, uint32_t volume, uint32_t options);
+static uint8_t init         (uint32_t audio_freq, uint32_t volume);
 static uint8_t deinit       (uint32_t options);
 static uint8_t audio_cmd    (uint8_t* pbuf, uint32_t size, uint8_t cmd);
-static uint8_t volume_ctl   (uint8_t vol);
-static uint8_t mute_ctl     (uint8_t cmd);
-static uint8_t periodic_tc  (uint8_t cmd);
-static uint8_t get_state    (void);
 
 audio_fops_struct audio_out_fops = 
 {
-    init,
-    deinit,
-    audio_cmd,
-    volume_ctl,
-    mute_ctl,
-    periodic_tc,
-    get_state
+    .audio_init   = init,
+    .audio_deinit = deinit,
+    .audio_cmd    = audio_cmd,
 };
 
-static uint8_t audio_state = AUDIO_STATE_INACTIVE;
+static uint8_t audio_state = AD_STATE_INACTIVE;
 
 /*!
     \brief      initialize and configures all required resources for audio play function
     \param[in]  audio_freq: statrt_up audio frequency
     \param[in]  volume: start_up volume to be set
-    \param[in]  options: specific options passed to low layer function
     \param[out] none
-    \retval     AUDIO_OK if all operations succeed, otherwise, AUDIO_FAIL.
+    \retval     AD_OK if all operations succeed, otherwise, AD_FAIL.
 */
-static uint8_t init (uint32_t audio_freq, uint32_t volume, uint32_t options)
+static uint8_t init (uint32_t audio_freq, uint32_t volume)
 {
     static uint32_t initialized = 0U;
 
     /* check if the low layer has already been initialized */
     if (0U == initialized) {
-        /* call low layer function */
-        if (0U != eval_audio_init(OUTPUT_DEVICE_AUTO, volume, audio_freq)) {
-            audio_state = AUDIO_STATE_ERROR;
+        /* initialize GPIO */
+        codec_gpio_init();
 
-            return AUDIO_FAIL;
-        }
+        /* initialize i2s */
+        codec_audio_interface_init(audio_freq);
+
+        /* initialize DMA */
+        codec_i2s_dma_init();
 
         /* set the initialization flag to prevent reinitializing the interface again */
         initialized = 1U;
     }
 
     /* update the audio state machine */
-    audio_state = AUDIO_STATE_ACTIVE;
+    audio_state = AD_STATE_ACTIVE;
 
-    return AUDIO_OK;
+    return AD_OK;
 }
 
 /*!
     \brief      free all resources used by low layer and stops audio-play function
     \param[in]  options: specific options passed to low layer function
     \param[out] none
-    \retval     AUDIO_OK if all operations succeed, otherwise, AUDIO_FAIL.
+    \retval     AD_OK if all operations succeed, otherwise, AD_FAIL.
 */
 static uint8_t deinit (uint32_t options)
 {
     /* update the audio state machine */
-    audio_state = AUDIO_STATE_INACTIVE;
+    audio_state = AD_STATE_INACTIVE;
 
-    return AUDIO_OK;
+    return AD_OK;
 }
 
 /*!
@@ -107,136 +101,70 @@ static uint8_t deinit (uint32_t options)
     \param[in]  pbuf: address from which file should be played
     \param[in]  size: size of the current buffer/file
     \param[in]  cmd: command to be executed, can be:
-      \arg        AUDIO_CMD_PLAY
-      \arg        AUDIO_CMD_PAUSE
-      \arg        AUDIO_CMD_RESUME
-      \arg        AUDIO_CMD_STOP
+      \arg        AD_CMD_PLAY
+      \arg        AD_CMD_PAUSE
+      \arg        AD_CMD_RESUME
+      \arg        AD_CMD_STOP
     \param[out] none
-    \retval     AUDIO_OK if all operations succeed, otherwise, AUDIO_FAIL.
+    \retval     AD_OK if all operations succeed, otherwise, AD_FAIL.
 */
 static uint8_t audio_cmd (uint8_t* pbuf, uint32_t size, uint8_t cmd)
 {
-    uint8_t status = AUDIO_OK;
-
     /* check the current state */
-    if ((AUDIO_STATE_INACTIVE == audio_state) || (AUDIO_STATE_ERROR == audio_state)) {
-        audio_state = AUDIO_STATE_ERROR;
+    if ((AD_STATE_INACTIVE == audio_state) || (AD_STATE_ERROR == audio_state)) {
+        audio_state = AD_STATE_ERROR;
 
-        return AUDIO_FAIL;
+        return AD_FAIL;
     }
 
     switch (cmd) {
-        /* process the play command */
-        case AUDIO_CMD_PLAY:
-            /* if current state is active or stopped */
-            if ((AUDIO_STATE_ACTIVE == audio_state) || \
-                (AUDIO_STATE_STOPPED == audio_state) || \
-                (AUDIO_STATE_PLAYING == audio_state)) {
-                audio_mal_play((uint32_t)pbuf, (size / 2U));
-                audio_state = AUDIO_STATE_PLAYING;
-            } else if (AUDIO_STATE_PAUSED == audio_state) {
-                if (eval_audio_pause_resume(AUDIO_RESUME, (uint32_t)pbuf, (size / 2U))) {
-                    audio_state = AUDIO_STATE_ERROR;
+    /* process the play command */
+    case AD_CMD_PLAY:
+        /* if current state is active or stopped */
+        if ((AD_STATE_ACTIVE == audio_state) || \
+            (AD_STATE_STOPPED == audio_state) || \
+            (AD_STATE_PLAYING == audio_state)) {
+            audio_play((uint32_t)pbuf, size);
+            audio_state = AD_STATE_PLAYING;
 
-                    status = AUDIO_FAIL;
-                } else {
-                    audio_state = AUDIO_STATE_PLAYING;
-                }
-            } else {
-                status = AUDIO_FAIL;
-            }
-            break;
+            return AD_OK;
+        } else if (AD_STATE_PAUSED == audio_state) {
+            audio_pause_resume(AD_RESUME, (uint32_t)pbuf, (size/2));
+            audio_state = AD_STATE_PLAYING;
 
-        /* process the stop command */
-        case AUDIO_CMD_STOP:
-            if (AUDIO_STATE_PLAYING != audio_state) {
-                /* unsupported command */
-                status = AUDIO_FAIL;
-            } else if (eval_audio_stop(CODEC_PDWN_SW)) {
-                audio_state = AUDIO_STATE_ERROR;
+            return AD_OK;
+        } else {
+            return AD_FAIL;
+        }
 
-                status = AUDIO_FAIL;
-            } else {
-                audio_state = AUDIO_STATE_STOPPED;
-            }
-            break;
+    /* process the stop command */
+    case AD_CMD_STOP:
+        if (AD_STATE_PLAYING != audio_state) {
+            /* unsupported command */
+            return AD_FAIL;
+        } else {
+            audio_stop();
+            audio_state = AD_STATE_STOPPED;
 
-        /* process the pause command */
-        case AUDIO_CMD_PAUSE:
-            if (AUDIO_STATE_PLAYING != audio_state) {
-                /* unsupported command */
-                status = AUDIO_FAIL;
-            } else if (eval_audio_pause_resume(AUDIO_PAUSE, (uint32_t)pbuf, (size / 2U))) {
-                audio_state = AUDIO_STATE_ERROR;
+            return AD_OK;
+        }
 
-                status = AUDIO_FAIL;
-            } else {
-                audio_state = AUDIO_STATE_PAUSED;
-            }
-            break;
+    /* process the pause command */
+    case AD_CMD_PAUSE:
+        if (AD_STATE_PLAYING != audio_state) {
+            /* unsupported command */
+            return AD_FAIL;
+        } else {
+            audio_pause_resume(AD_PAUSE, (uint32_t)pbuf, (size/2));
+            audio_state = AD_STATE_PAUSED;
 
-        /* unsupported command */
-        default:
-            break;
+            return AD_OK;
+        }
+
+    /* unsupported command */
+    default:
+        break;
     }
 
-    return status;
-}
-
-/*!
-    \brief      set the volume level
-    \param[in]  vol: volume level to be set in % (from 0% to 100%)
-    \param[out] none
-    \retval     AUDIO_OK if all operations succeed, otherwise, AUDIO_FAIL.
-*/
-static uint8_t volume_ctl (uint8_t vol)
-{
-    /* call low layer volume setting function */  
-    if (eval_audio_volume_ctl(vol)) {
-        audio_state = AUDIO_STATE_ERROR;
-
-        return AUDIO_FAIL;
-    }
-
-    return AUDIO_OK;
-}
-
-/*!
-    \brief      mute or unmute the audio current output
-    \param[in]  cmd: can be 0 to unmute, or 1 to mute
-    \param[out] none
-    \retval     AUDIO_OK if all operations succeed, otherwise, AUDIO_FAIL.
-*/
-static uint8_t mute_ctl (uint8_t cmd)
-{
-    /* call low layer mute setting function */
-    if (eval_audio_mute((uint32_t)cmd)) {
-        audio_state = AUDIO_STATE_ERROR;
-
-        return AUDIO_FAIL;
-    }
-
-    return AUDIO_OK;
-}
-
-/*!
-    \brief      periodic transfer control
-    \param[in]  cmd: command
-    \param[out] none
-    \retval     AUDIO_OK if all operations succeed, otherwise, AUDIO_FAIL.
-*/
-static uint8_t periodic_tc (uint8_t cmd)
-{
-    return AUDIO_OK;
-}
-
-/*!
-    \brief      return the current state of the audio machine
-    \param[in]  none
-    \param[out] none
-    \retval     AUDIO_OK if all operations succeed, otherwise, AUDIO_FAIL.
-*/
-static uint8_t get_state (void)
-{
-    return audio_state;
+    return AD_FAIL;
 }

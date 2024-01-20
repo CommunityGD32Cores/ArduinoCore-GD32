@@ -1,12 +1,13 @@
 /*!
-    \file    usbh_hid_keybd.c
-    \brief   USB host HID keyboard driver
+    \file    usbh_standard_hid.c
+    \brief   USB host HID keyboard and mouse driver
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -32,142 +33,17 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 OF SUCH DAMAGE.
 */
 
-#include "usbh_hid_keybd.h"
-#include "usbh_hid_parser.h"
+#include "usbh_standard_hid.h"
 #include <stdbool.h>
 
+hid_mouse_info mouse_info;
 hid_keybd_info keybd_info;
 
+uint8_t mouse_report_data[4] = {0U};
 uint32_t keybd_report_data[2];
 
-static const hid_report_item imp_0_lctrl =
-{
-    (uint8_t*)(void *)keybd_report_data + 0, /* data */
-    1,     /* size */
-    0,     /* shift */
-    0,     /* count (only for array items) */
-    0,     /* signed */
-    0,     /* min value read can return */
-    1,     /* max value read can return */
-    0,     /* min vale device can report */
-    1,     /* max value device can report */
-    1      /* resolution */
-};
-
-static const hid_report_item imp_0_lshift =
-{
-    (uint8_t*)(void *)keybd_report_data + 0, /* data */
-    1,     /* size */
-    1,     /* shift */
-    0,     /* count (only for array items) */
-    0,     /* signed */
-    0,     /* min value read can return */
-    1,     /* max value read can return */
-    0,     /* min vale device can report */
-    1,     /* max value device can report */
-    1      /* resolution */
-};
-
-static const hid_report_item imp_0_lalt = 
-{
-    (uint8_t*)(void *)keybd_report_data + 0, /* data */
-    1,     /* size */
-    2,     /* shift */
-    0,     /* count (only for array items) */
-    0,     /* signed */
-    0,     /* min value read can return */
-    1,     /* max value read can return */
-    0,     /* min vale device can report */
-    1,     /* max value device can report */
-    1      /* resolution */
-};
-
-static const hid_report_item imp_0_lgui =
-{
-    (uint8_t*)(void *)keybd_report_data + 0, /* data */
-    1,     /* size */
-    3,     /* shift */
-    0,     /* count (only for array items) */
-    0,     /* signed */
-    0,     /* min value read can return */
-    1,     /* max value read can return */
-    0,     /* min vale device can report */
-    1,     /* max value device can report */
-    1      /* resolution */
-};
-
-static const hid_report_item imp_0_rctrl =
-{
-    (uint8_t*)(void *)keybd_report_data + 0, /* data */
-    1,     /* size */
-    4,     /* shift */
-    0,     /* count (only for array items) */
-    0,     /* signed */
-    0,     /* min value read can return */
-    1,     /* max value read can return */
-    0,     /* min vale device can report */
-    1,     /* max value device can report */
-    1      /* resolution */
-};
-
-static const hid_report_item imp_0_rshift = 
-{
-    (uint8_t*)(void *)keybd_report_data + 0, /* data */
-    1,     /* size */
-    5,     /* shift */
-    0,     /* count (only for array items) */
-    0,     /* signed */
-    0,     /* min value read can return */
-    1,     /* max value read can return */
-    0,     /* min vale device can report */
-    1,     /* max value device can report */
-    1      /* resolution */
-};
-
-static const hid_report_item imp_0_ralt = 
-{
-    (uint8_t*)(void *)keybd_report_data + 0, /* data */
-    1,     /* size */
-    6,     /* shift */
-    0,     /* count (only for array items) */
-    0,     /* signed */
-    0,     /* min value read can return */
-    1,     /* max value read can return */
-    0,     /* min vale device can report */
-    1,     /* max value device can report */
-    1      /* resolution */
-};
-
-static const hid_report_item imp_0_rgui = 
-{
-    (uint8_t*)(void *)keybd_report_data + 0, /* data */
-    1,     /* size */
-    7,     /* shift */
-    0,     /* count (only for array items) */
-    0,     /* signed */
-    0,     /* min value read can return */
-    1,     /* max value read can return */
-    0,     /* min vale device can report */
-    1,     /* max value device can report */
-    1      /* resolution */
-};
-
-static const hid_report_item imp_0_key_array = 
-{
-    (uint8_t*)(void *)keybd_report_data + 2, /* data */
-    8,     /* size */
-    0,     /* shift */
-    6,     /* count (only for array items) */
-    0,     /* signed */
-    0,     /* min value read can return */
-    101,   /* max value read can return */
-    0,     /* min vale device can report */
-    101,   /* max value device can report */
-    1      /* resolution */
-};
-
 /* local constants */
-static const uint8_t hid_keybrd_codes[] = 
+static const uint8_t kbd_codes[] = 
 {
     0,      0,      0,      0,      31,     50,     48,     33, 
     19,     34,     35,     36,     24,     37,     38,     39,         /* 0x00 - 0x0F */
@@ -202,7 +78,7 @@ static const uint8_t hid_keybrd_codes[] =
 
 #ifdef QWERTY_KEYBOARD
 
-static const int8_t hid_keybrd_key[] = 
+static const int8_t kbd_key[] = 
 {
     '\0',   '`',    '1',    '2',    '3',    '4',    '5',    '6',
     '7',    '8',    '9',    '0',    '-',    '=',    '\0',   '\r',
@@ -224,7 +100,7 @@ static const int8_t hid_keybrd_key[] =
     '\0',   '\0',   '\0',   '\0'
 };
 
-static const int8_t hid_keybrd_shiftkey[] = {
+static const int8_t kbd_key_shift[] = {
     '\0',   '~',    '!',    '@',    '#',    '$',    '%',    '^',    '&',    '*',    '(',    ')',
     '_',    '+',    '\0',   '\0',   '\0',   'Q',    'W',    'E',    'R',    'T',    'Y',    'U', 
     'I',    'O',    'P',    '{',    '}',    '|',    '\0',   'A',    'S',    'D',    'F',    'G', 
@@ -240,7 +116,7 @@ static const int8_t hid_keybrd_shiftkey[] = {
 
 #else
 
-static const int8_t hid_keybrd_key[] = {
+static const int8_t kbd_key[] = {
     '\0',   '`',    '1',    '2',    '3',    '4',    '5',    '6',    '7',    '8',    '9',    '0',
     '-',    '=',    '\0',   '\r',   '\t',   'a',    'z',    'e',    'r',    't',    'y',    'u', 
     'i',    'o',    'p',    '[',    ']',    '\\',   '\0',   'q',    's',    'd',    'f',    'g', 
@@ -254,7 +130,7 @@ static const int8_t hid_keybrd_key[] = {
     '\0',   '\0',   '\0',   '\0',   '\0',   '\0',   '\0',   '\0',   '\0'
 };
 
-static const int8_t hid_keybrd_shiftkey[] = {
+static const int8_t kbd_key_shift[] = {
     '\0',   '~',    '!',    '@',    '#',    '$',    '%',    '^',    '&',    '*',    '(',    ')',    '_',
     '+',    '\0',   '\0',   '\0',   'A',    'Z',    'E',    'R',    'T',    'Y',    'U',    'I',    'O',
     'P',    '{',    '}',    '*',    '\0',   'Q',    'S',    'D',    'F',    'G',    'H',    'J',    'K',
@@ -267,21 +143,67 @@ static const int8_t hid_keybrd_shiftkey[] = {
     '\0',   '\0',   '\0',   '\0',   '\0',   '\0',   '\0',   '\0',   '\0',   '\0',   '\0',   '\0',   '\0'
 };
 
-#endif
-
-/* local function prototypes ('static') */
-static usbh_status usbh_hid_keybrd_decode (usb_core_driver *pudev, usbh_host *puhost);
+#endif /* QWERTY_KEYBOARD */
 
 /*!
-    \brief      initialize the keyboard function
-    \param[in]  pudev: pointer to usb core instance
-    \param[in]  puhost: pointer to usb host
+    \brief      initialize the mouse function
+    \param[in]  udev: pointer to USB core instance
+    \param[in]  uhost: pointer to USB host
+    \param[out] none
+    \retval     none
+*/
+usbh_status usbh_hid_mouse_init (usb_core_driver *udev, usbh_host *uhost)
+{
+    usbh_hid_handler *hid = (usbh_hid_handler *)uhost->active_class->class_data;
+
+    mouse_info.x = 0U;
+    mouse_info.y = 0U;
+    mouse_info.buttons[0] = 0U;
+    mouse_info.buttons[1] = 0U;
+    mouse_info.buttons[2] = 0U;
+
+    if(hid->len > sizeof(mouse_report_data)) {
+        hid->len = sizeof(mouse_report_data);
+    }
+
+    hid->pdata = (uint8_t *)(void *)mouse_report_data;
+
+    usr_mouse_init();
+
+    return USBH_OK;
+}
+
+/*!
+    \brief      decode mouse information
+    \param[in]  data: pointer to inut data
     \param[out] none
     \retval     operation status
 */
-usbh_status usbh_hid_keybd_init (usb_core_driver *pudev, usbh_host *puhost)
+usbh_status usbh_hid_mouse_decode(uint8_t *data)
 {
-    usbh_hid_handler *hid = (usbh_hid_handler *)puhost->active_class->class_data;
+    mouse_info.buttons[0] = data[0] & MOUSE_BUTTON_1;
+    mouse_info.buttons[1] = data[0] & MOUSE_BUTTON_2;
+    mouse_info.buttons[2] = data[0] & MOUSE_BUTTON_3;
+
+    mouse_info.x = data[1];
+    mouse_info.y = data[2];
+
+    /* handle mouse data position */
+    usr_mouse_process_data(&mouse_info);
+
+    return USBH_FAIL;
+}
+
+/*!
+    \brief      initialize the keyboard function
+    \param[in]  udev: pointer to USB core instance
+    \param[in]  uhost: pointer to USB host
+    \param[out] none
+    \retval     operation status
+*/
+usbh_status usbh_hid_keybd_init (usb_core_driver *udev, usbh_host *uhost)
+{
+    usbh_hid_handler *hid = (usbh_hid_handler *)uhost->active_class->class_data;
 
     keybd_info.lctrl = keybd_info.lshift = 0U;
     keybd_info.lalt  = keybd_info.lgui   = 0U;
@@ -298,28 +220,10 @@ usbh_status usbh_hid_keybd_init (usb_core_driver *pudev, usbh_host *puhost)
 
     hid->pdata = (uint8_t*)(void *)keybd_report_data;
 
-    usbh_hid_fifo_init (&hid->fifo, puhost->dev_prop.data, HID_QUEUE_SIZE * sizeof(keybd_report_data));
-
-    /* call user init*/
-    USR_KEYBRD_Init();
+    /* call user initialization*/
+    usr_keyboard_init();
 
     return USBH_OK;
-}
-
-/*!
-    \brief      get keyboard information
-    \param[in]  pudev: pointer to USB core instance
-    \param[in]  puhost: pointer to USB host handler
-    \param[out] none
-    \retval     keyboard information
-*/
-hid_keybd_info *usbh_hid_keybd_info_get (usb_core_driver *pudev, usbh_host *puhost)
-{
-    if (USBH_OK == usbh_hid_keybrd_decode(pudev, puhost)) {
-        return &keybd_info;
-    } else {
-        return NULL;
-    }
 }
 
 /*!
@@ -332,68 +236,39 @@ uint8_t usbh_hid_ascii_code_get (hid_keybd_info *info)
 {
     uint8_t output;
     if ((1U == info->lshift) || (info->rshift)) {
-        output = hid_keybrd_shiftkey[hid_keybrd_codes[info->keys[0]]];
+        output = kbd_key_shift[kbd_codes[info->keys[0]]];
     } else {
-        output = hid_keybrd_key[hid_keybrd_codes[info->keys[0]]];
+        output = kbd_key[kbd_codes[info->keys[0]]];
     }
 
     return output;
 }
 
 /*!
-    \brief      decode the pressed keys
-    \param[in]  pudev: pointer to usb core instance
-    \param[in]  puhost: pointer to usb host
-    \param[out] none
-    \retval     none
-*/
-void usbh_hid_keybrd_machine (usb_core_driver *pudev, usbh_host *puhost)
-{
-    hid_keybd_info *k_pinfo;
-
-    k_pinfo = usbh_hid_keybd_info_get(pudev, puhost);
-
-    if (k_pinfo != NULL) {
-        char c = usbh_hid_ascii_code_get(k_pinfo);
-
-        if (c != 0U) {
-            USR_KEYBRD_ProcessData(c);
-        }
-    }
-}
-
-/*!
     \brief      decode keyboard information
-    \param[in]  pudev: pointer to usb core instance
-    \param[in]  puhost: pointer to usb host
+    \param[in]  udev: pointer to USB core instance
+    \param[in]  uhost: pointer to USB host
     \param[out] none
     \retval     operation status
 */
-static usbh_status usbh_hid_keybrd_decode (usb_core_driver *pudev, usbh_host *puhost)
+usbh_status usbh_hid_keybrd_decode (uint8_t *data)
 {
-    usbh_hid_handler *hid = (usbh_hid_handler *)puhost->active_class->class_data;
+    uint8_t output;
 
-    if (hid->len == 0U) {
-        return USBH_FAIL;
+    keybd_info.lshift = data[0] & KBD_LEFT_SHIFT;
+    keybd_info.rshift = data[0] & KBD_RIGHT_SHIFT;
+
+    keybd_info.keys[0] = data[2];
+
+    if (keybd_info.lshift || keybd_info.rshift) {
+        output = kbd_key_shift[kbd_codes[keybd_info.keys[0]]];
+    } else {
+        output = kbd_key[kbd_codes[keybd_info.keys[0]]];
     }
 
-    /* fill report */
-    if (usbh_hid_fifo_read (&hid->fifo, &keybd_report_data, hid->len) == hid->len) {
-        keybd_info.lctrl  = (uint8_t)hid_item_read((hid_report_item *)&imp_0_lctrl, 0U);
-        keybd_info.lshift = (uint8_t)hid_item_read((hid_report_item *)&imp_0_lshift, 0U);
-        keybd_info.lalt   = (uint8_t)hid_item_read((hid_report_item *)&imp_0_lalt, 0U);
-        keybd_info.lgui   = (uint8_t)hid_item_read((hid_report_item *)&imp_0_lgui, 0U);
-        keybd_info.rctrl  = (uint8_t)hid_item_read((hid_report_item *)&imp_0_rctrl, 0U);
-        keybd_info.rshift = (uint8_t)hid_item_read((hid_report_item *)&imp_0_rshift, 0U);
-        keybd_info.ralt   = (uint8_t)hid_item_read((hid_report_item *)&imp_0_ralt, 0U);
-        keybd_info.rgui   = (uint8_t)hid_item_read((hid_report_item *)&imp_0_rgui, 0U);
-
-        for (uint8_t x = 0U; x < sizeof(keybd_info.keys); x++) {
-            keybd_info.keys[x] = (uint8_t)hid_item_read((hid_report_item *)&imp_0_key_array, x);
-        }
-
-        return USBH_OK;
+    if (0U != output) {
+        usr_keybrd_process_data(output);
     }
 
-    return USBH_FAIL;
+    return USBH_OK;
 }

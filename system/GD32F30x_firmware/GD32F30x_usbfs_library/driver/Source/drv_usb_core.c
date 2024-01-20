@@ -3,10 +3,11 @@
     \brief   USB core driver which can operate in host and device mode
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -159,11 +160,6 @@ usb_status usb_core_init (usb_core_basic usb_basic, usb_core_regs *usb_regs)
         }
 
         usb_mdelay(20U);
-    }
-
-    if ((uint8_t)USB_USE_DMA == usb_basic.transfer_mode) {
-        usb_regs->gr->GAHBCS &= ~GAHBCS_BURST;
-        usb_regs->gr->GAHBCS |= DMA_INCR8 | GAHBCS_DMAEN;
     }
 
 #ifdef USE_OTG_MODE

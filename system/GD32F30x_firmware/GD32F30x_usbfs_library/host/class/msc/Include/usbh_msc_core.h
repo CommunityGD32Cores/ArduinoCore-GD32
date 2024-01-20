@@ -3,10 +3,11 @@
     \brief   header file for the usbh_core.c
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -98,7 +99,7 @@ typedef struct _msc_process
     msc_error       error;
     msc_req_state   req_state;
     msc_req_state   prev_req_state;
-    bot_handle      bot;
+    bbb_handle      bot;
     msc_lun         unit[MSC_MAX_SUPPORTED_LUN];
     uint32_t        timer;
 } usbh_msc_handler;

@@ -3,10 +3,11 @@
     \brief   the header file of USB MSC device class core functions
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -47,7 +48,6 @@ OF SUCH DAMAGE.
 typedef struct
 {
     usb_desc_config         config;
-
     usb_desc_itf            msc_itf;
     usb_desc_ep             msc_epin;
     usb_desc_ep             msc_epout;

@@ -3,10 +3,11 @@
     \brief   the header file of the usbd_msc_bot.c file
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -41,7 +42,8 @@ OF SUCH DAMAGE.
 #include "usbd_msc_scsi.h"
 
 /* MSC BBB state */
-enum msc_bbb_state {
+enum msc_bbb_state
+{
     BBB_IDLE = 0U,          /*!< idle state  */
     BBB_DATA_OUT,           /*!< data OUT state */
     BBB_DATA_IN,            /*!< data IN state */
@@ -50,7 +52,8 @@ enum msc_bbb_state {
 };
 
 /* MSC BBB status */
-enum msc_bbb_status {
+enum msc_bbb_status 
+{
     BBB_STATUS_NORMAL = 0U, /*!< normal status */
     BBB_STATUS_RECOVERY,    /*!< recovery status*/
     BBB_STATUS_ERROR        /*!< error status */
@@ -84,18 +87,18 @@ typedef struct
 
 /* function declarations */
 /* initialize the bbb process */
-void msc_bbb_init (usb_core_driver *pudev);
+void msc_bbb_init (usb_core_driver *udev);
 /* reset the BBB machine */
-void msc_bbb_reset (usb_core_driver *pudev);
-/* de-initialize the BBB machine */
-void msc_bbb_deinit (usb_core_driver *pudev);
+void msc_bbb_reset (usb_core_driver *udev);
+/* deinitialize the BBB machine */
+void msc_bbb_deinit (usb_core_driver *udev);
 /* handle BBB data IN stage */
-void msc_bbb_data_in (usb_core_driver *pudev, uint8_t ep_num);
+void msc_bbb_data_in (usb_core_driver *udev, uint8_t ep_num);
 /* handle BBB data OUT stage */
-void msc_bbb_data_out (usb_core_driver *pudev, uint8_t ep_num);
+void msc_bbb_data_out (usb_core_driver *udev, uint8_t ep_num);
 /* send the CSW(command status wrapper) */
-void msc_bbb_csw_send (usb_core_driver *pudev, uint8_t csw_status);
+void msc_bbb_csw_send (usb_core_driver *udev, uint8_t csw_status);
 /* complete the clear feature request */
-void msc_bbb_clrfeature (usb_core_driver *pudev, uint8_t ep_num);
+void msc_bbb_clrfeature (usb_core_driver *udev, uint8_t ep_num);
 
 #endif /* __USBD_MSC_BBB_H */

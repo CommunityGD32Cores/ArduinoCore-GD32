@@ -3,10 +3,11 @@
     \brief   usb hardware configuration header file
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -50,11 +51,6 @@ void usb_udelay (const uint32_t usec);
 void usb_mdelay (const uint32_t msec);
 /* configures system clock after wakeup from STOP mode */
 void system_clk_config_stop(void);
-
-/* configure the CTC peripheral */
-#ifdef USE_IRC48M
-    void ctc_config(void);
-#endif /* USE_IRC48M */
 
 #ifdef USE_HOST_MODE
     void systick_config(void);

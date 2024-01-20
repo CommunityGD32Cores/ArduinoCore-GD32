@@ -3,10 +3,11 @@
     \brief   USB MSC BBB protocol related functions
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -45,14 +46,14 @@ OF SUCH DAMAGE.
     \param[out] none
     \retval     none
 */
-void usbh_msc_bot_init (usbh_host *puhost)
+void usbh_msc_bbb_init (usbh_host *puhost)
 {
     usbh_msc_handler *msc = (usbh_msc_handler *)puhost->active_class->class_data;
 
     msc->bot.cbw.field.dCBWSignature = BBB_CBW_SIGNATURE;
-    msc->bot.cbw.field.dCBWTag = USBH_MSC_BOT_CBW_TAG;
-    msc->bot.state = BOT_SEND_CBW;
-    msc->bot.cmd_state = BOT_CMD_SEND;
+    msc->bot.cbw.field.dCBWTag = USBH_MSC_BBB_CBW_TAG;
+    msc->bot.state = BBB_SEND_CBW;
+    msc->bot.cmd_state = BBB_CMD_SEND;
 }
 
 /*!
@@ -62,18 +63,18 @@ void usbh_msc_bot_init (usbh_host *puhost)
     \param[out] none
     \retval     operation status
 */
-usbh_status usbh_msc_bot_process (usbh_host *puhost, uint8_t lun)
+usbh_status usbh_msc_bbb_process (usbh_host *puhost, uint8_t lun)
 {
-    bot_csw_status csw_status = BOT_CSW_CMD_FAILED;
+    bbb_csw_status csw_status = BBB_CSW_CMD_FAILED;
     usbh_status status = USBH_BUSY;
     usbh_status error = USBH_BUSY;
     usb_urb_state urb_status = URB_IDLE;
     usbh_msc_handler *msc = (usbh_msc_handler *)puhost->active_class->class_data;
 
     switch (msc->bot.state) {
-    case BOT_SEND_CBW:
+    case BBB_SEND_CBW:
         msc->bot.cbw.field.bCBWLUN = lun;
-        msc->bot.state = BOT_SEND_CBW_WAIT;
+        msc->bot.state = BBB_SEND_CBW_WAIT;
         /* send CBW */
         usbh_data_send (puhost->data,
                         msc->bot.cbw.CBWArray, 
@@ -81,39 +82,39 @@ usbh_status usbh_msc_bot_process (usbh_host *puhost, uint8_t lun)
                         BBB_CBW_LENGTH);
         break;
 
-    case BOT_SEND_CBW_WAIT:
+    case BBB_SEND_CBW_WAIT:
         urb_status = usbh_urbstate_get(puhost->data, msc->pipe_out);
 
         if (URB_DONE == urb_status) {
             if (0U != msc->bot.cbw.field.dCBWDataTransferLength) {
                 if (USB_TRX_IN == (msc->bot.cbw.field.bmCBWFlags & USB_TRX_MASK)) {
-                    msc->bot.state = BOT_DATA_IN;
+                    msc->bot.state = BBB_DATA_IN;
                 } else {
-                    msc->bot.state = BOT_DATA_OUT;
+                    msc->bot.state = BBB_DATA_OUT;
                 }
             } else {
-                msc->bot.state = BOT_RECEIVE_CSW;
+                msc->bot.state = BBB_RECEIVE_CSW;
             }
 
         } else if (URB_NOTREADY == urb_status) {
-            msc->bot.state = BOT_SEND_CBW;
+            msc->bot.state = BBB_SEND_CBW;
         } else {
             if (URB_STALL == urb_status) {
-                msc->bot.state = BOT_ERROR_OUT;
+                msc->bot.state = BBB_ERROR_OUT;
             }
         }
         break;
 
-    case BOT_DATA_IN:
+    case BBB_DATA_IN:
         usbh_data_recev (puhost->data, 
                          msc->bot.pbuf, 
                          msc->pipe_in, 
                          msc->ep_size_in);
 
-        msc->bot.state = BOT_DATA_IN_WAIT;
+        msc->bot.state = BBB_DATA_IN_WAIT;
         break;
 
-    case BOT_DATA_IN_WAIT:
+    case BBB_DATA_IN_WAIT:
         urb_status = usbh_urbstate_get(puhost->data, msc->pipe_in);
 
         /* BOT DATA IN stage */
@@ -131,26 +132,26 @@ usbh_status usbh_msc_bot_process (usbh_host *puhost, uint8_t lun)
                                  msc->pipe_in, 
                                  msc->ep_size_in);
             } else {
-                msc->bot.state = BOT_RECEIVE_CSW;
+                msc->bot.state = BBB_RECEIVE_CSW;
             }
         } else if(URB_STALL == urb_status) {
             /* this is data stage stall condition */
-            msc->bot.state = BOT_ERROR_IN;
+            msc->bot.state = BBB_ERROR_IN;
         } else {
             /* no operation */
         }
         break;
 
-    case BOT_DATA_OUT:
+    case BBB_DATA_OUT:
         usbh_data_send (puhost->data,
                         msc->bot.pbuf, 
                         msc->pipe_out, 
                         msc->ep_size_out);
 
-        msc->bot.state = BOT_DATA_OUT_WAIT;
+        msc->bot.state = BBB_DATA_OUT_WAIT;
         break;
 
-    case BOT_DATA_OUT_WAIT:
+    case BBB_DATA_OUT_WAIT:
         /* BOT DATA OUT stage */
         urb_status = usbh_urbstate_get(puhost->data, msc->pipe_out);
         if (URB_DONE == urb_status) {
@@ -167,80 +168,80 @@ usbh_status usbh_msc_bot_process (usbh_host *puhost, uint8_t lun)
                                 msc->pipe_out, 
                                 msc->ep_size_out);
             } else {
-                msc->bot.state = BOT_RECEIVE_CSW;
+                msc->bot.state = BBB_RECEIVE_CSW;
             }
         } else if (URB_NOTREADY == urb_status) {
-            msc->bot.state = BOT_DATA_OUT;
+            msc->bot.state = BBB_DATA_OUT;
         } else if (URB_STALL == urb_status) {
-            msc->bot.state = BOT_ERROR_OUT;
+            msc->bot.state = BBB_ERROR_OUT;
         } else {
             /* no operation */
         }
         break;
 
-    case BOT_RECEIVE_CSW:
+    case BBB_RECEIVE_CSW:
         /* BOT CSW stage */
         usbh_data_recev (puhost->data,
                          msc->bot.csw.CSWArray, 
                          msc->pipe_in, 
                          BBB_CSW_LENGTH);
 
-        msc->bot.state = BOT_RECEIVE_CSW_WAIT;
+        msc->bot.state = BBB_RECEIVE_CSW_WAIT;
         break;
 
-    case BOT_RECEIVE_CSW_WAIT:
+    case BBB_RECEIVE_CSW_WAIT:
         urb_status = usbh_urbstate_get(puhost->data, msc->pipe_in);
 
         /* decode CSW */
         if (URB_DONE == urb_status) {
-            msc->bot.state = BOT_SEND_CBW;
-            msc->bot.cmd_state = BOT_CMD_SEND;
+            msc->bot.state = BBB_SEND_CBW;
+            msc->bot.cmd_state = BBB_CMD_SEND;
 
             csw_status = usbh_msc_csw_decode(puhost);
-            if (BOT_CSW_CMD_PASSED == csw_status) {
+            if (BBB_CSW_CMD_PASSED == csw_status) {
                 status = USBH_OK;
             } else {
                 status = USBH_FAIL;
             }
         } else if (URB_STALL == urb_status) {
-            msc->bot.state = BOT_ERROR_IN;
+            msc->bot.state = BBB_ERROR_IN;
         } else {
             /* no operation */
         }
         break;
 
-    case BOT_ERROR_IN: 
-        error = usbh_msc_bot_abort(puhost, USBH_MSC_DIR_IN);
+    case BBB_ERROR_IN: 
+        error = usbh_msc_bbb_abort(puhost, USBH_MSC_DIR_IN);
 
         if (USBH_OK == error) {
-            msc->bot.state = BOT_RECEIVE_CSW;
+            msc->bot.state = BBB_RECEIVE_CSW;
         } else if (USBH_UNRECOVERED_ERROR == status) {
             /* this means that there is a stall error limit, do reset recovery */
-            msc->bot.state = BOT_UNRECOVERED_ERROR;
+            msc->bot.state = BBB_UNRECOVERED_ERROR;
         } else {
             /* no operation */
         }
         break;
 
-    case BOT_ERROR_OUT: 
-        status = usbh_msc_bot_abort (puhost, USBH_MSC_DIR_OUT);
+    case BBB_ERROR_OUT: 
+        status = usbh_msc_bbb_abort (puhost, USBH_MSC_DIR_OUT);
 
         if (USBH_OK == status) {
             uint8_t toggle = usbh_pipe_toggle_get(puhost->data, msc->pipe_out);
             usbh_pipe_toggle_set(puhost->data, msc->pipe_out, 1U - toggle);
             usbh_pipe_toggle_set(puhost->data, msc->pipe_in, 0U);
-            msc->bot.state = BOT_ERROR_IN;
+            msc->bot.state = BBB_ERROR_IN;
         } else {
             if (USBH_UNRECOVERED_ERROR == status) {
-                msc->bot.state = BOT_UNRECOVERED_ERROR;
+                msc->bot.state = BBB_UNRECOVERED_ERROR;
             }
         }
         break;
 
-    case BOT_UNRECOVERED_ERROR:
-        status = usbh_msc_bot_reset(puhost);
+    case BBB_UNRECOVERED_ERROR:
+        status = usbh_msc_bbb_reset(puhost);
         if (USBH_OK == status) {
-            msc->bot.state = BOT_SEND_CBW;
+            msc->bot.state = BBB_SEND_CBW;
         }
         break;
 
@@ -258,7 +259,7 @@ usbh_status usbh_msc_bot_process (usbh_host *puhost, uint8_t lun)
     \param[out] none
     \retval     operation status
 */
-usbh_status usbh_msc_bot_abort (usbh_host *puhost, uint8_t direction)
+usbh_status usbh_msc_bbb_abort (usbh_host *puhost, uint8_t direction)
 {
     usbh_status status = USBH_BUSY;
     usbh_msc_handler *msc = (usbh_msc_handler *)puhost->active_class->class_data;
@@ -291,7 +292,7 @@ usbh_status usbh_msc_bot_abort (usbh_host *puhost, uint8_t direction)
     \param[out] none
     \retval     operation status
 */
-usbh_status usbh_msc_bot_reset (usbh_host *puhost)
+usbh_status usbh_msc_bbb_reset (usbh_host *puhost)
 {
     usbh_status status = USBH_BUSY;
 
@@ -325,14 +326,14 @@ usbh_status usbh_msc_bot_reset (usbh_host *puhost)
           2. the CSW is 13 (Dh) bytes in length,
           3. dCSWTag matches the dCBWTag from the corresponding CBW.
 */
-bot_csw_status usbh_msc_csw_decode (usbh_host *puhost)
+bbb_csw_status usbh_msc_csw_decode (usbh_host *puhost)
 {
-    bot_csw_status status = BOT_CSW_CMD_FAILED;
+    bbb_csw_status status = BBB_CSW_CMD_FAILED;
     usbh_msc_handler *msc = (usbh_msc_handler *)puhost->active_class->class_data;
 
     /* checking if the transfer length is different than 13 */
     if (BBB_CSW_LENGTH != usbh_xfercount_get (puhost->data, msc->pipe_in)) {
-        status = BOT_CSW_PHASE_ERROR;
+        status = BBB_CSW_PHASE_ERROR;
     } else {
         /* CSW length is correct */
 
@@ -342,11 +343,11 @@ bot_csw_status usbh_msc_csw_decode (usbh_host *puhost)
             if (msc->bot.csw.field.dCSWTag == msc->bot.cbw.field.dCBWTag) {
                 /* check condition 3. dCSWTag matches the dCBWTag from the corresponding CBW */
                 if (0U == msc->bot.csw.field.bCSWStatus) {
-                    status = BOT_CSW_CMD_PASSED;
+                    status = BBB_CSW_CMD_PASSED;
                 } else if (1U == msc->bot.csw.field.bCSWStatus) {
-                    status = BOT_CSW_CMD_FAILED;
+                    status = BBB_CSW_CMD_FAILED;
                 } else if (2U == msc->bot.csw.field.bCSWStatus) {
-                    status = BOT_CSW_PHASE_ERROR;
+                    status = BBB_CSW_PHASE_ERROR;
                 } else {
                     /* no operation */
                 }
@@ -354,7 +355,7 @@ bot_csw_status usbh_msc_csw_decode (usbh_host *puhost)
         } else {
             /* If the CSW signature is not valid, we will return the phase error to
                upper layers for reset recovery */
-            status = BOT_CSW_PHASE_ERROR;
+            status = BBB_CSW_PHASE_ERROR;
         }
     }
 

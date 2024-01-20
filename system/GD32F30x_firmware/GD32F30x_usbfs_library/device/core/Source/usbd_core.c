@@ -3,10 +3,11 @@
     \brief   USB device mode core functions
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -171,10 +172,6 @@ uint32_t usbd_ep_recev (usb_core_driver *udev, uint8_t ep_addr, uint8_t *pbuf, u
     transc->xfer_len = len;
     transc->xfer_count = 0U;
 
-    if ((uint8_t)USB_USE_DMA == udev->bp.transfer_mode) {
-        transc->dma_addr = (uint32_t)pbuf;
-    }
-
     /* start the transfer */
     (void)usb_transc_outxfer (udev, transc);
 
@@ -201,10 +198,6 @@ uint32_t usbd_ep_send (usb_core_driver *udev, uint8_t ep_addr, uint8_t *pbuf, ui
     transc->xfer_buf = pbuf;
     transc->xfer_len = len;
     transc->xfer_count = 0U;
-
-    if ((uint8_t)USB_USE_DMA == udev->bp.transfer_mode) {
-        transc->dma_addr = (uint32_t)pbuf;
-    }
 
     /* start the transfer */
     (void)usb_transc_inxfer (udev, transc);

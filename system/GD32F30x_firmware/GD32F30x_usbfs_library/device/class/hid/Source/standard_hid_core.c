@@ -3,10 +3,11 @@
     \brief   HID class driver
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -216,7 +217,8 @@ static uint8_t hid_deinit  (usb_dev *udev, uint8_t config_index);
 static uint8_t hid_req     (usb_dev *udev, usb_req *req);
 static uint8_t hid_data_in (usb_dev *udev, uint8_t ep_num);
 
-usb_class_core usbd_hid_cb = {
+usb_class_core usbd_hid_cb =
+{
     .command         = NO_CMD,
     .alter_set       = 0U,
 

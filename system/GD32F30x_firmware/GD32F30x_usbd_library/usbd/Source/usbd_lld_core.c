@@ -3,10 +3,12 @@
     \brief   USB device low level driver core
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2021-08-10, V3.0.1, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -47,7 +49,8 @@ static usbd_ep_ram btable_ep[EP_COUNT]__attribute__((at(USBD_RAM + 2 * (BTABLE_O
 
 usb_core_drv usbd_core;
 
-static const uint32_t ep_type[] = {
+static const uint32_t ep_type[] =
+{
     [USB_EP_ATTR_CTL]  = EP_CONTROL,
     [USB_EP_ATTR_BULK] = EP_BULK,
     [USB_EP_ATTR_INT]  = EP_INTERRUPT,
@@ -70,9 +73,10 @@ static uint16_t usbd_ep_data_read (uint8_t *user_fifo, uint8_t ep_num, uint8_t b
 static void usbd_resume (usb_dev *udev);
 static void usbd_suspend (void);
 static void usbd_leave_suspend (void);
-static uint8_t usbd_ep_status (usb_dev *udev, uint8_t ep_addr);
+static uint16_t usbd_ep_status (usb_dev *udev, uint8_t ep_addr);
 
-struct _usb_handler usbd_drv_handler = {
+struct _usb_handler usbd_drv_handler =
+{
     .dp_pullup      = usbd_dp_pullup,
     .init           = usbd_core_reset,
     .deinit         = usbd_core_stop,
@@ -217,7 +221,7 @@ static void usbd_ep_reset (usb_dev *udev)
 
     /* reset non-control endpoints */
     for (i = 1U; i < EP_COUNT; i++) {
-        USBD_EPxCS(i) = (USBD_EPxCS(i) & EPCS_MASK) | i;
+        USBD_EPxCS(i) = (USBD_EPxCS(i) & (~EPCS_MASK)) | i;
     }
 
     /* clear endpoint 0 register */
@@ -254,7 +258,7 @@ static void usbd_ep_setup (usb_dev *udev, uint8_t buf_kind, uint32_t buf_addr, c
     if (EP_DIR(ep_addr)) {
         transc = &udev->transc_in[ep_num];
 
-        transc->max_len = (uint8_t)max_len;
+        transc->max_len = max_len;
 
         if ((uint8_t)EP_BUF_SNG == buf_kind) {
             btable_ep[ep_num].tx_addr = buf_addr;
@@ -275,7 +279,7 @@ static void usbd_ep_setup (usb_dev *udev, uint8_t buf_kind, uint32_t buf_addr, c
     } else {
         transc = &udev->transc_out[ep_num];
 
-        transc->max_len = (uint8_t)max_len;
+        transc->max_len = max_len;
 
         if ((uint8_t)EP_BUF_SNG == buf_kind) {
             btable_ep[ep_num].rx_addr = buf_addr;
@@ -406,21 +410,25 @@ static void usbd_ep_stall_clear (usb_dev *udev, uint8_t ep_addr)
     uint8_t ep_num = EP_ID(ep_addr);
 
     if (EP_DIR(ep_addr)) {
-        /* clear endpoint data toggle bit */
-        USBD_TX_DTG_CLEAR(ep_num);
+        if(EPTX_STALL == usbd_ep_status_get(udev, ep_addr)){
+            /* clear endpoint data toggle bit */
+            USBD_TX_DTG_CLEAR(ep_num);
 
-        udev->transc_in[ep_num].ep_stall = 0U;
+            udev->transc_in[ep_num].ep_stall = 0U;
 
-        /* clear endpoint stall status */
-        USBD_EP_TX_STAT_SET(ep_num, EPTX_VALID);
+            /* clear endpoint stall status */
+            USBD_EP_TX_STAT_SET(ep_num, EPTX_VALID);
+        }
     } else {
-        /* clear endpoint data toggle bit */
-        USBD_RX_DTG_CLEAR(ep_num);
+        if(EPRX_STALL == usbd_ep_status_get(udev, ep_addr)){
+            /* clear endpoint data toggle bit */
+            USBD_RX_DTG_CLEAR(ep_num);
 
-        udev->transc_out[ep_num].ep_stall = 0U;
+            udev->transc_out[ep_num].ep_stall = 0U;
 
-        /* clear endpoint stall status */
-        USBD_EP_RX_STAT_SET(ep_num, EPRX_VALID);
+            /* clear endpoint stall status */
+            USBD_EP_RX_STAT_SET(ep_num, EPRX_VALID);
+        }
     }
 }
 
@@ -434,16 +442,16 @@ static void usbd_ep_stall_clear (usb_dev *udev, uint8_t ep_addr)
     \param[out] none
     \retval     endpoint status
 */
-static uint8_t usbd_ep_status (usb_dev *udev, uint8_t ep_addr)
+static uint16_t usbd_ep_status (usb_dev *udev, uint8_t ep_addr)
 {
     (void)udev;
 
     uint32_t epcs = USBD_EPxCS(EP_ID(ep_addr));
 
     if (EP_DIR(ep_addr)) {
-        return (uint8_t)(epcs & EPxCS_TX_STA);
+        return (uint16_t)(epcs & EPxCS_TX_STA);
     } else {
-        return (uint8_t)(epcs & EPxCS_RX_STA);
+        return (uint16_t)(epcs & EPxCS_RX_STA);
     }
 }
 
@@ -521,6 +529,8 @@ static uint16_t usbd_ep_data_read (uint8_t *user_fifo, uint8_t ep_num, uint8_t b
 */
 static void lowpower_mode_exit (void)
 {
+    uint32_t system_clock = 0;
+    
     /* restore system clock */
     
 #ifdef LPM_ENABLED
@@ -530,6 +540,20 @@ static void lowpower_mode_exit (void)
     /* wait till IRC8M is ready */
     while (RESET == rcu_flag_get(RCU_FLAG_IRC8MSTB)) {
     }
+    
+    rcu_pll_config(RCU_PLLSRC_IRC8M_DIV2,RCU_PLL_MUL2);
+    
+    /* IRC8M is stable */
+    /* AHB = SYSCLK */
+    RCU_CFG0 |= RCU_AHB_CKSYS_DIV1;
+    /* APB2 = AHB/1 */
+    RCU_CFG0 |= RCU_APB2_CKAHB_DIV1;
+    /* APB1 = AHB/2 */
+    RCU_CFG0 |= RCU_APB1_CKAHB_DIV2;
+
+    /* CK_PLL = (CK_IRC8M/2) * 30 = 120 MHz */
+    RCU_CFG0 &= ~(RCU_CFG0_PLLMF | RCU_CFG0_PLLMF_4 | RCU_CFG0_PLLMF_5);
+    RCU_CFG0 |= RCU_PLL_MUL30;
 #else
     /* enable HXTAL */
     rcu_osci_on(RCU_HXTAL);
@@ -555,17 +579,25 @@ static void lowpower_mode_exit (void)
 
     /* low power sleep on exit disabled */
     system_lowpower_reset(SCB_LPM_DEEPSLEEP);
+    
+    rcu_periph_clock_disable(RCU_USBD);
+    
+    system_clock = rcu_clock_freq_get(CK_SYS);
 
-#ifdef USE_IRC48M
-    /* enable IRC48M clock */
-    rcu_osci_on(RCU_IRC48M);
-
-    /* wait till IRC48M is ready */
-    while (SUCCESS != rcu_osci_stab_wait(RCU_IRC48M)) {
+    if (48000000U == system_clock) {
+        rcu_usb_clock_config(RCU_CKUSB_CKPLL_DIV1);
+    } else if (72000000U == system_clock) {
+        rcu_usb_clock_config(RCU_CKUSB_CKPLL_DIV1_5);
+    } else if (96000000U == system_clock) {
+        rcu_usb_clock_config(RCU_CKUSB_CKPLL_DIV2);
+    } else if (120000000U == system_clock) {
+        rcu_usb_clock_config(RCU_CKUSB_CKPLL_DIV2_5);
+    } else {
+        /* reserved */
     }
-
-    rcu_ck48m_clock_config(RCU_CK48MSRC_IRC48M);
-#endif
+    
+    /* enable USB APB1 clock */
+    rcu_periph_clock_enable(RCU_USBD);
 }
 
 #endif /* USBD_LOWPWR_MODE_ENABLE */
@@ -628,7 +660,7 @@ static void usbd_suspend (void)
     /* check wakeup flag is set */
     if (0U == (USBD_INTF & INTF_WKUPIF)) {
         /* enter DEEP_SLEEP mode with LDO in low power mode */
-        pmu_to_deepsleepmode(PMU_LDO_LOWPOWER, WFI_CMD);
+        pmu_to_deepsleepmode(PMU_LDO_LOWPOWER, PMU_LOWDRIVER_DISABLE, WFI_CMD);
     } else {
         /* clear wakeup interrupt flag */
         CLR(WKUPIF);

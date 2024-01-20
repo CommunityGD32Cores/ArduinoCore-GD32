@@ -733,6 +733,6 @@ void i2c_interrupt_flag_clear(uint32_t i2c_periph, i2c_interrupt_flag_enum int_f
         I2C_STAT0(i2c_periph);
         I2C_STAT1(i2c_periph);
     }else{
-        I2C_REG_VAL2(i2c_periph, int_flag) &= ~BIT(I2C_BIT_POS2(int_flag));
+        I2C_REG_VAL2(i2c_periph, int_flag) = ~BIT(I2C_BIT_POS2(int_flag));
     }
 }
