@@ -568,7 +568,7 @@ gd_generic_gd32f3x0.menu.upload_method.dfuUtilMethod.upload.options=
 gd_generic_gd32f3x0.menu.upload_method.dfuUtilMethod.build.upload_flags=
 gd_generic_gd32f3x0.menu.upload_method.dfuUtilMethod.upload.tool=dfu-util
 
-gd_generic_gd32f3x0.menu.upload_method.dfuUtilMethod.build.flash_offset=0x0x2000
+gd_generic_gd32f3x0.menu.upload_method.dfuUtilMethod.build.flash_offset=0x2000
 gd_generic_gd32f3x0.menu.upload_method.dfuUtilMethod.upload.pid=0x004
 gd_generic_gd32f3x0.menu.upload_method.dfuUtilMethod.upload.vid=0x1209
 
@@ -644,7 +644,7 @@ gd_generic_gd32f30x.menu.upload_method.dfuUtilMethod.upload.options=
 gd_generic_gd32f30x.menu.upload_method.dfuUtilMethod.build.upload_flags=
 gd_generic_gd32f30x.menu.upload_method.dfuUtilMethod.upload.tool=dfu-util
 
-gd_generic_gd32f30x.menu.upload_method.dfuUtilMethod.build.flash_offset=0x0x2000
+gd_generic_gd32f30x.menu.upload_method.dfuUtilMethod.build.flash_offset=0x2000
 gd_generic_gd32f30x.menu.upload_method.dfuUtilMethod.upload.pid=0x004
 gd_generic_gd32f30x.menu.upload_method.dfuUtilMethod.upload.vid=0x1209
 
@@ -854,7 +854,7 @@ gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.upload.options=
 gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.build.upload_flags=
 gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.upload.tool=dfu-util
 
-gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.build.flash_offset=0x0x2000
+gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.build.flash_offset=0x2000
 gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.upload.pid=0x004
 gd_generic_gd32e23x.menu.upload_method.dfuUtilMethod.upload.vid=0x1209
 
@@ -1248,7 +1248,7 @@ gd_generic_gd32f1x0.menu.upload_method.dfuUtilMethod.upload.options=
 gd_generic_gd32f1x0.menu.upload_method.dfuUtilMethod.build.upload_flags=
 gd_generic_gd32f1x0.menu.upload_method.dfuUtilMethod.upload.tool=dfu-util
 
-gd_generic_gd32f1x0.menu.upload_method.dfuUtilMethod.build.flash_offset=0x0x2000
+gd_generic_gd32f1x0.menu.upload_method.dfuUtilMethod.build.flash_offset=0x2000
 gd_generic_gd32f1x0.menu.upload_method.dfuUtilMethod.upload.pid=0x004
 gd_generic_gd32f1x0.menu.upload_method.dfuUtilMethod.upload.vid=0x1209
 
