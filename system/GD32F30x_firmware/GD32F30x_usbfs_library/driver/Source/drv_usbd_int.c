@@ -3,10 +3,11 @@
     \brief   USB device mode interrupt routines
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -45,7 +46,8 @@ static uint32_t usbd_int_enumfinish            (usb_core_driver *udev);
 static uint32_t usbd_int_suspend               (usb_core_driver *udev);
 static uint32_t usbd_emptytxfifo_write         (usb_core_driver *udev, uint32_t ep_num);
 
-static const uint8_t USB_SPEED[4] = {
+static const uint8_t USB_SPEED[4] =
+{
     [DSTAT_EM_HS_PHY_30MHZ_60MHZ] = (uint8_t)USB_SPEED_HIGH,
     [DSTAT_EM_FS_PHY_30MHZ_60MHZ] = (uint8_t)USB_SPEED_FULL,
     [DSTAT_EM_FS_PHY_48MHZ] = (uint8_t)USB_SPEED_FULL,
@@ -61,7 +63,8 @@ static const uint8_t USB_SPEED[4] = {
 void usbd_isr (usb_core_driver *udev)
 {
     if (HOST_MODE != (udev->regs.gr->GINTF & GINTF_COPM)) {
-        uint32_t intr = udev->regs.gr->GINTF & udev->regs.gr->GINTEN;
+        uint32_t intr = udev->regs.gr->GINTF;
+        intr &= udev->regs.gr->GINTEN;
 
         /* there are no interrupts, avoid spurious interrupt */
         if (!intr) {
@@ -177,21 +180,8 @@ static uint32_t usbd_int_epout (usb_core_driver *udev)
                 /* clear the bit in DOEPINTF for this interrupt */
                 udev->regs.er_out[ep_num]->DOEPINTF = DOEPINTF_TF;
 
-                if ((uint8_t)USB_USE_DMA == udev->bp.transfer_mode) {
-                    __IO uint32_t eplen = udev->regs.er_out[ep_num]->DOEPLEN;
-
-                    udev->dev.transc_out[ep_num].xfer_count = udev->dev.transc_out[ep_num].max_len - \
-                                                                (eplen & DEPLEN_TLEN);
-                }
-
                 /* inform upper layer: data ready */
                 (void)usbd_out_transc (udev, ep_num);
-
-                if ((uint8_t)USB_USE_DMA == udev->bp.transfer_mode) {
-                    if ((0U == ep_num) && ((uint8_t)USB_CTL_STATUS_OUT == udev->dev.control.ctl_state)) {
-                        usb_ctlep_startout (udev);
-                    }
-                }
             }
 
             /* setup phase finished interrupt (control endpoints) */
@@ -227,12 +217,6 @@ static uint32_t usbd_int_epin (usb_core_driver *udev)
 
                 /* data transmission is completed */
                 (void)usbd_in_transc (udev, ep_num);
-
-                if ((uint8_t)USB_USE_DMA == udev->bp.transfer_mode) {
-                    if ((0U == ep_num) && ((uint8_t)USB_CTL_STATUS_IN == udev->dev.control.ctl_state)) {
-                        usb_ctlep_startout (udev);
-                    }
-                }
             }
 
             if (iepintr & DIEPINTF_TXFE) {
@@ -432,7 +416,7 @@ static uint32_t usbd_int_suspend (usb_core_driver *udev)
         *udev->regs.PWRCLKCTL |= PWRCLKCTL_SUCLK | PWRCLKCTL_SHCLK;
 
         /* enter DEEP_SLEEP mode with LDO in low power mode */
-        pmu_to_deepsleepmode(PMU_LDO_LOWPOWER, WFI_CMD);
+        pmu_to_deepsleepmode(PMU_LDO_LOWPOWER, PMU_LOWDRIVER_DISABLE, WFI_CMD);
     }
 
     /* clear interrupt */

@@ -3,10 +3,11 @@
     \brief   the header file of USB DFU device class core functions
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -76,14 +77,11 @@ OF SUCH DAMAGE.
 /* bit detach capable = bit 3 in bmAttributes field */
 #define DFU_DETACH_MASK               (uint8_t)(0x10U)
 
-#define USB_SERIAL_STR_LEN            0x06U
-
-#define USB_DFU_CONFIG_DESC_SIZE      27U
-
 #define DFU_DESC_TYPE                 0x21U
 
 /* DFU device state defines */
-typedef enum {
+typedef enum
+{
     STATE_APP_IDLE = 0x00U,
     STATE_APP_DETACH,
     STATE_DFU_IDLE,
@@ -98,7 +96,8 @@ typedef enum {
 } dfu_state;
 
 /* DFU device status defines */
-typedef enum {
+typedef enum 
+{
     STATUS_OK = 0x00U,
     STATUS_ERR_TARGET,
     STATUS_ERR_FILE,
@@ -118,7 +117,8 @@ typedef enum {
 } dfu_status;
 
 /* DFU class-specific requests */
-typedef enum {
+typedef enum 
+{
     DFU_DETACH = 0U,
     DFU_DNLOAD,
     DFU_UPLOAD,
@@ -147,7 +147,9 @@ typedef struct
 typedef struct
 {
     usb_desc_config           config;
-    usb_desc_itf              dfu_itf;
+    usb_desc_itf              dfu_itf0;
+    usb_desc_itf              dfu_itf1;
+    usb_desc_itf              dfu_itf2;
     usb_desc_dfu_func         dfu_func;
 } usb_dfu_desc_config_set;
 

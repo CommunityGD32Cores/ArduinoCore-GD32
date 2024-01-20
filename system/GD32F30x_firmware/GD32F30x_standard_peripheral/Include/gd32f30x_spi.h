@@ -300,7 +300,7 @@ void spi_dma_enable(uint32_t spi_periph, uint8_t dma);
 /* disable SPI DMA */
 void spi_dma_disable(uint32_t spi_periph, uint8_t dma);
 
-/* SPI/I2S transfer configure functions */
+/* SPI/I2S transfer functions */
 /* configure SPI/I2S data frame format */
 void spi_i2s_data_frame_format_config(uint32_t spi_periph, uint16_t frame_format);
 /* SPI transmit data */
@@ -309,6 +309,9 @@ void spi_i2s_data_transmit(uint32_t spi_periph, uint16_t data);
 uint16_t spi_i2s_data_receive(uint32_t spi_periph);
 /* configure SPI bidirectional transfer direction */
 void spi_bidirectional_transfer_config(uint32_t spi_periph, uint32_t transfer_direction);
+/* clear TI Mode Format Error flag status */
+void spi_i2s_format_error_clear(uint32_t spi_periph, uint32_t flag);
+
 
 /* SPI CRC functions */
 /* set SPI CRC polynomial */
@@ -323,6 +326,8 @@ void spi_crc_off(uint32_t spi_periph);
 void spi_crc_next(uint32_t spi_periph);
 /* get SPI CRC send value or receive value */
 uint16_t spi_crc_get(uint32_t spi_periph, uint8_t crc);
+/* clear SPI CRC error flag status */
+void spi_crc_error_clear(uint32_t spi_periph);
 
 /* SPI TI mode functions */
 /* enable SPI TI mode */
@@ -359,7 +364,5 @@ void spi_i2s_interrupt_disable(uint32_t spi_periph, uint8_t interrupt);
 FlagStatus spi_i2s_interrupt_flag_get(uint32_t spi_periph, uint8_t interrupt);
 /* get SPI and I2S flag status */
 FlagStatus spi_i2s_flag_get(uint32_t spi_periph, uint32_t flag);
-/* clear SPI CRC error flag status */
-void spi_crc_error_clear(uint32_t spi_periph);
 
 #endif /* GD32F30X_SPI_H */

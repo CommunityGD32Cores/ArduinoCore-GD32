@@ -3,10 +3,12 @@
     \brief   USB enumeration function
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2021-09-27, V3.0.1, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -48,11 +50,13 @@ static usb_reqsta _usb_std_reserved         (usb_dev *udev, usb_req *req);
 static usb_reqsta _usb_std_getinterface     (usb_dev *udev, usb_req *req);
 static usb_reqsta _usb_std_setinterface     (usb_dev *udev, usb_req *req);
 static usb_reqsta _usb_std_synchframe       (usb_dev *udev, usb_req *req);
-static uint8_t* _usb_dev_desc_get           (usb_dev *udev, uint8_t index, uint16_t *len);
-static uint8_t* _usb_config_desc_get        (usb_dev *udev, uint8_t index, uint16_t *len);
-static uint8_t* _usb_str_desc_get           (usb_dev *udev, uint8_t index, uint16_t *len);
-static uint8_t* _usb_bos_desc_get           (usb_dev *udev, uint8_t index, uint16_t *len);
-static void int_to_unicode                  (uint32_t value, uint8_t *pbuf, uint8_t len);
+
+static uint8_t* _usb_dev_desc_get      (usb_dev *udev, uint8_t index, uint16_t *len);
+static uint8_t* _usb_config_desc_get   (usb_dev *udev, uint8_t index, uint16_t *len);
+static uint8_t* _usb_str_desc_get      (usb_dev *udev, uint8_t index, uint16_t *len);
+static uint8_t* _usb_bos_desc_get      (usb_dev *udev, uint8_t index, uint16_t *len);
+
+static void int_to_unicode (uint32_t value, uint8_t *pbuf, uint8_t len);
 
 /* standard device request handler */
 static usb_reqsta (*_std_dev_req[]) (usb_dev *udev, usb_req *req) = {
@@ -170,7 +174,7 @@ static uint8_t* _usb_config_desc_get (usb_dev *udev, uint8_t index, uint16_t *le
 {
     (void)index;
 
-    *len = udev->desc->config_desc[2];
+    *len = udev->desc->config_desc[2] | (udev->desc->config_desc[3]<< 8);
 
     return udev->desc->config_desc;
 }
@@ -253,12 +257,14 @@ static usb_reqsta _usb_std_getstatus (usb_dev *udev, usb_req *req)
             break;
         }
         break;
+
     /* handle interface get status request */
     case USB_RECPTYPE_ITF:
         if (((uint8_t)USBD_CONFIGURED == udev->cur_status) && (recp < USBD_ITF_MAX_NUM)) {
             req_status = REQ_SUPP;
         }
         break;
+
     /* handle endpoint get status request */
     case USB_RECPTYPE_EP:
         if ((uint8_t)USBD_CONFIGURED == udev->cur_status) {
@@ -315,14 +321,16 @@ static usb_reqsta _usb_std_clearfeature (usb_dev *udev, usb_req *req)
         /* get endpoint address */
         ep = BYTE_LOW(req->wIndex);
 
-        if ((uint8_t)USBD_CONFIGURED == udev->cur_status) {
+        if (((uint8_t)USBD_CONFIGURED == udev->cur_status) && (EP_ID(ep) < EP_COUNT)) {
             /* clear endpoint halt feature */
             if (((uint16_t)USB_FEATURE_EP_HALT == req->wValue) && (!CTL_EP(ep))) {
-                usbd_ep_clear_stall(udev, ep);
-                
-                udev->class_core->req_process(udev, req);
+                /* check whether the endpoint status is disabled */
+                if(0U != usbd_ep_status_get(udev, ep)){
+                    usbd_ep_clear_stall(udev, ep);
+                    udev->class_core->req_process(udev, req);
 
-                return REQ_SUPP;
+                    return REQ_SUPP;
+                }
             }
         }
         break;
@@ -370,12 +378,16 @@ static usb_reqsta _usb_std_setfeature (usb_dev *udev, usb_req *req)
         /* get endpoint address */
         ep = BYTE_LOW(req->wIndex);
 
-        if ((uint8_t)USBD_CONFIGURED == udev->cur_status) {
+        if (((uint8_t)USBD_CONFIGURED == udev->cur_status) && (EP_ID(ep) < EP_COUNT)) {
             /* set endpoint halt feature */
-            if (((uint8_t)USB_FEATURE_EP_HALT == req->wValue) && (!CTL_EP(ep))) {
-                usbd_ep_stall(udev, ep);
+            if (((uint16_t)USB_FEATURE_EP_HALT == req->wValue) && (!CTL_EP(ep))) {
+                /* check whether the endpoint status is disabled */
+                if(0U != usbd_ep_status_get(udev, ep)){
+                    usbd_ep_stall(udev, ep);
+                    udev->class_core->req_process(udev, req);
 
-                return REQ_SUPP;
+                    return REQ_SUPP;
+                }
             }
         }
         break;
@@ -658,6 +670,8 @@ static usb_reqsta _usb_std_setinterface (usb_dev *udev, usb_req *req)
         if (BYTE_LOW(req->wIndex) < USBD_ITF_MAX_NUM) {
             udev->class_core->req_altset = (uint8_t)req->wValue;
 
+            udev->class_core->req_process(udev, req);
+
             return REQ_SUPP;
         }
         break;
@@ -712,7 +726,7 @@ static void int_to_unicode (uint32_t value, uint8_t *pbuf, uint8_t len)
 
 /*!
     \brief      convert hex 32bits value into unicode char
-    \param[in]  none
+    \param[in]  unicode_str: pointer to unicode string
     \param[out] none
     \retval     none
 */

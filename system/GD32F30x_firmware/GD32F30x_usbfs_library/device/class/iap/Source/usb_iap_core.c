@@ -4,10 +4,11 @@
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
     \version 2020-12-07, V3.0.1, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -207,7 +208,8 @@ static void iap_req_optionbyte(usb_dev *udev, uint8_t option_num);
 static void iap_req_leave     (usb_dev *udev);
 static void iap_address_send  (usb_dev *udev);
 
-usb_class_core iap_class = {
+usb_class_core iap_class =
+{
     .init            = iap_init,
     .deinit          = iap_deinit,
     .req_proc        = iap_req_handler,

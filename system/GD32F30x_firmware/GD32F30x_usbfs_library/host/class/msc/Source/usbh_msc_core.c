@@ -3,10 +3,11 @@
     \brief   USB MSC(mass storage device) class driver
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -108,7 +109,7 @@ static usbh_status usbh_msc_itf_init (usbh_host *puhost)
         msc_handler.pipe_out = usbh_pipe_allocate(puhost->data, msc_handler.ep_out);
         msc_handler.pipe_in = usbh_pipe_allocate(puhost->data, msc_handler.ep_in);
 
-        usbh_msc_bot_init(puhost);
+        usbh_msc_bbb_init(puhost);
 
         /* open the new channels */
         usbh_pipe_create (puhost->data,

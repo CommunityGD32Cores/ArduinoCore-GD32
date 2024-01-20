@@ -3,10 +3,11 @@
     \brief   the header file of the usbd_msc_scsi.c file
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -35,16 +36,24 @@ OF SUCH DAMAGE.
 #ifndef __USBD_MSC_SCSI_H
 #define __USBD_MSC_SCSI_H
 
-#include "usbd_msc_data.h"
 #include "usbd_msc_bbb.h"
 #include "msc_scsi.h"
 
 #define SENSE_LIST_DEEPTH                           4U
 
+#define MODE_SENSE6_LENGTH                          8U
+#define MODE_SENSE10_LENGTH                         8U
+#define INQUIRY_PAGE00_LENGTH                       96U
+#define FORMAT_CAPACITIES_LENGTH                    20U
+
+extern const uint8_t msc_page00_inquiry_data[];
+extern const uint8_t msc_mode_sense6_data[];
+extern const uint8_t msc_mode_sense10_data[];
+
 /* function declarations */
 /* process SCSI commands */
-int8_t scsi_process_cmd (usb_core_driver *pudev, uint8_t lun, uint8_t *cmd);
+int8_t scsi_process_cmd (usb_core_driver *udev, uint8_t lun, uint8_t *cmd);
 /* load the last error code in the error list */
-void scsi_sense_code (usb_core_driver *pudev, uint8_t lun, uint8_t skey, uint8_t asc);
+void scsi_sense_code (usb_core_driver *udev, uint8_t lun, uint8_t skey, uint8_t asc);
 
 #endif /* __USBD_MSC_SCSI_H */

@@ -3,10 +3,11 @@
     \brief   definitions for HID core
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -41,7 +42,8 @@ OF SUCH DAMAGE.
 #define USB_HID_CONFIG_DESC_LEN          0x22U
 #define USB_HID_REPORT_DESC_LEN          0x2EU
 
-typedef struct {
+typedef struct
+{
     uint32_t protocol;
     uint32_t idle_state;
 
@@ -49,7 +51,8 @@ typedef struct {
     __IO uint8_t prev_transfer_complete;
 } standard_hid_handler;
 
-typedef struct {
+typedef struct
+{
     void (*hid_itf_config) (void);
     void (*hid_itf_data_process) (usb_dev *udev);
 } hid_fop_handler;

@@ -3,10 +3,13 @@
     \brief   custom HID class driver
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2021-06-22, V3.0.1, firmware for GD32F30x
+    \version 2021-11-09, V3.0.2, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -62,6 +65,7 @@ usb_desc_dev custom_hid_dev_desc =
     .bNumberConfigurations = USBD_CFG_MAX_NUM,
 };
 
+/* USB device configure descriptor */
 usb_hid_desc_config_set custom_hid_config_desc = 
 {
     .config = 
@@ -169,7 +173,7 @@ static usb_desc_str product_string =
     .unicode_string = {'G', 'D', '3', '2', '-', 'C', 'u', 's', 't', 'o', 'm', 'H', 'I', 'D'}
 };
 
-/* USBD serial string */
+/* USB serial string */
 static usb_desc_str serial_string = 
 {
     .header = 
@@ -188,7 +192,8 @@ uint8_t* usbd_hid_strings[] =
     [STR_IDX_SERIAL]  = (uint8_t *)&serial_string
 };
 
-usb_desc custom_hid_desc = {
+usb_desc custom_hid_desc = 
+{
     .dev_desc    = (uint8_t *)&custom_hid_dev_desc,
     .config_desc = (uint8_t *)&custom_hid_config_desc,
     .strings     = usbd_hid_strings
@@ -313,7 +318,7 @@ uint8_t custom_hid_report_send (usb_dev *udev, uint8_t *report, uint16_t len)
 
 /*!
     \brief      initialize the HID device
-    \param[in]  pudev: pointer to USB device instance
+    \param[in]  udev: pointer to USB device instance
     \param[in]  config_index: configuration index
     \param[out] none
     \retval     USB device operation status
@@ -384,6 +389,11 @@ static uint8_t custom_hid_req_handler (usb_dev *udev, usb_req *req)
                               0U);
 
             status = REQ_SUPP;
+        } else if (USB_DESCTYPE_HID == (req->wValue >> 8U)) {
+            usb_transc_config(&udev->transc_in[0U], 
+                              (uint8_t *)(&(custom_hid_config_desc.hid_vendor)), 
+                              USB_MIN(9U, req->wLength), 
+                              0U);
         }
         break;
 
@@ -458,11 +468,10 @@ static void custom_hid_data_out (usb_dev *udev, uint8_t ep_num)
     custom_hid_handler *hid = (custom_hid_handler *)udev->class_data[CUSTOM_HID_INTERFACE];
 
     if (CUSTOMHID_OUT_EP == ep_num){
-
         switch (hid->data[0]){
         case 0x11:
             if (RESET != hid->data[1]) {
-                /* turn on led1  */
+                /* turn on led5  */
                 gd_eval_led_on(LED5);
             } else {
                 gd_eval_led_off(LED5);
@@ -491,13 +500,13 @@ static void custom_hid_data_out (usb_dev *udev, uint8_t ep_num)
             break;
         default:
             /* turn off all leds */
-            gd_eval_led_off(LED5);
             gd_eval_led_off(LED2);
             gd_eval_led_off(LED3);
             gd_eval_led_off(LED4);
+            gd_eval_led_off(LED5);
             break;
         }
 
-        usbd_ep_recev(udev, CUSTOMHID_IN_EP, hid->data, 2U);
+        usbd_ep_recev(udev, CUSTOMHID_OUT_EP, hid->data, 2U);
     }
 }

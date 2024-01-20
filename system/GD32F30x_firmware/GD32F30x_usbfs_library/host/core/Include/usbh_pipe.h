@@ -3,10 +3,11 @@
     \brief   USB host mode pipe header file
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -37,12 +38,14 @@ OF SUCH DAMAGE.
 
 #include "usbh_core.h"
 
-#define HC_MAX                  8U
+/* host pipe maximum */
+#define HP_MAX                  8U
 
-#define HC_OK                   0x0000U
-#define HC_USED                 0x8000U
-#define HC_ERROR                0xFFFFU
-#define HC_USED_MASK            0x7FFFU
+/* host pipe status */
+#define HP_OK                   0x0000U
+#define HP_USED                 0x8000U
+#define HP_ERROR                0xFFFFU
+#define HP_USED_MASK            0x7FFFU
 
 /*!
     \brief      set toggle for a pipe

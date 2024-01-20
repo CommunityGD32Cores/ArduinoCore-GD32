@@ -3,10 +3,12 @@
     \brief   USB enumeration function
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2021-09-27, V3.0.1, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -252,7 +254,7 @@ static uint8_t* _usb_config_desc_get (usb_core_driver *udev, uint8_t index, uint
 {
     (void)index;
 
-    *len = udev->dev.desc->config_desc[2];
+    *len = udev->dev.desc->config_desc[2] | (udev->dev.desc->config_desc[3]<< 8);
 
     return udev->dev.desc->config_desc;
 }

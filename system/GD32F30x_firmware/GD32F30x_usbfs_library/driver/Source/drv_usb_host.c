@@ -3,10 +3,11 @@
     \brief   USB host mode low level driver
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -36,7 +37,8 @@ OF SUCH DAMAGE.
 #include "drv_usb_core.h"
 #include "drv_usb_host.h"
 
-const uint32_t PIPE_DPID[2] = {
+const uint32_t PIPE_DPID[2] =
+{
     PIPE_DPID_DATA0,
     PIPE_DPID_DATA1
 };
@@ -59,7 +61,7 @@ usb_status usb_host_init (usb_core_driver *pudev)
 
     /* support FS/LS only */
     pudev->regs.hr->HCTL &= ~HCTL_SPDFSLS;
-
+    usb_phyclock_config (pudev, HCTL_48MHZ);
     /* configure data FIFOs size */
 #ifdef USB_FS_CORE
     if (USB_CORE_ENUM_FS == pudev->bp.core_enum) {
@@ -200,10 +202,6 @@ usb_status usb_pipe_init (usb_core_driver *pudev, uint8_t pipe_num)
     /* clear old interrupt conditions for this host channel */
     pudev->regs.pr[pipe_num]->HCHINTF = 0xFFFFFFFFU;
 
-    if (USB_USE_DMA == pudev->bp.transfer_mode) {
-        pp_inten |= HCHINTEN_DMAERIE;
-    }
-
     if (pp->ep.dir) {
         pp_inten |= HCHINTEN_BBERIE;
     }
@@ -302,10 +300,6 @@ usb_status usb_pipe_xfer (usb_core_driver *pudev, uint8_t pipe_num)
 
     /* initialize the host channel transfer information */
     pudev->regs.pr[pipe_num]->HCHLEN = pp->xfer_len | pp->DPID | PIPE_XFER_PCNT(packet_count);
-
-    if (USB_USE_DMA == pudev->bp.transfer_mode) {
-        pudev->regs.pr[pipe_num]->HCHDMAADDR = (unsigned int)pp->xfer_buf;
-    }
 
     pp_ctl = pudev->regs.pr[pipe_num]->HCHCTL;
 

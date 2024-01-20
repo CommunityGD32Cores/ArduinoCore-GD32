@@ -3,10 +3,11 @@
     \brief   HID class driver
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -34,7 +35,6 @@ OF SUCH DAMAGE.
 
 #include "usbd_transc.h"
 #include "standard_hid_core.h"
-
 #include <string.h>
 
 #define USBD_VID                     0x28E9U
@@ -194,6 +194,7 @@ static usb_desc_str serial_string =
      }
 };
 
+/* USB string descriptor set */
 uint8_t* usbd_hid_strings[] = 
 {
     [STR_IDX_LANGID]  = (uint8_t *)&usbd_language_id_desc,
@@ -202,7 +203,8 @@ uint8_t* usbd_hid_strings[] =
     [STR_IDX_SERIAL]  = (uint8_t *)&serial_string
 };
 
-usb_desc hid_desc = {
+usb_desc hid_desc = 
+{
 #ifdef LPM_ENABLED
     .bos_desc    = (uint8_t *)&USBD_BOSDesc,
 #endif /* LPM_ENABLED */
@@ -217,7 +219,8 @@ static uint8_t hid_deinit          (usb_dev *udev, uint8_t config_index);
 static uint8_t hid_req_handler     (usb_dev *udev, usb_req *req);
 static void hid_data_in_handler    (usb_dev *udev, uint8_t ep_num);
 
-usb_class hid_class = {
+usb_class hid_class = 
+{
     .init            = hid_init,
     .deinit          = hid_deinit,
     .req_process     = hid_req_handler,

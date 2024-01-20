@@ -3,10 +3,11 @@
     \brief   IAP driver
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -62,6 +63,7 @@ usb_desc_dev iap_dev_desc =
     .bNumberConfigurations = USBD_CFG_MAX_NUM
 };
 
+/* USB device configure descriptor */
 usb_hid_desc_config_set iap_config_desc = 
 {
     .config = 
@@ -169,7 +171,7 @@ static usb_desc_str product_string =
     .unicode_string = {'G', 'D', '3', '2', '-', 'U', 'S', 'B', '_', 'I', 'A', 'P'}
 };
 
-/* USBD serial string */
+/* USB serial string */
 static usb_desc_str serial_string = 
 {
     .header = 
@@ -179,6 +181,7 @@ static usb_desc_str serial_string =
      }
 };
 
+/* USB string descriptor set */
 uint8_t* usbd_iap_strings[] = 
 {
     [STR_IDX_LANGID]  = (uint8_t *)&usbd_language_id_desc,
@@ -240,7 +243,7 @@ static void iap_req_dnload    (usb_dev *udev);
 static void iap_req_optionbyte(usb_dev *udev);
 static void iap_req_leave     (usb_dev *udev);
 static void iap_address_send  (usb_dev *udev);
-static void iap_data_write (uint8_t *data, uint32_t addr, uint32_t len);
+static void iap_data_write    (uint8_t *data, uint32_t addr, uint32_t len);
 
 /*!
     \brief      initialize the HID device
@@ -480,9 +483,9 @@ static void iap_req_erase (usb_dev *udev)
     /* compute last packet size and transfer times */
     iap->lps = iap->file_length % TRANSFER_SIZE;
     if (0U == iap->lps) {
-        iap->transfer_times = (uint16_t)iap->file_length / TRANSFER_SIZE;
+        iap->transfer_times = (uint16_t)(iap->file_length / TRANSFER_SIZE);
     } else {
-        iap->transfer_times = (uint16_t)iap->file_length / TRANSFER_SIZE + 1U;
+        iap->transfer_times = (uint16_t)(iap->file_length / TRANSFER_SIZE + 1U);
     }
 
     /* check if the address is in protected area */
@@ -569,7 +572,7 @@ static void iap_address_send(usb_dev *udev)
     \param[in]  addr: sector address/code
     \param[in]  len: length of data to be written (in bytes)
     \param[out] none
-    \retval     MAL_OK if all operations are OK, MAL_FAIL else
+    \retval     none
 */
 static void iap_data_write (uint8_t *data, uint32_t addr, uint32_t len)
 {

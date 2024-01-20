@@ -4,10 +4,11 @@
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
     \version 2021-02-20, V3.0.1, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -36,7 +37,44 @@ OF SUCH DAMAGE.
 #include "usbd_enum.h"
 #include "usbd_msc_bbb.h"
 #include "usbd_msc_scsi.h"
-#include "usbd_msc_data.h"
+
+/* USB mass storage page 0 inquiry data */
+const uint8_t msc_page00_inquiry_data[] = 
+{
+    0x00U,
+    0x00U,
+    0x00U,
+    0x00U,
+    (INQUIRY_PAGE00_LENGTH - 4U),
+    0x80U,
+    0x83U,
+};
+
+/* USB mass storage sense 6 data */
+const uint8_t msc_mode_sense6_data[] = 
+{
+    0x00U,
+    0x00U,
+    0x00U,
+    0x00U,
+    0x00U,
+    0x00U,
+    0x00U,
+    0x00U
+};
+
+/* USB mass storage sense 10 data */
+const uint8_t msc_mode_sense10_data[] = 
+{
+    0x00U,
+    0x06U,
+    0x00U,
+    0x00U,
+    0x00U,
+    0x00U,
+    0x00U,
+    0x00U
+};
 
 /* local function prototypes ('static') */
 static int8_t scsi_test_unit_ready      (usb_dev *udev, uint8_t lun, uint8_t *params);
@@ -173,17 +211,13 @@ static int8_t scsi_test_unit_ready (usb_dev *udev, uint8_t lun, uint8_t *params)
         return -1;
     }
 
-//    if (1U == msc->scsi_disk_pop) {
-//        usbd_disconnect (udev);
-//    }
-
     msc->bbb_datalen = 0U;
 
     return 0;
 }
 
 /*!
-    \brief      process Inquiry command
+    \brief      process mode select 6 command
     \param[in]  udev: pointer to USB device instance
     \param[in]  lun: logical unit number
     \param[in]  params: command parameters
@@ -200,7 +234,7 @@ static int8_t scsi_mode_select6 (usb_dev *udev, uint8_t lun, uint8_t *params)
 }
 
 /*!
-    \brief      process Inquiry command
+    \brief      process mode select 10 command
     \param[in]  udev: pointer to USB device instance
     \param[in]  lun: logical unit number
     \param[in]  params: command parameters
@@ -217,7 +251,7 @@ static int8_t scsi_mode_select10 (usb_dev *udev, uint8_t lun, uint8_t *params)
 }
 
 /*!
-    \brief      process Inquiry command
+    \brief      process inquiry command
     \param[in]  udev: pointer to USB device instance
     \param[in]  lun: logical unit number
     \param[in]  params: command parameters
@@ -256,7 +290,7 @@ static int8_t scsi_inquiry (usb_dev *udev, uint8_t lun, uint8_t *params)
 }
 
 /*!
-    \brief      process Read Capacity 10 command
+    \brief      process read capacity 10 command
     \param[in]  udev: pointer to USB device instance
     \param[in]  lun: logical unit number
     \param[in]  params: command parameters
@@ -287,7 +321,7 @@ static int8_t scsi_read_capacity10 (usb_dev *udev, uint8_t lun, uint8_t *params)
 }
 
 /*!
-    \brief      process Read Format Capacity command
+    \brief      process read format capacity command
     \param[in]  udev: pointer to USB device instance
     \param[in]  lun: logical unit number
     \param[in]  params: command parameters
@@ -324,7 +358,7 @@ static int8_t scsi_read_format_capacity (usb_dev *udev, uint8_t lun, uint8_t *pa
 }
 
 /*!
-    \brief      process Mode Sense6 command
+    \brief      process mode sense 6 command
     \param[in]  udev: pointer to USB device instance
     \param[in]  lun: logical unit number
     \param[in]  params: command parameters
@@ -347,7 +381,7 @@ static int8_t scsi_mode_sense6 (usb_dev *udev, uint8_t lun, uint8_t *params)
 }
 
 /*!
-    \brief      process Mode Sense10 command
+    \brief      process mode sense 10 command
     \param[in]  udev: pointer to USB device instance
     \param[in]  lun: logical unit number
     \param[in]  params: command parameters
@@ -370,7 +404,7 @@ static int8_t scsi_mode_sense10 (usb_dev *udev, uint8_t lun, uint8_t *params)
 }
 
 /*!
-    \brief      process Request Sense command
+    \brief      process request sense command
     \param[in]  udev: pointer to USB device instance
     \param[in]  lun: logical unit number
     \param[in]  params: command parameters
@@ -406,7 +440,7 @@ static int8_t scsi_request_sense (usb_dev *udev, uint8_t lun, uint8_t *params)
 }
 
 /*!
-    \brief      process Start Stop Unit command
+    \brief      process start stop unit command
     \param[in]  udev: pointer to USB device instance
     \param[in]  lun: logical unit number
     \param[in]  params: command parameters
@@ -418,13 +452,12 @@ static inline int8_t scsi_start_stop_unit (usb_dev *udev, uint8_t lun, uint8_t *
     usbd_msc_handler *msc = (usbd_msc_handler *)udev->class_data[USBD_MSC_INTERFACE];
 
     msc->bbb_datalen = 0U;
-//    msc->scsi_disk_pop = 1U;
 
     return 0;
 }
 
 /*!
-    \brief      process Allow Medium Removal command
+    \brief      process allow medium removal command
     \param[in]  udev: pointer to USB device instance
     \param[in]  lun: logical unit number
     \param[in]  params: command parameters
@@ -441,7 +474,7 @@ static inline int8_t scsi_allow_medium_removal (usb_dev *udev, uint8_t lun, uint
 }
 
 /*!
-    \brief      process Read10 command
+    \brief      process read 10 command
     \param[in]  udev: pointer to USB device instance
     \param[in]  lun: logical unit number
     \param[in]  params: command parameters
@@ -494,7 +527,7 @@ static int8_t scsi_read10 (usb_dev *udev, uint8_t lun, uint8_t *params)
 }
 
 /*!
-    \brief      process Write10 command
+    \brief      process write 10 command
     \param[in]  udev: pointer to USB device instance
     \param[in]  lun: logical unit number
     \param[in]  params: command parameters
@@ -562,7 +595,7 @@ static int8_t scsi_write10 (usb_dev *udev, uint8_t lun, uint8_t *params)
 }
 
 /*!
-    \brief      process Verify10 command
+    \brief      process verify 10 command
     \param[in]  udev: pointer to USB device instance
     \param[in]  lun: logical unit number
     \param[in]  params: command parameters
@@ -689,7 +722,7 @@ static int8_t scsi_process_write (usb_dev *udev, uint8_t lun)
 }
 
 /*!
-    \brief      process Format Unit command
+    \brief      process format unit command
     \param[in]  udev: pointer to USB device instance
     \param[in]  lun: logical unit number
     \param[out] none
@@ -701,7 +734,7 @@ static inline int8_t scsi_format_cmd (usb_dev *udev, uint8_t lun)
 }
 
 /*!
-    \brief      process Read_Toc command
+    \brief      process read TOC command
     \param[in]  udev: pointer to USB device instance
     \param[in]  lun: logical unit number
     \param[in]  params: command parameters

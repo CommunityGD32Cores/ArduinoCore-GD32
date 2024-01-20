@@ -5,10 +5,11 @@
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
     \version 2021-02-20, V3.0.1, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -182,8 +183,9 @@ void msc_bbb_csw_send (usb_dev *udev, uint8_t csw_status)
 void msc_bbb_clrfeature (usb_dev *udev, uint8_t ep_num)
 {
     usbd_msc_handler *msc = (usbd_msc_handler *)udev->class_data[USBD_MSC_INTERFACE];
-
-    if (msc->bbb_status == BBB_STATUS_ERROR)/* bad CBW signature */ {
+    
+	  /* bad CBW signature */
+    if (msc->bbb_status == BBB_STATUS_ERROR) {
         usbd_ep_stall(udev, MSC_IN_EP);
 
         msc->bbb_status = BBB_STATUS_NORMAL;

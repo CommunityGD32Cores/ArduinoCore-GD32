@@ -3,10 +3,11 @@
     \brief   CDC ACM driver
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -278,7 +279,7 @@ usb_class cdc_class = {
     \brief      receive CDC ACM data
     \param[in]  udev: pointer to USB device instance
     \param[out] none
-    \retval     USB device operation status
+    \retval     none
 */
 void cdc_acm_data_receive(usb_dev *udev)
 {
@@ -294,7 +295,7 @@ void cdc_acm_data_receive(usb_dev *udev)
     \brief      send CDC ACM data
     \param[in]  udev: pointer to USB device instance
     \param[out] none
-    \retval     USB device operation status
+    \retval     none
 */
 void cdc_acm_data_send (usb_dev *udev)
 {
@@ -367,7 +368,7 @@ static uint8_t cdc_acm_init (usb_dev *udev, uint8_t config_index)
 }
 
 /*!
-    \brief      de-initialize the CDC ACM device
+    \brief      deinitialize the CDC ACM device
     \param[in]  udev: pointer to USB device instance
     \param[in]  config_index: configuration index
     \param[out] none
@@ -405,13 +406,12 @@ static uint8_t cdc_acm_ctlx_out (usb_dev *udev)
     return USBD_OK;
 }
 
-
 /*!
     \brief      handle CDC ACM data in transaction
     \param[in]  udev: pointer to USB device instance
     \param[in]  ep_num: endpoint number
     \param[out] none
-    \retval     USB device operation status
+    \retval     none
 */
 static void cdc_acm_data_in (usb_dev *udev, uint8_t ep_num)
 {
@@ -431,7 +431,7 @@ static void cdc_acm_data_in (usb_dev *udev, uint8_t ep_num)
     \param[in]  udev: pointer to USB device instance
     \param[in]  ep_num: endpoint number
     \param[out] none
-    \retval     USB device operation status
+    \retval     none
 */
 static void cdc_acm_data_out (usb_dev *udev, uint8_t ep_num)
 {

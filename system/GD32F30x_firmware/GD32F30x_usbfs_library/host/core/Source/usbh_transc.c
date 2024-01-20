@@ -3,10 +3,12 @@
     \brief   USB host mode transactions driver
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2021-09-27, V3.0.1, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -220,7 +222,9 @@ usbh_status usbh_ctl_handler (usbh_host *puhost)
 */
 static usb_urb_state usbh_urb_wait (usbh_host *puhost, uint8_t pp_num, uint32_t wait_time)
 {
+    uint32_t timeout = 0U;
     usb_urb_state urb_status = URB_IDLE;
+    timeout = puhost->control.timer;
 
     while (URB_DONE != (urb_status = usbh_urbstate_get(puhost->data, pp_num))) {
         if (URB_NOTREADY == urb_status) {
@@ -231,7 +235,8 @@ static usb_urb_state usbh_urb_wait (usbh_host *puhost, uint8_t pp_num, uint32_t 
         } else if (URB_ERROR == urb_status) {
             puhost->control.ctl_state = CTL_ERROR;
             break;
-        } else if ((wait_time > 0U) && ((usb_curframe_get(puhost->data)- puhost->control.timer) > wait_time)) {
+        } else if ((wait_time > 0U) && (((usb_curframe_get(puhost->data) > timeout) && ((usb_curframe_get(puhost->data) - timeout) > wait_time)) \
+               || ((usb_curframe_get(puhost->data) < timeout) && ((usb_curframe_get(puhost->data) + 0x3FFFU - timeout) > wait_time)))) {
             /* timeout for in transfer */
             puhost->control.ctl_state = CTL_ERROR;
             break;
@@ -294,7 +299,6 @@ static void usbh_data_in_transc (usbh_host *puhost)
     if (URB_DONE == usbh_urb_wait (puhost, puhost->control.pipe_in_num, DATA_STAGE_TIMEOUT)) {
         puhost->control.ctl_state = CTL_STATUS_OUT;
 
-        puhost->control.timer = (uint16_t)usb_curframe_get(puhost->data);
     }
 }
 
@@ -316,7 +320,6 @@ static void usbh_data_out_transc (usbh_host *puhost)
     if (URB_DONE == usbh_urb_wait (puhost, puhost->control.pipe_out_num, DATA_STAGE_TIMEOUT)) {
         puhost->control.ctl_state = CTL_STATUS_IN;
 
-        puhost->control.timer = (uint16_t)usb_curframe_get(puhost->data);
     }
 }
 

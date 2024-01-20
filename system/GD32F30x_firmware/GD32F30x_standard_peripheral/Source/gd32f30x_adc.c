@@ -680,7 +680,7 @@ FlagStatus adc_flag_get(uint32_t adc_periph , uint32_t adc_flag)
 */
 void adc_flag_clear(uint32_t adc_periph , uint32_t adc_flag)
 {
-    ADC_STAT(adc_periph) &= ~((uint32_t)adc_flag);
+    ADC_STAT(adc_periph) = ~((uint32_t)adc_flag);
 }
 
 /*!
@@ -739,7 +739,7 @@ FlagStatus adc_interrupt_flag_get(uint32_t adc_periph , uint32_t adc_interrupt)
 */
 void adc_interrupt_flag_clear(uint32_t adc_periph , uint32_t adc_interrupt)
 {
-    ADC_STAT(adc_periph) &= ~((uint32_t)adc_interrupt);
+    ADC_STAT(adc_periph) = ~((uint32_t)adc_interrupt);
 }
 
 /*!

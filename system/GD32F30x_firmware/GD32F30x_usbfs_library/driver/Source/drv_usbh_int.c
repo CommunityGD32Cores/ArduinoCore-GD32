@@ -3,10 +3,12 @@
     \brief   USB host mode interrupt handler file
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
+    \version 2021-08-06, V3.0.1, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -32,10 +34,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 OF SUCH DAMAGE.
 */
 
-#include "drv_usb_core.h"
-#include "drv_usb_host.h"
 #include "drv_usbh_int.h"
-#include "usbh_core.h"
 
 #if defined   (__CC_ARM)        /*!< ARM compiler */
     #pragma O0
@@ -206,20 +205,22 @@ static uint32_t usbh_int_port (usb_core_driver *pudev)
                 pudev->regs.hr->HFT = 48000U;
 
                 if (HCTL_48MHZ != clock_type) {
-                    usb_phyclock_config (pudev, HCTL_48MHZ);
-                }
+                    if (USB_EMBEDDED_PHY == pudev->bp.phy_itf) {
+                        usb_phyclock_config (pudev, HCTL_48MHZ);
+                    }
 
-                port_reset = 1U;
+                    port_reset = 1U;
+                }
             } else {
                 /* for high speed device and others */
                 port_reset = 1U;
             }
 
-            usbh_int_fop->port_enabled(pudev->host.data);
+            pudev->host.port_enabled = 1;
 
             pudev->regs.gr->GINTEN |= GINTEN_DISCIE | GINTEN_SOFIE;
         } else {
-            usbh_int_fop->port_disabled(pudev->host.data);
+            pudev->host.port_enabled = 0;
         }
     }
 
@@ -273,7 +274,8 @@ static uint32_t usbh_int_pipe_in (usb_core_driver *pudev, uint32_t pp_num)
 
     usb_pipe *pp = &pudev->host.pipe[pp_num];
 
-    __IO uint32_t intr_pp = pp_reg->HCHINTF & pp_reg->HCHINTEN;
+    uint32_t intr_pp = pp_reg->HCHINTF;
+    intr_pp &= pp_reg->HCHINTEN;
 
     uint8_t ep_type = (uint8_t)((pp_reg->HCHCTL & HCHCTL_EPTYPE) >> 18U);
 
@@ -297,10 +299,6 @@ static uint32_t usbh_int_pipe_in (usb_core_driver *pudev, uint32_t pp_num)
     if (intr_pp & HCHINTF_REQOVR) {
         usb_pp_halt (pudev, (uint8_t)pp_num, HCHINTF_REQOVR, PIPE_REQOVR);
     } else if (intr_pp & HCHINTF_TF) {
-        if ((uint8_t)USB_USE_DMA == pudev->bp.transfer_mode) {
-            pudev->host.backup_xfercount[pp_num] = pp->xfer_len - (pp_reg->HCHLEN & HCHLEN_TLEN);
-        }
-
         pp->pp_status = PIPE_XF;
         pp->err_count = 0U;
 
@@ -404,7 +402,8 @@ static uint32_t usbh_int_pipe_out (usb_core_driver *pudev, uint32_t pp_num)
 
     usb_pipe *pp = &pudev->host.pipe[pp_num];
 
-    uint32_t intr_pp = pp_reg->HCHINTF & pp_reg->HCHINTEN;
+    uint32_t intr_pp = pp_reg->HCHINTF;
+    intr_pp &= pp_reg->HCHINTEN;
 
     if (intr_pp & HCHINTF_ACK) {
         if (URB_PING == pp->urb_state) {
@@ -502,7 +501,7 @@ static uint32_t usbh_int_pipe_out (usb_core_driver *pudev, uint32_t pp_num)
 #endif /* __ICCARM */
 static uint32_t usbh_int_rxfifonoempty (usb_core_driver *pudev)
 {
-    uint32_t count = 0U;
+    uint32_t count = 0U,xfer_count = 0U;
 
     __IO uint8_t pp_num = 0U;
     __IO uint32_t rx_stat = 0U;
@@ -525,11 +524,13 @@ static uint32_t usbh_int_rxfifonoempty (usb_core_driver *pudev)
                 pudev->host.pipe[pp_num].xfer_buf += count;
                 pudev->host.pipe[pp_num].xfer_count += count;
 
-                pudev->host.backup_xfercount[pp_num] = pudev->host.pipe[pp_num].xfer_count;
+                xfer_count = pudev->host.pipe[pp_num].xfer_count;
+
+                pudev->host.backup_xfercount[pp_num] = xfer_count;
 
                 if (pudev->regs.pr[pp_num]->HCHLEN & HCHLEN_PCNT) {
                     /* re-activate the channel when more packets are expected */
-                    __IO uint32_t pp_ctl = pudev->regs.pr[pp_num]->HCHCTL;
+                    uint32_t pp_ctl = pudev->regs.pr[pp_num]->HCHCTL;
 
                     pp_ctl |= HCHCTL_CEN;
                     pp_ctl &= ~HCHCTL_CDIS;

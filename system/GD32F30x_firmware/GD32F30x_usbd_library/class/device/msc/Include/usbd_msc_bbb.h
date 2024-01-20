@@ -4,10 +4,11 @@
 
     \version 2020-08-01, V3.0.0, firmware for GD32F30x
     \version 2021-02-20, V3.0.1, firmware for GD32F30x
+    \version 2022-06-10, V3.1.0, firmware for GD32F30x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2022, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -45,7 +46,8 @@ OF SUCH DAMAGE.
 #define BBB_CBW_LENGTH                    31U
 #define BBB_CSW_LENGTH                    13U
 
-typedef struct {
+typedef struct
+{
     uint32_t dCBWSignature;
     uint32_t dCBWTag;
     uint32_t dCBWDataTransferLength;
@@ -55,7 +57,8 @@ typedef struct {
     uint8_t  CBWCB[16];
 }msc_bbb_cbw;
 
-typedef struct {
+typedef struct
+{
     uint32_t dCSWSignature;
     uint32_t dCSWTag;
     uint32_t dCSWDataResidue;
@@ -63,7 +66,8 @@ typedef struct {
 }msc_bbb_csw;
 
 /* CSW command status */
-enum msc_csw_status {
+enum msc_csw_status
+{
     CSW_CMD_PASSED = 0,
     CSW_CMD_FAILED,
     CSW_PHASE_ERROR
@@ -106,7 +110,6 @@ typedef struct
 
     uint32_t scsi_blk_addr;
     uint32_t scsi_blk_len;
-//    uint32_t scsi_disk_pop;
 
     msc_scsi_sense scsi_sense[SENSE_LIST_DEEPTH];
 } usbd_msc_handler;
