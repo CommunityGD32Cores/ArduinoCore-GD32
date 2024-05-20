@@ -28,16 +28,6 @@ OF SUCH DAMAGE.
 #include "rtc.h"
 #include <time.h>
 
-/*
-  In the definitions for GD32F30X_{H,X}D, this is 'Alarm', but for the
-  CL variant, it’s 'ALARM'. The core uses the upper case version. I
-  have no good solution other than getting the official firmware
-  library changed. -bjc (2021-Aug-20)
-*/
-#if defined(GD32F30X_CL) || defined(GD32F30X_HD) || defined (GD32F30X_XD) || defined(GD32E50X)
-#define RTC_ALARM_IRQn RTC_Alarm_IRQn
-#endif
-
 /* 
   If this macro is defined, then on a microcontroller restart, the old contents of the backup domain will be reset.
   This will cause the time in the RTC to be reset on every restart.
