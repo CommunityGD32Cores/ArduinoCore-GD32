@@ -93,7 +93,7 @@ void rtc_Init(void)
     nvic_irq_enable(RTC_IRQn, 2, 0);
 #endif 
 #if defined(GD32F30x) || defined(GD32E50X)
-    nvic_irq_enable(RTC_ALARM_IRQn, 2, 0);
+    nvic_irq_enable(RTC_Alarm_IRQn, 2, 0);
     /* enable PMU and BKPI clocks */
     rcu_periph_clock_enable(RCU_BKPI);
 #endif
