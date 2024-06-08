@@ -55,9 +55,8 @@ static inline uint32_t mapResolution(uint32_t value, uint32_t from, uint32_t to)
 int analogRead(pin_size_t ulPin)
 {
     uint32_t value = 0;
+    bool internalChannel = true;
     PinName p = DIGITAL_TO_PINNAME(ulPin);
-    //set pin mode to analog in before read
-    pinMode(ulPin, INPUT_ANALOG);
     switch (ulPin) {
         case ADC_TEMP:
             p = ADC_TEMP;
@@ -66,11 +65,20 @@ int analogRead(pin_size_t ulPin)
             p = ADC_VREF;
             break;
         default:
+            //set pin mode to analog in before read
+            pinMode(ulPin, INPUT_ANALOG);
+            internalChannel = false;
             break;
     }
     if (p != NC) {
+        if (internalChannel) {
+            adc_tempsensor_vrefint_enable();
+        }
         value = get_adc_value(p);
         value = mapResolution(value, 12, analogIn_resolution);
+        if (internalChannel) {
+            adc_tempsensor_vrefint_disable();
+        }
     }
     return value;
 }
