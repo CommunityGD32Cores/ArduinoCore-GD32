@@ -134,7 +134,7 @@ def configure_application_offset(mcu, upload_protocol):
     # LD_FLASH_OFFSET is mandatory even if there is no offset
     env.Append(LINKFLAGS=["-Wl,--defsym=LD_FLASH_OFFSET=%s" % hex(offset)])
 
-if any(mcu in board_config.get("build.cpu") for mcu in ("cortex-m4")):
+if board_config.get("build.cpu") in ("cortex-m4"):
     env.Append(
         CCFLAGS=["-mfpu=fpv4-sp-d16", "-mfloat-abi=hard"],
         LINKFLAGS=["-mfpu=fpv4-sp-d16", "-mfloat-abi=hard"],
