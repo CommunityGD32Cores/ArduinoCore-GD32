@@ -63,6 +63,7 @@ class FlashStorage
             for (uint32_t i = 0; i < _storage_size; i++) {
                 buffer_[i] = src[i];
             }
+            fmc_lock();
         }
 
         uint32_t length()
@@ -98,12 +99,16 @@ class FlashStorage
 
         void commit()
         {
+            fmc_unlock();
             uint32_t address = data_area_start;
             uint32_t *ptrs = (uint32_t *)buffer_;
 
             do {
                 uint16_t page_size = pageSizeForAddress(address);
+                /* clear all pending flags */
+                fmc_flag_clear(FMC_FLAG_END | FMC_FLAG_WPERR | FMC_FLAG_PGERR);
                 fmc_page_erase(address);
+                fmc_flag_clear(FMC_FLAG_END | FMC_FLAG_WPERR | FMC_FLAG_PGERR);
 
                 uint32_t word_count = page_size / 4;
                 uint32_t i = 0;
@@ -113,5 +118,7 @@ class FlashStorage
                     address += 4U;
                 } while (++i < word_count);
             } while (address < fmc_end_address);
+            fmc_flag_clear(FMC_FLAG_END | FMC_FLAG_WPERR | FMC_FLAG_PGERR);
+            fmc_lock();
         }
 };
