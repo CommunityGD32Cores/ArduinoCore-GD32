@@ -305,14 +305,11 @@ void TwoWire::onRequestService(void* pWireObj)
         pWire->_tx_buffer.tail = 0;
 
         // reset slave tx buffer iterator vars
-        pWire->_i2c.tx_buffer_ptr = pWire->_tx_buffer.buffer;
+        // pWire->_i2c.tx_buffer_ptr = pWire->_tx_buffer.buffer;
         pWire->_i2c.tx_count = 0;
 
         // alert user program
         pWire->user_onRequest();
-
-        // reset slave tx buffer iterator to let interrupt transmit the buffer
-        pWire->_i2c.tx_buffer_ptr = pWire->_tx_buffer.buffer;
     }
 }
 
