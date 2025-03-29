@@ -47,10 +47,10 @@ struct i2c_s {
     PinName sda;
     PinName scl;
     /* operating parameters */
-    uint8_t    *tx_buffer_ptr;
-    uint8_t    *rx_buffer_ptr;
-    uint16_t   tx_count;
-    uint16_t   rx_count;
+    volatile uint8_t    *tx_buffer_ptr;
+    volatile uint8_t    *rx_buffer_ptr;
+    volatile uint16_t   tx_count;
+    volatile uint16_t   rx_count;
     /* TX and RX buffer are expected to be of this size */
     uint16_t tx_rx_buffer_size;
 
