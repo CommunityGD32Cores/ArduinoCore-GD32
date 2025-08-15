@@ -41,6 +41,7 @@ OF SUCH DAMAGE.
 #define GD32F1X0_LIBOPT_H
 
 #include "gd32f1x0_adc.h"
+#include "gd32f1x0_can.h"
 #include "gd32f1x0_cec.h"
 #include "gd32f1x0_crc.h"
 #include "gd32f1x0_cmp.h"
