@@ -1,18 +1,16 @@
 /*!
-    \file    gd32f1x0_adc.c
-    \brief   ADC driver
+    \file  gd32f1x0_adc.c
+    \brief ADC driver
 
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -312,9 +310,11 @@ void adc_regular_channel_config(uint8_t rank, uint8_t channel, uint32_t sample_t
 {
     uint32_t rsq,sampt;
     
+#ifdef GD32F130_150
     if(ADC_CHANNEL_18 == channel){
         channel = ADC_CHANNEL_0;
     }
+#endif
     
     /* configure ADC regular sequence */
     if(rank < 6U){
@@ -333,7 +333,7 @@ void adc_regular_channel_config(uint8_t rank, uint8_t channel, uint32_t sample_t
         rsq |= ((uint32_t)channel << (5U*(rank-12U)));
         ADC_RSQ0 = rsq;
     }else{
-        /* illegal parameters */
+	    /* illegal parameters */
     }
     
     /* configure ADC sampling time */
@@ -376,7 +376,7 @@ void adc_inserted_channel_config(uint8_t rank, uint8_t channel, uint32_t sample_
     uint8_t inserted_length;
     uint32_t isq,sampt;
 
-    inserted_length = (uint8_t)GET_BITS(ADC_ISQ, 20U, 21U);
+    inserted_length = (uint8_t)GET_BITS(ADC_ISQ , 20U , 21U);
   
     isq = ADC_ISQ;
     isq &= ~((uint32_t)(ADC_ISQ_ISQN << (15U - (inserted_length - rank)*5U)));
@@ -794,3 +794,88 @@ void adc_watchdog_threshold_config(uint16_t low_threshold, uint16_t high_thresho
     ADC_WDLT = (uint32_t)WDLT_WDLT(low_threshold);
     ADC_WDHT = (uint32_t)WDHT_WDHT(high_threshold);
 }
+
+#ifdef GD32F170_190
+/*!
+    \brief      configure ADC resolution 
+    \param[in]  resolution: ADC resolution
+                only one parameter can be selected which is shown as below:
+      \arg        ADC_RESOLUTION_12B: 12-bit ADC resolution
+      \arg        ADC_RESOLUTION_10B: 10-bit ADC resolution
+      \arg        ADC_RESOLUTION_8B: 8-bit ADC resolution
+      \arg        ADC_RESOLUTION_6B: 6-bit ADC resolution
+    \param[out] none
+    \retval     none
+*/
+void adc_resolution_config(uint32_t resolution)
+{
+    ADC_CTL0 &= ~((uint32_t)ADC_CTL0_DRES);
+    ADC_CTL0 |= (uint32_t)resolution;
+}
+
+/*!
+    \brief      configure ADC oversample mode 
+    \param[in]  mode: ADC oversampling mode
+                only one parameter can be selected which is shown as below:
+      \arg        ADC_OVERSAMPLING_ALL_CONVERT: all oversampled conversions for a channel are done consecutively after a trigger
+      \arg        ADC_OVERSAMPLING_ONE_CONVERT: each oversampled conversion for a channel needs a trigger
+    \param[in]  shift: ADC oversampling shift
+                only one parameter can be selected which is shown as below:
+      \arg        ADC_OVERSAMPLING_SHIFT_NONE: no oversampling shift
+      \arg        ADC_OVERSAMPLING_SHIFT_1B: 1-bit oversampling shift
+      \arg        ADC_OVERSAMPLING_SHIFT_2B: 2-bit oversampling shift
+      \arg        ADC_OVERSAMPLING_SHIFT_3B: 3-bit oversampling shift
+      \arg        ADC_OVERSAMPLING_SHIFT_4B: 3-bit oversampling shift
+      \arg        ADC_OVERSAMPLING_SHIFT_5B: 5-bit oversampling shift
+      \arg        ADC_OVERSAMPLING_SHIFT_6B: 6-bit oversampling shift
+      \arg        ADC_OVERSAMPLING_SHIFT_7B: 7-bit oversampling shift
+      \arg        ADC_OVERSAMPLING_SHIFT_8B: 8-bit oversampling shift
+    \param[in]  ratio: ADC oversampling ratio
+                only one parameter can be selected which is shown as below:
+      \arg        ADC_OVERSAMPLING_RATIO_MUL2: oversampling ratio multiple 2
+      \arg        ADC_OVERSAMPLING_RATIO_MUL4: oversampling ratio multiple 4
+      \arg        ADC_OVERSAMPLING_RATIO_MUL8: oversampling ratio multiple 8
+      \arg        ADC_OVERSAMPLING_RATIO_MUL16: oversampling ratio multiple 16
+      \arg        ADC_OVERSAMPLING_RATIO_MUL32: oversampling ratio multiple 32
+      \arg        ADC_OVERSAMPLING_RATIO_MUL64: oversampling ratio multiple 64
+      \arg        ADC_OVERSAMPLING_RATIO_MUL128: oversampling ratio multiple 128
+      \arg        ADC_OVERSAMPLING_RATIO_MUL256: oversampling ratio multiple 256
+    \param[out] none
+    \retval     none
+*/
+void adc_oversample_mode_config(uint8_t mode, uint16_t shift, uint8_t ratio)
+{
+    /* configure ADC oversampling mode */
+    if(ADC_OVERSAMPLING_ONE_CONVERT == mode){
+        ADC_OVSAMPCTL |= (uint32_t)ADC_OVSAMPCTL_TOVS;
+    }else{
+        ADC_OVSAMPCTL &= ~((uint32_t)ADC_OVSAMPCTL_TOVS);
+    }
+    
+    /* configure the shift and ratio */
+    ADC_OVSAMPCTL &= ~((uint32_t)(ADC_OVSAMPCTL_OVSR | ADC_OVSAMPCTL_OVSS));
+    ADC_OVSAMPCTL |= ((uint32_t)shift | (uint32_t)ratio);
+}
+
+/*!
+    \brief      enable ADC oversample mode 
+    \param[in]  none
+    \param[out] none
+    \retval     none
+*/
+void adc_oversample_mode_enable(void)
+{
+    ADC_OVSAMPCTL |= ADC_OVSAMPCTL_OVSEN;
+}
+
+/*!
+    \brief      disable ADC oversample mode 
+    \param[in]  none
+    \param[out] none
+    \retval     none
+*/
+void adc_oversample_mode_disable(void)
+{
+    ADC_OVSAMPCTL &= ~((uint32_t)ADC_OVSAMPCTL_OVSEN);
+}
+#endif /* GD32F170_190 */

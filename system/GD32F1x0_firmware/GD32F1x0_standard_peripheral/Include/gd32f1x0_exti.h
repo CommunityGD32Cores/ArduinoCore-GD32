@@ -1,18 +1,16 @@
 /*!
-    \file    gd32f1x0_exti.h
-    \brief   definitions for the EXTI
+    \file  gd32f1x0_exti.h
+    \brief definitions for the EXTI
 
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -233,7 +231,9 @@ typedef enum
     EXTI_15     = BIT(15),                                   /*!< EXTI line 15 */
     EXTI_16     = BIT(16),                                   /*!< EXTI line 16 */
     EXTI_17     = BIT(17),                                   /*!< EXTI line 17 */
+#ifdef GD32F130_150
     EXTI_18     = BIT(18),                                   /*!< EXTI line 18 */
+#endif /* GD32F130_150 */
     EXTI_19     = BIT(19),                                   /*!< EXTI line 19 */
     EXTI_21     = BIT(21),                                   /*!< EXTI line 21 */
     EXTI_22     = BIT(22),                                   /*!< EXTI line 22 */
@@ -253,8 +253,7 @@ typedef enum
 {
     EXTI_TRIG_RISING = 0,                                    /*!< EXTI rising edge trigger */
     EXTI_TRIG_FALLING,                                       /*!< EXTI falling edge trigger */
-    EXTI_TRIG_BOTH,                                           /*!< EXTI rising and falling edge trigger */
-    EXTI_TRIG_NONE                                            /*!< without rising edge or falling edge trigger */
+    EXTI_TRIG_BOTH                                           /*!< EXTI rising and falling edge trigger */
 }exti_trig_type_enum;
 
 /* function declarations */
@@ -267,25 +266,25 @@ void exti_init(exti_line_enum linex, exti_mode_enum mode, exti_trig_type_enum tr
 /* enable functions */
 /* enable the interrupts from EXTI line x */
 void exti_interrupt_enable(exti_line_enum linex);
-/* disable the interrupts from EXTI line x */
-void exti_interrupt_disable(exti_line_enum linex);
 /* enable the events from EXTI line x */
 void exti_event_enable(exti_line_enum linex);
+/* disable the interrupts from EXTI line x */
+void exti_interrupt_disable(exti_line_enum linex);
 /* disable the events from EXTI line x */
 void exti_event_disable(exti_line_enum linex);
 
 /* interrupt & flag functions */
+/* get EXTI lines pending flag */
+FlagStatus exti_flag_get(exti_line_enum linex);
+/* clear EXTI lines pending flag */
+void exti_flag_clear(exti_line_enum linex);
+/* get EXTI lines flag when the interrupt flag is set */
+FlagStatus exti_interrupt_flag_get(exti_line_enum linex);
+/* clear EXTI lines pending flag */
+void exti_interrupt_flag_clear(exti_line_enum linex);
 /* enable EXTI software interrupt event */
 void exti_software_interrupt_enable(exti_line_enum linex);
 /* disable EXTI software interrupt event */
 void exti_software_interrupt_disable(exti_line_enum linex);
-/* get EXTI line x pending flag */
-FlagStatus exti_flag_get(exti_line_enum linex);
-/* clear EXTI line x pending flag */
-void exti_flag_clear(exti_line_enum linex);
-/* get EXTI line x flag when the interrupt flag is set */
-FlagStatus exti_interrupt_flag_get(exti_line_enum linex);
-/* clear EXTI line x pending flag */
-void exti_interrupt_flag_clear(exti_line_enum linex);
 
 #endif /* GD32F1X0_EXTI_H */

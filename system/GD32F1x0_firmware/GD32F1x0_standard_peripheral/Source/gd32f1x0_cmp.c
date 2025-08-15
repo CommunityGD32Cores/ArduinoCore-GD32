@@ -1,19 +1,16 @@
 /*!
-    \file    gd32f1x0_cmp.c
-    \brief   CMP driver
+    \file  gd32f1x0_cmp.c
+    \brief CMP driver
 
-    \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
-    \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
-    \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
+    \version 2014-12-26, V1.0.0, platform GD32F1x0(x=5)
+    \version 2016-01-15, V2.0.0, platform GD32F1x0(x=5,9)
+    \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=5,9)
+    \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=5,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2021-05-19, V3.3.1, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)    
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -57,20 +54,20 @@ void cmp_deinit(void)
     \param[in]  cmp_periph
       \arg        CMP0: comparator 0
       \arg        CMP1: comparator 1
-    \param[in]  operating_mode
+    \param[in]  cmp_operating_mode
       \arg        CMP_HIGHSPEED: high speed mode
       \arg        CMP_MIDDLESPEED: medium speed mode
       \arg        CMP_LOWSPEED: low speed mode
       \arg        CMP_VERYLOWSPEED: very-low speed mode
-    \param[in]  inverting_input 
+    \param[in]  cmp_inverting_input 
       \arg        CMP_1_4VREFINT: VREFINT *1/4 input
       \arg        CMP_1_2VREFINT: VREFINT *1/2 input
       \arg        CMP_3_4VREFINT: VREFINT *3/4 input
       \arg        CMP_VREFINT: VREFINT input
-      \arg        CMP_DAC0: PA4 (DAC0) input
+      \arg        CMP_DAC: PA4 (DAC) input
       \arg        CMP_PA5: PA5 input
-      \arg        CMP_PA_0_2: PA0 input (CMP0) or PA2 input (CMP1)
-    \param[in]  hysteresis
+      \arg        CMP_PA_0_2: PA0 or PA2 input
+    \param[in]  cmp_hysteresis
       \arg        CMP_HYSTERESIS_NO: output no hysteresis
       \arg        CMP_HYSTERESIS_LOW: output low hysteresis
       \arg        CMP_HYSTERESIS_MIDDLE: output middle hysteresis
@@ -78,21 +75,19 @@ void cmp_deinit(void)
     \param[out] none
     \retval     none
 */
-void cmp_mode_init(uint32_t cmp_periph, operating_mode_enum operating_mode, inverting_input_enum inverting_input, cmp_hysteresis_enum output_hysteresis)
+void cmp_mode_init(uint32_t cmp_periph, \
+                   operating_mode_enum cmp_operating_mode, \
+                   inverting_input_enum cmp_inverting_input, \
+                   cmp_hysteresis_enum output_hysteresis)
 {
-    uint32_t CMPx_CS = 0;
     if(CMP0 == cmp_periph){
         /* initialize comparator 0 mode */
-        CMPx_CS = CMP_CS;
-        CMPx_CS &= ~(uint32_t)(CMP_CS_CMP0M | CMP_CS_CMP0MSEL | CMP_CS_CMP0HST ); 
-        CMPx_CS |= CS_CMP0M(operating_mode) | CS_CMP0MSEL(inverting_input) | CS_CMP0HST(output_hysteresis);
-        CMP_CS = CMPx_CS;
+        CMP_CS &= ~(uint32_t)(CMP_CS_CMP0M | CMP_CS_CMP0MSEL | CMP_CS_CMP0HST ); 
+        CMP_CS |= CS_CMP0M(cmp_operating_mode) | CS_CMP0MSEL(cmp_inverting_input) | CS_CMP0HST(output_hysteresis);
     }else{
         /* initialize comparator 1 mode */
-        CMPx_CS = CMP_CS;
-        CMPx_CS &= ~(uint32_t)(CMP_CS_CMP1M | CMP_CS_CMP1MSEL | CMP_CS_CMP1HST );
-        CMPx_CS |= CS_CMP1M(operating_mode) | CS_CMP1MSEL(inverting_input) | CS_CMP1HST(output_hysteresis);
-        CMP_CS = CMPx_CS;
+        CMP_CS &= ~(uint32_t)(CMP_CS_CMP1M | CMP_CS_CMP1MSEL | CMP_CS_CMP1HST );
+        CMP_CS |= CS_CMP1M(cmp_operating_mode) | CS_CMP1MSEL(cmp_inverting_input) | CS_CMP1HST(output_hysteresis);
     }
 }
 
@@ -101,7 +96,7 @@ void cmp_mode_init(uint32_t cmp_periph, operating_mode_enum operating_mode, inve
     \param[in]  cmp_periph
       \arg        CMP0: comparator 0
       \arg        CMP1: comparator 1
-    \param[in]  output_slection 
+    \param[in]  cmp_output 
       \arg        CMP_OUTPUT_NONE: output no selection
       \arg        CMP_OUTPUT_TIMER0BKIN: TIMER 0 break input
       \arg        CMP_OUTPUT_TIMER0IC0: TIMER 0 channel0 input capture 
@@ -110,39 +105,36 @@ void cmp_mode_init(uint32_t cmp_periph, operating_mode_enum operating_mode, inve
       \arg        CMP_OUTPUT_TIMER1OCPRECLR: TIMER 1 OCPRE_CLR input
       \arg        CMP_OUTPUT_TIMER2IC0: TIMER 2 channel0 input capture
       \arg        CMP_OUTPUT_TIMER2OCPRECLR: TIMER 2 OCPRE_CLR input
-    \param[in]  output_polarity 
+    \param[in]  cmp_output_polarity 
       \arg        CMP_OUTPUT_POLARITY_INVERTED: output is inverted
       \arg        CMP_OUTPUT_POLARITY_NOINVERTED: output is not inverted
     \param[out] none
     \retval     none
 */
-void cmp_output_init(uint32_t cmp_periph, cmp_output_enum output_slection, uint32_t output_polarity)
+void cmp_output_init(uint32_t cmp_periph, \
+                     cmp_output_enum cmp_output_slection, \
+                     uint32_t cmp_output_polarity)
 {
-    uint32_t CMPx_CS = 0;
     if(CMP0 == cmp_periph){
         /* initialize comparator 0 output */
-        CMPx_CS = CMP_CS;
-        CMPx_CS &= ~(uint32_t)CMP_CS_CMP0OSEL;
-        CMPx_CS |= CS_CMP0OSEL(output_slection);
+        CMP_CS &= ~(uint32_t)CMP_CS_CMP0OSEL;
+        CMP_CS |= CS_CMP0OSEL(cmp_output_slection);
         /* output polarity */
-        if(CMP_OUTPUT_POLARITY_INVERTED == output_polarity){
-            CMPx_CS |= CMP_CS_CMP0PL;
+        if(CMP_OUTPUT_POLARITY_INVERTED == cmp_output_polarity){
+            CMP_CS |= CMP_CS_CMP0PL;
         }else{
-            CMPx_CS &= ~CMP_CS_CMP0PL;
+            CMP_CS &= ~CMP_CS_CMP0PL;
         }
-        CMP_CS = CMPx_CS;
-    }else if(CMP1 == cmp_periph){
+    }else{
         /* initialize comparator 1 output */
-        CMPx_CS = CMP_CS;
-        CMPx_CS &= ~(uint32_t)CMP_CS_CMP1OSEL;
-        CMPx_CS |= CS_CMP1OSEL(output_slection);
+        CMP_CS &= ~(uint32_t)CMP_CS_CMP1OSEL;
+        CMP_CS |= CS_CMP1OSEL(cmp_output_slection);
         /* output polarity */
-        if(CMP_OUTPUT_POLARITY_INVERTED == output_polarity){
-            CMPx_CS |= CMP_CS_CMP1PL;
+        if(CMP_OUTPUT_POLARITY_INVERTED == cmp_output_polarity){
+            CMP_CS |= CMP_CS_CMP1PL;
         }else{
-            CMPx_CS &= ~CMP_CS_CMP1PL;
+            CMP_CS &= ~CMP_CS_CMP1PL;
         }
-        CMP_CS = CMPx_CS;
     }
 }
 
@@ -235,10 +227,8 @@ void cmp_window_disable(void)
 void cmp_lock_enable(uint32_t cmp_periph)
 {
     if(CMP0 == cmp_periph){
-        /* lock CMP0 */
         CMP_CS |= CMP_CS_CMP0LK;
     }else{
-        /* lock CMP1 */
         CMP_CS |= CMP_CS_CMP1LK;
     }
 }

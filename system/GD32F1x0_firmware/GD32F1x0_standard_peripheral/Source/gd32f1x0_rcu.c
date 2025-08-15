@@ -1,18 +1,16 @@
 /*!
-    \file    gd32f1x0_rcu.c
-    \brief   RCU driver
+    \file  gd32f1x0_rcu.c
+    \brief RCU driver
 
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -40,17 +38,16 @@ OF SUCH DAMAGE.
 
 #include "gd32f1x0_rcu.h"
 
-/* define clock source */
-#define SEL_IRC8M                    ((uint32_t)0x00000000U)
-#define SEL_HXTAL                    ((uint32_t)0x00000001U)
-#define SEL_PLL                      ((uint32_t)0x00000002U)
+#define SEL_IRC8M                   0x00U
+#define SEL_HXTAL                   0x01U
+#define SEL_PLL                     0x02U
 
 /* define startup timeout count */
-#define OSC_STARTUP_TIMEOUT          ((uint32_t)0x000FFFFFU)
-#define LXTAL_STARTUP_TIMEOUT        ((uint32_t)0x03FFFFFFU)
+#define OSC_STARTUP_TIMEOUT         ((uint32_t)0xFFFFFU)
+#define LXTAL_STARTUP_TIMEOUT       ((uint32_t)0x3FFFFFFU)
 
 /*!
-    \brief      deinitialize the RCU, reset the value of all RCU registers into initial values
+    \brief      deinitialize the RCU
     \param[in]  none
     \param[out] none
     \retval     none
@@ -61,18 +58,29 @@ void rcu_deinit(void)
     RCU_CTL0 |= RCU_CTL0_IRC8MEN;
     while(0U == (RCU_CTL0 & RCU_CTL0_IRC8MSTB)){
     }
-    RCU_CFG0 &= ~RCU_CFG0_SCS;
-    /* reset CTL register */
-    RCU_CTL0 &= ~(RCU_CTL0_HXTALEN | RCU_CTL0_CKMEN | RCU_CTL0_PLLEN);
-    RCU_CTL0 &= ~RCU_CTL0_HXTALBPS;
     /* reset RCU */
+#ifdef GD32F130_150
     RCU_CFG0 &= ~(RCU_CFG0_SCS | RCU_CFG0_AHBPSC | RCU_CFG0_APB1PSC | RCU_CFG0_APB2PSC |\
                   RCU_CFG0_ADCPSC | RCU_CFG0_CKOUTSEL | RCU_CFG0_CKOUTDIV | RCU_CFG0_PLLDV);
+#elif defined (GD32F170_190)
+    RCU_CFG0 &= ~(RCU_CFG0_SCS | RCU_CFG0_AHBPSC | RCU_CFG0_APB1PSC | RCU_CFG0_APB2PSC |\
+                  RCU_CFG0_ADCPSC | RCU_CFG0_CKOUT0SEL | RCU_CFG0_CKOUT0DIV | RCU_CFG0_PLLDV);
+#endif /* GD32F130_150 */
     RCU_CFG0 &= ~(RCU_CFG0_PLLSEL | RCU_CFG0_PLLMF | RCU_CFG0_PLLPREDV);
+#ifdef GD32F130_150
     RCU_CFG0 &= ~(RCU_CFG0_USBDPSC);
+#endif /* GD32F130_150 */
+    RCU_CTL0 &= ~(RCU_CTL0_HXTALEN | RCU_CTL0_CKMEN | RCU_CTL0_PLLEN | RCU_CTL0_HXTALBPS);
     RCU_CFG1 &= ~RCU_CFG1_HXTALPREDV;
     RCU_CFG2 &= ~(RCU_CFG2_USART0SEL | RCU_CFG2_CECSEL | RCU_CFG2_ADCSEL);
+#ifdef GD32F130_150
     RCU_CTL1 &= ~RCU_CTL1_IRC14MEN;
+#elif defined (GD32F170_190)
+    RCU_CFG2 &= ~RCU_CFG2_IRC28MDIV;
+    RCU_CTL1 &= ~RCU_CTL1_IRC28MEN;
+    RCU_CFG3 &= ~RCU_CFG3_CKOUT1SEL;
+    RCU_CFG3 &= ~RCU_CFG3_CKOUT1DIV;
+#endif /* GD32F130_150 */
     RCU_INT = 0x00000000U;
 }
 
@@ -89,12 +97,15 @@ void rcu_deinit(void)
       \arg        RCU_TIMERx (x=0,1,2,5,13,14,15,16): TIMER clock
       \arg        RCU_SPIx (x=0,1,2): SPI clock
       \arg        RCU_USARTx (x=0,1): USART clock
+      \arg        RCU_SLCD: SLCD clock, only in GD32F170_190
       \arg        RCU_WWDGT: WWDGT clock
       \arg        RCU_I2Cx (x=0,1,2): I2C clock
-      \arg        RCU_USBD: USBD clock
+      \arg        RCU_USBD: USBD clock, only in GD32F130_150
+      \arg        RCU_CANx (x=0,1): CAN clock, only in GD32F170_190
       \arg        RCU_PMU: PMU clock
       \arg        RCU_DAC: DAC clock
       \arg        RCU_CEC: CEC clock
+      \arg        RCU_OPAIVREF: OPAIVREF clock, only in GD32F170_190
       \arg        RCU_RTC: RTC clock
     \param[out] none
     \retval     none
@@ -117,12 +128,15 @@ void rcu_periph_clock_enable(rcu_periph_enum periph)
       \arg        RCU_TIMERx (x=0,1,2,5,13,14,15,16): TIMER clock
       \arg        RCU_SPIx (x=0,1,2): SPI clock
       \arg        RCU_USARTx (x=0,1): USART clock
+      \arg        RCU_SLCD: SLCD clock, only in GD32F170_190
       \arg        RCU_WWDGT: WWDGT clock
       \arg        RCU_I2Cx (x=0,1,2): I2C clock
-      \arg        RCU_USBD: USBD clock
+      \arg        RCU_USBD: USBD clock only in GD32F130_150
+      \arg        RCU_CANx (x=0,1): CAN clock, only in GD32F170_190
       \arg        RCU_PMU: PMU clock
       \arg        RCU_DAC: DAC clock
       \arg        RCU_CEC: CEC clock
+      \arg        RCU_OPAIVREF: OPAIVREF clock, only in GD32F170_190
       \arg        RCU_RTC: RTC clock
     \param[out] none
     \retval     none
@@ -171,12 +185,15 @@ void rcu_periph_clock_sleep_disable(rcu_periph_sleep_enum periph)
       \arg        RCU_TIMERxRST (x=0,1,2,5,13,14,15,16): reset TIMER
       \arg        RCU_SPIxRST (x=0,1,2): reset SPI
       \arg        RCU_USARTxRST (x=0,1): reset USART
+      \arg        RCU_SLCDRST: reset SLCD, only in GD32F170_190
       \arg        RCU_WWDGTRST: reset WWDGT
       \arg        RCU_I2CxRST (x=0,1,2): reset I2C
-      \arg        RCU_USBDRST: reset USBD
+      \arg        RCU_USBDRST: reset USBD, only in GD32F130_150
+      \arg        RCU_CANxRST (x=0,1): reset CAN, only in GD32F170_190
       \arg        RCU_PMURST: reset PMU
       \arg        RCU_DACRST: reset DAC
       \arg        RCU_CECRST: reset CEC
+      \arg        RCU_OPAIVREFRST: reset OPAIVREF, only in GD32F170_190
     \param[out] none
     \retval     none
 */
@@ -196,12 +213,15 @@ void rcu_periph_reset_enable(rcu_periph_reset_enum periph_reset)
       \arg        RCU_TIMERxRST (x=0,1,2,5,13,14,15,16): reset TIMER
       \arg        RCU_SPIxRST (x=0,1,2): reset SPI
       \arg        RCU_USARTxRST (x=0,1): reset USART
+      \arg        RCU_SLCDRST: reset SLCD, only in GD32F170_190
       \arg        RCU_WWDGTRST: reset WWDGT
       \arg        RCU_I2CxRST (x=0,1,2): reset I2C
-      \arg        RCU_USBDRST: reset USBD
+      \arg        RCU_USBDRST: reset USBD, only in GD32F130_150
+      \arg        RCU_CANxRST (x=0,1): reset CAN, only in GD32F170_190
       \arg        RCU_PMURST: reset PMU
       \arg        RCU_DACRST: reset DAC
       \arg        RCU_CECRST: reset CEC
+      \arg        RCU_OPAIVREFRST: reset OPAIVREF, only in GD32F170_190
     \param[out] none
     \retval     none
 */
@@ -263,7 +283,7 @@ void rcu_system_clock_source_config(uint32_t ck_sys)
 */
 uint32_t rcu_system_clock_source_get(void)
 {
-    return (RCU_CFG0 & RCU_CFG0_SCSS);
+    return (RCU_CFG0 & 0x0000000CU);
 }
 
 /*!
@@ -329,7 +349,9 @@ void rcu_apb2_clock_config(uint32_t ck_apb2)
     \brief      configure the ADC clock prescaler selection
     \param[in]  ck_adc: ADC clock prescaler selection, refer to rcu_adc_clock_enum
                 only one parameter can be selected which is shown as below:
-      \arg        RCU_ADCCK_IRC14M: select CK_IRC14M as CK_ADC
+      \arg        RCU_ADCCK_IRC14M: select CK_IRC14M as CK_ADC, only in GD32F130_150
+      \arg        RCU_ADCCK_IRC28M_DIV2: select CK_IRC28M/2 as CK_ADC, only in GD32F170_190
+      \arg        RCU_ADCCK_IRC28M: select CK_IRC28M as CK_ADC, only in GD32F170_190
       \arg        RCU_ADCCK_APB2_DIV2: select CK_APB2/2 as CK_ADC
       \arg        RCU_ADCCK_APB2_DIV4: select CK_APB2/4 as CK_ADC
       \arg        RCU_ADCCK_APB2_DIV6: select CK_APB2/6 as CK_ADC
@@ -341,12 +363,27 @@ void rcu_adc_clock_config(rcu_adc_clock_enum ck_adc)
 {
     /* reset the ADCPSC, ADCSEL, IRC28MDIV bits */
     RCU_CFG0 &= ~RCU_CFG0_ADCPSC;
+#ifdef GD32F130_150
     RCU_CFG2 &= ~RCU_CFG2_ADCSEL;
+#elif defined (GD32F170_190)
+    RCU_CFG2 &= ~(RCU_CFG2_ADCSEL | RCU_CFG2_IRC28MDIV);
+#endif /* GD32F130_150 */
     /* set the ADC clock according to ck_adc */
     switch(ck_adc){
+#ifdef GD32F130_150
     case RCU_ADCCK_IRC14M:
         RCU_CFG2 &= ~RCU_CFG2_ADCSEL;
         break;
+#elif defined (GD32F170_190)
+    case RCU_ADCCK_IRC28M_DIV2:
+        RCU_CFG2 &= ~RCU_CFG2_IRC28MDIV;
+        RCU_CFG2 &= ~RCU_CFG2_ADCSEL;
+        break;
+    case RCU_ADCCK_IRC28M:
+        RCU_CFG2 |= RCU_CFG2_IRC28MDIV;
+        RCU_CFG2 &= ~RCU_CFG2_ADCSEL;
+        break;
+#endif /* GD32F130_150 */
     case RCU_ADCCK_APB2_DIV2:
         RCU_CFG0 |= RCU_ADC_CKAPB2_DIV2;
         RCU_CFG2 |= RCU_CFG2_ADCSEL;
@@ -368,6 +405,7 @@ void rcu_adc_clock_config(rcu_adc_clock_enum ck_adc)
     }
 }
 
+#ifdef GD32F130_150
 /*!
     \brief      configure the USBD clock prescaler selection
     \param[in]  ck_usbd: USBD clock prescaler selection
@@ -413,6 +451,71 @@ void rcu_ckout_config(uint32_t ckout_src, uint32_t ckout_div)
     ckout &= ~(RCU_CFG0_CKOUTSEL | RCU_CFG0_CKOUTDIV | RCU_CFG0_PLLDV);
     RCU_CFG0 = (ckout | ckout_src | ckout_div);
 }
+#elif defined (GD32F170_190)
+/*!
+    \brief      configure the CK_OUT0 clock source and divider
+    \param[in]  ckout0_src: CK_OUT0 clock source selection
+                only one parameter can be selected which is shown as below:
+      \arg        RCU_CKOUT0SRC_NONE: no clock selected
+      \arg        RCU_CKOUT0SRC_IRC28M: IRC28M selected
+      \arg        RCU_CKOUT0SRC_IRC40K: IRC40K selected
+      \arg        RCU_CKOUT0SRC_LXTAL: LXTAL selected
+      \arg        RCU_CKOUT0SRC_CKSYS: CKSYS selected
+      \arg        RCU_CKOUT0SRC_IRC8M: IRC8M selected
+      \arg        RCU_CKOUT0SRC_HXTAL: HXTAL selected
+      \arg        RCU_CKOUT0SRC_CKPLL_DIV1: CK_PLL selected
+      \arg        RCU_CKOUT0SRC_CKPLL_DIV2: CK_PLL/2 selected
+    \param[in]  ckout0_div: CK_OUT0 divider
+                only one parameter can be selected which is shown as below:
+      \arg        RCU_CKOUT0_DIVx(x=1,2,4,8,16,32,64,128): CK_OUT0 is divided by x
+    \param[out] none
+    \retval     none
+*/
+void rcu_ckout0_config(uint32_t ckout0_src, uint32_t ckout0_div)
+{
+    uint32_t ckout0 = 0U;
+    ckout0 = RCU_CFG0;
+    /* reset the CKOUT0SEL, CKOUT0DIV and PLLDV bits and set according to ckout0_src and ckout0_div */
+    ckout0 &= ~(RCU_CFG0_CKOUT0SEL | RCU_CFG0_CKOUT0DIV | RCU_CFG0_PLLDV);
+    RCU_CFG0 = (ckout0 | ckout0_src | ckout0_div);
+}
+
+/*!
+    \brief      configure the CK_OUT1 clock source and divider
+    \param[in]  ckout1_src: CK_OUT1 clock source selection
+                only one parameter can be selected which is shown as below:
+      \arg        RCU_CKOUT1SRC_NONE: no clock selected
+      \arg        RCU_CKOUT1SRC_IRC28M: IRC28M selected
+      \arg        RCU_CKOUT1SRC_IRC40K: IRC40K selected
+      \arg        RCU_CKOUT1SRC_LXTAL: LXTAL selected
+      \arg        RCU_CKOUT1SRC_CKSYS: CKSYS selected
+      \arg        RCU_CKOUT1SRC_IRC8M: IRC8M selected
+      \arg        RCU_CKOUT1SRC_HXTAL: HXTAL selected
+      \arg        RCU_CKOUT1SRC_CKPLL_DIV1: CK_PLL selected
+      \arg        RCU_CKOUT1SRC_CKPLL_DIV2: CK_PLL/2 selected
+    \param[in]  ckout1_div: CK_OUT1 divider
+                only one parameter can be selected which is shown as below:
+      \arg        RCU_CKOUT1_DIVx(x=1..64): CK_OUT1 is divided by x
+    \param[out] none
+    \retval     none
+*/
+void rcu_ckout1_config(uint32_t ckout1_src, uint32_t ckout1_div)
+{
+    uint32_t ckout1 = 0U;
+    ckout1 = RCU_CFG3;
+    /* reset the CKOUT1SRC, CKOUT1DIV bits and set according to ckout1_src and ckout1_div */
+    ckout1 &= ~(RCU_CFG3_CKOUT1SEL | RCU_CFG3_CKOUT1DIV);
+    if(RCU_CKOUT1SRC_CKPLL_DIV1 == ckout1_src){
+        RCU_CFG0 |= RCU_CFG0_PLLDV;
+        ckout1_src = CFG3_CKOUT1SEL(7);
+    }else if(RCU_CKOUT1SRC_CKPLL_DIV2 == ckout1_src){
+        RCU_CFG0 &= ~RCU_CFG0_PLLDV;
+        ckout1_src = CFG3_CKOUT1SEL(7);
+    }else{
+    }
+    RCU_CFG3 = (ckout1 | ckout1_src | ckout1_div);
+}
+#endif /* GD32F130_150 */
 
 /*!
     \brief      configure the PLL clock source selection and PLL multiply factor
@@ -484,6 +587,26 @@ void rcu_rtc_clock_config(uint32_t rtc_clock_source)
     RCU_BDCTL |= rtc_clock_source;
 }
 
+#ifdef GD32F170_190
+/*!
+    \brief      configure the SLCD clock source selection
+    \param[in]  slcd_clock_source: SLCD clock source selection
+                only one parameter can be selected which is shown as below:
+      \arg        RCU_SLCDSRC_NONE: no clock selected
+      \arg        RCU_SLCDSRC_LXTAL: CK_LXTAL selected as SLCD source clock
+      \arg        RCU_SLCDSRC_IRC40K: CK_IRC40K selected as SLCD source clock
+      \arg        RCU_SLCDSRC_HXTAL_DIV32: CK_HXTAL/32 selected as SLCD source clock
+    \param[out] none
+    \retval     none
+*/
+void rcu_slcd_clock_config(uint32_t slcd_clock_source)
+{
+    /* reset the bits and set according to rtc_clock_source */
+    RCU_BDCTL &= ~RCU_BDCTL_RTCSRC;
+    RCU_BDCTL |= slcd_clock_source;
+}
+#endif /* GD32F170_190 */
+
 /*!
     \brief      configure the HXTAL divider used as input of PLL
     \param[in]  hxtal_prediv: HXTAL divider used as input of PLL
@@ -528,7 +651,8 @@ void rcu_lxtal_drive_capability_config(uint32_t lxtal_dricap)
       \arg        RCU_FLAG_IRC8MSTB: IRC8M stabilization flag
       \arg        RCU_FLAG_HXTALSTB: HXTAL stabilization flag
       \arg        RCU_FLAG_PLLSTB: PLL stabilization flag
-      \arg        RCU_FLAG_IRC14MSTB: IRC14M stabilization flag
+      \arg        RCU_FLAG_IRC14MSTB: IRC14M stabilization flag, only in GD32F130_150
+      \arg        RCU_FLAG_IRC28MSTB: IRC28M stabilization flag, only in GD32F170_190
       \arg        RCU_FLAG_V12RST: 1.2V domain Power reset flag
       \arg        RCU_FLAG_OBLRST: option byte loader reset flag
       \arg        RCU_FLAG_EPRST: external PIN reset flag
@@ -569,7 +693,8 @@ void rcu_all_reset_flag_clear(void)
       \arg        RCU_INT_FLAG_IRC8MSTB: IRC8M stabilization interrupt flag
       \arg        RCU_INT_FLAG_HXTALSTB: HXTAL stabilization interrupt flag
       \arg        RCU_INT_FLAG_PLLSTB: PLL stabilization interrupt flag
-      \arg        RCU_INT_FLAG_IRC14MSTB: IRC14M stabilization interrupt flag
+      \arg        RCU_INT_FLAG_IRC14MSTB: IRC14M stabilization interrupt flag, only in GD32F130_150
+      \arg        RCU_INT_FLAG_IRC28MSTB: IRC28M stabilization interrupt flag, only in GD32F170_190
       \arg        RCU_INT_FLAG_CKM: HXTAL clock stuck interrupt flag
     \param[out] none
     \retval     FlagStatus: SET or RESET
@@ -592,7 +717,8 @@ FlagStatus rcu_interrupt_flag_get(rcu_int_flag_enum int_flag)
       \arg        RCU_INT_FLAG_IRC8MSTB_CLR: IRC8M stabilization interrupt flag clear
       \arg        RCU_INT_FLAG_HXTALSTB_CLR: HXTAL stabilization interrupt flag clear
       \arg        RCU_INT_FLAG_PLLSTB_CLR: PLL stabilization interrupt flag clear
-      \arg        RCU_INT_FLAG_IRC14MSTB_CLR: IRC14M stabilization interrupt flag clear
+      \arg        RCU_INT_FLAG_IRC14MSTB_CLR: IRC14M stabilization interrupt flag clear, only in GD32F130_150
+      \arg        RCU_INT_FLAG_IRC28MSTB_CLR: IRC28M stabilization interrupt flag clear, only in GD32F170_190
       \arg        RCU_INT_FLAG_CKM_CLR: clock stuck interrupt flag clear
     \param[out] none
     \retval     none
@@ -611,7 +737,8 @@ void rcu_interrupt_flag_clear(rcu_int_flag_clear_enum int_flag_clear)
       \arg        RCU_INT_IRC8MSTB: IRC8M stabilization interrupt enable
       \arg        RCU_INT_HXTALSTB: HXTAL stabilization interrupt enable
       \arg        RCU_INT_PLLSTB: PLL stabilization interrupt enable
-      \arg        RCU_INT_IRC14MSTB: IRC14M stabilization interrupt enable
+      \arg        RCU_INT_IRC14MSTB: IRC14M stabilization interrupt enable, only in GD32F130_150
+      \arg        RCU_INT_IRC28MSTB: IRC28M stabilization interrupt enable, only in GD32F170_190
     \param[out] none
     \retval     none
 */
@@ -630,7 +757,8 @@ void rcu_interrupt_enable(rcu_int_enum stab_int)
       \arg        RCU_INT_IRC8MSTB: IRC8M stabilization interrupt disable
       \arg        RCU_INT_HXTALSTB: HXTAL stabilization interrupt disable
       \arg        RCU_INT_PLLSTB: PLL stabilization interrupt disable
-      \arg        RCU_INT_IRC14MSTB: IRC14M stabilization interrupt disable
+      \arg        RCU_INT_IRC14MSTB: IRC14M stabilization interrupt disable, only in GD32F130_150
+      \arg        RCU_INT_IRC28MSTB: IRC28M stabilization interrupt disable, only in GD32F170_190
     \param[out] none
     \retval     none
 */
@@ -646,7 +774,8 @@ void rcu_interrupt_disable(rcu_int_enum stab_int)
       \arg        RCU_HXTAL: HXTAL
       \arg        RCU_LXTAL: LXTAL
       \arg        RCU_IRC8M: IRC8M
-      \arg        RCU_IRC14M: IRC14M
+      \arg        RCU_IRC14M: IRC14M, only in GD32F130_150
+      \arg        RCU_IRC28M: IRC28M, only in GD32F170_190
       \arg        RCU_IRC40K: IRC40K
       \arg        RCU_PLL_CK: PLL
     \param[out] none
@@ -661,7 +790,6 @@ ErrStatus rcu_osci_stab_wait(rcu_osci_type_enum osci)
     switch(osci){
     /* wait HXTAL stable */
     case RCU_HXTAL:
-        /* wait until HXTAL is stabilization and osci_stat is not more than timeout */
         while((RESET == osci_stat) && (HXTAL_STARTUP_TIMEOUT != stb_cnt)){
             osci_stat = rcu_flag_get(RCU_FLAG_HXTALSTB);
             stb_cnt++;
@@ -696,6 +824,7 @@ ErrStatus rcu_osci_stab_wait(rcu_osci_type_enum osci)
             reval = SUCCESS;
         }
         break;
+#ifdef GD32F130_150
     /* wait IRC14M stable */
     case RCU_IRC14M:        
         while((RESET == osci_stat) && (OSC_STARTUP_TIMEOUT != stb_cnt)){
@@ -708,6 +837,20 @@ ErrStatus rcu_osci_stab_wait(rcu_osci_type_enum osci)
             reval = SUCCESS;
         }
         break;
+#elif defined (GD32F170_190)
+    /* wait IRC28M stable */
+    case RCU_IRC28M:
+        while((RESET == osci_stat) && (OSC_STARTUP_TIMEOUT != stb_cnt)){
+            osci_stat = rcu_flag_get(RCU_FLAG_IRC28MSTB);
+            stb_cnt++;
+        }
+
+        /* check whether flag is set or not */
+        if(RESET != rcu_flag_get(RCU_FLAG_IRC28MSTB)){
+            reval = SUCCESS;
+        }
+        break;
+#endif /* GD32F130_150 */
     /* wait IRC40K stable */
     case RCU_IRC40K:
         while((RESET == osci_stat) && (OSC_STARTUP_TIMEOUT != stb_cnt)){
@@ -747,7 +890,8 @@ ErrStatus rcu_osci_stab_wait(rcu_osci_type_enum osci)
       \arg        RCU_HXTAL: HXTAL
       \arg        RCU_LXTAL: LXTAL
       \arg        RCU_IRC8M: IRC8M
-      \arg        RCU_IRC14M: IRC14M
+      \arg        RCU_IRC14M: IRC14M, only in GD32F130_150
+      \arg        RCU_IRC28M: IRC28M, only in GD32F170_190
       \arg        RCU_IRC40K: IRC40K
       \arg        RCU_PLL_CK: PLL
     \param[out] none
@@ -765,7 +909,8 @@ void rcu_osci_on(rcu_osci_type_enum osci)
       \arg        RCU_HXTAL: HXTAL
       \arg        RCU_LXTAL: LXTAL
       \arg        RCU_IRC8M: IRC8M
-      \arg        RCU_IRC14M: IRC14M
+      \arg        RCU_IRC14M: IRC14M, only in GD32F130_150
+      \arg        RCU_IRC28M: IRC28M, only in GD32F170_190
       \arg        RCU_IRC40K: IRC40K
       \arg        RCU_PLL_CK: PLL
     \param[out] none
@@ -802,7 +947,11 @@ void rcu_osci_bypass_mode_enable(rcu_osci_type_enum osci)
         RCU_BDCTL = (reg | RCU_BDCTL_LXTALBPS);
         break;
     case RCU_IRC8M:
+#ifdef GD32F130_150
     case RCU_IRC14M:
+#elif defined (GD32F170_190)
+    case RCU_IRC28M:
+#endif /* GD32F130_150 */
     case RCU_IRC40K:
     case RCU_PLL_CK:
         break;
@@ -837,7 +986,11 @@ void rcu_osci_bypass_mode_disable(rcu_osci_type_enum osci)
         RCU_BDCTL =(reg & (~RCU_BDCTL_LXTALBPS));
         break;
     case RCU_IRC8M:
+#ifdef GD32F130_150
     case RCU_IRC14M:
+#elif defined (GD32F170_190)
+    case RCU_IRC28M:
+#endif /* GD32F130_150 */
     case RCU_IRC40K:
     case RCU_PLL_CK:
         break;
@@ -852,6 +1005,7 @@ void rcu_osci_bypass_mode_disable(rcu_osci_type_enum osci)
     \param[out] none
     \retval     none
 */
+
 void rcu_hxtal_clock_monitor_enable(void)
 {
     RCU_CTL0 |= RCU_CTL0_CKMEN;
@@ -883,6 +1037,7 @@ void rcu_irc8m_adjust_value_set(uint8_t irc8m_adjval)
     RCU_CTL0 = (adjust | ((uint32_t)(irc8m_adjval)<<3));
 }
 
+#ifdef GD32F130_150
 /*!
     \brief      set the IRC14M adjust value
     \param[in]  irc14m_adjval: IRC14M adjust value, must be between 0 and 0x1F
@@ -897,6 +1052,22 @@ void rcu_irc14m_adjust_value_set(uint8_t irc14m_adjval)
     adjust &= ~RCU_CTL1_IRC14MADJ;
     RCU_CTL1 = (adjust | ((uint32_t)(irc14m_adjval)<<3));
 }
+#elif defined (GD32F170_190)
+/*!
+    \brief      set the IRC28M adjust value
+    \param[in]  irc28m_adjval: IRC28M adjust value, must be between 0 and 0x1F
+    \param[out] none
+    \retval     none
+*/
+void rcu_irc28m_adjust_value_set(uint8_t irc28m_adjval)
+{
+    uint32_t adjust = 0U;
+    adjust = RCU_CTL1;
+    /* reset the IRC28MADJ bits and set according to irc28m_adjval */
+    adjust &= ~RCU_CTL1_IRC28MADJ;
+    RCU_CTL1 = (adjust | ((uint32_t)(irc28m_adjval)<<3));
+}
+#endif /* GD32F130_150 */
 
 /*!
     \brief      unlock the voltage key
@@ -915,10 +1086,15 @@ void rcu_voltage_key_unlock(void)
     \brief      set voltage in deep sleep mode
     \param[in]  dsvol: deep sleep mode voltage
                 only one parameter can be selected which is shown as below:
-      \arg        RCU_DEEPSLEEP_V_1_2: the core voltage is 1.2V
-      \arg        RCU_DEEPSLEEP_V_1_1: the core voltage is 1.1V
-      \arg        RCU_DEEPSLEEP_V_1_0: the core voltage is 1.0V
-      \arg        RCU_DEEPSLEEP_V_0_9: the core voltage is 0.9V
+      \arg        RCU_DEEPSLEEP_V_1_2: the core voltage is 1.2V, only in GD32F130_150
+      \arg        RCU_DEEPSLEEP_V_1_1: the core voltage is 1.1V, only in GD32F130_150
+      \arg        RCU_DEEPSLEEP_V_1_0: the core voltage is 1.0V, only in GD32F130_150
+      \arg        RCU_DEEPSLEEP_V_0_9: the core voltage is 0.9V, only in GD32F130_150
+
+      \arg        RCU_DEEPSLEEP_V_1_8: the core voltage is 1.8V, only in GD32F170_190
+      \arg        RCU_DEEPSLEEP_V_1_6: the core voltage is 1.6V, only in GD32F170_190
+      \arg        RCU_DEEPSLEEP_V_1_4: the core voltage is 1.4V, only in GD32F170_190
+      \arg        RCU_DEEPSLEEP_V_1_2: the core voltage is 1.2V, only in GD32F170_190
     \param[out] none
     \retval     none
 */
@@ -929,6 +1105,7 @@ void rcu_deepsleep_voltage_set(uint32_t dsvol)
     RCU_DSV |= dsvol;
 }
 
+#ifdef GD32F130_150
 /*!
     \brief      set the power down voltage
     \param[in]  pdvol: power down voltage select
@@ -944,6 +1121,7 @@ void rcu_power_down_voltage_set(uint32_t pdvol)
     RCU_PDVSEL &= ~RCU_PDVSEL_PDRVS;
     RCU_PDVSEL |= pdvol;
 }
+#endif /* GD32F130_150 */
 
 /*!
     \brief      get the system clock, bus and peripheral clock frequency
@@ -1037,7 +1215,15 @@ uint32_t rcu_clock_freq_get(rcu_clock_freq_enum clock)
     case CK_ADC:
         /* calculate ADC clock frequency */
         if(RCU_ADCSRC_APB2DIV != (RCU_CFG2 & RCU_CFG2_ADCSEL)){
+#ifdef GD32F130_150
             adc_freq = IRC14M_VALUE;
+#elif defined (GD32F170_190)
+            if(RCU_ADC_IRC28M_DIV1 != (RCU_CFG2 & RCU_CFG2_IRC28MDIV)){
+                adc_freq = IRC28M_VALUE >> 1;
+            }else{
+                adc_freq = IRC28M_VALUE;
+            }
+#endif /* GD32F130_150 */
         }else{
             /* ADC clock select CK_APB2 divided by 2/4/6/8 */
             adcps = GET_BITS(RCU_CFG0, 14, 15);

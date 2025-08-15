@@ -1,18 +1,16 @@
 /*!
-    \file    gd32f1x0_dbg.h
-    \brief   definitions for the DBG
+    \file  gd32f1x0_dbg.h
+    \brief definitions for the DBG
 
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -67,7 +65,13 @@ OF SUCH DAMAGE.
 #define DBG_CTL0_I2C0_HOLD      BIT(15)                     /*!< hold I2C0 smbus when core is halted */
 #define DBG_CTL0_I2C1_HOLD      BIT(16)                     /*!< hold I2C1 smbus when core is halted */
 #define DBG_CTL0_I2C2_HOLD      BIT(17)                     /*!< hold I2C2 smbus when core is halted */
+#ifdef GD32F170_190
+#define DBG_CTL0_CAN0_HOLD      BIT(18)                     /*!< CAN0 counter kept when core is halted */
+#endif /* GD32F170_190 */
 #define DBG_CTL0_TIMER5_HOLD    BIT(19)                     /*!< hold TIMER5 counter when core is halted */
+#ifdef GD32F170_190
+#define DBG_CTL0_CAN1_HOLD      BIT(21)                     /*!< hold CAN1 counter when core is halted */
+#endif /* GD32F170_190 */
 #define DBG_CTL0_TIMER13_HOLD   BIT(27)                     /*!< hold TIMER13 counter when core is halted */
 
 /* DBG_CTL1 */
@@ -101,10 +105,16 @@ typedef enum
     DBG_TIMER0_HOLD         = DBG_REGIDX_BIT(DBG_IDX_CTL0, 10U),             /*!< TIMER0 hold bit */
     DBG_TIMER1_HOLD         = DBG_REGIDX_BIT(DBG_IDX_CTL0, 11U),             /*!< TIMER1 hold bit */
     DBG_TIMER2_HOLD         = DBG_REGIDX_BIT(DBG_IDX_CTL0, 12U),             /*!< TIMER2 hold bit */
+#ifdef GD32F170_190
+    DBG_CAN0_HOLD           = DBG_REGIDX_BIT(DBG_IDX_CTL0, 14U),             /*!< CAN0 hold bit */
+#endif /* GD32F170_190 */
     DBG_I2C0_HOLD           = DBG_REGIDX_BIT(DBG_IDX_CTL0, 15U),             /*!< I2C0 hold bit */
     DBG_I2C1_HOLD           = DBG_REGIDX_BIT(DBG_IDX_CTL0, 16U),             /*!< I2C1 hold bit */
     DBG_I2C2_HOLD           = DBG_REGIDX_BIT(DBG_IDX_CTL0, 17U),             /*!< I2C2 hold bit */
     DBG_TIMER5_HOLD         = DBG_REGIDX_BIT(DBG_IDX_CTL0, 19U),             /*!< TIMER5 hold bit */
+#ifdef GD32F170_190
+    DBG_CAN1_HOLD           = DBG_REGIDX_BIT(DBG_IDX_CTL0, 21U),             /*!< CAN1 hold bit */
+#endif /* GD32F170_190 */
     DBG_TIMER13_HOLD        = DBG_REGIDX_BIT(DBG_IDX_CTL0, 27U),             /*!< TIMER13 hold bit */
     DBG_RTC_HOLD            = DBG_REGIDX_BIT(DBG_IDX_CTL1, 10U),             /*!< RTC hold bit */
     DBG_TIMER14_HOLD        = DBG_REGIDX_BIT(DBG_IDX_CTL1, 16U),             /*!< TIMER14 hold bit */
@@ -127,5 +137,4 @@ void dbg_low_power_disable(uint32_t dbg_low_power);
 void dbg_periph_enable(dbg_periph_enum dbg_periph);
 /* disable peripheral behavior when the MCU is in debug mode */
 void dbg_periph_disable(dbg_periph_enum dbg_periph);
-
 #endif /* GD32F1X0_DBG_H */

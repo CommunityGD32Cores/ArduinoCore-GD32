@@ -1,19 +1,16 @@
 /*!
-    \file    gd32f1x0_cmp.h
-    \brief   definitions for the CMP
+    \file  gd32f1x0_cmp.h
+    \brief definitions for the CMP
 
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2021-05-19, V3.3.1, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)    
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -48,7 +45,7 @@ OF SUCH DAMAGE.
 #define CMP                                      CMP_BASE                       /*!< CMP base address */  
 
 /* registers definitions */
-#define CMP_CS                                   REG32(CMP + 0x00000000U)       /*!< CMP control and status register */
+#define CMP_CS                                   REG32((CMP) + 0x00000000U)     /*!< CMP control and status register */
 
 /* bits definitions */
 /* CMP_CS */
@@ -89,7 +86,11 @@ typedef enum
     CMP_3_4VREFINT,                                                             /*!< VREFINT *3/4 input */
     CMP_VREFINT,                                                                /*!< VREFINT input */
     CMP_DAC0,                                                                   /*!< PA4 (DAC0) input */
+#ifdef GD32F170_190
+    CMP_DAC1,                                                                   /*!< DAC1 input */
+#else
     CMP_PA5,                                                                    /*!< PA5 input */
+#endif
     CMP_PA_0_2                                                                  /*!< PA0 input when CMP0 is selected, PA2 input when CMP1 is selected */
 }inverting_input_enum;
 
@@ -164,7 +165,11 @@ typedef enum
 #define CS_CMP1MSEL_3_4VREFINT                   CS_CMP1MSEL(2)                 /*!< CMP1 inverting input 3/4 Vrefint */
 #define CS_CMP1MSEL_VREFINT                      CS_CMP1MSEL(3)                 /*!< CMP1 inverting input Vrefint */
 #define CS_CMP1MSEL_DAC0                         CS_CMP1MSEL(4)                 /*!< CMP1 inverting input DAC0*/
+#ifdef GD32F170_190
+#define CS_CMP1MSEL_PA5                          CS_CMP1MSEL(5)                 /*!< CMP1 inverting input PA5*/
+#else
 #define CS_CMP1MSEL_DAC1                         CS_CMP1MSEL(5)                 /*!< CMP1 inverting input DAC1*/
+#endif
 #define CS_CMP1MSEL_PA2                          CS_CMP1MSEL(6)                 /*!< CMP1 inverting input PA2*/
 
 /* comparator channel1 output */
@@ -202,9 +207,14 @@ typedef enum
 /* CMP deinit */
 void cmp_deinit(void);
 /* CMP mode init */
-void cmp_mode_init(uint32_t cmp_periph, operating_mode_enum operating_mode, inverting_input_enum inverting_input, cmp_hysteresis_enum output_hysteresis);
+void cmp_mode_init(uint32_t cmp_periph, \
+                   operating_mode_enum cmp_operating_mode, \
+                   inverting_input_enum cmp_inverting_input, \
+                   cmp_hysteresis_enum output_hysteresis);
 /* CMP output init */
-void cmp_output_init(uint32_t cmp_periph, cmp_output_enum output_slection, uint32_t output_polarity);
+void cmp_output_init(uint32_t cmp_periph, \
+                     cmp_output_enum cmp_output_slection, \
+                     uint32_t cmp_output_polarity);
 
 /* enable functions */
 /* enable CMP */

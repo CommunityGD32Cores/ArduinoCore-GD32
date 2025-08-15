@@ -1,18 +1,16 @@
 /*!
-    \file    gd32f1x0_pmu.h
-    \brief   definitions for the PMU
+    \file  gd32f1x0_pmu.h
+    \brief definitions for the PMU
 
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -68,10 +66,6 @@ OF SUCH DAMAGE.
 #define PMU_CS_WUPEN1                 BIT(9)                   /*!< wakeup pin 1 enable */
 
 /* constants definitions */
-/* PMU ldo definitions */
-#define PMU_LDO_NORMAL                ((uint32_t)0x00000000U)  /*!< LDO normal work when pmu enter deepsleep mode */
-#define PMU_LDO_LOWPOWER              PMU_CTL_LDOLP            /*!< LDO work at low power status when pmu enter deepsleep mode */
-
 /* PMU low voltage detector threshold definitions */
 #define CTL_LVDT(regval)              (BITS(5,7)&((uint32_t)(regval) << 5))
 #define PMU_LVDT_0                    CTL_LVDT(0)              /*!< voltage threshold is 2.2V */
@@ -87,6 +81,10 @@ OF SUCH DAMAGE.
 #define PMU_FLAG_WAKEUP               PMU_CS_WUF               /*!< wakeup flag status */
 #define PMU_FLAG_STANDBY              PMU_CS_STBF              /*!< standby flag status */
 #define PMU_FLAG_LVD                  PMU_CS_LVDF              /*!< lvd flag status */
+
+/* PMU ldo definitions */
+#define PMU_LDO_NORMAL                ((uint32_t)0x00000000U)  /*!< LDO normal work when pmu enter deepsleep mode */
+#define PMU_LDO_LOWPOWER              PMU_CTL_LDOLP            /*!< LDO work at low power status when pmu enter deepsleep mode */
 
 /* PMU flag reset definitions */
 #define PMU_FLAG_RESET_WAKEUP         ((uint8_t)0x00)          /*!< wakeup flag reset */
@@ -114,7 +112,7 @@ void pmu_to_sleepmode(uint8_t sleepmodecmd);
 /* PMU work in deepsleep mode */
 void pmu_to_deepsleepmode(uint32_t ldo,uint8_t deepsleepmodecmd);
 /* PMU work in standby mode */
-void pmu_to_standbymode(void);
+void pmu_to_standbymode(uint8_t standbymodecmd);
 /* enable PMU wakeup pin*/
 void pmu_wakeup_pin_enable(uint32_t wakeup_pin);
 /* disable PMU wakeup pin */
@@ -128,7 +126,7 @@ void pmu_backup_write_disable(void);
 
 /* flag functions */
 /* clear flag bit */
-void pmu_flag_clear(uint32_t flag);
+void pmu_flag_clear(uint32_t flag_clear);
 /* get flag state */
 FlagStatus pmu_flag_get(uint32_t flag);
 

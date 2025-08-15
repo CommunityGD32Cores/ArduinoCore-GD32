@@ -1,18 +1,16 @@
 /*!
-    \file    gd32f1x0_syscfg.h
-    \brief   definitions for the SYSCFG
+    \file  gd32f1x0_syscfg.h
+    \brief definitions for the SYSCFG
 
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -47,12 +45,15 @@ OF SUCH DAMAGE.
 #define SYSCFG                              SYSCFG_BASE
 
 /* registers definitions */
-#define SYSCFG_CFG0                         REG32(SYSCFG + 0x00000000U)        /*!< system configuration register 0 */
-#define SYSCFG_EXTISS0                      REG32(SYSCFG + 0x00000008U)        /*!< EXTI sources selection register 0 */
-#define SYSCFG_EXTISS1                      REG32(SYSCFG + 0x0000000CU)        /*!< EXTI sources selection register 1 */
-#define SYSCFG_EXTISS2                      REG32(SYSCFG + 0x00000010U)        /*!< EXTI sources selection register 2 */
-#define SYSCFG_EXTISS3                      REG32(SYSCFG + 0x00000014U)        /*!< EXTI sources selection register 3 */
-#define SYSCFG_CFG2                         REG32(SYSCFG + 0x00000018U)        /*!< system configuration register 2 */
+#define SYSCFG_CFG0                         REG32(SYSCFG + 0x00U)               /*!< system configuration register 0 */
+#ifdef GD32F170_190
+#define SYSCFG_CFG1                         REG32(SYSCFG + 0x04U)               /*!< system configuration register 1 */
+#endif /* GD32F170_190 */
+#define SYSCFG_EXTISS0                      REG32(SYSCFG + 0x08U)               /*!< EXTI sources selection register 0 */
+#define SYSCFG_EXTISS1                      REG32(SYSCFG + 0x0CU)               /*!< EXTI sources selection register 1 */
+#define SYSCFG_EXTISS2                      REG32(SYSCFG + 0x10U)               /*!< EXTI sources selection register 2 */
+#define SYSCFG_EXTISS3                      REG32(SYSCFG + 0x14U)               /*!< EXTI sources selection register 3 */
+#define SYSCFG_CFG2                         REG32(SYSCFG + 0x18U)               /*!< system configuration register 2 */
 
 /* SYSCFG_CFG0 bits definitions */
 #define SYSCFG_CFG0_BOOT_MODE               BITS(0,1)                           /*!< SYSCFG memory remap config */
@@ -62,6 +63,11 @@ OF SUCH DAMAGE.
 #define SYSCFG_CFG0_TIMER15_DMA_RMP         BIT(11)                             /*!< TIMER 15 DMA remap config */
 #define SYSCFG_CFG0_TIMER16_DMA_RMP         BIT(12)                             /*!< TIMER 16 DMA remap config */
 #define SYSCFG_CFG0_PB9_HCCE                BIT(19)                             /*!< PB9 pin high current capability enable */
+
+#ifdef GD32F170_190
+/* SYSCFG_CFG1 bits definitions */
+#define SYSCFG_CFG1_SLCD_DECA               BITS(1,3)                           /*!< decouping capacitance connection for LCD */
+#endif /* GD32F170_190 */
 
 /* SYSCFG_EXTISS0 bits definitions */
 #define SYSCFG_EXTISS0_EXTI0_SS             BITS(0,3)                           /*!< EXTI 0 configuration */
@@ -115,7 +121,7 @@ OF SUCH DAMAGE.
 #define EXTI_SS_MASK                        BITS(0,3)                           /*!< EXTI source select mask */
 
 /* EXTI source select jumping step definition */
-#define EXTI_SS_JSTEP                       ((uint8_t)0x04U)                    /*!< EXTI source select jumping step */
+#define EXTI_SS_JSTEP                       ((uint8_t)(0x04U))                  /*!< EXTI source select jumping step */
 
 /* EXTI source select moving step definition */
 #define EXTI_SS_MSTEP(pin)                  (EXTI_SS_JSTEP * ((pin) % EXTI_SS_JSTEP))   /*!< EXTI source select moving step */
@@ -153,6 +159,21 @@ OF SUCH DAMAGE.
 /* SRAM parity check error flag definitions */
 #define SYSCFG_SRAM_PCEF                    SYSCFG_CFG2_SRAM_PCEF               /*!< SRAM parity check error flag */
 
+#ifdef GD32F170_190
+#define SYSCFG_LCD_DECA(regval)             (BITS(1,3) & ((uint32_t)(regval) << 1))
+#define SYSCFG_VLCD_RAIL1                   SYSCFG_LCD_DECA(2)                  /*!< VLCD rail1 */
+#define SYSCFG_VLCD_RAIL2                   SYSCFG_LCD_DECA(1)                  /*!< VLCD rail2 */
+#define SYSCFG_VLCD_RAIL3                   SYSCFG_LCD_DECA(4)                  /*!< VLCD rail3 */
+
+/* VLCD bias definition */
+#define VLCD_BIAS1_2_RAIL1                  ((uint8_t)0)                        /*!< VLCD bias is 1/2, using VLCDrail1 */
+#define VLCD_BIAS1_2_RAIL2                  ((uint8_t)1)                        /*!< VLCD bias is 1/2, using VLCDrail2 */
+#define VLCD_BIAS1_2_RAIL3                  ((uint8_t)2)                        /*!< VLCD bias is 1/2, using VLCDrail3 */
+#define VLCD_BIAS1_3_RAIL1_2                ((uint8_t)3)                        /*!< VLCD bias is 1/3, using VLCDrail1 and VLCDrail2 */
+#define VLCD_BIAS1_3_RAIL1_3                ((uint8_t)4)                        /*!< VLCD bias is 1/3, using VLCDrail1 and VLCDrail3 */
+#define VLCD_BIAS1_4_RAILALL                ((uint8_t)5)                        /*!< VLCD bias is 1/4, using all VLCDrails */
+#endif /* GD32F170_190 */
+
 /* function declarations */
 /* deinit syscfg module */
 void syscfg_deinit(void);
@@ -176,5 +197,10 @@ void syscfg_lock_config(uint32_t syscfg_lock);
 FlagStatus syscfg_flag_get(uint32_t syscfg_flag);
 /* clear the flag in SYSCFG_CFG2 by writing 1 */
 void syscfg_flag_clear(uint32_t syscfg_flag);
+
+#ifdef GD32F170_190
+/* configure the VLCD intermediate voltage rail */
+void syscfg_vlcd_rail_config(uint8_t vlcd_bias);
+#endif /* GD32F170_190 */
 
 #endif /* GD32F1X0_SYSCFG_H */

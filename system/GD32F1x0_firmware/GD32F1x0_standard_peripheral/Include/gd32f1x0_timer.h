@@ -1,18 +1,16 @@
 /*!
-    \file    gd32f1x0_timer.h
-    \brief   definitions for the TIMER
+    \file  gd32f1x0_timer.h
+    \brief definitions for the TIMER
 
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -43,7 +41,7 @@ OF SUCH DAMAGE.
 
 #include "gd32f1x0.h"
 
-/* TIMERx(x=0,1,2,5,13,14,15,16) definitions,, TIMER5 just for GD32F150 */
+/* TIMERx(x=0,1,2,5,13,14,15,16) definitions,, TIMER5 just for GD32F150 and GD32F190 */
 #define TIMER0                           (TIMER_BASE + 0x00012C00U)
 #define TIMER1                           (TIMER_BASE + 0x00000000U)
 #define TIMER2                           (TIMER_BASE + 0x00000400U)
@@ -75,6 +73,7 @@ OF SUCH DAMAGE.
 #define TIMER_DMACFG(timerx)             REG32((timerx) + 0x00000048U)         /*!< TIMER DMA configuration register */
 #define TIMER_DMATB(timerx)              REG32((timerx) + 0x0000004CU)         /*!< TIMER DMA transfer buffer register */
 #define TIMER_IRMP(timerx)               REG32((timerx) + 0x00000050U)         /*!< TIMER channel input remap register */
+#define TIMER_CFG(timerx)                REG32((timerx) + 0x000000FCU)         /*!< TIMER configuration register */
 
 /* bits definitions */
 /* TIMER_CTL0 */
@@ -255,6 +254,10 @@ OF SUCH DAMAGE.
 /* TIMER_IRMP */
 #define TIMER13_IRMP_CI0_RMP             BITS(0,1)           /*!< TIMER13 channel 0 input remap */
 
+/* TIMER_CFG */
+#define TIMER_CFG_OUTSEL                 BIT(0)              /*!< the output value selection */
+#define TIMER_CFG_CHVSEL                 BIT(1)              /*!< write CHxVAL register selection */
+
 /* constants definitions */
 /* TIMER init parameter struct definitions*/
 typedef struct
@@ -434,8 +437,8 @@ typedef struct
 #define TIMER_ROS_STATE_DISABLE             ((uint32_t)0x00000000U)                 /*!< when POEN bit is set, the channel output signals (CHx_O/CHx_ON) are disabled */
 
 /* idle mode off-state configure */                                                 
-#define TIMER_IOS_STATE_ENABLE              ((uint16_t)0x0400U)                     /*!< when POEN bit is reset, he channel output signals (CHx_O/CHx_ON) are enabled, with relationship to CHxEN/CHxNEN bits */
-#define TIMER_IOS_STATE_DISABLE             ((uint16_t)0x0000U)                     /*!< when POEN bit is reset, the channel output signals (CHx_O/CHx_ON) are disabled */
+#define TIMER_IOS_STATE_ENABLE              ((uint16_t)0x00000400U)                     /*!< when POEN bit is reset, he channel output signals (CHx_O/CHx_ON) are enabled, with relationship to CHxEN/CHxNEN bits */
+#define TIMER_IOS_STATE_DISABLE             ((uint16_t)0x00000000U)                     /*!< when POEN bit is reset, the channel output signals (CHx_O/CHx_ON) are disabled */
 
 /* break input polarity */
 #define TIMER_BREAK_POLARITY_LOW            ((uint16_t)0x0000U)                     /*!< break input polarity is low */
@@ -632,7 +635,7 @@ void timer_repetition_value_config(uint32_t timer_periph, uint16_t repetition);
 /* configure TIMER autoreload register value */
 void timer_autoreload_value_config(uint32_t timer_periph, uint32_t autoreload);
 /* configure TIMER counter register value */
-void timer_counter_value_config(uint32_t timer_periph, uint32_t counter);
+void timer_counter_value_config(uint32_t timer_periph , uint32_t counter);
 /* read TIMER counter value */
 uint32_t timer_counter_read(uint32_t timer_periph);
 /* read TIMER prescaler value */
@@ -755,5 +758,11 @@ void timer_external_clock_mode1_config(uint32_t timer_periph, uint32_t extpresca
 void timer_external_clock_mode1_disable(uint32_t timer_periph);
 /* configure TIMER channel remap function */
 void timer_channel_remap_config(uint32_t timer_periph,uint32_t remap);
+
+/* TIMER configure */
+/* configure TIMER write CHxVAL register selection */
+void timer_write_chxval_register_config(uint32_t timer_periph, uint16_t ccsel);
+/* configure TIMER output value selection */
+void timer_output_value_selection_config(uint32_t timer_periph, uint16_t outsel);
 
 #endif /* GD32F1X0_TIMER_H */

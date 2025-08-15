@@ -1,18 +1,16 @@
 /*!
-    \file    gd32f1x0_wwdgt.h
-    \brief   definitions for the WWDGT 
+    \file  gd32f1x0_wwdgt.h
+    \brief definitions for the WWDGT 
 
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -44,12 +42,12 @@ OF SUCH DAMAGE.
 #include "gd32f1x0.h"
 
 /* WWDGT definitions */
-#define WWDGT                       WWDGT_BASE                      /*!< WWDGT base address */
+#define WWDGT                       WWDGT_BASE
 
 /* registers definitions */
-#define WWDGT_CTL                   REG32(WWDGT + 0x00000000U)      /*!< WWDGT control register */
-#define WWDGT_CFG                   REG32(WWDGT + 0x00000004U)      /*!< WWDGT configuration register */
-#define WWDGT_STAT                  REG32(WWDGT + 0x00000008U)      /*!< WWDGT status register */
+#define WWDGT_CTL                   REG32((WWDGT) + 0x00U)           /*!< WWDGT control register */
+#define WWDGT_CFG                   REG32((WWDGT) + 0x04U)           /*!< WWDGT configuration register */
+#define WWDGT_STAT                  REG32((WWDGT) + 0x08U)           /*!< WWDGT status register */
 
 /* bits definitions */
 /* WWDGT_CTL */
@@ -59,15 +57,17 @@ OF SUCH DAMAGE.
 /* WWDGT_CFG */
 #define WWDGT_CFG_WIN               BITS(0,6)                       /*!< WWDGT counter window value */
 #define WWDGT_CFG_PSC               BITS(7,8)                       /*!< WWDGT prescaler divider value */
-#define WWDGT_CFG_EWIE              BIT(9)                          /*!< WWDGT early wakeup interrupt enable */
+#define WWDGT_CFG_EWIE              BIT(9)                          /*!< early wakeup interrupt enable */
 
 /* WWDGT_STAT */
-#define WWDGT_STAT_EWIF             BIT(0)                          /*!< WWDGT early wakeup interrupt flag */
+#define WWDGT_STAT_EWIF             BIT(0)                          /*!< early wakeup interrupt flag */
 
-/* WWDGT_CTL register value */
-#define CTL_CNT(regval)             (BITS(0,6) & ((uint32_t)(regval) << 0U))
-/* WWDGT_CFG register value */
-#define CFG_WIN(regval)             (BITS(0,6) & ((uint32_t)(regval) << 0U))
+/* constants definitions */
+/* ctl register value */
+#define CTL_CNT(regval)             (BITS(0,6) & ((uint32_t)(regval) << 0U))   /*!< write value to WWDGT_CTL_CNT bit field */
+
+/* cfg register value */
+#define CFG_WIN(regval)             (BITS(0,6) & ((uint32_t)(regval) << 0U))   /*!< write value to WWDGT_CFG_WIN bit field */
 
 #define CFG_PSC(regval)             (BITS(7,8) & ((uint32_t)(regval) << 7U))   /*!< write value to WWDGT_CFG_PSC bit field */
 #define WWDGT_CFG_PSC_DIV1          ((uint32_t)CFG_PSC(0))          /*!< the time base of WWDGT = (PCLK1/4096)/1 */
@@ -86,11 +86,11 @@ void wwdgt_counter_update(uint16_t counter_value);
 /* configure counter value, window value, and prescaler divider value */
 void wwdgt_config(uint16_t counter, uint16_t window, uint32_t prescaler);
 
+/* enable early wakeup interrupt of WWDGT */
+void wwdgt_interrupt_enable(void);
 /* check early wakeup interrupt state of WWDGT */
 FlagStatus wwdgt_flag_get(void);
 /* clear early wakeup interrupt state of WWDGT */
 void wwdgt_flag_clear(void);
-/* enable early wakeup interrupt of WWDGT */
-void wwdgt_interrupt_enable(void);
 
 #endif /* GD32F1X0_WWDGT_H */

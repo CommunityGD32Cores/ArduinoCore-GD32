@@ -1,18 +1,16 @@
 /*!
-    \file    gd32f1x0_cec.h
-    \brief   definitions for the CEC
+    \file  gd32f1x0_cec.h
+    \brief definitions for the CEC
     
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -238,17 +236,18 @@ void cec_data_send(uint8_t data);
 uint8_t cec_data_receive(void);
 
 /* interrupt & flag functions */
-/* get CEC status */
-FlagStatus cec_flag_get(uint32_t flag);
-/* clear CEC status */
-void cec_flag_clear(uint32_t flag);
-/* enable CEC interrupt */
-void cec_interrupt_enable(uint32_t flag);
-/* disable CEC interrupt */
-void cec_interrupt_disable(uint32_t flag);
 /* get CEC interrupt flag */
 FlagStatus cec_interrupt_flag_get(uint32_t flag);
 /* clear CEC interrupt flag */
 void cec_interrupt_flag_clear(uint32_t flag);
+/* enable CEC interrupt */
+void cec_interrupt_enable(uint32_t flag);
+/* disable CEC interrupt */
+void cec_interrupt_disable(uint32_t flag);
+/* get CEC status */
+FlagStatus cec_flag_get(uint32_t flag);
+/* clear CEC status */
+void cec_flag_clear(uint32_t flag);
 
 #endif /* GD32F1X0_CEC_H */
+

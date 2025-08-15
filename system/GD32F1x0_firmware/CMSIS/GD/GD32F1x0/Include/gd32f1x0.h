@@ -1,18 +1,16 @@
 /*!
-    \file    gd32f1x0.h
-    \brief   general definitions for gd32f1x0
+    \file  gd32f1x0.h
+    \brief general definitions for gd32f1x0
 
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -53,6 +51,14 @@ OF SUCH DAMAGE.
  #error "Please select the target GD32F1x0 device used in your application (in gd32f1x0.h file)"
 #endif /* undefine GD32F1x0 tip */
 
+/* define GD32F1x0 device category */
+#if (!defined (GD32F170_190))&&(!defined (GD32F130_150))
+ #error "Please select GD32F1x0 device category( GD32F130_150 or GD32F170_190 )"
+#endif /* undefine GD32F170_190 or GD32F130_150 tip */
+#if (defined (GD32F170_190))&&(defined (GD32F130_150))
+ #error "Please select one GD32F1x0 device category( GD32F130_150 or GD32F170_190 )"
+#endif /* define GD32F170_190 and GD32F130_150 tip */
+
 /* define value of high speed crystal oscillator (HXTAL) in Hz */
 #if !defined  (HXTAL_VALUE)
 #define HXTAL_VALUE    ((uint32_t)8000000)
@@ -74,9 +80,15 @@ OF SUCH DAMAGE.
 #endif /* internal 8MHz RC oscillator startup timeout */
 
 /* define value of internal RC oscillator for ADC in Hz */
+#ifdef GD32F170_190
+#if !defined  (IRC28M_VALUE)
+#define IRC28M_VALUE ((uint32_t)28000000)
+#endif /* IRC28M for GD32F170_190 */
+#else 
 #if !defined  (IRC14M_VALUE) 
 #define IRC14M_VALUE ((uint32_t)14000000)
 #endif /* IRC14M for GD32F130_150 */
+#endif /* GD32F170_190 */
 
 /* define value of internal 40KHz RC oscillator(IRC40K) in Hz */
 #if !defined  (IRC40K_VALUE) 
@@ -152,18 +164,23 @@ typedef enum IRQn
     USBD_LP_IRQn                 = 37,     /*!< USBD_LP interrupt                                        */
     USBD_HP_IRQn                 = 38,     /*!< USBD_HP interrupt                                        */
     USBDWakeUp_IRQChannel        = 42,     /*!< USBD_WKUP interrupt                                      */
+    CAN0_TX_IRQn                 = 43,     /*!< CAN0 TX interrupt                                        */
+    CAN0_RX0_IRQn                = 44,     /*!< CAN0 RX0 interrupt                                       */
+    CAN0_RX1_IRQn                = 45,     /*!< CAN0 RX1 interrupt                                       */
+    CAN0_SCE_IRQn                = 46,     /*!< CAN0 SCE interrupt                                       */
+    SLCD_IRQn                    = 47,     /*!< SLCD interrupt                                           */
     DMA_Channel5_6_IRQn          = 48,     /*!< DMA1 channel 5 and channel 6 interrupts                  */
     SPI2_IRQn                    = 51,     /*!< SPI2 global interrupt                                    */ 
+    CAN1_TX_IRQn                 = 70,     /*!< CAN1 TX interrupt                                        */
+    CAN1_RX0_IRQn                = 71,     /*!< CAN1 RX0 interrupt                                       */
+    CAN1_RX1_IRQn                = 72,     /*!< CAN1 RX1 interrupt                                       */
+    CAN1_SCE_IRQn                = 73,     /*!< CAN1 SCE interrupt                                       */ 
 } IRQn_Type;
 
 /* includes */
 #include "core_cm3.h"
 #include "system_gd32f1x0.h"
 #include <stdint.h>
-
-/* HACKS for Arduino until we do proper peripheral pins generation */
-#define GPIO_AF_11 11
-#define GPIO_AF_9 9
 
 /* enum definitions */
 typedef enum {DISABLE = 0, ENABLE = !DISABLE} EventStatus, ControlStatus;

@@ -1,18 +1,16 @@
 /*!
-    \file    gd32f1x0_crc.h
-    \brief   definitions for the CRC
+    \file  gd32f1x0_crc.h
+    \brief definitions for the CRC
 
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -47,10 +45,10 @@ OF SUCH DAMAGE.
 #define CRC                            CRC_BASE
 
 /* registers definitions */
-#define CRC_DATA                       REG32(CRC + 0x00000000U)        /*!< CRC data register */
-#define CRC_FDATA                      REG32(CRC + 0x00000004U)        /*!< CRC free data register */
-#define CRC_CTL                        REG32(CRC + 0x00000008U)        /*!< CRC control register */
-#define CRC_IDATA                      REG32(CRC + 0x00000010U)        /*!< CRC initialization data register */
+#define CRC_DATA                       REG32(CRC + 0x00U)              /*!< CRC data register */
+#define CRC_FDATA                      REG32(CRC + 0x04U)              /*!< CRC free data register */
+#define CRC_CTL                        REG32(CRC + 0x08U)              /*!< CRC control register */
+#define CRC_IDATA                      REG32(CRC + 0x10U)              /*!< CRC initialization data register */
 
 /* bits definitions */
 
@@ -65,7 +63,7 @@ OF SUCH DAMAGE.
 #define CRC_CTL_REV_I                  BITS(5,6)                       /*!< input data reverse function bits */
 #define CRC_CTL_REV_O                  BIT(7)                          /*!< output data reverse function bit */
 
-/* CRC_INIT */
+/* CRC_IDATA */
 #define CRC_IDATA_IDATA                BITS(0,31)                      /*!< CRC initialization data bits */
 
 /* constants definitions */
@@ -76,11 +74,6 @@ OF SUCH DAMAGE.
 #define CRC_INPUT_DATA_BYTE            CTL_REV_I(1)                    /*!< input data reversed by byte type */
 #define CRC_INPUT_DATA_HALFWORD        CTL_REV_I(2)                    /*!< input data reversed by half-word type */
 #define CRC_INPUT_DATA_WORD            CTL_REV_I(3)                    /*!< input data reversed by word type */
-
-/* input data format */
-#define INPUT_FORMAT_WORD              0U                              /*!< input data in word format */
-#define INPUT_FORMAT_HALFWORD          1U                              /*!< input data in half-word format */
-#define INPUT_FORMAT_BYTE              2U                              /*!< input data in byte format */
 
 /* function declarations */
 
@@ -108,8 +101,8 @@ void crc_init_data_register_write(uint32_t init_data);
 void crc_input_data_reverse_config(uint32_t data_reverse);
 
 /* CRC calculate a 32-bit data */
-uint32_t crc_single_data_calculate(uint32_t sdata, uint8_t data_format);
+uint32_t crc_single_data_calculate(uint32_t sdata);
 /* CRC calculate a 32-bit data array */
-uint32_t crc_block_data_calculate(void *array, uint32_t size, uint8_t data_format);
+uint32_t crc_block_data_calculate(uint32_t array[], uint32_t size);
 
 #endif /* GD32F1X0_CRC_H */

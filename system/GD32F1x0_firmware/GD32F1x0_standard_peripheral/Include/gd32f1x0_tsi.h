@@ -1,18 +1,16 @@
 /*!
-    \file    gd32f1x0_tsi.h
-    \brief   definitions for the TSI
+    \file  gd32f1x0_tsi.h
+    \brief definitions for the TSI
     
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -83,8 +81,8 @@ OF SUCH DAMAGE.
 #define TSI_INTEN_MNERRIE       BIT(1)              /*!< max cycle number error interrupt enable */
 
 /* TSI_INTC */
-#define TSI_INTC_CCTCF          BIT(0)                  /*!< clear charge transfer complete flag */
-#define TSI_INTC_CMNERR         BIT(1)                  /*!< clear max cycle number error flag*/
+#define TSI_INTC_CCTCF          BIT(0)              /*!< clear charge transfer complete flag */
+#define TSI_INTC_CMNERR         BIT(1)              /*!< clear max cycle number error */
 
 /* TSI_INTF */
 #define TSI_INTF_CTCF           BIT(0)              /*!< charge transfer complete flag */
@@ -210,7 +208,7 @@ OF SUCH DAMAGE.
 
 /* constants definitions */
 /* CTCLK clock division factor */
-#define CTL_CTCDIV(regval)      (BITS(12,14) & ((uint32_t)(regval) << 12U))   /*!< CTCLK clock division factor */
+#define CTL_CTCDIV(regval)      (BITS(12,14) & ((regval) << 12U))   /*!< CTCLK clock division factor */
 #define TSI_CTCDIV_DIV1         CTL_CTCDIV(0)                       /*!< fCTCLK = fHCLK */
 #define TSI_CTCDIV_DIV2         CTL_CTCDIV(1)                       /*!< fCTCLK = fHCLK/2 */
 #define TSI_CTCDIV_DIV4         CTL_CTCDIV(2)                       /*!< fCTCLK = fHCLK/4 */
@@ -221,7 +219,7 @@ OF SUCH DAMAGE.
 #define TSI_CTCDIV_DIV128       CTL_CTCDIV(7)                       /*!< fCTCLK = fHCLK/128 */
 
 /* charge transfer state duration Time */
-#define CTL_CTDT(regval)        (BITS(24,27) & ((uint32_t)(regval) << 24U))   /*!< charge transfer state duration time */
+#define CTL_CTDT(regval)        (BITS(24,27) & ((regval) << 24U))   /*!< charge transfer state duration time */
 #define TSI_TRANSFER_1CTCLK     CTL_CTDT(0)                         /*!< the duration time of transfer state is 1 CTCLK */
 #define TSI_TRANSFER_2CTCLK     CTL_CTDT(1)                         /*!< the duration time of transfer state is 2 CTCLK */
 #define TSI_TRANSFER_3CTCLK     CTL_CTDT(2)                         /*!< the duration time of transfer state is 3 CTCLK */
@@ -240,7 +238,7 @@ OF SUCH DAMAGE.
 #define TSI_TRANSFER_16CTCLK    CTL_CTDT(15)                        /*!< the duration time of transfer state is 16 CTCLK */
 
 /* charge state duration time */
-#define CTL_CDT(regval)         (BITS(28,31) & ((uint32_t)(regval) << 28U))   /*!< charge state duration time */
+#define CTL_CDT(regval)         (BITS(28,31) & ((regval) << 28U))   /*!< charge state duration time */
 #define TSI_CHARGE_1CTCLK       CTL_CDT(0)                          /*!< the duration time of charge state is 1 CTCLK */
 #define TSI_CHARGE_2CTCLK       CTL_CDT(1)                          /*!< the duration time of charge state is 2 CTCLK */
 #define TSI_CHARGE_3CTCLK       CTL_CDT(2)                          /*!< the duration time of charge state is 3 CTCLK */
@@ -259,7 +257,7 @@ OF SUCH DAMAGE.
 #define TSI_CHARGE_16CTCLK      CTL_CDT(15)                         /*!< the duration time of charge state is 16 CTCLK */
 
 /* max cycle number of a sequence */
-#define CTL_MCN(regval)         (BITS(5,7) & ((uint32_t)(regval) << 5U))      /*!< max cycle number of a sequence */
+#define CTL_MCN(regval)         (BITS(5,7) & ((regval) << 5U))      /*!< max cycle number of a sequence */
 #define TSI_MAXNUM255           CTL_MCN(0)                          /*!< the max cycle number of a sequence is 255 */
 #define TSI_MAXNUM511           CTL_MCN(1)                          /*!< the max cycle number of a sequence is 511 */
 #define TSI_MAXNUM1023          CTL_MCN(2)                          /*!< the max cycle number of a sequence is 1023 */
@@ -273,7 +271,7 @@ OF SUCH DAMAGE.
 #define TSI_EXTEND_DIV2         ((uint32_t)0x00000001U)             /*!< fECCLK = fHCLK/2 */
 
 /* Extend Charge State Maximum Duration Time */
-#define TSI_EXTENDMAX(regval)   (BITS(17,23) & ((uint32_t)(regval) << 17U))   /* value range 1...128,extend charge state maximum duration time */
+#define TSI_EXTENDMAX(regval)   (BITS(17,23) & ((regval) << 17U))   /* value range 1...128,extend charge state maximum duration time */
 
 /* hardware trigger mode */
 #define TSI_FALLING_TRIGGER     ((uint32_t)0x00000000U)             /*!< falling edge trigger TSI charge transfer sequence */
@@ -288,13 +286,8 @@ OF SUCH DAMAGE.
 #define TSI_INTEN_MNERR         TSI_INTEN_MNERRIE                   /*!< max cycle number error interrupt enable */
 
 /* interrupt flag bits */
-#define TSI_INT_FLAG_CTCF       TSI_INTF_CTCF                       /*!< charge transfer complete interrupt flag */
-#define TSI_INT_FLAG_MNERR      TSI_INTF_MNERR                      /*!< max cycle number error interrupt flag */
-
-/* TSI flags */
-#define TSI_FLAG_CTCF           TSI_INTF_CTCF                       /*!< charge transfer complete flag */
-#define TSI_FLAG_MNERR          TSI_INTF_MNERR                      /*!< max cycle number error flag*/
-
+#define TSI_INT_FLAG_CTC        TSI_INTF_CTCF                       /*!< charge transfer complete flag */
+#define TSI_INT_FLAG_MNERR      TSI_INTF_MNERR                      /*!< max cycle number error */
 
 /* function declarations */
 /*  initialization functions */
@@ -317,7 +310,7 @@ void tsi_channel_pin_disable(uint32_t channel);
 
 /* function configuration */
 /* configure TSI triggering by software */
-void tsi_software_mode_config(void);
+void tsi_sofeware_mode_config(void);
 /* start a charge-transfer sequence when TSI is in software trigger mode */
 void tsi_software_start(void);
 /* stop a charge-transfer sequence when TSI is in software trigger mode */
@@ -342,18 +335,14 @@ void tsi_analog_on(uint32_t group_pin);
 void tsi_analog_off(uint32_t group_pin);
 
 /* interrupt & flag functions */
-/* get flag */
-FlagStatus tsi_flag_get(uint32_t flag);
-/* clear flag */
-void tsi_flag_clear(uint32_t flag);
 /* enable TSI interrupt */
 void tsi_interrupt_enable(uint32_t source);
 /* disable TSI interrupt */
 void tsi_interrupt_disable(uint32_t source);
-/* get TSI interrupt flag */
-FlagStatus tsi_interrupt_flag_get(uint32_t flag);
 /* clear TSI interrupt flag */
 void tsi_interrupt_flag_clear(uint32_t flag);
+/* get TSI interrupt flag */
+FlagStatus tsi_interrupt_flag_get(uint32_t status);
 
 /* enbale group */
 void tsi_group_enable(uint32_t group);

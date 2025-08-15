@@ -1,18 +1,16 @@
 /*!
-    \file    gd32f1x0_fmc.c
-    \brief   FMC driver
+    \file  gd32f1x0_fmc.c
+    \brief FMC driver
 
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -79,7 +77,6 @@ void fmc_lock(void)
 /*!
     \brief      set the wait state counter value
     \param[in]  wscnt: wait state counter value
-                only one parameter can be selected which is shown as below:
       \arg        WS_WSCNT_0: 0 wait state added
       \arg        WS_WSCNT_1: 1 wait state added
       \arg        WS_WSCNT_2: 2 wait state added
@@ -241,6 +238,39 @@ fmc_state_enum fmc_halfword_program(uint32_t address, uint16_t data)
     return fmc_state;
 }
 
+#ifdef GD32F170_190
+/*!
+    \brief      FMC program a word at the corresponding address without erasing
+    \param[in]  address: address to program
+    \param[in]  data: word to program
+    \param[out] none
+    \retval     state of FMC
+      \arg        FMC_READY: the operation has been completed
+      \arg        FMC_WPERR: erase/program protection error
+      \arg        FMC_TOERR: timeout error
+*/
+fmc_state_enum fmc_word_reprogram(uint32_t address, uint32_t data)
+{
+    fmc_state_enum fmc_state = fmc_ready_wait(FMC_TIMEOUT_COUNT);
+    FMC_WSEN |= FMC_WSEN_BPEN;
+
+    if(FMC_READY == fmc_state){
+        /* set the PG bit to start program */
+        FMC_CTL |= FMC_CTL_PG;
+        REG32(address) = data;
+
+        /* wait for the FMC ready */
+        fmc_state = fmc_ready_wait(FMC_TIMEOUT_COUNT);
+
+        /* reset the PG bit */
+        FMC_CTL &= ~FMC_CTL_PG;
+    }
+
+    /* return the FMC state */
+    return fmc_state;
+}
+#endif /* GD32F170_190 */
+
 /* FMC option bytes programming functions */
 
 /*!
@@ -333,11 +363,12 @@ fmc_state_enum ob_erase(void)
             /* reset the OBPG bit */
             FMC_CTL &= ~FMC_CTL_OBPG;
         }else{
-            /* reset the OBER bit */
-            FMC_CTL &= ~FMC_CTL_OBER;
+            if(FMC_TOERR != fmc_state){
+                /* reset the OBER bit */
+                FMC_CTL &= ~FMC_CTL_OBER;
+            }
         }
     }
-
     /* return the FMC state */
     return fmc_state;
 }
@@ -354,19 +385,13 @@ fmc_state_enum ob_erase(void)
       \arg        FMC_READY: the operation has been completed
       \arg        FMC_PGERR: program error
       \arg        FMC_TOERR: timeout error
-      \arg        FMC_OB_HSPC: option byte security protection code high
 */
 
 fmc_state_enum ob_write_protection_enable(uint16_t ob_wp)
 {
     uint8_t i;
     uint8_t op_byte[6];
-    fmc_state_enum fmc_state;
-    uint32_t fmc_plevel = ob_obstat_plevel_get();
-    if(OB_OBSTAT_PLEVEL_HIGH == fmc_plevel){
-        return FMC_OB_HSPC;
-    }
-    fmc_state = fmc_ready_wait(FMC_TIMEOUT_COUNT);
+    fmc_state_enum fmc_state = fmc_ready_wait(FMC_TIMEOUT_COUNT);
     for(i = 0U; i < 6U; i++){
         op_byte[i] = OP_BYTE(i);
     }
@@ -425,12 +450,7 @@ fmc_state_enum ob_security_protection_config(uint8_t ob_spc)
 {
     uint8_t i;
     uint8_t op_byte[6];
-    fmc_state_enum fmc_state;
-    uint32_t fmc_plevel = ob_obstat_plevel_get();
-    if(OB_OBSTAT_PLEVEL_HIGH == fmc_plevel){
-        return FMC_OB_HSPC;
-    }
-    fmc_state = fmc_ready_wait(FMC_TIMEOUT_COUNT);
+    fmc_state_enum fmc_state = fmc_ready_wait(FMC_TIMEOUT_COUNT);
     for(i = 0U; i < 6U; i++){
         op_byte[i] = OP_BYTE(i);
     }
@@ -482,24 +502,17 @@ fmc_state_enum ob_security_protection_config(uint8_t ob_spc)
       \arg        OB_BOOT1_SET_1: BOOT1 bit is 1
       \arg        OB_VDDA_DISABLE: disable VDDA monitor
       \arg        OB_SRAM_PARITY_ENABLE: enable sram parity check
-      \arg        OB_USER_RSET: reset option byte user byte
     \param[out] none
     \retval     state of FMC
       \arg        FMC_READY: the operation has been completed
       \arg        FMC_PGERR: program error
       \arg        FMC_TOERR: timeout error
-      \arg        FMC_OB_HSPC: option byte security protection code high
 */
 fmc_state_enum ob_user_write(uint8_t ob_user)
 {
     uint8_t i;
     uint8_t op_byte[6];
-    fmc_state_enum fmc_state;
-    uint32_t fmc_plevel = ob_obstat_plevel_get();
-    if(OB_OBSTAT_PLEVEL_HIGH == fmc_plevel){
-        return FMC_OB_HSPC;
-    }
-    fmc_state = fmc_ready_wait(FMC_TIMEOUT_COUNT);
+    fmc_state_enum fmc_state = fmc_ready_wait(FMC_TIMEOUT_COUNT);
     for(i = 0U; i < 6U; i++){
         op_byte[i] = OP_BYTE(i);
     }
@@ -543,22 +556,13 @@ fmc_state_enum ob_user_write(uint8_t ob_user)
     \brief      program the FMC data option byte
     \param[in]  data: the byte to be programmed
     \param[out] none
-    \retval     state of FMC
-      \arg        FMC_READY: the operation has been completed
-      \arg        FMC_PGERR: program error
-      \arg        FMC_TOERR: timeout error
-      \arg        FMC_OB_HSPC: option byte security protection code high
+    \retval     fmc_state
 */
 fmc_state_enum ob_data_program(uint16_t ob_data)
 {
     uint8_t i;
     uint8_t op_byte[6];
-    fmc_state_enum fmc_state;
-    uint32_t fmc_plevel = ob_obstat_plevel_get();
-    if(OB_OBSTAT_PLEVEL_HIGH == fmc_plevel){
-        return FMC_OB_HSPC;
-    }
-    fmc_state = fmc_ready_wait(FMC_TIMEOUT_COUNT);
+    fmc_state_enum fmc_state = fmc_ready_wait(FMC_TIMEOUT_COUNT);
     for(i = 0U; i < 6U; i++){
         op_byte[i] = OP_BYTE(i);
     }
@@ -607,7 +611,7 @@ fmc_state_enum ob_data_program(uint16_t ob_data)
 */
 uint8_t ob_user_get(void)
 {
-    return (uint8_t)(FMC_OBSTAT >> 8U);
+    return (uint8_t)(FMC_OBSTAT >> 8);
 }
 
 /*!
@@ -618,7 +622,7 @@ uint8_t ob_user_get(void)
 */
 uint16_t ob_data_get(void)
 {
-    return (uint16_t)(FMC_OBSTAT >> 16U);
+    return (uint16_t)(FMC_OBSTAT >> 16);
 }
 
 /*!
@@ -640,45 +644,7 @@ uint16_t ob_write_protection_get(void)
 */
 uint32_t ob_obstat_plevel_get(void)
 {
-    return (FMC_OBSTAT & FMC_OBSTAT_PLVL);
-}
-
-/*!
-    \brief      get FMC flag state
-    \param[in]  flag: check FMC flag
-                only one parameter can be selected which is shown as below:
-      \arg        FMC_FLAG_BUSY: FMC busy flag
-      \arg        FMC_FLAG_PGERR: FMC programming error flag
-      \arg        FMC_FLAG_WPERR: FMC write protection error flag
-      \arg        FMC_FLAG_END: FMC end of programming flag
-    \param[out] none
-    \retval     FlagStatus: SET or RESET
-*/
-FlagStatus fmc_flag_get(uint32_t flag)
-{
-    FlagStatus status = RESET;
-
-    if(FMC_STAT & flag){
-        status = SET;
-    }
-    /* return the state of corresponding FMC flag */
-    return status;
-}
-
-/*!
-    \brief      clear the FMC pending flag
-    \param[in]  flag: clear FMC flag
-                one or more parameters can be selected which are shown as below:
-      \arg        FMC_FLAG_PGERR: FMC programming error flag
-      \arg        FMC_FLAG_WPERR: FMC write protection error flag
-      \arg        FMC_FLAG_END: fmc end of programming flag
-    \param[out] none
-    \retval     none
-*/
-void fmc_flag_clear(uint32_t flag)
-{
-    /* clear the flags */
-    FMC_STAT = flag;
+    return (FMC_OBSTAT & (FMC_OBSTAT_PLVL_BIT0 | FMC_OBSTAT_PLVL_BIT1));
 }
 
 /* FMC interrupts and flags management functions */
@@ -711,12 +677,50 @@ void fmc_interrupt_disable(uint32_t interrupt)
 }
 
 /*!
+    \brief      get flag set or reset
+    \param[in]  flag: check FMC flag
+                only one parameter can be selected which is shown as below:
+      \arg        FMC_FLAG_BUSY: FMC busy flag
+      \arg        FMC_FLAG_PGERR: FMC programming error flag
+      \arg        FMC_FLAG_WPERR: FMC write protection error flag
+      \arg        FMC_FLAG_END: FMC end of programming flag
+    \param[out] none
+    \retval     FlagStatus: SET or RESET
+*/
+FlagStatus fmc_flag_get(uint32_t flag)
+{
+    FlagStatus status = RESET;
+
+    if(FMC_STAT & flag){
+        status = SET;
+    }
+    /* return the state of corresponding FMC flag */
+    return status;
+}
+
+/*!
+    \brief      clear the FMC pending flag by writing 1
+    \param[in]  flag: clear FMC flag
+                one or more parameters can be selected which are shown as below:
+      \arg        FMC_FLAG_PGERR: FMC programming error flag
+      \arg        FMC_FLAG_WPERR: FMC write protection error flag
+      \arg        FMC_FLAG_END: fmc end of programming flag
+    \param[out] none
+    \retval     none
+*/
+void fmc_flag_clear(uint32_t flag)
+{
+    /* clear the flags */
+    FMC_STAT |= flag;
+}
+
+/*!
     \brief      get FMC interrupt flag state
     \param[in]  flag: FMC interrupt flags, refer to fmc_interrupt_flag_enum
                 only one parameter can be selected which is shown as below:
-      \arg        FMC_INT_FLAG_PGERR: FMC operation error interrupt flag
-      \arg        FMC_INT_FLAG_WPERR: FMC erase/program protection error interrupt flag
-      \arg        FMC_INT_FLAG_END: FMC end of operation interrupt flag
+      \arg        FMC_INT_FLAG_PGERR: FMC operation error interrupt flag bit
+      \arg        FMC_INT_FLAG_WPERR: FMC erase/program protection error interrupt flag bit
+      \arg        FMC_INT_FLAG_END: FMC end of operation interrupt flag bit
     \param[out] none
     \retval     FlagStatus: SET or RESET
 */
@@ -732,19 +736,19 @@ FlagStatus fmc_interrupt_flag_get(uint32_t flag)
 }
 
 /*!
-    \brief      clear the FMC pending interrupt flag
+    \brief      clear FMC interrupt flag state
     \param[in]  flag: FMC interrupt flags, refer to can_interrupt_flag_enum
                 one or more parameters can be selected which are shown as below:
-      \arg        FMC_INT_FLAG_PGERR: FMC operation error interrupt flag
-      \arg        FMC_INT_FLAG_WPERR: FMC erase/program protection error interrupt flag
-      \arg        FMC_INT_FLAG_END: FMC end of operation interrupt flag
+      \arg        FMC_INT_FLAG_PGERR: FMC operation error interrupt flag bit
+      \arg        FMC_INT_FLAG_WPERR: FMC erase/program protection error interrupt flag bit
+      \arg        FMC_INT_FLAG_END: FMC end of operation interrupt flag bit
     \param[out] none
     \retval     none
 */
 void fmc_interrupt_flag_clear(uint32_t flag)
 {
     /* clear the flags */
-    FMC_STAT = flag;
+    FMC_STAT |= flag;
 }
 
 /*!

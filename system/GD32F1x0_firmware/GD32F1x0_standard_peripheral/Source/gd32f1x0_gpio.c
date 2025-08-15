@@ -1,18 +1,16 @@
 /*!
-    \file    gd32f1x0_gpio.c
-    \brief   GPIO driver
+    \file  gd32f1x0_gpio.c
+    \brief GPIO driver
     
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -314,7 +312,7 @@ uint16_t gpio_output_port_get(uint32_t gpio_periph)
     \brief      set GPIO alternate function
     \param[in]  gpio_periph: GPIOx(x = A,B,C,D,F) 
                 only one parameter can be selected which is shown as below:
-      \arg        GPIOx(x = A,B,C,D,F)
+      \arg        GPIOx(x = A,B,C)
     \param[in]  alt_func_num: GPIO pin af function, please refer to specific device datasheet
                 only one parameter can be selected which is shown as below:
       \arg        GPIO_AF_0: TIMER2, TIMER13, TIMER14, TIMER16, SPI0, I2S0, SPI1, SPI2, I2S2, CK_OUT, 
@@ -326,6 +324,8 @@ uint16_t gpio_output_port_get(uint32_t gpio_periph)
       \arg        GPIO_AF_5(port A,B only): TIMER15, TIMER16, SPI2, I2S2, I2C0, I2C1
       \arg        GPIO_AF_6(port A,B only): SPI1, EVENTOUT 
       \arg        GPIO_AF_7(port A only): CMP0, CMP1
+      \arg        GPIO_AF_9(port A,B only): CAN0, CAN1 (for GD32F170xx and GD32F190xx devices)
+      \arg        GPIO_AF_11: SLCD (for GD32F170xx and GD32F190xx devices)
     \param[in]  pin: GPIO pin
                 one or more parameters can be selected which are shown as below:
       \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL
@@ -383,3 +383,34 @@ void gpio_pin_lock(uint32_t gpio_periph, uint32_t pin)
     lock = GPIO_LOCK(gpio_periph);
     lock = GPIO_LOCK(gpio_periph);
 }
+
+#ifdef GD32F170_190
+/*!
+    \brief      toggle GPIO pin status
+    \param[in]  gpio_periph: GPIOx(x = A,B,C,D,F) 
+                only one parameter can be selected which is shown as below:
+      \arg        GPIOx(x = A,B,C,D,F)
+    \param[in]  pin: GPIO pin
+                one or more parameters can be selected which are shown as below:
+      \arg        GPIO_PIN_x(x=0..15), GPIO_PIN_ALL
+    \param[out] none
+    \retval     none
+*/
+void gpio_bit_toggle(uint32_t gpio_periph, uint32_t pin)
+{
+    GPIO_TG(gpio_periph) = (uint32_t)pin;
+}
+
+/*!
+    \brief      toggle GPIO port status
+                only one parameter can be selected which is shown as below:
+      \arg        GPIOx(x = A,B,C,D,F)
+    \param[out] none
+    \retval     none
+*/
+void gpio_port_toggle(uint32_t gpio_periph)
+{
+    GPIO_TG(gpio_periph) = 0x0000FFFFU;
+}
+
+#endif /* GD32F170_190 */

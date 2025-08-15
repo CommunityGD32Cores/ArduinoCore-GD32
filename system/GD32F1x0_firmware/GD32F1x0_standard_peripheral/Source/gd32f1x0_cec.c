@@ -1,18 +1,16 @@
 /*!
-    \file    gd32f1x0_cec.c
-    \brief   CEC driver
-
+    \file  gd32f1x0_cec.c
+    \brief CEC driver
+    
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -198,7 +196,7 @@ void cec_listen_mode_disable(void)
 /*!
     \brief      configure and clear own address.the controller can be configured to multiple own address 
     \param[in]  address: own address
-                one or more parameters can be selected which are shown as below:
+                only one parameter can be selected which is shown as below:
       \arg        CEC_OWN_ADDRESS_CLEAR: own address is cleared
       \arg        CEC_OWN_ADDRESSx(x=0..14): own address is x
     \param[out] none
@@ -334,110 +332,6 @@ uint8_t cec_data_receive(void)
 }
 
 /*!
-    \brief      get CEC status
-    \param[in]  flag:  specify which flag
-                only one parameter can be selected which is shown as below:
-      \arg        CEC_FLAG_BR: Rx-byte data received
-      \arg        CEC_FLAG_REND: end of reception
-      \arg        CEC_FLAG_RO: RX overrun
-      \arg        CEC_FLAG_BRE: bit rising error
-      \arg        CEC_FLAG_BPSE: short bit period error
-      \arg        CEC_FLAG_BPLE: long bit period error
-      \arg        CEC_FLAG_RAE: Rx ACK error
-      \arg        CEC_FLAG_ARBF: arbitration lost
-      \arg        CEC_FLAG_TBR: Tx-byte data request
-      \arg        CEC_FLAG_TEND: transmission successfully end
-      \arg        CEC_FLAG_TU: Tx data buffer underrun
-      \arg        CEC_FLAG_TERR: Tx-error
-      \arg        CEC_FLAG_TAERR Tx ACK error flag
-    \param[out] none
-    \retval     FlagStatus: SET or RESET
-*/
-FlagStatus cec_flag_get(uint32_t flag)
-{
-    if(CEC_INTF & flag){
-        return SET;
-    }else{
-        return RESET;
-    }
-}
-
-/*!
-    \brief      clear CEC status
-    \param[in]  flag:  specify which flag
-                one or more parameters can be selected which are shown as below:
-      \arg        CEC_FLAG_BR: Rx-byte data received
-      \arg        CEC_FLAG_REND: end of reception
-      \arg        CEC_FLAG_RO: RX overrun
-      \arg        CEC_FLAG_BRE: bit rising error
-      \arg        CEC_FLAG_BPSE: short bit period error
-      \arg        CEC_FLAG_BPLE: long bit period error
-      \arg        CEC_FLAG_RAE: Rx ACK error
-      \arg        CEC_FLAG_ARBF: arbitration lost
-      \arg        CEC_FLAG_TBR: Tx-byte data request
-      \arg        CEC_FLAG_TEND: transmission successfully end
-      \arg        CEC_FLAG_TU: Tx data buffer underrun
-      \arg        CEC_FLAG_TERR: Tx-error
-      \arg        CEC_FLAG_TAERR Tx ACK error flag
-    \param[out] none
-    \retval     FlagStatus: SET or RESET
-*/
-void cec_flag_clear(uint32_t flag)
-{
-    CEC_INTF |= flag;
-}
-
-/*!
-    \brief      enable interrupt
-    \param[in]  flag: specify which flag
-                one or more parameters can be selected which are shown as below:
-      \arg        CEC_INT_BR: enable Rx-byte data received interrupt
-      \arg        CEC_INT_REND: enable end of reception interrupt
-      \arg        CEC_INT_RO: enable RX overrun interrupt
-      \arg        CEC_INT_BRE: enable bit rising error interrupt
-      \arg        CEC_INT_BPSE: enable short bit period error interrupt
-      \arg        CEC_INT_BPLE: enable long bit period error interrupt
-      \arg        CEC_INT_RAE: enable Rx ACK error interrupt
-      \arg        CEC_INT_ARBF: enable arbitration lost interrupt
-      \arg        CEC_INT_TBR: enable Tx-byte data request interrupt
-      \arg        CEC_INT_TEND: enable transmission successfully end interrupt
-      \arg        CEC_INT_TU: enable Tx data buffer underrun interrupt
-      \arg        CEC_INT_TERR: enable Tx-error interrupt 
-      \arg        CEC_INT_TAERR: enable Tx ACK error  interrupt
-    \param[out] none
-    \retval     none
-*/
-void cec_interrupt_enable(uint32_t flag)
-{
-    CEC_INTEN |= flag;
-}
-
-/*!
-    \brief      disable interrupt
-    \param[in]  flag: specify which flag
-                one or more parameters can be selected which are shown as below:
-      \arg        CEC_INT_BR: disable Rx-byte data received interrupt
-      \arg        CEC_INT_REND: disable end of reception interrupt
-      \arg        CEC_INT_RO: disable RX overrun interrupt
-      \arg        CEC_INT_BRE: disable bit rising error interrupt
-      \arg        CEC_INT_BPSE: disable short bit period error interrupt
-      \arg        CEC_INT_BPLE: disable long bit period error interrupt
-      \arg        CEC_INT_RAE: disable Rx ACK error interrupt
-      \arg        CEC_INT_ARBF: disable arbitration lost interrupt
-      \arg        CEC_INT_TBR: disable Tx-byte data request interrupt
-      \arg        CEC_INT_TEND: disable transmission successfully end interrupt
-      \arg        CEC_INT_TU: disable Tx data buffer underrun interrupt
-      \arg        CEC_INT_TERR: disable Tx-error interrupt 
-      \arg        CEC_INT_TAERR: disable Tx ACK error  interrupt
-    \param[out] none
-    \retval     none
-*/
-void cec_interrupt_disable(uint32_t flag)
-{
-    CEC_INTEN &= ~flag;
-}
-
-/*!
     \brief      get CEC interrupt flag
     \param[in]  flag:  specify which flag
                 only one parameter can be selected which is shown as below:
@@ -472,7 +366,7 @@ FlagStatus cec_interrupt_flag_get(uint32_t flag)
 /*!
     \brief      clear CEC interrupt flag
     \param[in]  flag:  specify which flag
-                one or more parameters can be selected which are shown as below:
+                only one parameter can be selected which is shown as below:
       \arg        CEC_INT_FLAG_BR: Rx-byte data received
       \arg        CEC_INT_FLAG_REND: end of reception
       \arg        CEC_INT_FLAG_RO: RX overrun
@@ -492,4 +386,108 @@ FlagStatus cec_interrupt_flag_get(uint32_t flag)
 void cec_interrupt_flag_clear(uint32_t flag)
 {
     CEC_INTF = flag;
+}
+
+/*!
+    \brief      enable interrupt
+    \param[in]  flag: specify which flag
+                only one parameter can be selected which is shown as below:
+      \arg        CEC_INT_BR: enable Rx-byte data received interrupt
+      \arg        CEC_INT_REND: enable end of reception interrupt
+      \arg        CEC_INT_RO: enable RX overrun interrupt
+      \arg        CEC_INT_BRE: enable bit rising error interrupt
+      \arg        CEC_INT_BPSE: enable short bit period error interrupt
+      \arg        CEC_INT_BPLE: enable long bit period error interrupt
+      \arg        CEC_INT_RAE: enable Rx ACK error interrupt
+      \arg        CEC_INT_ARBF: enable arbitration lost interrupt
+      \arg        CEC_INT_TBR: enable Tx-byte data request interrupt
+      \arg        CEC_INT_TEND: enable transmission successfully end interrupt
+      \arg        CEC_INT_TU: enable Tx data buffer underrun interrupt
+      \arg        CEC_INT_TERR: enable Tx-error interrupt 
+      \arg        CEC_INT_TAERR: enable Tx ACK error  interrupt
+    \param[out] none
+    \retval     none
+*/
+void cec_interrupt_enable(uint32_t flag)
+{
+    CEC_INTEN |= flag;
+}
+
+/*!
+    \brief      disable interrupt
+    \param[in]  flag: specify which flag
+                only one parameter can be selected which is shown as below:
+      \arg        CEC_INT_BR: disable Rx-byte data received interrupt
+      \arg        CEC_INT_REND: disable end of reception interrupt
+      \arg        CEC_INT_RO: disable RX overrun interrupt
+      \arg        CEC_INT_BRE: disable bit rising error interrupt
+      \arg        CEC_INT_BPSE: disable short bit period error interrupt
+      \arg        CEC_INT_BPLE: disable long bit period error interrupt
+      \arg        CEC_INT_RAE: disable Rx ACK error interrupt
+      \arg        CEC_INT_ARBF: disable arbitration lost interrupt
+      \arg        CEC_INT_TBR: disable Tx-byte data request interrupt
+      \arg        CEC_INT_TEND: disable transmission successfully end interrupt
+      \arg        CEC_INT_TU: disable Tx data buffer underrun interrupt
+      \arg        CEC_INT_TERR: disable Tx-error interrupt 
+      \arg        CEC_INT_TAERR: disable Tx ACK error  interrupt
+    \param[out] none
+    \retval     none
+*/
+void cec_interrupt_disable(uint32_t flag)
+{
+    CEC_INTEN &= ~flag;
+}
+
+/*!
+    \brief      get CEC status
+    \param[in]  flag:  specify which flag
+                only one parameter can be selected which is shown as below:
+      \arg        CEC_FLAG_BR: Rx-byte data received
+      \arg        CEC_FLAG_REND: end of reception
+      \arg        CEC_FLAG_RO: RX overrun
+      \arg        CEC_FLAG_BRE: bit rising error
+      \arg        CEC_FLAG_BPSE: short bit period error
+      \arg        CEC_FLAG_BPLE: long bit period error
+      \arg        CEC_FLAG_RAE: Rx ACK error
+      \arg        CEC_FLAG_ARBF: arbitration lost
+      \arg        CEC_FLAG_TBR: Tx-byte data request
+      \arg        CEC_FLAG_TEND: transmission successfully end
+      \arg        CEC_FLAG_TU: Tx data buffer underrun
+      \arg        CEC_FLAG_TERR: Tx-error
+      \arg        CEC_FLAG_TAERR Tx ACK error flag
+    \param[out] none
+    \retval     FlagStatus: SET or RESET
+*/
+FlagStatus cec_flag_get(uint32_t flag)
+{
+    if(CEC_INTF & flag){
+        return SET;
+    }else{
+        return RESET;
+    }
+}
+
+/*!
+    \brief      clear CEC status
+    \param[in]  flag:  specify which flag
+                only one parameter can be selected which is shown as below:
+      \arg        CEC_FLAG_BR: Rx-byte data received
+      \arg        CEC_FLAG_REND: end of reception
+      \arg        CEC_FLAG_RO: RX overrun
+      \arg        CEC_FLAG_BRE: bit rising error
+      \arg        CEC_FLAG_BPSE: short bit period error
+      \arg        CEC_FLAG_BPLE: long bit period error
+      \arg        CEC_FLAG_RAE: Rx ACK error
+      \arg        CEC_FLAG_ARBF: arbitration lost
+      \arg        CEC_FLAG_TBR: Tx-byte data request
+      \arg        CEC_FLAG_TEND: transmission successfully end
+      \arg        CEC_FLAG_TU: Tx data buffer underrun
+      \arg        CEC_FLAG_TERR: Tx-error
+      \arg        CEC_FLAG_TAERR Tx ACK error flag
+    \param[out] none
+    \retval     FlagStatus: SET or RESET
+*/
+void cec_flag_clear(uint32_t flag)
+{
+    CEC_INTF |= flag;
 }

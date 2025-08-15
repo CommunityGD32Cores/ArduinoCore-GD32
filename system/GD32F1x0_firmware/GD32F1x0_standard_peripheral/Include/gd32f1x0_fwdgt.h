@@ -1,18 +1,16 @@
 /*!
-    \file    gd32f1x0_fwdgt.h
-    \brief   definitions for the FWDGT 
+    \file  gd32f1x0_fwdgt.h
+    \brief definitions for the FWDGT 
 
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -44,14 +42,14 @@ OF SUCH DAMAGE.
 #include "gd32f1x0.h"
 
 /* FWDGT definitions */
-#define FWDGT                       FWDGT_BASE                      /*!< FWDGT base address */
+#define FWDGT                       FWDGT_BASE
 
 /* registers definitions */
-#define FWDGT_CTL                   REG32(FWDGT + 0x00000000U)      /*!< FWDGT control register */
-#define FWDGT_PSC                   REG32(FWDGT + 0x00000004U)      /*!< FWDGT prescaler register */
-#define FWDGT_RLD                   REG32(FWDGT + 0x00000008U)      /*!< FWDGT reload register */
-#define FWDGT_STAT                  REG32(FWDGT + 0x0000000CU)      /*!< FWDGT status register */
-#define FWDGT_WND                   REG32(FWDGT + 0x00000010U)      /*!< FWDGT window register */
+#define FWDGT_CTL                   REG32((FWDGT) + 0x00U)           /*!< FWDGT control register */
+#define FWDGT_PSC                   REG32((FWDGT) + 0x04U)           /*!< FWDGT prescaler register */
+#define FWDGT_RLD                   REG32((FWDGT) + 0x08U)           /*!< FWDGT reload register */
+#define FWDGT_STAT                  REG32((FWDGT) + 0x0CU)           /*!< FWDGT status register */
+#define FWDGT_WND                   REG32((FWDGT) + 0x10U)           /*!< FWDGT window register */
 
 /* bits definitions */
 /* FWDGT_CTL */
@@ -72,10 +70,10 @@ OF SUCH DAMAGE.
 #define FWDGT_WND_WND               BITS(0,11)                      /*!< FWDGT counter window value */
 
 /* constants definitions */
-/* FWDGT_CTL register value */
+/* ctl register value */
 #define CTL_CMD(regval)             (BITS(0,15) & ((uint32_t)(regval) << 0U))  /*!< write value to FWDGT_CTL_CMD bit field */
 
-/* FWDGT_PSC register value */
+/* psc register value */
 #define PSC_PSC(regval)             (BITS(0,2) & ((uint32_t)(regval) << 0U))
 #define FWDGT_PSC_DIV4              ((uint8_t)PSC_PSC(0))           /*!< FWDGT prescaler set to 4 */
 #define FWDGT_PSC_DIV8              ((uint8_t)PSC_PSC(1))           /*!< FWDGT prescaler set to 8 */
@@ -85,10 +83,11 @@ OF SUCH DAMAGE.
 #define FWDGT_PSC_DIV128            ((uint8_t)PSC_PSC(5))           /*!< FWDGT prescaler set to 128 */
 #define FWDGT_PSC_DIV256            ((uint8_t)PSC_PSC(6))           /*!< FWDGT prescaler set to 256 */
 
-/* FWDGT_RLD register value */
-#define RLD_RLD(regval)             (BITS(0,11) & ((uint32_t)(regval) << 0U))
-/* FWDGT_WND register value */
-#define WND_WND(regval)             (BITS(0,11) & ((uint32_t)(regval) << 0U))
+/* rld register value */
+#define RLD_RLD(regval)             (BITS(0,11) & ((uint32_t)(regval) << 0U))  /*!< write value to FWDGT_RLD_RLD bit field */
+
+/* wnd register value */
+#define WND_WND(regval)             (BITS(0,11) & ((uint32_t)(regval) << 0U))  /*!< write value to FWDGT_WND_WND bit field */
 
 /* control value */
 #define FWDGT_WRITEACCESS_ENABLE    ((uint16_t)0x5555U)              /*!< FWDGT_CTL bits write access enable value */
@@ -107,17 +106,11 @@ OF SUCH DAMAGE.
 #define FWDGT_FLAG_WUD              FWDGT_STAT_WUD                   /*!< a write operation to FWDGT_WND register is on going */
 
 /* function declarations */
-/* enable write access to FWDGT_PSC and FWDGT_RLD */
-void fwdgt_write_enable(void);
 /* disable write access to FWDGT_PSC,FWDGT_RLD and FWDGT_WND */
 void fwdgt_write_disable(void);
 /* start the free watchdog timer counter */
 void fwdgt_enable(void);
 
-/* configure the free watchdog timer counter prescaler value */
-ErrStatus fwdgt_prescaler_value_config(uint16_t prescaler_value);
-/* configure the free watchdog timer counter reload value */
-ErrStatus fwdgt_reload_value_config(uint16_t reload_value);
 /* configure the free watchdog timer counter window value */
 ErrStatus fwdgt_window_value_config(uint16_t window_value);
 /* reload the counter of FWDGT */

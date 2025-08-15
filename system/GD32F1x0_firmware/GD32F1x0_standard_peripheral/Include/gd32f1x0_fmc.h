@@ -1,18 +1,16 @@
 /*!
-    \file    gd32f1x0_fmc.h
-    \brief   definitions for the FMC
+    \file  gd32f1x0_fmc.h
+    \brief definitions for the FMC
 
     \version 2014-12-26, V1.0.0, platform GD32F1x0(x=3,5)
     \version 2016-01-15, V2.0.0, platform GD32F1x0(x=3,5,7,9)
     \version 2016-04-30, V3.0.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2017-06-19, V3.1.0, firmware update for GD32F1x0(x=3,5,7,9)
     \version 2019-11-20, V3.2.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2020-09-21, V3.3.0, firmware update for GD32F1x0(x=3,5,7,9)
-    \version 2022-08-15, V3.4.0, firmware update for GD32F1x0(x=3,5)
 */
 
 /*
-    Copyright (c) 2022, GigaDevice Semiconductor Inc.
+    Copyright (c) 2019, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -44,28 +42,28 @@ OF SUCH DAMAGE.
 #include "gd32f1x0.h"
 
 /* FMC and option byte definition */
-#define FMC                     FMC_BASE                        /*!< FMC register base address */
-#define OB                      OB_BASE                         /*!< option byte base address */
+#define FMC                     FMC_BASE                    /*!< FMC register base address */
+#define OB                      OB_BASE                     /*!< option byte base address */
 
 /* registers definitions */
-#define FMC_WS                  REG32(FMC + 0x00000000U)        /*!< FMC wait state register */
-#define FMC_KEY                 REG32(FMC + 0x00000004U)        /*!< FMC unlock key register */
-#define FMC_OBKEY               REG32(FMC + 0x00000008U)        /*!< FMC option bytes unlock key register */
-#define FMC_STAT                REG32(FMC + 0x0000000CU)        /*!< FMC status register */
-#define FMC_CTL                 REG32(FMC + 0x00000010U)        /*!< FMC control register */
-#define FMC_ADDR                REG32(FMC + 0x00000014U)        /*!< FMC address register */
-#define FMC_OBSTAT              REG32(FMC + 0x0000001CU)        /*!< FMC option bytes status register */
-#define FMC_WP                  REG32(FMC + 0x00000020U)        /*!< FMC write protection register */
-#define FMC_WSEN                REG32(FMC + 0x000000FCU)        /*!< FMC wait state enable register */
-#define FMC_PID                 REG32(FMC + 0x00000100U)        /*!< FMC product ID register */
+#define FMC_WS                  REG32((FMC) + 0x00U)        /*!< FMC wait state register */
+#define FMC_KEY                 REG32((FMC) + 0x04U)        /*!< FMC unlock key register */
+#define FMC_OBKEY               REG32((FMC) + 0x08U)        /*!< FMC option bytes unlock key register */
+#define FMC_STAT                REG32((FMC) + 0x0CU)        /*!< FMC status register */
+#define FMC_CTL                 REG32((FMC) + 0x10U)        /*!< FMC control register */
+#define FMC_ADDR                REG32((FMC) + 0x14U)        /*!< FMC address register */
+#define FMC_OBSTAT              REG32((FMC) + 0x1CU)        /*!< FMC option bytes status register */
+#define FMC_WP                  REG32((FMC) + 0x20U)        /*!< FMC write protection register */
+#define FMC_WSEN                REG32((FMC) + 0xFCU)        /*!< FMC wait state enable register  */
+#define FMC_PID                 REG32((FMC) + 0x100U)       /*!< FMC product ID register */
 
-#define OP_BYTE(x)              REG8(OB + ((uint32_t)((uint32_t)0x00000002U * (x))))     /*!< option byte value */
-#define OB_SPC                  REG8(OB + 0x00000000U)                                   /*!< option byte security protection value */
-#define OB_USER                 REG8(OB + 0x00000002U)                                   /*!< option byte user value */
-#define OB_DATA0                REG8(OB + 0x00000004U)                                   /*!< option byte data0 value */
-#define OB_DATA1                REG8(OB + 0x00000006U)                                   /*!< option byte data1 value */
-#define OB_WP0                  REG8(OB + 0x00000008U)                                   /*!< option byte write protection 0 value */
-#define OB_WP1                  REG8(OB + 0x0000000AU)                                   /*!< option byte write protection 1 value */
+#define OP_BYTE(x)              REG8((OB) + ((uint32_t)((uint32_t)0x02U * (x))))     /*!< option byte value */
+#define OB_SPC                  REG8((OB) + 0x00U)                                   /*!< option byte security protection value */
+#define OB_USER                 REG8((OB) + 0x02U)                                   /*!< option byte user value */
+#define OB_DATA0                REG8((OB) + 0x04U)                                   /*!< option byte data0 value */
+#define OB_DATA1                REG8((OB) + 0x06U)                                   /*!< option byte data1 value */
+#define OB_WP0                  REG8((OB) + 0x08U)                                   /*!< option byte write protection 0 value */
+#define OB_WP1                  REG8((OB) + 0x0AU)                                   /*!< option byte write protection 1 value */
 
 /* bits definitions */
 /* FMC_WS */
@@ -101,12 +99,16 @@ OF SUCH DAMAGE.
 
 /* FMC_OBSTAT */
 #define FMC_OBSTAT_OBERR        BIT(0)                      /*!< option bytes read error bit */
-#define FMC_OBSTAT_PLVL         BITS(1,2)                   /*!< protection level bits */
+#define FMC_OBSTAT_PLVL_BIT0    BIT(1)                      /*!< protection level bit 0 */
+#define FMC_OBSTAT_PLVL_BIT1    BIT(2)                      /*!< protection level bit 1 */
 #define FMC_OBSTAT_USER         BITS(8,15)                  /*!< option bytes user bits */
-#define FMC_OBSTAT_DATA         BITS(16,31)                 /*!< option bytes data bits */
+#define FMC_OBSTAT_DATA         BITS(16,31)                 /*!< option byte data bits */
 
 /* FMC_WSEN */
 #define FMC_WSEN_WSEN           BIT(0)                      /*!< FMC wait state enable bit */
+#ifdef GD32F170_190
+#define FMC_WSEN_BPEN           BIT(1)                      /*!< FMC bit program enable bit */
+#endif /* GD32F170_190 */
 
 /* FMC_PID */
 #define FMC_PID_PID             BITS(0,31)                  /*!< product ID bits */
@@ -134,12 +136,12 @@ typedef enum
 
 /* read protect configure */
 #define FMC_NSPC                   ((uint8_t)0xA5U)         /*!< no security protection */
-#define FMC_LSPC                   ((uint8_t)0xBBU)         /*!< low level security protection, any value except 0xA5 or 0xCC */
-#define FMC_HSPC                   ((uint8_t)0xCCU)         /*!< high level security protection */
+#define FMC_LSPC                   ((uint8_t)0xBBU)         /*!< low security protection, any value except 0xA5 or 0xCC */
+#define FMC_HSPC                   ((uint8_t)0xCCU)         /*!< high security protection */
 
 /* option byte write protection mask */
-#define OB_LWP                     ((uint16_t)0x00FFU)      /*!< write protection low bits */
-#define OB_HWP                     ((uint16_t)0xFF00U)      /*!< write protection high bits */
+#define OB_LWP                     ((uint16_t)0x00FFU)  /*!< write protection low bits */
+#define OB_HWP                     ((uint16_t)0xFF00U)  /*!< write protection high bits */
 
 /* option byte software/hardware free watchdog timer */  
 #define OB_FWDGT_HW                ((uint8_t)(~BIT(0)))     /*!< hardware free watchdog timer */
@@ -165,9 +167,6 @@ typedef enum
 #define OB_SRAM_PARITY_ENABLE      ((uint8_t)(~BIT(6)))     /*!< enable SRAM parity check */
 #define OB_SRAM_PARITY_DISABLE     ((uint8_t)BIT(6))        /*!< disable SRAM parity check */
 
-/* option byte reset value */
-#define OB_USER_RSET               ((uint8_t)0xFFU)         /*!< reset option byte user byte */
-
 /* option byte security protection level in FMC_OBSTAT register */
 #define OB_OBSTAT_PLEVEL_NO        ((uint32_t)0x00000000U)  /*!< no security protection */
 #define OB_OBSTAT_PLEVEL_LOW       ((uint32_t)0x00000002U)  /*!< low security protection */
@@ -177,8 +176,8 @@ typedef enum
 #define OB_USER_MASK               ((uint8_t)0x88U)         /*!< OB_USER reserved bit mask */
 
 /* option byte data mask */
-#define OB_LDATA                   ((uint16_t)0x00FFU)      /*!< option byte data0 bit mask */
-#define OB_HDATA                   ((uint16_t)0xFF00U)      /*!< option byte data1 bit mask */
+#define OB_LDATA                   ((uint16_t)0x00FFU)  /*!< option byte data address 0 */
+#define OB_HDATA                   ((uint16_t)0xFF00U)  /*!< option byte data address 1 */
 
 /* FMC flags */
 #define FMC_FLAG_BUSY              FMC_STAT_BUSY            /*!< FMC busy flag */
@@ -238,6 +237,10 @@ fmc_state_enum fmc_mass_erase(void);
 fmc_state_enum fmc_word_program(uint32_t address, uint32_t data);
 /* FMC program a half word at the corresponding address */
 fmc_state_enum fmc_halfword_program(uint32_t address, uint16_t data);
+#ifdef GD32F170_190
+/* FMC program a word at the corresponding address without erasing */
+fmc_state_enum fmc_word_reprogram(uint32_t address, uint32_t data);
+#endif /* GD32F170_190 */
 
 /* FMC option bytes programming functions */
 /* unlock the option byte operation */
@@ -260,23 +263,23 @@ fmc_state_enum ob_data_program(uint16_t ob_data);
 uint8_t ob_user_get(void);
 /* get the FMC option byte OB_DATA */
 uint16_t ob_data_get(void);
-/* get the FMC option byte write protection (OB_WP) in register FMC_WP */
+/* get the FMC option byte write protection */
 uint16_t ob_write_protection_get(void);
 /* get the value of FMC option byte security protection level (PLEVEL) in FMC_OBSTAT register */
 uint32_t ob_obstat_plevel_get(void);
 
 /* FMC interrupts and flags management functions */
-/* get FMC flag state */
-FlagStatus fmc_flag_get(uint32_t flag);
-/* clear the FMC pending flag */
-void fmc_flag_clear(uint32_t flag);
 /* enable FMC interrupt */
 void fmc_interrupt_enable(uint32_t interrupt);
 /* disable FMC interrupt */
 void fmc_interrupt_disable(uint32_t interrupt);
+/* get flag set or reset */
+FlagStatus fmc_flag_get(uint32_t flag);
+/* clear the FMC pending flag */
+void fmc_flag_clear(uint32_t flag);
 /* get FMC interrupt flag state */
 FlagStatus fmc_interrupt_flag_get(uint32_t flag);
-/* clear the FMC pending interrupt flag */
+/* clear FMC interrupt flag state */
 void fmc_interrupt_flag_clear(uint32_t flag);
 
 #endif /* GD32F1X0_FMC_H */
