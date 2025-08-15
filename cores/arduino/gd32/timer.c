@@ -72,7 +72,11 @@ OF SUCH DAMAGE.
 
 #if defined(GD32E50X)
 #define TIMER7_IRQ_NAME TIMER7_Channel_IRQn
+#if defined(GD32EPRT) || defined(GD32E50X_HD) 
+#define NO_TIMER_8
+#else
 #define TIMER8_IRQ_NAME TIMER0_BRK_TIMER8_IRQn
+#endif
 #if defined(GD32E50X_XD) || defined(GD32E50X_CL) || defined(GD32E508)
 #define TIMER7_UP_IRQ_NAME TIMER7_UP_TIMER12_IRQn
 #define TIMER10_IRQ_NAME TIMER0_TRG_CMT_TIMER10_IRQn
