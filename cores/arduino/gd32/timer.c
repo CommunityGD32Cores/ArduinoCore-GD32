@@ -72,6 +72,7 @@ OF SUCH DAMAGE.
 
 #if defined(GD32E50X)
 #define TIMER7_IRQ_NAME TIMER7_Channel_IRQn
+#define TIMER8_IRQ_NAME TIMER0_BRK_TIMER8_IRQn
 #if defined(GD32E50X_XD) || defined(GD32E50X_CL) || defined(GD32E508)
 #define TIMER7_UP_IRQ_NAME TIMER7_UP_TIMER12_IRQn
 #define TIMER10_IRQ_NAME TIMER0_TRG_CMT_TIMER10_IRQn
@@ -1101,7 +1102,11 @@ IRQn_Type getTimerUpIrq(uint32_t tim)
 #endif
 #if defined(TIMER8) && defined(HAS_TIMER_8)
             case (uint32_t)TIMER8:
+            #ifdef TIMER8_IRQ_NAME //TODO: repeat this for other timers...
+                IRQn = TIMER8_IRQ_NAME;
+            #else
                 IRQn = TIMER8_IRQn;
+            #endif
                 break;
 #endif
 #if defined(TIMER9) && defined(HAS_TIMER_9)
