@@ -38,7 +38,7 @@ OF SUCH DAMAGE.
 #ifndef GD32F10X_H
 #define GD32F10X_H
 
-#ifdef cplusplus
+#ifdef __cplusplus
  extern "C" {
 #endif 
 
@@ -308,6 +308,7 @@ typedef enum IRQn
 #include "core_cm3.h"
 #include "system_gd32f10x.h"
 #include <stdint.h>
+#include <stdbool.h>
 
 /* enum definitions */
 typedef enum {DISABLE = 0, ENABLE = !DISABLE} EventStatus, ControlStatus;
@@ -374,7 +375,7 @@ typedef enum {ERROR = 0, SUCCESS = !ERROR} ErrStatus;
 #include "gd32f10x_libopt.h"
 #endif /* USE_STDPERIPH_DRIVER */
 
-#ifdef cplusplus
+#ifdef __cplusplus
 }
 #endif
 #endif 
