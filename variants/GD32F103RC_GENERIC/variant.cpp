@@ -66,42 +66,42 @@ const PinName digital_pins[] = {
     PORTB_7,
     PORTB_8,
     PORTB_9,
-    PORTB_0,
-    PORTA_2,
-    PORTC_5,
-    PORTA_0,
-    PORTC_2,
-    PORTA_3,
-    PORTA_1,
-    PORTA_4,
-    PORTC_4,
-    PORTA_7,
-    PORTC_1,
     PORTC_3,
-    PORTC_0,
+    PORTA_4,
+    PORTA_6,
     PORTB_1,
+    PORTA_2,
+    PORTA_7,
+    PORTB_0,
+    PORTC_0,
+    PORTA_0,
+    PORTC_1,
+    PORTA_1,
+    PORTA_3,
     PORTA_5,
-    PORTA_6
+    PORTC_5,
+    PORTC_2,
+    PORTC_4
 };
 
 /* analog pins for pinmap list */
 const uint32_t analog_pins[] = {
-    PB0, //A0
-    PA2, //A1
-    PC5, //A2
-    PA0, //A3
-    PC2, //A4
-    PA3, //A5
-    PA1, //A6
-    PA4, //A7
-    PC4, //A8
-    PA7, //A9
-    PC1, //A10
-    PC3, //A11
-    PC0, //A12
-    PB1, //A13
-    PA5, //A14
-    PA6 //A15
+    PC3, //A0
+    PA4, //A1
+    PA6, //A2
+    PB1, //A3
+    PA2, //A4
+    PA7, //A5
+    PB0, //A6
+    PC0, //A7
+    PA0, //A8
+    PC1, //A9
+    PA1, //A10
+    PA3, //A11
+    PA5, //A12
+    PC5, //A13
+    PC2, //A14
+    PC4 //A15
 };
 
 #ifdef __cplusplus

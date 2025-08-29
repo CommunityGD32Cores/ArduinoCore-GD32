@@ -36,17 +36,12 @@ extern "C" {
 
 typedef enum {
     ADC_0 = (int)ADC0,
-    ADC_1 = (int)ADC1,
-    ADC_2 = (int)ADC2
+    ADC_1 = (int)ADC1
 } ADCName;
 
-typedef enum {
-    DAC_0 = (int)DAC
-} DACName;
+/* no DAC pins */
 
 typedef enum {
-    UART_3 = (int)UART3,
-    UART_4 = (int)UART4,
     UART_0 = (int)USART0,
     UART_1 = (int)USART1,
     UART_2 = (int)USART2
@@ -54,8 +49,7 @@ typedef enum {
 
 typedef enum {
     SPI_0 = (int)SPI0,
-    SPI_1 = (int)SPI1,
-    SPI_2 = (int)SPI2
+    SPI_1 = (int)SPI1
 } SPIName;
 
 typedef enum {
@@ -67,15 +61,7 @@ typedef enum {
     PWM_0 = (int)TIMER0,
     PWM_1 = (int)TIMER1,
     PWM_2 = (int)TIMER2,
-    PWM_3 = (int)TIMER3,
-    PWM_4 = (int)TIMER4,
-    PWM_7 = (int)TIMER7,
-    PWM_8 = (int)TIMER8,
-    PWM_9 = (int)TIMER9,
-    PWM_10 = (int)TIMER10,
-    PWM_11 = (int)TIMER11,
-    PWM_12 = (int)TIMER12,
-    PWM_13 = (int)TIMER13
+    PWM_3 = (int)TIMER3
 } PWMName;
 
 

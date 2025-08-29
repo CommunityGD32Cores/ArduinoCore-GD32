@@ -67,28 +67,83 @@ extern "C" {
 #define PB8 31
 #define PB9 32
 /* analog pins */
-#define PA4 33
-#define PB0 34
-#define PC1 35
-#define PC3 36
-#define PA0 37
-#define PB1 38
-#define PA7 39
-#define PA5 40
-#define PC2 41
-#define PC5 42
-#define PC0 43
+#define PC3 33
+#define PA4 34
+#define PA6 35
+#define PB1 36
+#define PA2 37
+#define PA7 38
+#define PB0 39
+#define PC0 40
+#define PA0 41
+#define PC1 42
+#define PA1 43
 #define PA3 44
-#define PA6 45
-#define PA2 46
-#define PA1 47
+#define PA5 45
+#define PC5 46
+#define PC2 47
 #define PC4 48
 
 /* digital pins and analog pins number definitions */
 #define DIGITAL_PINS_NUM            49
 #define ANALOG_PINS_NUM             16
-#define ANALOG_PINS_START           PA4
+#define ANALOG_PINS_START           PC3
 #define ANALOG_PINS_LAST            PC4
+
+/* alternative pin remappings */
+#define PA0_ALT1 (PA0 | ALT1)
+#define PA0_ALT2 (PA0 | ALT2)
+#define PA1_ALT1 (PA1 | ALT1)
+#define PA1_ALT2 (PA1 | ALT2)
+#define PA2_ALT1 (PA2 | ALT1)
+#define PA2_ALT2 (PA2 | ALT2)
+#define PA2_ALT3 (PA2 | ALT3)
+#define PA3_ALT1 (PA3 | ALT1)
+#define PA3_ALT2 (PA3 | ALT2)
+#define PA3_ALT3 (PA3 | ALT3)
+#define PA4_ALT1 (PA4 | ALT1)
+#define PA5_ALT1 (PA5 | ALT1)
+#define PA6_ALT1 (PA6 | ALT1)
+#define PA7_ALT1 (PA7 | ALT1)
+#define PA7_ALT2 (PA7 | ALT2)
+#define PA7_ALT3 (PA7 | ALT3)
+#define PA8_ALT1 (PA8 | ALT1)
+#define PA9_ALT1 (PA9 | ALT1)
+#define PA10_ALT1 (PA10 | ALT1)
+#define PA11_ALT1 (PA11 | ALT1)
+#define PA15_ALT1 (PA15 | ALT1)
+#define PB0_ALT1 (PB0 | ALT1)
+#define PB0_ALT2 (PB0 | ALT2)
+#define PB0_ALT3 (PB0 | ALT3)
+#define PB1_ALT1 (PB1 | ALT1)
+#define PB1_ALT2 (PB1 | ALT2)
+#define PB1_ALT3 (PB1 | ALT3)
+#define PB3_ALT1 (PB3 | ALT1)
+#define PB4_ALT1 (PB4 | ALT1)
+#define PB5_ALT1 (PB5 | ALT1)
+#define PB8_ALT1 (PB8 | ALT1)
+#define PB9_ALT1 (PB9 | ALT1)
+#define PB10_ALT1 (PB10 | ALT1)
+#define PB11_ALT1 (PB11 | ALT1)
+#define PB13_ALT1 (PB13 | ALT1)
+#define PB14_ALT1 (PB14 | ALT1)
+#define PB15_ALT1 (PB15 | ALT1)
+#define PC0_ALT1 (PC0 | ALT1)
+#define PC0_ALT2 (PC0 | ALT2)
+#define PC1_ALT1 (PC1 | ALT1)
+#define PC1_ALT2 (PC1 | ALT2)
+#define PC2_ALT1 (PC2 | ALT1)
+#define PC2_ALT2 (PC2 | ALT2)
+#define PC3_ALT1 (PC3 | ALT1)
+#define PC3_ALT2 (PC3 | ALT2)
+#define PC4_ALT1 (PC4 | ALT1)
+#define PC5_ALT1 (PC5 | ALT1)
+#define PC6_ALT1 (PC6 | ALT1)
+#define PC7_ALT1 (PC7 | ALT1)
+#define PC8_ALT1 (PC8 | ALT1)
+#define PC9_ALT1 (PC9 | ALT1)
+#define PC10_ALT1 (PC10 | ALT1)
+#define PC11_ALT1 (PC11 | ALT1)
 
 /* LED definitions */
 #define LED_BUILTIN                 PC13

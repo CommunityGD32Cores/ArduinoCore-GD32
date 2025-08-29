@@ -34,17 +34,42 @@ OF SUCH DAMAGE.
 extern "C" {
 #endif
 
-/* no ADC pins */
+typedef enum {
+    ADC_0 = (int)ADC0,
+    ADC_1 = (int)ADC1,
+    ADC_2 = (int)ADC2
+} ADCName;
 
-/* no DAC pins */
+typedef enum {
+    DAC_0 = (int)DAC
+} DACName;
 
-/* no UART pins */
+typedef enum {
+    UART_4 = (int)UART4,
+    UART_0 = (int)USART0,
+    UART_1 = (int)USART1,
+    UART_2 = (int)USART2
+} UARTName;
 
-/* no SPI pins */
+typedef enum {
+    SPI_0 = (int)SPI0,
+    SPI_1 = (int)SPI1,
+    SPI_2 = (int)SPI2
+} SPIName;
 
-/* no I2C pins */
+typedef enum {
+    I2C_0 = (int)I2C0,
+    I2C_1 = (int)I2C1
+} I2CName;
 
-/* no PWM pins */
+typedef enum {
+    PWM_0 = (int)TIMER0,
+    PWM_1 = (int)TIMER1,
+    PWM_2 = (int)TIMER2,
+    PWM_3 = (int)TIMER3,
+    PWM_4 = (int)TIMER4,
+    PWM_7 = (int)TIMER7
+} PWMName;
 
 
 #ifdef __cplusplus

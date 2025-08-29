@@ -91,6 +91,13 @@ OF SUCH DAMAGE.
 #define NO_TIMER_13
 #endif
 #elif defined(GD32F10x)
+#if defined(GD32F10X_MD)
+#define NO_TIMER_4
+#define NO_TIMER_5
+#define NO_TIMER_6
+#define NO_TIMER_7
+#endif
+
 #if !defined(GD32F10X_XD)
 #define TIMER7_IRQ_NAME TIMER7_UP_IRQn
 #define TIMER7_UP_IRQ_NAME TIMER7_UP_IRQn
@@ -1084,7 +1091,7 @@ IRQn_Type getTimerUpIrq(uint32_t tim)
                 IRQn = TIMER3_IRQn;
                 break;
 #endif
-#if defined(TIMER4)
+#if defined(TIMER4) && !defined(NO_TIMER_4)
             case (uint32_t)TIMER4:
                 IRQn = TIMER4_IRQn;
                 break;
@@ -1094,12 +1101,12 @@ IRQn_Type getTimerUpIrq(uint32_t tim)
                 IRQn = TIMER5_IRQ_Name;
                 break;
 #endif
-#if defined(TIMER6)
+#if defined(TIMER6) && !defined(NO_TIMER_6)
             case (uint32_t)TIMER6:
                 IRQn = TIMER6_IRQn;
                 break;
 #endif
-#if defined(TIMER7)
+#if defined(TIMER7) && !defined(NO_TIMER_7)
             case (uint32_t)TIMER7:
                 IRQn = TIMER7_UP_IRQ_NAME;
                 break;
@@ -1196,7 +1203,7 @@ IRQn_Type getTimerCCIrq(uint32_t tim)
                 IRQn = TIMER3_IRQn;
                 break;
 #endif
-#if defined(TIMER4)
+#if defined(TIMER4) && !defined(NO_TIMER_4)
             case (uint32_t)TIMER4:
                 IRQn = TIMER4_IRQn;
                 break;
@@ -1206,12 +1213,12 @@ IRQn_Type getTimerCCIrq(uint32_t tim)
                 IRQn = TIMER5_IRQ_Name;
                 break;
 #endif
-#if defined(TIMER6)
+#if defined(TIMER6) && !defined(NO_TIMER_6)
             case (uint32_t)TIMER6:
                 IRQn = TIMER6_IRQn;
                 break;
 #endif
-#if defined(TIMER7)
+#if defined(TIMER7) && !defined(NO_TIMER_7)
             case (uint32_t)TIMER7:
                 IRQn = TIMER7_IRQ_NAME;
                 break;

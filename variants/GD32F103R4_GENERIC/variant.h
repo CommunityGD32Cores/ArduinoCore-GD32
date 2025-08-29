@@ -67,28 +67,56 @@ extern "C" {
 #define PB8 31
 #define PB9 32
 /* analog pins */
-#define PA4 33
-#define PB0 34
-#define PC1 35
-#define PC3 36
-#define PA0 37
-#define PB1 38
-#define PA7 39
-#define PA5 40
-#define PC2 41
-#define PC5 42
-#define PC0 43
+#define PC3 33
+#define PA4 34
+#define PA6 35
+#define PB1 36
+#define PA2 37
+#define PA7 38
+#define PB0 39
+#define PC0 40
+#define PA0 41
+#define PC1 42
+#define PA1 43
 #define PA3 44
-#define PA6 45
-#define PA2 46
-#define PA1 47
+#define PA5 45
+#define PC5 46
+#define PC2 47
 #define PC4 48
 
 /* digital pins and analog pins number definitions */
 #define DIGITAL_PINS_NUM            49
 #define ANALOG_PINS_NUM             16
-#define ANALOG_PINS_START           PA4
+#define ANALOG_PINS_START           PC3
 #define ANALOG_PINS_LAST            PC4
+
+/* alternative pin remappings */
+#define PA0_ALT1 (PA0 | ALT1)
+#define PA1_ALT1 (PA1 | ALT1)
+#define PA2_ALT1 (PA2 | ALT1)
+#define PA3_ALT1 (PA3 | ALT1)
+#define PA4_ALT1 (PA4 | ALT1)
+#define PA5_ALT1 (PA5 | ALT1)
+#define PA6_ALT1 (PA6 | ALT1)
+#define PA7_ALT1 (PA7 | ALT1)
+#define PA8_ALT1 (PA8 | ALT1)
+#define PA9_ALT1 (PA9 | ALT1)
+#define PA10_ALT1 (PA10 | ALT1)
+#define PA11_ALT1 (PA11 | ALT1)
+#define PA15_ALT1 (PA15 | ALT1)
+#define PB0_ALT1 (PB0 | ALT1)
+#define PB0_ALT2 (PB0 | ALT2)
+#define PB1_ALT1 (PB1 | ALT1)
+#define PB1_ALT2 (PB1 | ALT2)
+#define PB3_ALT1 (PB3 | ALT1)
+#define PB10_ALT1 (PB10 | ALT1)
+#define PB11_ALT1 (PB11 | ALT1)
+#define PC0_ALT1 (PC0 | ALT1)
+#define PC1_ALT1 (PC1 | ALT1)
+#define PC2_ALT1 (PC2 | ALT1)
+#define PC3_ALT1 (PC3 | ALT1)
+#define PC4_ALT1 (PC4 | ALT1)
+#define PC5_ALT1 (PC5 | ALT1)
 
 /* LED definitions */
 #define LED_BUILTIN                 PC13
@@ -112,15 +140,6 @@ extern "C" {
 #define PIN_WIRE_SCL                PB8
 #endif
 
-/* I2C1 */
-#define HAVE_I2C1
-#ifndef PIN_WIRE1_SDA
-#define PIN_WIRE1_SDA               PB11
-#endif
-#ifndef PIN_WIRE1_SCL
-#define PIN_WIRE1_SCL               PB10
-#endif
-
 /* TIMER or PWM definitions */
 #define TIMER_TONE                  TIMER5
 #define TIMER_SERVO                 TIMER6
@@ -137,54 +156,26 @@ extern "C" {
 #define DEFAULT_HWSERIAL_INSTANCE   1
 #endif
 
-/* UART3 */
+/* USART0 */
 #define HAVE_HWSERIAL1
 #ifndef SERIAL0_RX
-#define SERIAL0_RX                  PC11
+#define SERIAL0_RX                  PA10
 #endif
 #ifndef SERIAL0_TX
-#define SERIAL0_TX                  PC10
-#endif
-
-/* UART4 */
-#define HAVE_HWSERIAL2
-#ifndef SERIAL1_RX
-#define SERIAL1_RX                  PD2
-#endif
-#ifndef SERIAL1_TX
-#define SERIAL1_TX                  PC12
-#endif
-
-/* USART0 */
-#define HAVE_HWSERIAL3
-#ifndef SERIAL2_RX
-#define SERIAL2_RX                  PA10
-#endif
-#ifndef SERIAL2_TX
-#define SERIAL2_TX                  PA9
+#define SERIAL0_TX                  PA9
 #endif
 
 /* USART1 */
-#define HAVE_HWSERIAL4
-#ifndef SERIAL3_RX
-#define SERIAL3_RX                  PA3
+#define HAVE_HWSERIAL2
+#ifndef SERIAL1_RX
+#define SERIAL1_RX                  PA3
 #endif
-#ifndef SERIAL3_TX
-#define SERIAL3_TX                  PA2
-#endif
-
-/* USART2 */
-#define HAVE_HWSERIAL5
-#ifndef SERIAL4_RX
-#define SERIAL4_RX                  PB11
-#endif
-#ifndef SERIAL4_TX
-#define SERIAL4_TX                  PB10
+#ifndef SERIAL1_TX
+#define SERIAL1_TX                  PA2
 #endif
 
 /* ADC definitions */
 #define ADC_RESOLUTION              10
-#define DAC_RESOLUTION              12
 
 #ifdef __cplusplus
 } // extern "C"

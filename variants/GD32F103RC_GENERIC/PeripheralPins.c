@@ -75,8 +75,8 @@ const int GD_GPIO_MODE[] = {
     GPIO_MODE_IPU,               /* 3 INPUT_PULLUP */
     GPIO_MODE_OUT_OD,            /* 4 OUTPUT_OPEN_DRAIN */
     GPIO_MODE_OUT_PP,            /* 5 OUTPUT */
-    0,                           /* 6 (unused) */
-    0,                           /* 7 (unused) */
+    GPIO_MODE_AF_OD,             /* 6 ALT FUNC OPEN DRAIN */
+    GPIO_MODE_AF_PP,             /* 7 ALT FUNC PUSH PULL */
 };
 
 /* GPIO SPEED */
@@ -144,16 +144,16 @@ const PinMap PinMap_DAC[] = {
 /* I2C_SDA PinMap */
 const PinMap PinMap_I2C_SDA[] = {
     {PORTB_7,       I2C0, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, DISABLE_I2C0_REMAP)}, /* I2C0_SDA */
-    {PORTB_9,       I2C0, 7},                      /* I2C0_SDA */
-    {PORTB_11,      I2C1, 7},                      /* I2C1_SDA */
+    {PORTB_9,       I2C0, GPIO_MODE_AF_OD},        /* I2C0_SDA */
+    {PORTB_11,      I2C1, GPIO_MODE_AF_OD},        /* I2C1_SDA */
     {NC,   NC,    0}
 };
 
 /* I2C_SCL PinMap */
 const PinMap PinMap_I2C_SCL[] = {
     {PORTB_6,       I2C0, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, DISABLE_I2C0_REMAP)}, /* I2C0_SCL */
-    {PORTB_8,       I2C0, 7},                      /* I2C0_SCL */
-    {PORTB_10,      I2C1, 7},                      /* I2C1_SCL */
+    {PORTB_8,       I2C0, GPIO_MODE_AF_OD},        /* I2C0_SCL */
+    {PORTB_10,      I2C1, GPIO_MODE_AF_OD},        /* I2C1_SCL */
     {NC,   NC,    0}
 };
 
@@ -221,32 +221,32 @@ const PinMap PinMap_PWM[] = {
 
 /* UART_TX PinMap */
 const PinMap PinMap_UART_TX[] = {
-    {PORTA_2,       USART1, 7},                    /* USART1_TX */
+    {PORTA_2,       USART1, PIN_MODE_AF_PP},       /* USART1_TX */
     {PORTA_9,       USART0, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, DISABLE_USART0_REMAP)}, /* USART0_TX */
     {PORTB_6,       USART0, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, USART0_REMAP)}, /* USART0_TX */
     {PORTB_10,      USART2, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, DISABLE_USART2_FULL_REMAP)}, /* USART2_TX */
-    {PORTC_10,      UART3, 7},                     /* UART3_TX */
+    {PORTC_10,      UART3, PIN_MODE_AF_PP},        /* UART3_TX */
     {PORTC_10_ALT1, USART2, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, USART2_PARTIAL_REMAP)}, /* USART2_TX */
-    {PORTC_12,      UART4, 7},                     /* UART4_TX */
+    {PORTC_12,      UART4, PIN_MODE_AF_PP},        /* UART4_TX */
     {NC,   NC,    0}
 };
 
 /* UART_RX PinMap */
 const PinMap PinMap_UART_RX[] = {
-    {PORTA_3,       USART1, 1},                    /* USART1_RX */
+    {PORTA_3,       USART1, GPIO_MODE_IN_FLOATING}, /* USART1_RX */
     {PORTA_10,      USART0, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, DISABLE_USART0_REMAP)}, /* USART0_RX */
     {PORTB_7,       USART0, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, USART0_REMAP)}, /* USART0_RX */
     {PORTB_11,      USART2, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, DISABLE_USART2_FULL_REMAP)}, /* USART2_RX */
-    {PORTC_11,      UART3, 1},                     /* UART3_RX */
+    {PORTC_11,      UART3, GPIO_MODE_IN_FLOATING}, /* UART3_RX */
     {PORTC_11_ALT1, USART2, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, USART2_PARTIAL_REMAP)}, /* USART2_RX */
-    {PORTD_2,       UART4, 1},                     /* UART4_RX */
+    {PORTD_2,       UART4, GPIO_MODE_IN_FLOATING}, /* UART4_RX */
     {NC,   NC,    0}
 };
 
 /* UART_RTS PinMap */
 const PinMap PinMap_UART_RTS[] = {
-    {PORTA_1,       USART1, 7},                    /* USART1_RTS */
-    {PORTA_12,      USART0, 7},                    /* USART0_RTS */
+    {PORTA_1,       USART1, GPIO_MODE_AF_PP},      /* USART1_RTS */
+    {PORTA_12,      USART0, GPIO_MODE_AF_PP},      /* USART0_RTS */
     {PORTB_14,      USART2, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, DISABLE_USART2_FULL_REMAP)}, /* USART2_RTS */
     {PORTB_14_ALT1, USART2, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, USART2_PARTIAL_REMAP)}, /* USART2_RTS */
     {NC,   NC,    0}
@@ -254,8 +254,8 @@ const PinMap PinMap_UART_RTS[] = {
 
 /* UART_CTS PinMap */
 const PinMap PinMap_UART_CTS[] = {
-    {PORTA_0,       USART1, 7},                    /* USART1_CTS */
-    {PORTA_11,      USART0, 7},                    /* USART0_CTS */
+    {PORTA_0,       USART1, GPIO_MODE_AF_PP},      /* USART1_CTS */
+    {PORTA_11,      USART0, GPIO_MODE_AF_PP},      /* USART0_CTS */
     {PORTB_13,      USART2, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, DISABLE_USART2_FULL_REMAP)}, /* USART2_CTS */
     {PORTB_13_ALT1, USART2, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, USART2_PARTIAL_REMAP)}, /* USART2_CTS */
     {NC,   NC,    0}
@@ -266,7 +266,7 @@ const PinMap PinMap_SPI_MOSI[] = {
     {PORTA_7,       SPI0, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, DISABLE_SPI0_REMAP)}, /* SPI0_MOSI */
     {PORTB_5,       SPI0, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, SPI0_REMAP)}, /* SPI0_MOSI */
     {PORTB_5_ALT1,  SPI2, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, DISABLE_SPI0_REMAP)}, /* SPI2_MOSI */
-    {PORTB_15,      SPI1, 7},                      /* SPI1_MOSI */
+    {PORTB_15,      SPI1, GPIO_MODE_AF_PP},        /* SPI1_MOSI */
     {PORTC_12,      SPI2, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, SPI0_REMAP)}, /* SPI2_MOSI */
     {NC,   NC,    0}
 };
@@ -276,7 +276,7 @@ const PinMap PinMap_SPI_MISO[] = {
     {PORTA_6,       SPI0, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, DISABLE_SPI0_REMAP)}, /* SPI0_MISO */
     {PORTB_4,       SPI0, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, SPI0_REMAP)}, /* SPI0_MISO */
     {PORTB_4_ALT1,  SPI2, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, DISABLE_SPI0_REMAP)}, /* SPI2_MISO */
-    {PORTB_14,      SPI1, 7},                      /* SPI1_MISO */
+    {PORTB_14,      SPI1, GPIO_MODE_AF_PP},        /* SPI1_MISO */
     {PORTC_11,      SPI2, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, SPI0_REMAP)}, /* SPI2_MISO */
     {NC,   NC,    0}
 };
@@ -285,7 +285,7 @@ const PinMap PinMap_SPI_MISO[] = {
 const PinMap PinMap_SPI_SCLK[] = {
     {PORTA_5,       SPI0, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, DISABLE_SPI0_REMAP)}, /* SPI0_SCK */
     {PORTB_3,       SPI0, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, SPI0_REMAP)}, /* SPI0_SCK */
-    {PORTB_13,      SPI1, 7},                      /* SPI1_SCK */
+    {PORTB_13,      SPI1, GPIO_MODE_AF_PP},        /* SPI1_SCK */
     {PORTC_10,      SPI2, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, SPI0_REMAP)}, /* SPI2_SCK */
     {NC,   NC,    0}
 };
@@ -296,21 +296,21 @@ const PinMap PinMap_SPI_SSEL[] = {
     {PORTA_4_ALT1,  SPI2, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, SPI0_REMAP)}, /* SPI2_NSS */
     {PORTA_15,      SPI0, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, SPI0_REMAP)}, /* SPI0_NSS */
     {PORTA_15_ALT1, SPI2, GD_PIN_FUNCTION5(PIN_MODE_AF, PIN_OTYPE_PP, PIN_PUPD_PULLUP, DISABLE_SPI0_REMAP)}, /* SPI2_NSS */
-    {PORTB_12,      SPI1, 7},                      /* SPI1_NSS */
+    {PORTB_12,      SPI1, GPIO_MODE_AF_PP},        /* SPI1_NSS */
     {NC,   NC,    0}
 };
 
 /* CAN_RD PinMap */
 const PinMap PinMap_CAN_RD[] = {
-    {PORTA_11,      CAN0, 7},                      /* CAN0_RX */
-    {PORTB_8,       CAN0, 7},                      /* CAN0_RX */
+    {PORTA_11,      CAN0, GPIO_MODE_AF_PP},        /* CAN0_RX */
+    {PORTB_8,       CAN0, GPIO_MODE_AF_PP},        /* CAN0_RX */
     {NC,   NC,    0}
 };
 
 /* CAN_TD PinMap */
 const PinMap PinMap_CAN_TD[] = {
-    {PORTA_12,      CAN0, 7},                      /* CAN0_TX */
-    {PORTB_9,       CAN0, 7},                      /* CAN0_TX */
+    {PORTA_12,      CAN0, GPIO_MODE_AF_PP},        /* CAN0_TX */
+    {PORTB_9,       CAN0, GPIO_MODE_AF_PP},        /* CAN0_TX */
     {NC,   NC,    0}
 };
 

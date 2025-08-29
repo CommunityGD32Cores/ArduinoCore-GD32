@@ -20,8 +20,8 @@ IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
 INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
 NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
 PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-WHETHER IN CONTRACT, STRICT LIABILITY OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE EVEN IF ADVISED OF THE POSSIBILITY
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
 
@@ -33,10 +33,142 @@ extern "C" {
 
 /* digital pins for pinmap list */
 const PinName digital_pins[] = {
+    PORTE_2,
+    PORTE_3,
+    PORTE_4,
+    PORTE_5,
+    PORTE_6,
+    PORTC_13,
+    PORTC_14,
+    PORTC_15,
+    PORTF_0,
+    PORTF_1,
+    PORTF_2,
+    PORTF_3,
+    PORTF_4,
+    PORTF_5,
+    PORTB_2,
+    PORTF_11,
+    PORTF_12,
+    PORTF_13,
+    PORTF_14,
+    PORTF_15,
+    PORTG_0,
+    PORTG_1,
+    PORTE_7,
+    PORTE_8,
+    PORTE_9,
+    PORTE_10,
+    PORTE_11,
+    PORTE_12,
+    PORTE_13,
+    PORTE_14,
+    PORTE_15,
+    PORTB_10,
+    PORTB_11,
+    PORTB_12,
+    PORTB_13,
+    PORTB_14,
+    PORTB_15,
+    PORTD_8,
+    PORTD_9,
+    PORTD_10,
+    PORTD_11,
+    PORTD_12,
+    PORTD_13,
+    PORTD_14,
+    PORTD_15,
+    PORTG_2,
+    PORTG_3,
+    PORTG_4,
+    PORTG_5,
+    PORTG_6,
+    PORTG_7,
+    PORTG_8,
+    PORTC_6,
+    PORTC_7,
+    PORTC_8,
+    PORTC_9,
+    PORTA_8,
+    PORTA_9,
+    PORTA_10,
+    PORTA_11,
+    PORTA_12,
+    PORTA_13,
+    PORTA_14,
+    PORTA_15,
+    PORTC_11,
+    PORTC_12,
+    PORTD_0,
+    PORTD_1,
+    PORTD_2,
+    PORTD_3,
+    PORTD_4,
+    PORTD_5,
+    PORTD_6,
+    PORTD_7,
+    PORTG_9,
+    PORTG_10,
+    PORTG_11,
+    PORTG_12,
+    PORTG_13,
+    PORTG_14,
+    PORTG_15,
+    PORTB_3,
+    PORTB_4,
+    PORTB_5,
+    PORTB_6,
+    PORTB_7,
+    PORTB_8,
+    PORTB_9,
+    PORTE_0,
+    PORTE_1,
+    PORTA_6,
+    PORTA_2,
+    PORTF_10,
+    PORTA_0,
+    PORTC_5,
+    PORTC_4,
+    PORTB_1,
+    PORTA_7,
+    PORTF_6,
+    PORTA_4,
+    PORTC_0,
+    PORTC_2,
+    PORTC_3,
+    PORTF_8,
+    PORTB_0,
+    PORTC_1,
+    PORTA_1,
+    PORTA_3,
+    PORTA_5,
+    PORTF_7,
+    PORTF_9
 };
 
 /* analog pins for pinmap list */
 const uint32_t analog_pins[] = {
+    PA6, //A0
+    PA2, //A1
+    PF10, //A2
+    PA0, //A3
+    PC5, //A4
+    PC4, //A5
+    PB1, //A6
+    PA7, //A7
+    PF6, //A8
+    PA4, //A9
+    PC0, //A10
+    PC2, //A11
+    PC3, //A12
+    PF8, //A13
+    PB0, //A14
+    PC1, //A15
+    PA1, //A16
+    PA3, //A17
+    PA5, //A18
+    PF7, //A19
+    PF9 //A20
 };
 
 #ifdef __cplusplus
