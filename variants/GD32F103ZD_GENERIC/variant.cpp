@@ -123,51 +123,51 @@ const PinName digital_pins[] = {
     PORTB_9,
     PORTE_0,
     PORTE_1,
-    PORTA_6,
     PORTA_2,
+    PORTA_5,
     PORTF_10,
-    PORTA_0,
+    PORTC_2,
+    PORTA_6,
     PORTC_5,
+    PORTA_4,
+    PORTA_0,
     PORTC_4,
+    PORTA_1,
+    PORTB_0,
+    PORTC_0,
+    PORTC_3,
+    PORTA_3,
+    PORTF_7,
+    PORTF_6,
+    PORTC_1,
+    PORTF_8,
     PORTB_1,
     PORTA_7,
-    PORTF_6,
-    PORTA_4,
-    PORTC_0,
-    PORTC_2,
-    PORTC_3,
-    PORTF_8,
-    PORTB_0,
-    PORTC_1,
-    PORTA_1,
-    PORTA_3,
-    PORTA_5,
-    PORTF_7,
     PORTF_9
 };
 
 /* analog pins for pinmap list */
 const uint32_t analog_pins[] = {
-    PA6, //A0
-    PA2, //A1
+    PA2, //A0
+    PA5, //A1
     PF10, //A2
-    PA0, //A3
-    PC5, //A4
-    PC4, //A5
-    PB1, //A6
-    PA7, //A7
-    PF6, //A8
-    PA4, //A9
-    PC0, //A10
-    PC2, //A11
+    PC2, //A3
+    PA6, //A4
+    PC5, //A5
+    PA4, //A6
+    PA0, //A7
+    PC4, //A8
+    PA1, //A9
+    PB0, //A10
+    PC0, //A11
     PC3, //A12
-    PF8, //A13
-    PB0, //A14
-    PC1, //A15
-    PA1, //A16
-    PA3, //A17
-    PA5, //A18
-    PF7, //A19
+    PA3, //A13
+    PF7, //A14
+    PF6, //A15
+    PC1, //A16
+    PF8, //A17
+    PB1, //A18
+    PA7, //A19
     PF9 //A20
 };
 

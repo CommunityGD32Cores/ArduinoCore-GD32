@@ -58,22 +58,22 @@ extern "C" {
 #define PB8 22
 #define PB9 23
 /* analog pins */
-#define PA4 24
-#define PA6 25
-#define PB1 26
-#define PA2 27
-#define PA7 28
-#define PB0 29
-#define PA0 30
-#define PA1 31
-#define PA3 32
-#define PA5 33
+#define PA2 24
+#define PA1 25
+#define PA5 26
+#define PB1 27
+#define PA3 28
+#define PA6 29
+#define PB0 30
+#define PA7 31
+#define PA4 32
+#define PA0 33
 
 /* digital pins and analog pins number definitions */
 #define DIGITAL_PINS_NUM            34
 #define ANALOG_PINS_NUM             10
-#define ANALOG_PINS_START           PA4
-#define ANALOG_PINS_LAST            PA5
+#define ANALOG_PINS_START           PA2
+#define ANALOG_PINS_LAST            PA0
 
 /* alternative pin remappings */
 #define PA0_ALT1 (PA0 | ALT1)

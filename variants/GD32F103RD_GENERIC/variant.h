@@ -67,28 +67,28 @@ extern "C" {
 #define PB8 31
 #define PB9 32
 /* analog pins */
-#define PC3 33
-#define PA4 34
-#define PA6 35
-#define PB1 36
-#define PA2 37
-#define PA7 38
-#define PB0 39
-#define PC0 40
-#define PA0 41
-#define PC1 42
-#define PA1 43
-#define PA3 44
-#define PA5 45
-#define PC5 46
-#define PC2 47
-#define PC4 48
+#define PA2 33
+#define PC3 34
+#define PC4 35
+#define PC1 36
+#define PA1 37
+#define PA5 38
+#define PB1 39
+#define PA3 40
+#define PC2 41
+#define PA6 42
+#define PC5 43
+#define PB0 44
+#define PA7 45
+#define PA4 46
+#define PC0 47
+#define PA0 48
 
 /* digital pins and analog pins number definitions */
 #define DIGITAL_PINS_NUM            49
 #define ANALOG_PINS_NUM             16
-#define ANALOG_PINS_START           PC3
-#define ANALOG_PINS_LAST            PC4
+#define ANALOG_PINS_START           PA2
+#define ANALOG_PINS_LAST            PA0
 
 /* alternative pin remappings */
 #define PA0_ALT1 (PA0 | ALT1)
@@ -120,8 +120,6 @@ extern "C" {
 #define PB5_ALT1 (PB5 | ALT1)
 #define PB10_ALT1 (PB10 | ALT1)
 #define PB11_ALT1 (PB11 | ALT1)
-#define PB13_ALT1 (PB13 | ALT1)
-#define PB14_ALT1 (PB14 | ALT1)
 #define PC0_ALT1 (PC0 | ALT1)
 #define PC0_ALT2 (PC0 | ALT2)
 #define PC1_ALT1 (PC1 | ALT1)
